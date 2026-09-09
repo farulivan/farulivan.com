@@ -59,7 +59,7 @@ const t = useTranslations(lang)
   <p class="nav__descriptor">{t("site.descriptor")}</p>
 
   <div class="nav__controls">
-    <LanguagePicker lang={lang} path={switchPath} />
+    <LanguagePicker lang={lang} path={switchPath} data-menu-covers />
     <MenuCard lang={lang} />
   </div>
 </header>
@@ -107,14 +107,29 @@ const t = useTranslations(lang)
   }
 
   /*
-   * The switcher sits above the menu, which on a wide screen hangs from the
-   * very top of the window and would otherwise cover it. Being unable to
-   * change language while the menu is open is the kind of thing nobody
-   * notices until they try it.
+   * Three layers, in this order from the top: the control, the card it opens,
+   * and the switcher underneath both.
+   *
+   * The switcher gets out of the way rather than being overlapped. On a wide
+   * screen the card hangs from the very top of the window, which is exactly
+   * where the switcher is, and a half-covered control is worse than an absent
+   * one. It is made inert at the same time, so it does not stay in the tab
+   * order while invisible.
    */
   .nav__controls > :global(.langs) {
     position: relative;
-    z-index: 2;
+    z-index: 0;
+    transition: opacity var(--duration-fast) var(--ease-state);
+  }
+
+  :global(:root[data-menu-open]) .nav__controls > :global(.langs) {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__controls > :global(.langs) {
+      transition: none;
+    }
   }
 
   /*

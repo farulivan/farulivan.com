@@ -50,7 +50,7 @@ export const en = {
   "footer.menu": "Menu",
   "footer.social": "Social",
   "footer.contact": "Contact",
-  "footer.rights": "© {year} Farul Ivan",
+  "footer.rights": "© Farul Ivan {year} • All rights reserved.",
   "footer.builtWith": "Built with Astro",
 
   // The CV download states its format and size, so nobody has to guess what
@@ -126,7 +126,7 @@ export const id: Record<TranslationKey, string> = {
   "footer.menu": "Menu",
   "footer.social": "Sosial",
   "footer.contact": "Kontak",
-  "footer.rights": "© {year} Farul Ivan",
+  "footer.rights": "© Farul Ivan {year} • Seluruh hak cipta dilindungi.",
   "footer.builtWith": "Dibuat dengan Astro",
 
   "cv.download": "Unduh CV",

@@ -7,21 +7,29 @@
  * are the exception and pass their own destination, because a tag is written
  * per language and has no address in the other one.
  */
+import type { HTMLAttributes } from "astro/types"
+
 import { LOCALES, LOCALE_TAGS, type Locale } from "@/content/schemas"
 import { switchLocalePath, useTranslations } from "@/i18n/utils"
 
-interface Props {
+/*
+ * Extends the element's own attributes rather than listing a few by hand.
+ * Astro forwards nothing a component has not declared, so a caller marking
+ * this with a `data-` hook would otherwise have it silently dropped — which
+ * is exactly how the menu failed to hide it the first time.
+ */
+type Props = {
   lang: Locale
   /** Locale-less path of the current page. */
   path: string
   class?: string
-}
+} & Omit<HTMLAttributes<"nav">, "class">
 
-const { lang, path, class: className } = Astro.props
+const { lang, path, class: className, ...rest } = Astro.props
 const t = useTranslations(lang)
 ---
 
-<nav aria-label={t("lang.switch")} class:list={["langs", className]}>
+<nav aria-label={t("lang.switch")} class:list={["langs", className]} {...rest}>
   {
     LOCALES.map((locale) => (
       <a

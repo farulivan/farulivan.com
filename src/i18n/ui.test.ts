@@ -53,7 +53,6 @@ describe("translation dictionaries", () => {
     const sameInBothLanguages = new Set<keyof typeof en>([
       "site.title", // a person's name
       "site.descriptor", // job titles in Indonesian tech stay in English
-      "footer.rights", // a symbol, a year and a name
       "cv.label", // "CV" plus a file format and a size
       "nav.openMenu", // "Menu" is the Indonesian word too
       "footer.menu", // same

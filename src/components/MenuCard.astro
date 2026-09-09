@@ -41,20 +41,8 @@ const links = siteConfig.menu.map((item) => ({
     data-label-closed={t("nav.openMenu")}
     data-label-open={t("nav.closeMenu")}
   >
-    {
-      /*
-       * Both marks are always present and one is faded out. Swapping the
-       * markup instead would resize the circle for a frame, and any movement
-       * in this control reads as a bug.
-       */
-    }
     <Fragment slot="circle">
-      <Icon
-        name="dotsHorizontal"
-        class="menu__icon size-4"
-        data-icon="closed"
-      />
-      <Icon name="dotsVertical" class="menu__icon size-4" data-icon="open" />
+      <Icon name="dots" class="menu__icon size-5" />
     </Fragment>
   </Pill>
 
@@ -208,90 +196,72 @@ const links = siteConfig.menu.map((item) => ({
      Closed is the default, so the card is inert and unpainted before any
      script has run. */
   /*
-   * Closed is transparent and untouchable, but deliberately *not*
-   * `visibility: hidden`.
+   * It arrives from off the right edge and leaves the same way, rather than
+   * fading in place. The card is a thing that comes and goes, so it should
+   * come from somewhere.
    *
-   * Hiding it that way is the obvious thing to reach for and it breaks the
-   * keyboard. A hidden element cannot take focus, the property still computes
-   * as hidden in the frame the menu opens in, and moving focus into the card
-   * therefore does nothing at all — silently. Transitioning the property
-   * instead leaves it stuck on `visible` after closing, which is the same
-   * subtlety biting from the other end.
+   * It is deliberately *not* hidden with `visibility`. Hiding it that way is
+   * the obvious thing to reach for and it breaks the keyboard: a hidden
+   * element cannot take focus, the property still computes as hidden in the
+   * frame the menu opens in, and moving focus into the card therefore does
+   * nothing at all — silently. `inert` already does the work that mattered.
+   * While it is set nothing inside is reachable by pointer, keyboard or screen
+   * reader, and the pointer rule below is belt and braces.
    *
-   * `inert` already does the work that mattered: while it is set, nothing
-   * inside is reachable by pointer, by keyboard, or by a screen reader. The
-   * pointer rule below is belt and braces.
+   * 130% rather than 100%: the card is tilted and hangs past the edge already,
+   * so a full width alone leaves a corner of it showing.
    */
   .menu__card {
-    opacity: 0;
     pointer-events: none;
-    transform: rotate(1.4deg) translateX(8px);
-    transition:
-      opacity var(--duration-mid) var(--ease-reveal),
-      transform var(--duration-mid) var(--ease-reveal);
+    transform: rotate(1.4deg) translateX(130%);
+    transition: transform var(--duration-slow) var(--ease-reveal);
   }
 
   .menu[data-open] .menu__card {
-    opacity: 1;
     pointer-events: auto;
     transform: rotate(1.4deg) translateX(0);
   }
 
-  .menu__link {
-    opacity: 0;
-    transform: translateY(12px);
-    transition:
-      opacity var(--duration-mid) var(--ease-reveal),
-      transform var(--duration-mid) var(--ease-reveal),
-      background-color var(--duration-fast) var(--ease-state);
+  /*
+   * The links ride in on the card rather than animating separately. They used
+   * to fade up on a stagger, which was a second entrance competing with the
+   * first — and staggering a list that is already sliding across the screen
+   * reads as lag rather than choreography.
+   */
+
+  /*
+   * The dots turn a quarter circle rather than being swapped for a different
+   * mark. Nothing resizes and nothing is replaced, so there is no frame where
+   * the control looks like it flinched.
+   *
+   * Upright on hover, and upright while the menu is open. Keyboard focus is
+   * matched on the control itself rather than with `:focus-within`, which is
+   * true for as long as the menu is open — focus moves into the card — and so
+   * would leave the dots contradicting the state they are meant to report.
+   */
+  .menu__icon {
+    grid-area: circle;
+    transition: transform var(--duration-mid) var(--ease-state);
   }
 
-  .menu[data-open] .menu__link {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: calc(var(--i) * 40ms);
+  .menu:hover .menu__icon,
+  .menu:has([data-menu-trigger]:focus-visible) .menu__icon,
+  .menu[data-open] .menu__icon {
+    transform: rotate(90deg);
   }
 
   /*
-   * The two marks sit on top of one another so the circle never changes size.
-   * Nothing about this control moves or resizes as it toggles; only what it
-   * is pointing at changes.
+   * No travel. The card is simply not there and then it is, which is the
+   * finished state rather than a faster journey to it. It still has to leave
+   * the screen when closed, so the transform stays and only the transition
+   * goes.
    */
-  .menu__icon {
-    grid-area: 1 / 1;
-    transition: opacity var(--duration-fast) var(--ease-state);
-  }
-
-  .menu__icon[data-icon="open"] {
-    opacity: 0;
-  }
-
-  .menu[data-open] .menu__icon[data-icon="closed"] {
-    opacity: 0;
-  }
-
-  .menu[data-open] .menu__icon[data-icon="open"] {
-    opacity: 1;
-  }
-
-  /* Opacity only, no travel and no stagger. */
   @media (prefers-reduced-motion: reduce) {
     .menu__card,
+    .menu__icon,
     .menu__link,
     .menu__arrow {
-      transition-property: opacity, visibility;
-    }
-
-    .menu__card {
-      transform: rotate(1.4deg);
-    }
-
-    .menu[data-open] .menu__link {
-      transition-delay: 0ms;
-    }
-
-    .menu__link {
-      transform: none;
+      transition: none;
     }
 
     .menu__link:active {
@@ -334,8 +304,17 @@ const links = siteConfig.menu.map((item) => ({
       text.dataset.text = value
     }
 
+    /*
+     * Anything the open menu is meant to cover. Marked in the markup rather
+     * than looked up by class, so this does not need to know what the bar
+     * happens to contain.
+     */
+    const covered = document.querySelectorAll<HTMLElement>("[data-menu-covers]")
+
     const open = () => {
       menu.setAttribute("data-open", "")
+      document.documentElement.setAttribute("data-menu-open", "")
+      for (const el of covered) el.setAttribute("inert", "")
       card.removeAttribute("inert")
       trigger.setAttribute("aria-expanded", "true")
       setLabel(labelOpen)
@@ -344,6 +323,8 @@ const links = siteConfig.menu.map((item) => ({
 
     const close = ({ returnFocus = true } = {}) => {
       menu.removeAttribute("data-open")
+      document.documentElement.removeAttribute("data-menu-open")
+      for (const el of covered) el.removeAttribute("inert")
       trigger.setAttribute("aria-expanded", "false")
       setLabel(labelClosed)
       /*

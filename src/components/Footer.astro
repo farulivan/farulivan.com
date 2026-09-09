@@ -97,8 +97,6 @@ const social = [
     </section>
   </div>
 
-  <p class="foot__rights">{t("footer.rights", { year })}</p>
-
   {
     /*
      * The site opens by writing the name and closes with the same name set
@@ -107,13 +105,25 @@ const social = [
      */
   }
   <Wordmark variant="footer" class="foot__mark" />
+
+  <p class="foot__rights">{t("footer.rights", { year })}</p>
 </footer>
 
 <style>
+  /*
+   * The one full black field on the site, and the last thing on every page.
+   * Ink on paper for the whole way down, then this — the page stops rather
+   * than trailing off.
+   *
+   * White on this field measures 19.8:1 and the muted grey 8.3:1, so both
+   * clear AAA comfortably. Nothing here uses the page's usual muted grey,
+   * which is a light-ground colour and would fail badly.
+   */
   .foot {
     padding: var(--spacing-9) var(--spacing-page-margin)
       var(--spacing-page-margin);
-    border-top: 1px solid var(--color-rule);
+    background-color: var(--color-surface-invert);
+    color: var(--color-ink-invert);
   }
 
   /* Starting at the halfway mark is the whole idea. */
@@ -126,7 +136,7 @@ const social = [
 
   .foot__label {
     margin: 0 0 var(--spacing-5);
-    color: var(--color-ink-muted);
+    color: var(--color-ink-invert-muted);
     font-size: var(--text-micro);
     font-weight: var(--font-weight-label);
     letter-spacing: var(--text-micro--letter-spacing);
@@ -144,7 +154,7 @@ const social = [
   }
 
   .foot__link {
-    color: var(--color-ink);
+    color: var(--color-ink-invert);
     font-size: var(--text-ui);
     line-height: 1.4;
     text-decoration: none;
@@ -159,14 +169,17 @@ const social = [
     text-underline-offset: 4px;
   }
 
+  /* Paper, not ink: an ink ring on this field would be invisible. */
   .foot__link:focus-visible {
-    outline: 2px solid var(--color-ink);
+    outline: 2px solid var(--color-paper);
     outline-offset: 2px;
   }
 
+  /* Under the lettering rather than above it, so the last thing on the page
+     is the name and then the small print. */
   .foot__rights {
-    margin: var(--spacing-8) 0 0 50%;
-    color: var(--color-ink-muted);
+    margin: var(--spacing-4) 0 0;
+    color: var(--color-ink-invert-muted);
     font-size: var(--text-micro);
     letter-spacing: var(--text-micro--letter-spacing);
     text-transform: uppercase;
@@ -187,10 +200,6 @@ const social = [
     .foot__columns {
       grid-template-columns: 1fr;
       gap: var(--spacing-7);
-      margin-inline-start: 0;
-    }
-
-    .foot__rights {
       margin-inline-start: 0;
     }
   }
