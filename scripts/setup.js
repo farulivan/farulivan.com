@@ -103,8 +103,52 @@ async function commit() {
   for (const { file, after } of staged) await writeFile(file, after)
 }
 
-async function main() {
-  assertCleanTree()
+/** Reads `--flag=value` out of argv. */
+function flag(name) {
+  const hit = argv.find((arg) => arg.startsWith(`--${name}=`))
+  return hit === undefined ? undefined : hit.slice(name.length + 3)
+}
+
+/**
+ * Answers come from flags when they are given, and from prompts otherwise.
+ *
+ * The flags exist because prompting is not always possible. `rl.question`
+ * never resolves when stdin is not a terminal, so under CI, a piped shell, or
+ * an editor that captures output, the original prompt-only version hung and
+ * then died with an unsettled top-level await — which reads like a crash
+ * rather than "this needs a terminal". Refusing early, with the flag form to
+ * copy, is the difference between a five-second fix and a debugging session.
+ */
+async function readAnswers() {
+  const fromFlags = {
+    name: flag("name"),
+    url: flag("url"),
+    repo: flag("repo"),
+    handle: flag("handle"),
+  }
+
+  // The handle is optional, so it does not count towards this.
+  const required = ["name", "url", "repo"]
+  const given = required.filter((key) => fromFlags[key] !== undefined)
+
+  if (given.length === required.length) {
+    return { ...fromFlags, handle: fromFlags.handle ?? "" }
+  }
+
+  if (given.length > 0) {
+    const missing = required.filter((key) => fromFlags[key] === undefined)
+    die(`Missing ${missing.map((key) => `--${key}=`).join(" and ")}.`)
+  }
+
+  if (!stdin.isTTY) {
+    die(
+      "No terminal, so there is nothing to prompt. Pass the answers instead:\n\n" +
+        '    pnpm run setup --name="My Site" \\\n' +
+        "      --url=https://example.com \\\n" +
+        "      --repo=owner/repo \\\n" +
+        "      --handle=myhandle"
+    )
+  }
 
   const rl = createInterface({ input: stdin, output: stdout })
   const ask = async (question, fallback) => {
@@ -114,28 +158,35 @@ async function main() {
 
   console.log("\n  Setting up your project. Press enter to keep a default.\n")
 
-  const name = await ask("Project name:", PLACEHOLDER.name)
+  const answers = {
+    name: await ask("Project name:", PLACEHOLDER.name),
+    url: await ask("Site URL (https://…):", PLACEHOLDER.url),
+    repo: await ask("GitHub repository (owner/repo):", PLACEHOLDER.repo),
+    handle: await ask("X handle (without @, optional):", ""),
+  }
+  rl.close()
+  return answers
+}
 
-  let url = await ask("Site URL (https://…):", PLACEHOLDER.url)
-  url = url.replace(/\/+$/, "")
+async function main() {
+  assertCleanTree()
+
+  const answers = await readAnswers()
+  const name = answers.name
+
+  const url = answers.url.replace(/\/+$/, "")
   if (!/^https?:\/\/[^/\s]+$/.test(url)) {
-    rl.close()
     die(
       `"${url}" is not an origin. Expected something like https://example.com`
     )
   }
 
-  const repo = await ask("GitHub repository (owner/repo):", PLACEHOLDER.repo)
+  const repo = answers.repo
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) {
-    rl.close()
     die(`"${repo}" is not an owner/repo pair.`)
   }
 
-  const handle = (await ask("X handle (without @, optional):", "")).replace(
-    /^@/,
-    ""
-  )
-  rl.close()
+  const handle = answers.handle.replace(/^@/, "")
 
   const pkg = repo.split("/")[1]
   const storageKey = `${slug(name)}.theme`
