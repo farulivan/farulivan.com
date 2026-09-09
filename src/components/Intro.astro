@@ -40,12 +40,18 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
    *
    * The timing, in one place:
    *
-   *   writing    80ms wait, then 420ms per letter, 45ms apart   → 905ms
-   *   hold       200ms                                          → 1105ms
-   *   lift       450ms                                          → 1555ms
+   *   writing   180ms wait, then 700ms per letter, 80ms apart   → 1600ms
+   *   hold      450ms                                           → 2050ms
+   *   slide     750ms                                           → 2800ms
    *
-   * The hero lettering starts rising at 1105ms, so the reveal and the arrival
+   * The hero lettering starts rising at 2050ms, so the reveal and the arrival
    * overlap instead of queueing.
+   *
+   * Deliberately unhurried. It is the one moment on the site that exists to be
+   * watched rather than read, and at the earlier speed it was over before the
+   * eye had followed the word across. Everything that makes it safe — it never
+   * waits on anything, it cannot be stranded, it never takes the pointer —
+   * holds at any length, so the length is free to be a taste decision.
    */
   .intro {
     display: none;
@@ -60,7 +66,7 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
     background-color: var(--color-paper);
     /* Never intercepts a click, even mid-fade. */
     pointer-events: none;
-    animation: intro-lift 1555ms linear forwards;
+    animation: intro-lift 2800ms linear forwards;
   }
 
   :root[data-intro] .intro__mark {
@@ -97,8 +103,8 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
     transform-box: fill-box;
     transform-origin: left center;
     transform: scaleX(0);
-    animation: mark-write 420ms var(--ease-draw) forwards;
-    animation-delay: calc(var(--i) * 45ms + 80ms);
+    animation: mark-write 700ms var(--ease-draw) forwards;
+    animation-delay: calc(var(--i) * 80ms + 180ms);
   }
 
   @keyframes mark-write {
@@ -123,7 +129,7 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
       visibility: visible;
       animation-timing-function: linear;
     }
-    71% {
+    73.2% {
       transform: translateY(0);
       animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
     }
@@ -135,6 +141,6 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
 
   /* The hero lettering waits for the reveal, but only when there is one. */
   :root[data-intro] .intro-follows {
-    --hero-enter-delay: 1105ms;
+    --hero-enter-delay: 2050ms;
   }
 </style>

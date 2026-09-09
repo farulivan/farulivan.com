@@ -41,14 +41,27 @@ const { lang, path, switchPath, intro = false, ...seo } = Astro.props
  * makes it safe: with scripting off, or if this never runs, there is no
  * covering layer and the page is simply the page.
  *
- * Storage is read and written in its own guard so that a browser refusing it
- * outright still shows the screen rather than throwing the whole check away.
+ * It runs on a reload every time. Refreshing is a deliberate act — someone
+ * doing it wants to see the page open again — so remembering that they have
+ * already seen it would be second-guessing them.
+ *
+ * It does not run when they merely arrive back here from another page in the
+ * same visit. Clicking "home" and being made to wait through it is the point
+ * at which an opening stops being a greeting and becomes a toll.
+ *
+ * Storage is read and written inside its own guard, so a browser refusing it
+ * outright still shows the screen rather than discarding the whole check.
  */
 const introScript = `try {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) throw 0
+
+  var nav = performance.getEntriesByType("navigation")[0]
+  var reloaded = nav ? nav.type === "reload" : false
+
   var seen = false
   try { seen = sessionStorage.getItem("intro") === "seen" } catch (e) {}
-  if (!seen) {
+
+  if (reloaded || !seen) {
     document.documentElement.dataset.intro = ""
     try { sessionStorage.setItem("intro", "seen") } catch (e) {}
   }

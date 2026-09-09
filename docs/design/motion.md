@@ -25,9 +25,14 @@ explicit final-state handling on top of it.
 
 ## M1 · The opening screen ⭐
 
-The site's opening moment. Runs once per visit, on the **homepage only**: a
-blank field with the name writing itself, which then slides up to reveal the
-page. The hero wordmark underneath arrives by a different move — it rises into
+The site's opening moment, on the **homepage only**: a blank field with the
+name writing itself, which then slides up to reveal the page.
+
+It runs on a reload every time. Refreshing is a deliberate act, and someone
+doing it wants to see the page open again. It does *not* run when they merely
+arrive back here from another page in the same visit — clicking "home" and
+being made to wait through it is the point where an opening stops being a
+greeting and becomes a toll. The hero wordmark underneath arrives by a different move — it rises into
 place — because writing the same word twice in three seconds reads as a stutter
 rather than a signature.
 
@@ -55,13 +60,18 @@ already seen it this visit, and anyone without JavaScript — the markup stays
 inert until a script in the document head opts into it.
 
 ```
-writing    80ms wait, then 420ms per letter, 45ms apart   →  905ms
-hold       200ms                                          → 1105ms
-slide up   450ms                                          → 1555ms
+writing   180ms wait, then 700ms per letter, 80ms apart   → 1600ms
+hold      450ms                                           → 2050ms
+slide up  750ms                                           → 2800ms
 ```
 
-The hero lettering starts rising at 1105ms, so the reveal and the arrival
+The hero lettering starts rising at 2050ms, so the reveal and the arrival
 overlap instead of queueing.
+
+Deliberately unhurried. It is the one moment on the site that exists to be
+watched rather than read, and at half this length it was over before the eye
+had followed the word across. Everything that makes it safe holds at any
+length, so the length is free to be a taste decision.
 
 > **It slides rather than fades.** Fading crossfades two different
 > compositions — the centred word on the screen and the large cropped one in
