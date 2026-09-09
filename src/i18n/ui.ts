@@ -21,6 +21,9 @@ export const en = {
   // this is the real page title and it is always in the document.
   "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
   "site.descriptor": "Frontend & Fullstack Engineer",
+  // TODO(content): replace with the real positioning sentence.
+  "site.description":
+    "Frontend and fullstack engineer. I build web products that stay fast and maintainable as they grow.",
 
   // Navigation
   "nav.main": "Primary",
@@ -93,6 +96,8 @@ export type TranslationKey = keyof typeof en
 export const id: Record<TranslationKey, string> = {
   "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
   "site.descriptor": "Frontend & Fullstack Engineer",
+  "site.description":
+    "Frontend dan fullstack engineer. Saya membangun produk web yang tetap cepat dan mudah dirawat seiring pertumbuhannya.",
 
   "nav.main": "Utama",
   "nav.home": "Beranda",

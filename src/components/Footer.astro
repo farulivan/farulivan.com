@@ -20,7 +20,7 @@ const year = new Date().getFullYear()
  */
 const isExternal = (href: string) => /^https?:\/\//.test(href)
 const githubHref = siteConfig.social.github
-const xHref = siteConfig.social.x
+const linkedinHref = siteConfig.social.linkedin
 ---
 
 <footer class="border-rule border-t py-10">
@@ -43,13 +43,13 @@ const xHref = siteConfig.social.x
         }
       </a>
       <a
-        href={xHref}
-        rel={isExternal(xHref) ? "noopener noreferrer" : undefined}
-        target={isExternal(xHref) ? "_blank" : undefined}
+        href={linkedinHref}
+        rel={isExternal(linkedinHref) ? "noopener noreferrer" : undefined}
+        target={isExternal(linkedinHref) ? "_blank" : undefined}
         class="hover:text-ink transition-colors"
       >
-        X{
-          isExternal(xHref) && (
+        LinkedIn{
+          isExternal(linkedinHref) && (
             <span class="sr-only"> {t("a11y.externalLink")}</span>
           )
         }

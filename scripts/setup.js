@@ -146,7 +146,7 @@ async function readAnswers() {
         '    pnpm run setup --name="My Site" \\\n' +
         "      --url=https://example.com \\\n" +
         "      --repo=owner/repo \\\n" +
-        "      --handle=myhandle"
+        "      --handle=your-x-handle"
     )
   }
 

@@ -15,7 +15,7 @@ const analyze = process.env.ANALYZE === "true"
 
 export default defineConfig({
   /** Absolute URLs for canonicals, Open Graph, the sitemap and RSS. */
-  site: "https://astro-origin.farulivan.com",
+  site: "https://farulivan.com",
   output: "static",
   trailingSlash: "never",
 

@@ -1,4 +1,4 @@
-# farulivan.com
+# Farul Ivan
 
 Personal portfolio site. Static Astro, English and Indonesian, built from the
 design specs in [`docs/design/`](docs/design/).

@@ -1,5 +1,5 @@
 {
-  "name": "astro-origin",
+  "name": "farulivan.com",
   "version": "0.0.1",
   "type": "module",
   "description": "An Astro starter that stays correct as you extend it: bilingual landing page and blog, typed content, and architecture rules enforced in CI.",
@@ -15,13 +15,13 @@
     "satteri",
     "static-site"
   ],
-  "homepage": "https://astro-origin.farulivan.com",
+  "homepage": "https://farulivan.com",
   "bugs": {
-    "url": "https://github.com/farulivan/astro-origin/issues"
+    "url": "https://github.com/farulivan/farulivan.com/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/farulivan/astro-origin.git"
+    "url": "git+https://github.com/farulivan/farulivan.com.git"
   },
   "license": "MIT",
   "author": "farulivan (https://github.com/farulivan)",

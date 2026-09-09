@@ -1,38 +1,24 @@
 /**
- * App-level configuration — the first place to edit when reusing this
- * template for a real product, and the only one `pnpm setup` rewrites
- * automatically. Content rules live in
- * `src/content/schemas.ts` and copy lives in `src/i18n/ui.ts`; neither
- * belongs here.
+ * App-level configuration.
+ *
+ * Identity and links only. Content rules live in `src/content/schemas.ts` and
+ * copy lives in `src/i18n/ui.ts`; neither belongs here.
  */
 import type { TranslationKey } from "@/i18n/ui"
 
 export const siteConfig = {
-  /** Brand name. Appears in <title>, the wordmark and structured data. */
-  name: "Origin",
+  /** Appears in <title> and in structured data. */
+  name: "Farul Ivan",
   /**
    * Canonical origin, no trailing slash. Also set as `site` in
    * astro.config.ts, which is what makes canonical URLs, the sitemap, RSS
-   * and robots.txt absolute. `pnpm setup` rewrites both.
+   * and robots.txt absolute.
    */
-  url: "https://astro-origin.farulivan.com",
-  /** Fallback Open Graph image, served from public/. */
+  url: "https://farulivan.com",
+  /** Fallback link-preview image, served from public/. */
   ogImage: "/og-default.png",
-  /**
-   * Where every pricing CTA points. "/#" is a deliberate placeholder: a
-   * real-looking URL is the kind of thing that survives to production
-   * unnoticed, while a link that visibly goes nowhere does not.
-   */
-  signupUrl: "/#",
-  /** @-handle used for twitter:site; omit the leading @. */
-  twitterHandle: "astro_origin",
-  /**
-   * Blog posts per page. Deliberately low so the seed content exercises
-   * pagination; a real site wants something like 10.
-   */
-  postsPerPage: 2,
-  /** localStorage key for the chosen theme. */
-  themeStorageKey: "origin.theme",
+  /** Posts per page on the writing index. */
+  postsPerPage: 10,
   /**
    * Primary navigation. `key` is a translation key rather than literal text,
    * so adding a locale never means touching this file.
@@ -42,19 +28,38 @@ export const siteConfig = {
     // pages. Listing them before the routes exist would ship dead links.
     { key: "nav.writing", href: "/blog" },
   ],
-  /** Placeholders. Swap in real URLs and they become external links. */
+  /**
+   * Where to reach him. Two links rather than three: an employer follows a
+   * GitHub profile and a LinkedIn profile, and a third account nobody checks
+   * is worse than no link at all.
+   */
   social: {
-    github: "/#",
-    x: "/#",
+    github: "https://github.com/farulivan",
+    // TODO(content): the real LinkedIn URL.
+    linkedin: "https://www.linkedin.com/in/farulivan",
+  },
+  /** Written to the reader so they know what the link will do before clicking. */
+  contact: {
+    // TODO(content): confirm the address to publish.
+    email: "hi@farulivan.com",
+  },
+  /**
+   * The download states its format and size in the label. Update `size`
+   * whenever the file is replaced — a stale number is worse than none.
+   */
+  cv: {
+    // TODO(asset): the real CV. public/cv.pdf is a marked placeholder.
+    href: "/cv.pdf",
+    format: "PDF",
+    size: "1 KB",
   },
 } as const satisfies {
   name: string
   url: string
   ogImage: string
-  signupUrl: string
-  twitterHandle: string
   postsPerPage: number
-  themeStorageKey: string
   nav: readonly { key: TranslationKey; href: string }[]
   social: Readonly<Record<string, string>>
+  contact: { email: string }
+  cv: { href: string; format: string; size: string }
 }
