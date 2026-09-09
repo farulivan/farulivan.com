@@ -52,28 +52,30 @@ const t = useTranslations(lang)
      * sticky positioning inside it later.
      */
   }
-  <section
-    class="intro-follows relative min-h-[min(72vh,640px)] overflow-x-clip lg:min-h-svh"
-  >
+  <section class="intro-follows hero relative overflow-x-clip">
     {/* The lettering is decorative, so the real heading is text. */}
     <h1 class="sr-only">{t("site.title")}</h1>
 
+    <Wordmark variant="hero" data-mark-hide-trigger />
+
     {
       /*
-       * Anchored to the top and sharing the lettering's left edge at 20%.
-       * That shared alignment is what stops the two reading as unrelated
-       * objects. Measured from the top rather than the bottom so it cannot
-       * collide with the lettering on a tall, narrow screen.
+       * Sits under the lettering and shares its left edge at 20%. That shared
+       * alignment is what stops the two reading as unrelated objects.
+       *
+       * The gap is measured down from the lettering's own bottom edge rather
+       * than up from the floor of the hero, so the two keep their spacing
+       * whatever the screen is doing. Anchoring it to the bottom instead lets
+       * it drift into the lettering on a short screen and away from it on a
+       * tall one.
        */
     }
     <p
-      class="text-display-s font-display text-ink hero-enter absolute top-[22%] left-[20%] w-[62%] text-balance"
+      class="text-display-s font-display text-ink hero-enter hero__standfirst absolute left-[20%]"
       style="--enter-step: 1"
     >
       {t("site.descriptor")}
     </p>
-
-    <Wordmark variant="hero" data-mark-hide-trigger />
 
     {/* Deliberately outside the 20% alignment, so it reads as chrome. */}
     <p
@@ -86,6 +88,56 @@ const t = useTranslations(lang)
 </BaseLayout>
 
 <style is:global>
+  /*
+   * Directly under the lettering, measured from the lettering rather than
+   * from the floor of the hero.
+   *
+   * The lettering sits 26% up from the bottom, so its lower edge is at 74%
+   * from the top — and one gap past that is where this goes. Anchoring it to
+   * the bottom instead would let it drift into the lettering on a short
+   * screen and away from it on a tall one.
+   */
+  /*
+   * Short enough on a phone that the next section is reachable on the first
+   * scroll, full height where there is room for it.
+   *
+   * The floor is not arbitrary. Everything below the lettering — the gap, two
+   * lines of standfirst, another gap and the scroll cue — needs about 142px,
+   * and only 26% of the hero is below the lettering. Under about 546px tall
+   * that stops fitting and the standfirst lands on the cue; measured, a
+   * 360×640 screen overlapped by two pixels.
+   */
+  .hero {
+    min-height: max(min(72vh, 640px), 560px);
+  }
+
+  @media (width >= 1024px) {
+    .hero {
+      min-height: 100svh;
+    }
+  }
+
+  .hero__standfirst {
+    /*
+     * The lettering's lower edge is at 74%, and the gap past it is a share of
+     * the hero rather than a fixed number — so it opens up on a tall screen
+     * and tightens on a short one instead of crowding the scroll cue.
+     */
+    top: 77%;
+    /* Runs to the page margin, the same edge the lettering is cut on. Held
+       back to a comfortable measure once there is room for one. */
+    width: calc(80% - var(--spacing-page-margin));
+    max-width: 34ch;
+  }
+
+  /* Balancing the lines helps a two-line standfirst on a wide screen and
+     actively costs a line on a narrow one, where every line is already full. */
+  @media (width >= 768px) {
+    .hero__standfirst {
+      text-wrap: balance;
+    }
+  }
+
   /*
    * The standfirst and the scroll cue follow the lettering in, one after the
    * other, so the hero assembles rather than appearing all at once. Same
