@@ -1,0 +1,181 @@
+---
+/**
+ * The `farul.ivan` lettering, in the three places it appears.
+ *
+ * It is an SVG rather than live text for three separate reasons, each enough
+ * on its own: the hero is cropped by the viewport edge and live text reflows,
+ * so the cut would land on a different letter at every width; the intro
+ * animation needs individual letters to uncover; and it must not wait on a
+ * webfont, because it is the first thing on screen.
+ *
+ * The lettering is decorative everywhere it appears. The real page heading is
+ * text elsewhere in the document, always present, and never waits on this.
+ *
+ * The same 22KB of path data is inlined once per variant rather than shared
+ * through a symbol. Measured before deciding: one copy is 3.0KB over the wire
+ * and three are 3.4KB, because compression handles the repetition almost
+ * perfectly. A symbol would save 400 bytes and cost a layer of indirection.
+ */
+import mark from "@/assets/wordmark/mark.svg?raw"
+
+interface Props {
+  /**
+   * `nav` and `footer` are static and show the complete word. `hero` is the
+   * cropped one on the homepage, and the only one that animates.
+   */
+  variant: "nav" | "hero" | "footer"
+  class?: string
+}
+
+const { variant, class: className } = Astro.props
+
+/*
+ * Each instance gets its own mask id. Three copies of the same id would be
+ * invalid, and every reference would resolve to whichever appeared first.
+ * Keyed on the variant rather than randomised so the markup is identical
+ * between builds.
+ */
+const svg = mark.replaceAll("wordmark-wipe", `wordmark-wipe-${variant}`)
+---
+
+<span class:list={["mark", `mark--${variant}`, className]} set:html={svg} />
+
+<style is:global>
+  /*
+   * Global, not scoped. Astro scopes styles by marking the elements in a
+   * component's own template, and everything below is injected as raw markup,
+   * so it never receives that marking and a scoped rule would match nothing.
+   * Every selector here is namespaced under `.mark` instead.
+   */
+  .mark {
+    display: block;
+  }
+
+  .mark svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .mark path {
+    fill: var(--color-ink);
+  }
+
+  /* The static variants show the finished word and have no use for the
+     under-layer, so it is removed rather than merely hidden behind. */
+  .mark--nav .mark__ghost,
+  .mark--footer .mark__ghost {
+    display: none;
+  }
+
+  /* Sized by its height so the lettering keeps its proportions, and always
+     complete: the hero below it is cut off mid-letter, and that only reads as
+     deliberate because this one has already told the reader the word. */
+  .mark--nav {
+    height: 22px;
+  }
+
+  .mark--nav svg {
+    width: auto;
+  }
+
+  .mark--footer {
+    width: 100%;
+  }
+
+  /*
+   * The crop.
+   *
+   * One width at every breakpoint, and a percentage rather than a pixel
+   * overflow, so the same fraction of the same letter is always missing —
+   * which is what makes it read as composed rather than truncated. The cut
+   * lands on the right-hand stem of the final letter and the left edge sits at
+   * exactly 20%, which is where the standfirst aligns to.
+   *
+   * Both values are percentages of the same box, and that matters. Setting the
+   * width in `vw` while offsetting in `%` mixes two different widths, because
+   * viewport units count the scrollbar and a percentage does not — measured,
+   * that pushed the left edge to 19.2% instead of 20%. Percentages throughout
+   * make the arithmetic exact: right edge at 103.8%, minus 83.8% of width,
+   * puts the left edge at 20%, and the cut at 95.47% of the lettering.
+   *
+   * This does mean the element it sits in has to run the full width of the
+   * page. Putting the hero inside a centred container would quietly move both
+   * edges.
+   *
+   * If the lettering ever changes, re-derive rather than nudging these:
+   * width = 0.80 / cutFraction, and right = width − 0.80.
+   */
+  .mark--hero {
+    position: absolute;
+    width: 83.8%;
+    right: -3.8%;
+    bottom: 26%;
+  }
+
+  /*
+   * The intro.
+   *
+   * What animates is the mask, never the letter. Stroking a letter's outline
+   * and animating the dash offset traces its perimeter — up one side and back
+   * down the other — and draws the enclosed shapes in a, u and o as separate
+   * loops. Rendered, that gives hollow colouring-book letters, not writing.
+   * Uncovering the real filled letter avoids the problem entirely, and the
+   * finished state is identical to static lettering.
+   *
+   * The under-layer is structural, not decoration: it occupies the final width
+   * from the first frame, so nothing on the page moves as the intro plays.
+   */
+  .mark--hero .mark__ghost path {
+    fill: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  }
+
+  .mark--hero mask rect {
+    transform-box: fill-box;
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: mark-wipe 420ms var(--ease-draw) forwards;
+    /* Left to right, one letter every 55ms, after the page has painted.
+       Ten letters at 420ms each lands the last one just under a second. */
+    animation-delay: calc(var(--i) * 55ms + 120ms);
+  }
+
+  @keyframes mark-wipe {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /*
+   * Two ways to arrive at the finished state without the animation: the reader
+   * asked for less motion, or they have already seen it this visit. Both
+   * render the final frame outright — not a faster animation — by dropping the
+   * mask so the lettering is simply there.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .mark--hero .mark__ghost {
+      display: none;
+    }
+    .mark--hero .mark__draw {
+      mask: none;
+    }
+    .mark--hero mask rect {
+      animation: none;
+      transform: none;
+    }
+  }
+
+  [data-wordmark-seen] .mark--hero .mark__ghost {
+    display: none;
+  }
+
+  [data-wordmark-seen] .mark--hero .mark__draw {
+    mask: none;
+  }
+
+  [data-wordmark-seen] .mark--hero mask rect {
+    animation: none;
+    transform: none;
+  }
+</style>

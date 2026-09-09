@@ -48,6 +48,31 @@ const t = useTranslations(lang)
     <meta name="theme-color" content="#ffffff" />
     <meta name="generator" content={Astro.generator} />
 
+    <!--
+      The lettering in the hero writes itself in once per visit. This records
+      that it has happened, so coming back to the homepage later in the same
+      visit shows the finished word instead of replaying the introduction. A
+      greeting repeated on every navigation stops being a greeting.
+
+      Inline and blocking on purpose. Deferring it — an external file, `defer`,
+      or an Astro script — would let the page paint first, and the animation
+      would start over for a frame before this could stop it.
+
+      Storage throws outright in some privacy modes, so a failure here has to
+      mean "play the introduction", never "break the page".
+    -->
+    <script is:inline>
+      try {
+        if (sessionStorage.getItem("wordmark") === "seen") {
+          document.documentElement.dataset.wordmarkSeen = ""
+        } else {
+          sessionStorage.setItem("wordmark", "seen")
+        }
+      } catch {
+        /* No storage: the introduction simply plays every time. */
+      }
+    </script>
+
     {
       /*
       One family sets the whole site, and the wordmark in the hero is the first

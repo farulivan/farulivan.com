@@ -35,7 +35,6 @@ export const siteConfig = {
    */
   social: {
     github: "https://github.com/farulivan",
-    // TODO(content): the real LinkedIn URL.
     linkedin: "https://www.linkedin.com/in/farulivan",
   },
   contact: {

@@ -4,6 +4,7 @@ import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 
 import Container from "./ui/Container.astro"
+import Wordmark from "./Wordmark.astro"
 
 interface Props {
   lang: Locale
@@ -68,5 +69,16 @@ const linkedinHref = siteConfig.social.linkedin
       </a>
       <span>{t("footer.builtWith")}</span>
     </div>
+  </Container>
+
+  {
+    /*
+     * The site opens by writing the name and closes with the same name set
+     * large and still. One draw per visit is a signature; twice is a tic — so
+     * this one never animates.
+     */
+  }
+  <Container class="mt-9">
+    <Wordmark variant="footer" />
   </Container>
 </footer>
