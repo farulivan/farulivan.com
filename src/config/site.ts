@@ -38,10 +38,8 @@ export const siteConfig = {
     // TODO(content): the real LinkedIn URL.
     linkedin: "https://www.linkedin.com/in/farulivan",
   },
-  /** Written to the reader so they know what the link will do before clicking. */
   contact: {
-    // TODO(content): confirm the address to publish.
-    email: "hi@farulivan.com",
+    email: "farulivan@gmail.com",
   },
   /**
    * The download states its format and size in the label. Update `size`

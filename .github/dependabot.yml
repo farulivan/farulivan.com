@@ -1,9 +1,12 @@
+# Monthly, not weekly. The site is still being built, and a dependency bump
+# landing in the middle of that is a distraction rather than a safeguard.
+# Worth moving back to weekly once the build settles.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     # One pull request a week rather than fifteen.
     groups:
       all-dependencies:
@@ -18,4 +21,4 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly

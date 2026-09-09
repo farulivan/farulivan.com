@@ -68,8 +68,19 @@ jobs:
       - name: Build
         run: pnpm build:fast
 
+  # Not on pull requests while the site is still being built.
+  #
+  # It runs three times over every page in both languages, which takes about
+  # seven and a half minutes and runs after `verify` finishes — so it was
+  # turning a one-minute check into a nine-minute one, to score pages that are
+  # still placeholders. It runs on main, and on demand from the Actions tab.
+  #
+  # Put `pull_request` back once the real pages and content land: the design
+  # asks for 95 on performance and 100 on accessibility, and that is a promise
+  # worth blocking a merge over — just not yet.
   lighthouse:
     needs: verify
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
