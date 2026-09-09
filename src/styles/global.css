@@ -33,15 +33,24 @@
    not listed here simply produces no CSS instead of a plausible wrong number.
    ========================================================================== */
 
-@theme {
+/*
+ * `static` matters here. By default Tailwind only emits a theme variable if a
+ * utility class uses it, which would be fine if utilities were the only
+ * consumer — but the bespoke CSS in this project (the wordmark mask, the image
+ * dissolve, the stack band) reaches for these by name inside scoped <style>
+ * blocks, and Tailwind cannot see those references. Without `static` those
+ * tokens silently resolve to nothing.
+ */
+@theme static {
   /* --- Type families -----------------------------------------------------
      Lexend is loaded by Astro's font pipeline, which also generates the
      metric-matched fallback that keeps the page from shifting as the webfont
      arrives. Code blocks are the only monospace on the site, so they use what
      the operating system already has rather than a second download. */
   --font-sans: var(--font-lexend), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
-    "Liberation Mono", monospace;
+  --font-mono:
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
 
   /* --- Neutrals ----------------------------------------------------------
      Ink is #1D1D1D rather than pure black. Both pass AAA, so contrast did not
@@ -87,12 +96,21 @@
   --color-accent: var(--color-lime-500); /* fill only, never text on light */
   --color-accent-field: var(--color-lime-300); /* full-section field */
   --color-accent-text: var(--color-lime-800); /* the only lime text on light */
-  --color-accent-on-dark: var(--color-lime-400); /* lime text, dark field only */
+  --color-accent-on-dark: var(
+    --color-lime-400
+  ); /* lime text, dark field only */
 
   /* --- Type ramp ---------------------------------------------------------
+     Tailwind's own scale is switched off first, so `text-sm` and `text-2xl`
+     produce nothing and the nine steps below are the only sizes on the site.
+     A ramp where every step has a stated job stops being one the moment an
+     unnamed tenth size is one keystroke away.
+
      Nine steps, each with a job. Display sizes are fluid, text sizes fixed.
      Tracking tightens as size grows and loosens as it shrinks; uppercase
      always gets positive tracking, display never does. */
+  --text-*: initial;
+
   --text-display-l: clamp(64px, 10.4vw, 150px);
   --text-display-l--line-height: 0.88;
   --text-display-l--letter-spacing: -0.045em;
@@ -134,6 +152,8 @@
   /* --- Weight by role, never by whim -------------------------------------
      The wordmark has to stay at 300 or below: Lexend is monoline there, and
      above 600 stroke modulation appears and the letters stop being drawable. */
+  --font-weight-*: initial;
+
   --font-weight-mark: 300;
   --font-weight-display: 300;
   --font-weight-body: 400;
@@ -171,6 +191,8 @@
      round. If it is a floating panel, 16px. If it is structure or content, it
      is square. There is no fourth case, and there are no shadows or gradients
      anywhere — depth comes from the field colour changing. */
+  --radius-*: initial;
+
   --radius-control: 999px;
   --radius-panel: 16px;
 

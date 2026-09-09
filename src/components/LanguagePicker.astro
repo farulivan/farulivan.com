@@ -35,10 +35,10 @@ const t = useTranslations(lang)
           aria-current={isActive ? "true" : undefined}
           title={t(`lang.${locale}`)}
           class={cn(
-            "rounded px-2 py-1 text-xs font-medium uppercase transition-colors",
+            "text-label font-label rounded px-2 py-1 uppercase transition-colors",
             isActive
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:bg-accent/60 hover:text-accent-foreground"
+              ? "bg-surface text-ink"
+              : "text-ink-muted hover:bg-surface/60 hover:text-ink"
           )}
         >
           {locale}

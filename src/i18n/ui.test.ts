@@ -43,9 +43,30 @@ describe("translation dictionaries", () => {
   })
 
   it("actually translates the non-default locales", () => {
-    // Proper nouns and loanwords legitimately match across languages, so this
-    // asserts on the overall share rather than on any single key.
-    const translatable = keys.filter((key) => ui.id[key] !== en[key])
-    expect(translatable.length / keys.length).toBeGreaterThan(0.8)
+    /*
+     * Some strings are identical in both languages on purpose. Naming them
+     * means every other key must genuinely differ — a copied dictionary, or
+     * one key left in English, fails here rather than passing on a percentage.
+     *
+     * Each entry needs a reason:
+     */
+    const sameInBothLanguages = new Set<keyof typeof en>([
+      "site.title", // a person's name
+      "site.descriptor", // job titles in Indonesian tech stay in English
+      "footer.rights", // a symbol, a year and a name
+      "cv.label", // "CV" plus a file format and a size
+      "nav.openMenu", // "Menu" is the Indonesian word too
+      "footer.menu", // same
+      "lang.en", // languages are named in their own language, not the reader's
+      "lang.id", // same
+    ])
+
+    for (const key of keys) {
+      if (sameInBothLanguages.has(key)) {
+        expect(ui.id[key], `${key} is listed as untranslated`).toBe(en[key])
+      } else {
+        expect(ui.id[key], `${key} was left in English`).not.toBe(en[key])
+      }
+    }
   })
 })

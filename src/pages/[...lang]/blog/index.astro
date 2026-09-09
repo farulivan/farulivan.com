@@ -33,12 +33,12 @@ const page = paginate(all, 1, siteConfig.postsPerPage)
   title={t("blog.title")}
   description={t("blog.subtitle")}
 >
-  <Section label={t("waypoint.explore")} origin>
+  <Section>
     <header class="mb-10 max-w-2xl">
-      <h1 class="text-4xl font-semibold tracking-[-0.03em]">
+      <h1 class="text-h-l font-emph">
         {t("blog.title")}
       </h1>
-      <p class="text-muted-foreground mt-3 text-pretty">{t("blog.subtitle")}</p>
+      <p class="text-ink-muted mt-3 text-pretty">{t("blog.subtitle")}</p>
     </header>
 
     <PostList

@@ -66,7 +66,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
         href={localizePath("/blog", lang)}
         variant="ghost"
         size="sm"
-        class="text-muted-foreground mb-8 -ml-3"
+        class="text-ink-muted mb-8 -ml-3"
       >
         <Icon name="chevronLeft" class="size-4" />
         {t("blog.backToBlog")}
@@ -76,7 +76,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
         isFallback && (
           <p
             role="status"
-            class="border-border bg-accent/50 text-muted-foreground mb-8 rounded-lg border px-4 py-3 text-sm"
+            class="border-rule bg-surface/50 text-ink-muted rounded-panel text-ui mb-8 border px-4 py-3"
           >
             {t("blog.untranslated")}
           </p>
@@ -84,12 +84,12 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
       }
 
       <header class="mb-10">
-        <h1 class="text-4xl font-semibold tracking-[-0.03em] text-balance">
+        <h1 class="text-h-l font-emph text-balance">
           {title}
         </h1>
 
         <div
-          class="text-muted-foreground mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs tracking-[0.08em] uppercase"
+          class="text-ink-muted text-label mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono tracking-[0.08em] uppercase"
         >
           <time datetime={toDateAttribute(displayed.date)}>
             {
@@ -115,12 +115,12 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
 
         {
           tags.length > 0 && (
-            <ul class="text-muted-foreground mt-4 flex flex-wrap gap-x-3 font-mono text-xs tracking-[0.08em] uppercase">
+            <ul class="text-ink-muted text-label mt-4 flex flex-wrap gap-x-3 font-mono tracking-[0.08em] uppercase">
               {tags.map((tag) => (
                 <li>
                   <a
                     href={localizePath(`/blog/tag/${slugify(tag)}`, lang)}
-                    class="hover:text-foreground transition-colors"
+                    class="hover:text-ink transition-colors"
                   >
                     {tag}
                   </a>
@@ -138,7 +138,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
             alt={hero.alt}
             widths={[640, 960, 1280]}
             sizes="(min-width: 768px) 42rem, 100vw"
-            class="border-border mb-10 rounded-xl border"
+            class="border-rule rounded-panel mb-10 border"
             loading="eager"
           />
         )

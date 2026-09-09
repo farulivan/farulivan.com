@@ -3,7 +3,8 @@
     "collect": {
       "staticDistDir": "./dist",
       "numberOfRuns": 3,
-      "maxAutodiscoverUrls": 0
+      "maxAutodiscoverUrls": 0,
+      "staticDirFileDiscoveryDepth": 4
     },
     "assert": {
       "aggregationMethod": "median-run",

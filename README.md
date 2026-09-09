@@ -12,16 +12,16 @@ pnpm dev          # http://localhost:4321
 
 ## Commands
 
-| | |
-|---|---|
-| `pnpm dev` | Dev server |
-| `pnpm build` | Typecheck, then build to `dist/` |
-| `pnpm preview` | Serve the built site |
-| `pnpm test` | Unit tests |
-| `pnpm lint` | ESLint |
-| `pnpm format` | Prettier, writing in place |
+|                   |                                                            |
+| ----------------- | ---------------------------------------------------------- |
+| `pnpm dev`        | Dev server                                                 |
+| `pnpm build`      | Typecheck, then build to `dist/`                           |
+| `pnpm preview`    | Serve the built site                                       |
+| `pnpm test`       | Unit tests                                                 |
+| `pnpm lint`       | ESLint                                                     |
+| `pnpm format`     | Prettier, writing in place                                 |
 | `pnpm check:arch` | The architecture rules described in `docs/ARCHITECTURE.md` |
-| `pnpm verify` | Everything CI runs, in the same order |
+| `pnpm verify`     | Everything CI runs, in the same order                      |
 
 Run `pnpm verify` before pushing. It is the same gate as CI, so a green run
 locally means a green run there.

@@ -10,19 +10,19 @@ import { cn } from "@/lib/utils"
  * "copy link address" all keep working).
  */
 const button = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center gap-2 rounded-control font-label whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-primary-foreground hover:opacity-90",
+        primary: "bg-ink text-paper hover:opacity-90",
         outline:
-          "border border-border bg-transparent hover:bg-accent hover:text-accent-foreground",
-        ghost: "bg-transparent hover:bg-accent hover:text-accent-foreground",
+          "border border-rule bg-transparent hover:bg-surface hover:text-ink",
+        ghost: "bg-transparent hover:bg-surface hover:text-ink",
       },
       size: {
-        sm: "h-8 px-3 text-sm",
-        md: "h-10 px-4 text-sm",
-        lg: "h-12 px-6 text-base",
+        sm: "h-8 px-3 text-ui",
+        md: "h-10 px-4 text-ui",
+        lg: "h-12 px-6 text-read",
         icon: "size-9",
       },
     },

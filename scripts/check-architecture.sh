@@ -35,12 +35,15 @@ code_matches() {
 
 files_with_code() { code_matches "$@" | cut -d: -f1 | sort -u; }
 
-# 1. Zero JS by default: React may only appear inside islands.
-offenders=$(find src -name '*.tsx' -not -path 'src/components/islands/*' || true)
+# 1. No UI framework. Everything interactive on this site — the menu, the
+#    scroll reveals, the language switcher — is small enough to be plain
+#    JavaScript. A .tsx or .jsx file means one crept back in.
+offenders=$(find src \( -name '*.tsx' -o -name '*.jsx' \) || true)
 if [ -n "$offenders" ]; then
-  fail ".tsx outside src/components/islands/" $offenders
+  fail "a framework component appeared" $offenders \
+    "This site ships no framework runtime. See docs/ARCHITECTURE.md."
 else
-  pass ".tsx only inside src/components/islands/"
+  pass "no framework components"
 fi
 
 # 2. Sections and layouts take props; only pages and the query layer fetch.
@@ -94,6 +97,63 @@ if [ -n "$offenders" ]; then
     "pnpm setup rewrites the origin in config; it cannot find it here."
 else
   pass "the site origin stays in config"
+fi
+
+# 7. Lime is a surface, not a text colour. On white it measures 2.06:1 at the
+#    step we use as a fill, and still fails at 3.96:1 four steps darker. Only
+#    two tokens are legal as text: accent-text on light grounds, and
+#    accent-on-dark on the near-black one. Everything else is a contrast bug
+#    that looks fine to whoever wrote it.
+#
+#    The two legal tokens are blanked out before the search, so a line using
+#    only those has nothing left to match.
+offenders=$(code_matches 'text-(lime-[0-9]|accent)' src \
+  --include='*.astro' --include='*.ts' --include='*.css' \
+  | sed 's/text-accent-text//g; s/text-accent-on-dark//g' \
+  | grep -E 'text-(lime-[0-9]|accent)' \
+  | cut -d: -f1 | sort -u || true)
+if [ -n "$offenders" ]; then
+  fail "lime used as a text colour" $offenders \
+    "Use text-accent-text on light, or text-accent-on-dark on the dark field."
+else
+  pass "lime stays a surface, never text"
+fi
+
+# --- Outstanding placeholders -------------------------------------------------
+#
+# Anything the site is still faking: an image standing in for a photograph that
+# has not been supplied, or copy waiting to be written. These are marked at the
+# point of use so they can be counted rather than remembered.
+#
+#   TODO(asset):      a file that is still missing
+#   TODO(content):    words that are still missing
+#   data-placeholder  an element rendering a grey block instead of real media
+#
+# This reports and does not fail, so a half-finished site is still reviewable.
+# Setting LAUNCH=true turns it into an error, which is what makes it impossible
+# to put a grey box in front of the public.
+
+# Plain grep, not code_matches: these markers live *in* comments, which is
+# exactly what code_matches filters out.
+placeholder_hits=$(grep -rn 'TODO(asset):\|TODO(content):\|data-placeholder' \
+  src public 2>/dev/null | grep -v '\.test\.' || true)
+
+echo
+if [ -n "$placeholder_hits" ]; then
+  n_asset=$(printf '%s\n' "$placeholder_hits" | grep -c 'TODO(asset):' || true)
+  n_content=$(printf '%s\n' "$placeholder_hits" | grep -c 'TODO(content):' || true)
+  n_media=$(printf '%s\n' "$placeholder_hits" | grep -c 'data-placeholder' || true)
+
+  if [ "${LAUNCH:-}" = "true" ]; then
+    fail "placeholders present: ${n_asset} files, ${n_content} strings, ${n_media} images" \
+      "LAUNCH=true does not allow placeholder content."
+  else
+    echo "note  placeholders outstanding: ${n_asset} files · ${n_content} strings · ${n_media} images"
+  fi
+
+  printf '%s\n' "$placeholder_hits" | sed 's/^/      /' | cut -c1-120
+else
+  pass "no placeholders outstanding"
 fi
 
 echo

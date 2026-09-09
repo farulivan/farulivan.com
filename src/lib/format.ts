@@ -47,23 +47,6 @@ export function toDateAttribute(date: Date): string {
   return date.toISOString().slice(0, 10)
 }
 
-const currencyFormatters = new Map<string, Intl.NumberFormat>()
-
-/** Whole-dollar pricing; fractional cents never appear on a pricing table. */
-export function formatPrice(amount: number, lang: Locale): string {
-  const key = `${lang}:usd`
-  let formatter = currencyFormatters.get(key)
-  if (!formatter) {
-    formatter = new Intl.NumberFormat(LOCALE_TAGS[lang], {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    })
-    currencyFormatters.set(key, formatter)
-  }
-  return formatter.format(amount)
-}
-
 export interface PostDates {
   pubDate: Date
   /** Explicit frontmatter value; authoritative when present. */

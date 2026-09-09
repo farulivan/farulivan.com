@@ -8,15 +8,9 @@
  * network boundary does in an application that talks to a server.
  */
 import { defineCollection } from "astro:content"
-import { file, glob } from "astro/loaders"
+import { glob } from "astro/loaders"
 
-import {
-  faqSchema,
-  featureSchema,
-  postSchema,
-  pricingSchema,
-  testimonialSchema,
-} from "./content/schemas"
+import { postSchema } from "./content/schemas"
 
 /** Locale lives in frontmatter, so these folders are organization only. */
 const blog = defineCollection({
@@ -24,24 +18,4 @@ const blog = defineCollection({
   schema: postSchema,
 })
 
-const features = defineCollection({
-  loader: glob({ base: "./src/content/features", pattern: "**/*.md" }),
-  schema: featureSchema,
-})
-
-const testimonials = defineCollection({
-  loader: glob({ base: "./src/content/testimonials", pattern: "**/*.md" }),
-  schema: testimonialSchema,
-})
-
-const faq = defineCollection({
-  loader: file("./src/content/faq.json"),
-  schema: faqSchema,
-})
-
-const pricing = defineCollection({
-  loader: file("./src/content/pricing.json"),
-  schema: pricingSchema,
-})
-
-export const collections = { blog, features, testimonials, faq, pricing }
+export const collections = { blog }

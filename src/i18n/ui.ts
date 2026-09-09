@@ -4,96 +4,69 @@
  * `en` is the source of truth for which keys exist; `TranslationKey` is
  * derived from it, and every other locale is typed as a complete
  * `Record<TranslationKey, string>`. Forgetting a translation is therefore a
- * *compile* error, caught by `astro check` before a single page renders —
- * not a runtime `undefined` that ships to production as a blank button.
+ * *compile* error, caught before a single page renders — not a runtime
+ * `undefined` that ships to production as a blank button.
  *
  * This module imports nothing, so it is trivially unit-testable.
  *
  * `{placeholder}` tokens are substituted by `useTranslations` in ./utils.ts.
+ *
+ * Scope: interface copy lives here in both languages. Long-form writing — case
+ * studies and posts — lives in `src/content/` and is English-only for now, with
+ * a per-entry fallback that says so.
  */
 
 export const en = {
-  // Navigation and layout chrome
-  "nav.main": "Main navigation",
-  "nav.features": "Features",
-  "nav.pricing": "Pricing",
-  "nav.faq": "FAQ",
-  "nav.blog": "Blog",
-  "nav.openMenu": "Open menu",
-  "nav.closeMenu": "Close menu",
+  // Site identity. The wordmark is decorative in every place it appears, so
+  // this is the real page title and it is always in the document.
+  "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
+  "site.descriptor": "Frontend & Fullstack Engineer",
 
-  // Waypoints. The trajectory marks three steps and no more; a label on
-  // every section would be decoration rather than structure.
-  "waypoint.start": "Start",
-  "waypoint.move": "Move",
-  "waypoint.explore": "Explore",
+  // Navigation
+  "nav.main": "Primary",
+  "nav.home": "Home",
+  "nav.work": "Work",
+  "nav.about": "About",
+  "nav.writing": "Writing",
+  "nav.contact": "Contact",
+  "nav.openMenu": "Menu",
+  "nav.closeMenu": "Close",
+  "nav.homeLink": "Farul Ivan — home",
 
-  // Hero
-  "hero.eyebrow": "Now in public beta",
-  "hero.title": "Everything starts somewhere",
-  "hero.subtitle":
-    "{name} gives small teams the deployment pipeline, preview environments and rollback safety of a much larger one — without the platform team.",
-  "hero.ctaPrimary": "Start free",
-  "hero.ctaSecondary": "Read the blog",
-
-  // Features
-  "features.title": "Everything you need, nothing you don't",
-  "features.subtitle":
-    "A deliberately small surface area. Each piece does one job well and gets out of the way.",
-
-  // Pricing
-  "pricing.title": "Simple, honest pricing",
-  "pricing.subtitle": "Start free. Upgrade when your team outgrows it.",
-  "pricing.monthly": "Monthly",
-  "pricing.annual": "Annual",
-  "pricing.perMonth": "/mo",
-  "pricing.billedAnnually": "billed annually",
-  "pricing.free": "Free",
-  "pricing.cta": "Choose {plan}",
-  "pricing.featured": "Most popular",
-  "pricing.billingToggle": "Billing period",
-
-  // Testimonials
-  "testimonials.title": "Teams that made the switch",
-  "testimonials.subtitle": "A few words from people who ship on {name} daily.",
-
-  // FAQ
-  "faq.title": "Frequently asked questions",
-  "faq.subtitle": "Still stuck? Get in touch and a human will answer.",
-
-  // Closing call to action
-  "cta.title": "Ready to ship faster?",
-  "cta.subtitle": "Set up your first deployment in under five minutes.",
-  "cta.button": "Get started free",
+  // Home
+  "home.scrollCue": "Scroll",
 
   // Footer
-  "footer.rights": "© {year} {name}. All rights reserved.",
+  "footer.menu": "Menu",
+  "footer.social": "Social",
+  "footer.contact": "Contact",
+  "footer.language": "Language",
+  "footer.rights": "© {year} Farul Ivan",
   "footer.builtWith": "Built with Astro",
 
-  // Blog
-  "blog.title": "Blog",
-  "blog.subtitle": "Product news, engineering notes and the occasional rant.",
+  // The CV download states its format and size, so nobody has to guess what
+  // the link will do before clicking it.
+  "cv.download": "Download CV",
+  "cv.label": "CV — {format}, {size}",
+
+  // Writing
+  "blog.title": "Writing",
+  "blog.subtitle":
+    "Notes on building for the web — what worked, and what did not.",
   "blog.readingTime": "{minutes} min read",
   "blog.published": "Published {date}",
   "blog.updated": "Updated {date}",
-  "blog.backToBlog": "Back to blog",
-  "blog.taggedWith": "Tagged “{tag}”",
+  "blog.backToBlog": "Back to writing",
   "blog.allPosts": "All posts",
-  "blog.empty": "No posts yet. Check back soon.",
+  "blog.empty": "Nothing published yet.",
   "blog.untranslated":
     "This post isn't available in your language yet — showing the English version.",
 
   // Pagination
-  "pagination.label": "Blog pagination",
+  "pagination.label": "Writing pagination",
   "pagination.previous": "Previous",
   "pagination.next": "Next",
   "pagination.status": "Page {current} of {total}",
-
-  // Theme
-  "theme.toggle": "Change theme",
-  "theme.light": "Light",
-  "theme.dark": "Dark",
-  "theme.system": "System",
 
   // Language
   "lang.switch": "Change language",
@@ -118,78 +91,47 @@ export type TranslationKey = keyof typeof en
  * misspell one, and this file fails to compile.
  */
 export const id: Record<TranslationKey, string> = {
-  "nav.main": "Navigasi utama",
-  "nav.features": "Fitur",
-  "nav.pricing": "Harga",
-  "nav.faq": "Pertanyaan Umum",
-  "nav.blog": "Blog",
-  "nav.openMenu": "Buka menu",
-  "nav.closeMenu": "Tutup menu",
+  "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
+  "site.descriptor": "Frontend & Fullstack Engineer",
 
-  "waypoint.start": "Mulai",
-  "waypoint.move": "Melaju",
-  "waypoint.explore": "Jelajahi",
+  "nav.main": "Utama",
+  "nav.home": "Beranda",
+  "nav.work": "Karya",
+  "nav.about": "Tentang",
+  "nav.writing": "Tulisan",
+  "nav.contact": "Kontak",
+  "nav.openMenu": "Menu",
+  "nav.closeMenu": "Tutup",
+  "nav.homeLink": "Farul Ivan — beranda",
 
-  "hero.eyebrow": "Kini dalam beta publik",
-  "hero.title": "Semua bermula dari satu titik",
-  "hero.subtitle":
-    "{name} memberi tim kecil alur deployment, lingkungan pratinjau, dan keamanan rollback selayaknya tim besar — tanpa perlu tim platform.",
-  "hero.ctaPrimary": "Mulai gratis",
-  "hero.ctaSecondary": "Baca blog",
+  "home.scrollCue": "Gulir",
 
-  "features.title": "Semua yang Anda butuhkan, tanpa yang tidak",
-  "features.subtitle":
-    "Cakupan yang sengaja dibuat ringkas. Setiap bagian melakukan satu tugas dengan baik, lalu menyingkir.",
-
-  "pricing.title": "Harga sederhana dan jujur",
-  "pricing.subtitle":
-    "Mulai gratis. Tingkatkan saat tim Anda membutuhkan lebih.",
-  "pricing.monthly": "Bulanan",
-  "pricing.annual": "Tahunan",
-  "pricing.perMonth": "/bln",
-  "pricing.billedAnnually": "ditagih tahunan",
-  "pricing.free": "Gratis",
-  "pricing.cta": "Pilih {plan}",
-  "pricing.featured": "Paling populer",
-  "pricing.billingToggle": "Periode penagihan",
-
-  "testimonials.title": "Tim yang telah beralih",
-  "testimonials.subtitle":
-    "Sedikit cerita dari mereka yang merilis lewat {name} setiap hari.",
-
-  "faq.title": "Pertanyaan yang sering diajukan",
-  "faq.subtitle": "Masih bingung? Hubungi kami dan tim kami akan menjawab.",
-
-  "cta.title": "Siap merilis lebih cepat?",
-  "cta.subtitle":
-    "Siapkan deployment pertama Anda dalam kurang dari lima menit.",
-  "cta.button": "Mulai gratis sekarang",
-
-  "footer.rights": "© {year} {name}. Seluruh hak cipta dilindungi.",
+  "footer.menu": "Menu",
+  "footer.social": "Sosial",
+  "footer.contact": "Kontak",
+  "footer.language": "Bahasa",
+  "footer.rights": "© {year} Farul Ivan",
   "footer.builtWith": "Dibuat dengan Astro",
 
-  "blog.title": "Blog",
+  "cv.download": "Unduh CV",
+  "cv.label": "CV — {format}, {size}",
+
+  "blog.title": "Tulisan",
   "blog.subtitle":
-    "Kabar produk, catatan teknis, dan sesekali keluh kesah rekayasa.",
+    "Catatan membangun untuk web — yang berhasil, dan yang tidak.",
   "blog.readingTime": "{minutes} menit baca",
   "blog.published": "Terbit {date}",
   "blog.updated": "Diperbarui {date}",
-  "blog.backToBlog": "Kembali ke blog",
-  "blog.taggedWith": "Berlabel “{tag}”",
+  "blog.backToBlog": "Kembali ke tulisan",
   "blog.allPosts": "Semua tulisan",
-  "blog.empty": "Belum ada tulisan. Nantikan segera.",
+  "blog.empty": "Belum ada tulisan.",
   "blog.untranslated":
-    "Artikel ini belum tersedia dalam bahasa Anda — menampilkan versi Inggris.",
+    "Tulisan ini belum tersedia dalam bahasa Anda — menampilkan versi Inggris.",
 
-  "pagination.label": "Navigasi halaman blog",
+  "pagination.label": "Navigasi halaman tulisan",
   "pagination.previous": "Sebelumnya",
   "pagination.next": "Berikutnya",
   "pagination.status": "Halaman {current} dari {total}",
-
-  "theme.toggle": "Ubah tema",
-  "theme.light": "Terang",
-  "theme.dark": "Gelap",
-  "theme.system": "Sistem",
 
   "lang.switch": "Ubah bahasa",
   "lang.en": "English",

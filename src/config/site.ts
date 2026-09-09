@@ -38,10 +38,9 @@ export const siteConfig = {
    * so adding a locale never means touching this file.
    */
   nav: [
-    { key: "nav.features", href: "/#features" },
-    { key: "nav.pricing", href: "/#pricing" },
-    { key: "nav.faq", href: "/#faq" },
-    { key: "nav.blog", href: "/blog" },
+    // Work, About and Contact join this list in the change that adds their
+    // pages. Listing them before the routes exist would ship dead links.
+    { key: "nav.writing", href: "/blog" },
   ],
   /** Placeholders. Swap in real URLs and they become external links. */
   social: {

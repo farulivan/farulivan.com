@@ -4,7 +4,6 @@ import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 
 import LanguagePicker from "./LanguagePicker.astro"
-import ThemeToggle from "./ThemeToggle.astro"
 import Container from "./ui/Container.astro"
 import Icon from "./ui/Icon.astro"
 import Mark from "./ui/Mark.astro"
@@ -31,14 +30,11 @@ const items = siteConfig.nav.map((item) => ({
 ---
 
 <header
-  class="border-border bg-background/85 sticky top-0 z-40 border-b backdrop-blur"
+  class="border-rule bg-paper/85 sticky top-0 z-40 border-b backdrop-blur"
 >
   <Container class="flex h-16 items-center gap-4">
-    <a
-      href={localizePath("/", lang)}
-      class="flex items-center gap-2 font-semibold tracking-tight"
-    >
-      <Mark class="text-primary size-5" />
+    <a href={localizePath("/", lang)} class="font-emph flex items-center gap-2">
+      <Mark class="text-ink size-5" />
       {siteConfig.name}
     </a>
 
@@ -49,7 +45,7 @@ const items = siteConfig.nav.map((item) => ({
             <li>
               <a
                 href={item.href}
-                class="text-muted-foreground hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 text-sm transition-colors"
+                class="text-ink-muted hover:bg-surface hover:text-ink rounded-control text-ui px-3 py-2 transition-colors"
               >
                 {item.label}
               </a>
@@ -61,11 +57,10 @@ const items = siteConfig.nav.map((item) => ({
 
     <div class="ml-auto flex items-center gap-1 md:ml-0">
       <LanguagePicker lang={lang} path={switchPath} class="hidden sm:flex" />
-      <ThemeToggle lang={lang} />
       <button
         type="button"
         id="nav-toggle"
-        class="text-muted-foreground hover:bg-accent hover:text-accent-foreground inline-flex size-9 items-center justify-center rounded-md transition-colors md:hidden"
+        class="text-ink-muted hover:bg-surface hover:text-ink rounded-control inline-flex size-9 items-center justify-center transition-colors md:hidden"
         aria-label={t("nav.openMenu")}
         aria-expanded="false"
         aria-controls="mobile-nav"
@@ -78,7 +73,7 @@ const items = siteConfig.nav.map((item) => ({
     </div>
   </Container>
 
-  <div id="mobile-nav" class="border-border border-t md:hidden" hidden>
+  <div id="mobile-nav" class="border-rule border-t md:hidden" hidden>
     <Container class="py-3">
       <nav aria-label={t("nav.main")}>
         <ul class="grid gap-1">
@@ -87,7 +82,7 @@ const items = siteConfig.nav.map((item) => ({
               <li>
                 <a
                   href={item.href}
-                  class="text-muted-foreground hover:bg-accent hover:text-accent-foreground block rounded-md px-3 py-2 text-sm transition-colors"
+                  class="text-ink-muted hover:bg-surface hover:text-ink rounded-control text-ui block px-3 py-2 transition-colors"
                 >
                   {item.label}
                 </a>

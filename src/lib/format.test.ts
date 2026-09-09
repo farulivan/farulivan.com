@@ -3,7 +3,6 @@ import { describe, expect, it } from "vitest"
 import {
   formatDate,
   formatDateShort,
-  formatPrice,
   resolvePostDate,
   toDateAttribute,
 } from "./format"
@@ -71,15 +70,5 @@ describe("date formatting", () => {
 
   it("emits a machine-readable datetime attribute", () => {
     expect(toDateAttribute(date)).toBe("2026-03-05")
-  })
-})
-
-describe("formatPrice", () => {
-  it("renders whole dollars without cents", () => {
-    expect(formatPrice(24, "en")).toBe("$24")
-  })
-
-  it("renders zero rather than an empty string", () => {
-    expect(formatPrice(0, "en")).toBe("$0")
   })
 })

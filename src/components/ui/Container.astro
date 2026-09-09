@@ -2,15 +2,20 @@
 import { cn } from "@/lib/utils"
 
 /**
- * Centered page gutter.
+ * The page gutter.
  *
- * The prop is `tag`, not `as`, and this is not a style preference. Astro
- * 7.2.10 has two related problems with `as` here: a non-generic Props
- * interface containing an `as` key stops Astro binding Props at all (it is a
- * TypeScript keyword), and the documented generic `Polymorphic<{ as: Tag }>`
- * form breaks Props binding in the components that consume it. Both failures
- * surface far away, as implicit-any errors in unrelated files, so they cost
- * far more to diagnose than the passthrough typing would have bought.
+ * One margin value, used by the navigation, the footer and every section, so
+ * everything lines up against the same edge. It is deliberately small: it is
+ * what lets the wordmark and large media run nearly edge to edge, which is
+ * most of what makes the pages read as posters rather than documents.
+ *
+ * The prop is `tag`, not `as`, and this is not a style preference. Astro 7 has
+ * two related problems with `as` here: a non-generic Props interface
+ * containing an `as` key stops Astro binding Props at all (it is a TypeScript
+ * keyword), and the documented generic `Polymorphic<{ as: Tag }>` form breaks
+ * Props binding in the components that consume it. Both failures surface far
+ * away, as implicit-any errors in unrelated files, so they cost far more to
+ * diagnose than the passthrough typing would have bought.
  *
  * If a caller ever needs an attribute this does not forward, add it here
  * rather than reaching for Polymorphic again.
@@ -26,9 +31,6 @@ interface Props {
 const { tag: Tag = "div", class: className, ...rest } = Astro.props
 ---
 
-<Tag
-  class={cn("mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8", className)}
-  {...rest}
->
+<Tag class={cn("w-full px-page-margin", className)} {...rest}>
   <slot />
 </Tag>

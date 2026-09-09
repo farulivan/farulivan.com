@@ -3,24 +3,19 @@ import Container from "@/components/ui/Container.astro"
 import { cn } from "@/lib/utils"
 
 /**
- * A page section hung off the trajectory.
+ * A page section, and the colour field it sits on.
  *
- * The left column is a 1px rail; the content column hangs to the right of it.
- * Sections stack with padding rather than margin, so consecutive rails meet
- * and read as one continuous line running from the origin dot in the hero
- * down to the footer. That line is the whole visual idea, so it is owned here
- * rather than repeated in seven section components.
+ * Sections are full-bleed: the field runs edge to edge and only the content
+ * inside it is inset by the page margin. That is what lets the homepage read
+ * as a stack of bands rather than a column of boxes.
  *
- * `label` is the mono waypoint text. Only the three that mark a real step in
- * the page carry one — start, move, explore. The rest keep the line running
- * and stay quiet, because a marker on every section is decoration, not
- * structure.
+ * Fields are used sparingly and on purpose. On the homepage the order runs
+ * paper, paper, paper, surface, paper, accent, invert, paper — so the lime
+ * band and the black band each appear exactly once, near the end, where the
+ * page is asking the reader for something.
  */
 interface Props {
-  /** Waypoint text. Omit it and the section contributes rail but no marker. */
-  label?: string | undefined
-  /** The first waypoint. Renders a larger dot that interrupts the line. */
-  origin?: boolean | undefined
+  field?: "paper" | "surface" | "accent" | "invert"
   /** Vertical rhythm. Sections deliberately do not all breathe the same. */
   space?: "sm" | "md" | "lg"
   id?: string
@@ -31,45 +26,28 @@ interface Props {
 }
 
 const {
-  label,
-  origin = false,
+  field = "paper",
   space = "md",
   tag = "section",
   class: className,
   ...rest
 } = Astro.props
 
-const spacing = {
-  sm: "py-10 sm:py-14",
-  md: "py-14 sm:py-20",
-  lg: "py-16 sm:py-24",
-}[space]
+/*
+ * On the lime field text is ink or nothing: the muted grey drops to 3.65:1
+ * there and fails. On the near-black field the muted tone is a lighter grey
+ * that still clears AAA.
+ */
+const fields = {
+  paper: "bg-paper text-ink",
+  surface: "bg-surface text-ink",
+  accent: "bg-accent-field text-ink",
+  invert: "bg-surface-invert text-ink-invert",
+}[field]
+
+const spacing = { sm: "py-8", md: "py-9", lg: "py-10" }[space]
 ---
 
-<Container {tag} class={className} {...rest}>
-  <div
-    class="grid grid-cols-[1.5rem_minmax(0,1fr)] sm:grid-cols-[2.5rem_minmax(0,1fr)]"
-  >
-    <div class="relative" aria-hidden="true">
-      <span class="bg-border absolute inset-y-0 left-0 w-px"></span>
-    </div>
-
-    <div class={spacing}>
-      {
-        label && (
-          <p class="text-muted-foreground relative mb-6 font-mono text-[0.6875rem] tracking-[0.18em] uppercase">
-            <span
-              class={cn(
-                "bg-primary absolute top-1/2 -left-6 -translate-x-1/2 -translate-y-1/2 rounded-full sm:-left-10",
-                origin ? "ring-background size-2.5 ring-4" : "size-1.5"
-              )}
-              aria-hidden="true"
-            />
-            {label}
-          </p>
-        )
-      }
-      <slot />
-    </div>
-  </div>
+<Container {tag} class={cn(fields, spacing, className)} {...rest}>
+  <slot />
 </Container>

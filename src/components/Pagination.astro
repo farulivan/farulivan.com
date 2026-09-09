@@ -14,7 +14,7 @@ const { lang, current, total } = Astro.props
 const t = useTranslations(lang)
 
 const link =
-  "inline-flex h-9 items-center gap-1.5 rounded-md border border-border px-3 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+  "inline-flex h-9 items-center gap-1.5 rounded-control border border-rule px-3 text-ui transition-colors hover:bg-surface hover:text-ink"
 
 const hasPrev = current > 1
 const hasNext = current < total
@@ -42,7 +42,7 @@ const hasNext = current < total
         <span />
       )}
 
-      <span class="text-muted-foreground text-sm tabular-nums">
+      <span class="text-ink-muted text-ui tabular-nums">
         {t("pagination.status", { current, total })}
       </span>
 

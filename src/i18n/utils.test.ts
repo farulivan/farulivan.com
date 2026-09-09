@@ -89,8 +89,8 @@ describe("isLocale", () => {
 
 describe("useTranslations", () => {
   it("returns the string for the active locale", () => {
-    expect(useTranslations("en")("nav.blog")).toBe("Blog")
-    expect(useTranslations("id")("nav.features")).toBe("Fitur")
+    expect(useTranslations("en")("nav.writing")).toBe("Writing")
+    expect(useTranslations("id")("nav.writing")).toBe("Tulisan")
   })
 
   it("substitutes placeholders", () => {

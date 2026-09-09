@@ -35,7 +35,7 @@ const t = useTranslations(lang)
 ---
 
 <!doctype html>
-<html lang={LOCALE_TAGS[lang]} data-theme-choice="system">
+<html lang={LOCALE_TAGS[lang]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -44,58 +44,19 @@ const t = useTranslations(lang)
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    {
-      /*
-      theme-color follows the OS preference rather than the three-way
-      light/dark/system choice, because matching that would mean running
-      JavaScript in <head> to rewrite a meta tag. The browser chrome
-      disagreeing with a manual override is the cheaper of the two costs.
-    */
-    }
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="#fdfbf8"
-    />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#13100d"
-    />
+    {/* The site is light only, so the browser chrome matches the page. */}
+    <meta name="theme-color" content="#ffffff" />
     <meta name="generator" content={Astro.generator} />
 
-    <!--
-      Blocking and inline, before anything paints. Deferring this — an external
-      file, `defer`, or an Astro <script> — guarantees a flash of the wrong
-      theme, because the browser would paint the default before the class
-      lands. This is the one place inline script is the correct answer.
-    -->
-    <script is:inline define:vars={{ storageKey: siteConfig.themeStorageKey }}>
-      const stored = (() => {
-        try {
-          return localStorage.getItem(storageKey)
-        } catch {
-          return null
-        }
-      })()
-      const choice = stored === "light" || stored === "dark" ? stored : "system"
-      const isDark =
-        choice === "dark" ||
-        (choice === "system" &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches)
-      document.documentElement.classList.toggle("dark", isDark)
-      document.documentElement.dataset.themeChoice = choice
-    </script>
-
     {
       /*
-      Both faces preload. The mono is not decorative here — it sets every
-      date, tag, waypoint and code block — and leaving it out of the preload shifted
-      post pages by 0.137 CLS as the fallback metrics gave way.
+      One family sets the whole site, and the wordmark in the hero is the first
+      thing painted, so this is preloaded rather than merely linked. Astro also
+      emits a metric-matched fallback, which is what stops the page shifting as
+      the real face arrives.
     */
     }
-    <Font cssVariable="--font-geist" preload />
-    <Font cssVariable="--font-geist-mono" preload />
+    <Font cssVariable="--font-lexend" preload />
 
     <Seo lang={lang} path={path} {...seo} />
 
@@ -110,7 +71,7 @@ const t = useTranslations(lang)
   <body class="min-h-svh">
     <a
       href="#main"
-      class="bg-primary text-primary-foreground sr-only rounded-md px-3 py-2 focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50"
+      class="bg-ink text-paper rounded-control sr-only px-3 py-2 focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50"
     >
       {t("a11y.skipToContent")}
     </a>
