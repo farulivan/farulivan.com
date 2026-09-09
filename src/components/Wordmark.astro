@@ -16,18 +16,25 @@
  * and three are 3.4KB, because compression handles the repetition almost
  * perfectly. A symbol would save 400 bytes and cost a layer of indirection.
  */
+import type { HTMLAttributes } from "astro/types"
+
 import mark from "@/assets/wordmark/mark.svg?raw"
 
-interface Props {
+/*
+ * Extends the element's own attributes rather than listing a few by hand:
+ * Astro forwards nothing a component has not declared, so a caller marking
+ * this with a `data-` hook would otherwise have it silently dropped.
+ */
+type Props = {
   /**
    * `nav` and `footer` are static and show the complete word. `hero` is the
-   * cropped one on the homepage, and the only one that animates.
+   * cropped one on the homepage.
    */
   variant: "nav" | "hero" | "footer"
   class?: string
-}
+} & Omit<HTMLAttributes<"span">, "class">
 
-const { variant, class: className } = Astro.props
+const { variant, class: className, ...rest } = Astro.props
 
 /*
  * Each instance gets its own mask id. Three copies of the same id would be
@@ -38,7 +45,11 @@ const { variant, class: className } = Astro.props
 const svg = mark.replaceAll("wordmark-wipe", `wordmark-wipe-${variant}`)
 ---
 
-<span class:list={["mark", `mark--${variant}`, className]} set:html={svg} />
+<span
+  class:list={["mark", `mark--${variant}`, className]}
+  set:html={svg}
+  {...rest}
+/>
 
 <style is:global>
   /*

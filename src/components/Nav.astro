@@ -1,11 +1,11 @@
 ---
 /**
- * The bar across the top of every page.
+ * The bar across the top of every page: the lettering, and the controls.
  *
- * Three zones: the lettering, the descriptor, and the controls. The
- * specification also had the name set as text beside the lettering; that would
- * print it twice, since the lettering already spells it, so the descriptor
- * takes the middle instead.
+ * The lettering leaves once you have scrolled past the point where the large
+ * version of it sits in the hero, and does not come back until you are at the
+ * top again. Two copies of the same word arriving at the same place is the
+ * thing worth avoiding, and past that point the name has been said.
  */
 import LanguagePicker from "@/components/LanguagePicker.astro"
 import MenuCard from "@/components/MenuCard.astro"
@@ -37,6 +37,7 @@ const t = useTranslations(lang)
     href={localizePath("/", lang)}
     aria-label={t("nav.homeLink")}
     class="nav__home"
+    data-nav-mark
   >
     {
       /*
@@ -49,18 +50,9 @@ const t = useTranslations(lang)
     <Wordmark variant="nav" />
   </a>
 
-  {
-    /*
-     * A descriptor kept in the bar at all times is free, constant positioning.
-     * On a site whose job is to be read by an employer, this line is doing
-     * real work, so it is content rather than decoration.
-     */
-  }
-  <p class="nav__descriptor">{t("site.descriptor")}</p>
-
   <div class="nav__controls">
     <LanguagePicker lang={lang} path={switchPath} data-menu-covers />
-    <MenuCard lang={lang} />
+    <MenuCard lang={lang} path={path} />
   </div>
 </header>
 
@@ -84,19 +76,30 @@ const t = useTranslations(lang)
   .nav__home {
     display: block;
     flex: none;
+    transition:
+      transform var(--duration-mid) var(--ease-reveal),
+      opacity var(--duration-mid) var(--ease-reveal);
+  }
+
+  /*
+   * Straight up and out, rather than fading in place. It is leaving the
+   * screen, so it should look like it went somewhere.
+   */
+  :global(:root[data-mark-hidden]) .nav__home {
+    opacity: 0;
+    transform: translateY(-150%);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__home {
+      transition: none;
+    }
   }
 
   .nav__home:focus-visible {
     outline: 2px solid var(--color-ink);
     outline-offset: 2px;
-  }
-
-  .nav__descriptor {
-    flex: 1;
-    margin: 0;
-    color: var(--color-ink-muted);
-    font-size: var(--text-ui);
-    letter-spacing: var(--text-ui--letter-spacing);
   }
 
   .nav__controls {
@@ -132,17 +135,53 @@ const t = useTranslations(lang)
     }
   }
 
-  /*
-   * Below this the descriptor goes and the bar is the lettering plus the
-   * controls. The lettering stays, always.
-   */
   @media (width < 768px) {
     .nav {
       padding-block: var(--spacing-4);
     }
-
-    .nav__descriptor {
-      display: none;
-    }
   }
 </style>
+
+<script>
+  /**
+   * Hides the lettering in the bar once you have scrolled past the point the
+   * page marks as its own.
+   *
+   * On the homepage that point is the large lettering in the hero: the small
+   * copy leaves exactly as the large one arrives, so the same word is never in
+   * two places at once. Elsewhere it is the top of the content, so the bar
+   * clears itself as soon as you start reading.
+   *
+   * A scroll listener rather than an observer, because the interesting moment
+   * is one edge of the marker crossing one line, and an observer only reports
+   * whole-element overlap — for something as tall as the hero lettering that
+   * fires hundreds of pixels late. Passive, and read inside a frame callback,
+   * so it never blocks scrolling.
+   */
+  const bar = document.querySelector<HTMLElement>(".nav")
+  const marker = document.querySelector<HTMLElement>("[data-mark-hide-trigger]")
+
+  if (bar && marker) {
+    const root = document.documentElement
+    let queued = false
+
+    const update = () => {
+      queued = false
+      const passed = marker.getBoundingClientRect().top <= bar.offsetHeight
+      root.toggleAttribute("data-mark-hidden", passed)
+    }
+
+    addEventListener(
+      "scroll",
+      () => {
+        if (queued) return
+        queued = true
+        requestAnimationFrame(update)
+      },
+      { passive: true }
+    )
+
+    // Restoring a scroll position on load lands past the marker already.
+    update()
+  }
+</script>

@@ -29,11 +29,12 @@ export const siteConfig = {
     { key: "nav.writing", href: "/blog" },
   ],
   /**
-   * The site menu. Four links and no more — the card is built around large
-   * type, and a fifth would either shrink it or push the card off screen.
-   * Home is the lettering in the corner, so it is not repeated here.
+   * The site menu. Five entries is what the card holds at this type size on
+   * the shortest phone it has to work on; a sixth would either shrink the
+   * type or push the last one off screen.
    */
   menu: [
+    { key: "nav.home", href: "/" },
     { key: "nav.work", href: "/work" },
     { key: "nav.about", href: "/about" },
     { key: "nav.writing", href: "/blog" },

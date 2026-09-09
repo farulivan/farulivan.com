@@ -1,95 +1,97 @@
 ---
 /**
- * Two links, no script.
+ * One control showing the language you are reading in. Pressing it switches.
  *
- * Each points at the *same* page in the other language rather than at the home
- * page, which is the usual bug in a hand-rolled language switcher. Tag pages
- * are the exception and pass their own destination, because a tag is written
- * per language and has no address in the other one.
+ * It is a link rather than a button because that is what it does: it goes to
+ * the same page in the other language. `switchLocalePath` keeps you on the
+ * page you are on rather than sending you home, which is the usual bug in a
+ * hand-rolled switcher.
+ *
+ * The label says what will happen — the visible text alone names the current
+ * language, which does not tell anyone what pressing it is for.
+ *
+ * This shape only works while there are exactly two languages. A third would
+ * need a real menu, not a toggle.
  */
 import type { HTMLAttributes } from "astro/types"
 
 import { LOCALES, LOCALE_TAGS, type Locale } from "@/content/schemas"
 import { switchLocalePath, useTranslations } from "@/i18n/utils"
 
-/*
- * Extends the element's own attributes rather than listing a few by hand.
- * Astro forwards nothing a component has not declared, so a caller marking
- * this with a `data-` hook would otherwise have it silently dropped — which
- * is exactly how the menu failed to hide it the first time.
- */
 type Props = {
   lang: Locale
   /** Locale-less path of the current page. */
   path: string
   class?: string
-} & Omit<HTMLAttributes<"nav">, "class">
+} & Omit<HTMLAttributes<"a">, "class">
 
 const { lang, path, class: className, ...rest } = Astro.props
 const t = useTranslations(lang)
+
+const other = LOCALES.find((locale) => locale !== lang) ?? lang
 ---
 
-<nav aria-label={t("lang.switch")} class:list={["langs", className]} {...rest}>
-  {
-    LOCALES.map((locale) => (
-      <a
-        href={switchLocalePath(path, locale)}
-        hreflang={LOCALE_TAGS[locale]}
-        lang={LOCALE_TAGS[locale]}
-        aria-current={locale === lang ? "true" : undefined}
-        class="langs__link"
-      >
-        {locale}
-        {/* The two-letter code alone is not a name. */}
-        <span class="sr-only"> — {t(`lang.${locale}`)}</span>
-      </a>
-    ))
-  }
-</nav>
+<a
+  href={switchLocalePath(path, other)}
+  hreflang={LOCALE_TAGS[other]}
+  aria-label={t("lang.switch", { language: t(`lang.${other}`) })}
+  class:list={["lang", className]}
+  {...rest}
+>
+  {lang}
+</a>
 
 <style>
-  .langs {
-    display: flex;
-    align-items: center;
-  }
-
   /*
+   * A filled circle rather than bare text. The bar has no background of its
+   * own and sits over whatever the page happens to be showing, so two grey
+   * letters alone would be legible on some pages and not on others. The fill
+   * gives it the same contrast everywhere.
+   *
    * Sized to the smallest a target is allowed to be, rather than to the two
-   * letters inside it — which would be about 20px across and a genuinely hard
-   * thing to hit on a phone.
+   * letters inside it.
    */
-  .langs__link {
+  .lang {
     display: grid;
     place-items: center;
-    min-width: 44px;
-    min-height: 44px;
-    color: var(--color-ink-muted);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-control);
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    cursor: pointer;
     font-size: var(--text-label);
     font-weight: var(--font-weight-label);
     letter-spacing: var(--text-label--letter-spacing);
     text-transform: uppercase;
     text-decoration: none;
-    transition: color var(--duration-fast) var(--ease-state);
+    transition: background-color var(--duration-fast) var(--ease-state);
   }
 
-  .langs__link:hover {
-    color: var(--color-ink);
+  .lang:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--color-ink) 12%,
+      var(--color-surface)
+    );
   }
 
-  /* The current language is ink; the other is muted. Weight does not change,
-     so nothing shifts as you switch. */
-  .langs__link[aria-current="true"] {
-    color: var(--color-ink);
-  }
-
-  .langs__link:focus-visible {
+  .lang:focus-visible {
     outline: 2px solid var(--color-ink);
     outline-offset: 2px;
   }
 
+  .lang:active {
+    transform: scale(0.98);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .langs__link {
+    .lang {
       transition: none;
+    }
+
+    .lang:active {
+      transform: none;
     }
   }
 </style>

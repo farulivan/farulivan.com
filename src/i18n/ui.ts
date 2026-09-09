@@ -78,7 +78,7 @@ export const en = {
   "pagination.status": "Page {current} of {total}",
 
   // Language
-  "lang.switch": "Change language",
+  "lang.switch": "Switch to {language}",
   "lang.en": "English",
   "lang.id": "Bahasa Indonesia",
 
@@ -149,7 +149,7 @@ export const id: Record<TranslationKey, string> = {
   "pagination.next": "Berikutnya",
   "pagination.status": "Halaman {current} dari {total}",
 
-  "lang.switch": "Ubah bahasa",
+  "lang.switch": "Ganti ke {language}",
   "lang.en": "English",
   "lang.id": "Bahasa Indonesia",
 

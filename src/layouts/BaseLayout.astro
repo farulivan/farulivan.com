@@ -143,6 +143,14 @@ const t = useTranslations(lang)
        */
     }
     <main id="main" class:list={[!flushTop && "pt-10"]}>
+      {
+        /*
+         * Where the bar's lettering gives up and slides away. The homepage
+         * marks its hero lettering instead, so that the small copy leaves as
+         * the large one arrives.
+         */
+      }
+      {!flushTop && <div data-mark-hide-trigger aria-hidden="true" />}
       <slot />
     </main>
 

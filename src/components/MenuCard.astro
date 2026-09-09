@@ -20,14 +20,17 @@ import { localizePath, useTranslations } from "@/i18n/utils"
 
 interface Props {
   lang: Locale
+  /** Locale-less path of the current page, so it can mark itself. */
+  path: string
 }
 
-const { lang } = Astro.props
+const { lang, path } = Astro.props
 const t = useTranslations(lang)
 
 const links = siteConfig.menu.map((item) => ({
   label: t(item.key),
   href: localizePath(item.href, lang),
+  current: item.href === path,
 }))
 ---
 
@@ -56,16 +59,32 @@ const links = siteConfig.menu.map((item) => ({
     <nav aria-label={t("nav.menuLabel")}>
       <ul class="menu__list">
         {
-          links.map((link, index) => (
-            <li style={`--i:${index}`}>
-              <a class="menu__link" href={link.href}>
-                <span>{link.label}</span>
-                <span class="menu__arrow" aria-hidden="true">
-                  →
+          links.map((link, index) =>
+            link.current ? (
+              /*
+               * The page you are already on is not a link. Rendering it as one
+               * and then disabling it leaves something that invites a click,
+               * sits in the tab order, and goes nowhere.
+               */
+              <li style={`--i:${index}`}>
+                <span
+                  class="menu__link menu__link--current"
+                  aria-current="page"
+                >
+                  {link.label}
                 </span>
-              </a>
-            </li>
-          ))
+              </li>
+            ) : (
+              <li style={`--i:${index}`}>
+                <a class="menu__link" href={link.href}>
+                  <span>{link.label}</span>
+                  <span class="menu__arrow" aria-hidden="true">
+                    →
+                  </span>
+                </a>
+              </li>
+            )
+          )
         }
       </ul>
     </nav>
@@ -160,8 +179,18 @@ const links = siteConfig.menu.map((item) => ({
     transition: background-color var(--duration-fast) var(--ease-state);
   }
 
-  .menu__link:hover {
+  a.menu__link {
+    cursor: pointer;
+  }
+
+  a.menu__link:hover {
     background-color: var(--color-paper);
+  }
+
+  /* Present, readable, and clearly not going anywhere. */
+  .menu__link--current {
+    color: var(--color-ink-muted);
+    cursor: default;
   }
 
   .menu__arrow {
