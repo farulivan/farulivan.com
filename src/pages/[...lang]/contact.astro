@@ -1,0 +1,39 @@
+---
+import type { InferGetStaticPropsType } from "astro"
+
+import Section from "@/components/ui/Section.astro"
+import { LOCALES } from "@/content/schemas"
+import { langParam, useTranslations } from "@/i18n/utils"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang: langParam(lang) },
+    props: { lang },
+  }))
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+---
+
+{
+  /*
+   * TODO(content): a title and nothing else, so the menu links somewhere real
+   * while the chrome is being reviewed. The sections and the copy arrive with
+   * the rest of the pages.
+   */
+}
+<BaseLayout
+  lang={lang}
+  path="/contact"
+  title={t("contact.title")}
+  description={t("site.description")}
+>
+  <Section>
+    <h1 class="text-display-l font-display text-ink">{t("contact.title")}</h1>
+    <p class="text-read text-ink-muted mt-5">{t("page.comingSoon")}</p>
+  </Section>
+</BaseLayout>

@@ -1,0 +1,395 @@
+---
+/**
+ * The site menu: a tilted card of large links, and the control that opens it.
+ *
+ * Both live here rather than in the navigation, because the control and the
+ * card are one thing — the control's state *is* the card's state, and keeping
+ * them together means there is no way for the two to disagree.
+ *
+ * **It is the same card on a phone.** Same fill, radius, padding, link size,
+ * weight, tracking and tilt; only the width and where it hangs from change.
+ * Most sites swap in an entirely different mobile menu and lose their
+ * identity at exactly the moment it matters most. This one does not, and that
+ * is the point of it rather than an implementation detail.
+ */
+import Icon from "@/components/ui/Icon.astro"
+import Pill from "@/components/ui/Pill.astro"
+import { siteConfig } from "@/config/site"
+import type { Locale } from "@/content/schemas"
+import { localizePath, useTranslations } from "@/i18n/utils"
+
+interface Props {
+  lang: Locale
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+
+const links = siteConfig.menu.map((item) => ({
+  label: t(item.key),
+  href: localizePath(item.href, lang),
+}))
+---
+
+<div class="menu" data-menu>
+  <Pill
+    tone="dark"
+    label={t("nav.openMenu")}
+    aria-expanded="false"
+    aria-controls="site-menu"
+    data-menu-trigger
+    data-label-closed={t("nav.openMenu")}
+    data-label-open={t("nav.closeMenu")}
+  >
+    {
+      /*
+       * Both marks are always present and one is faded out. Swapping the
+       * markup instead would resize the circle for a frame, and any movement
+       * in this control reads as a bug.
+       */
+    }
+    <Fragment slot="circle">
+      <Icon
+        name="dotsHorizontal"
+        class="menu__icon size-4"
+        data-icon="closed"
+      />
+      <Icon name="dotsVertical" class="menu__icon size-4" data-icon="open" />
+    </Fragment>
+  </Pill>
+
+  <div
+    class="menu__card"
+    id="site-menu"
+    aria-label={t("nav.menuLabel")}
+    data-menu-card
+    inert
+  >
+    <nav aria-label={t("nav.menuLabel")}>
+      <ul class="menu__list">
+        {
+          links.map((link, index) => (
+            <li style={`--i:${index}`}>
+              <a class="menu__link" href={link.href}>
+                <span>{link.label}</span>
+                <span class="menu__arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<style>
+  .menu__card {
+    position: fixed;
+    /* Clears the bar on a narrow screen: 16px of padding, a 56px control,
+       and 16px again. */
+    top: 88px;
+    right: 0;
+    width: 100%;
+    max-width: 480px;
+    padding: var(--spacing-7) var(--spacing-5);
+    border-radius: var(--radius-panel);
+    background-color: var(--color-surface);
+    /*
+     * Static, never animated. A degree and a half is the whole reason this
+     * reads as placed by hand rather than as a system dropdown — more would
+     * look like a bug, less would do nothing.
+     */
+    transform: rotate(1.4deg);
+    /*
+     * Ordered against the control beside it, not against the page. The bar is
+     * a fixed, stacked element, so everything in here is painted inside it and
+     * a large number would achieve nothing beyond what this does.
+     */
+    z-index: 1;
+  }
+
+  /*
+   * The control stays on top of the card it opens. On a wide screen the card
+   * is anchored to the very top of the window, which puts it exactly where the
+   * control is — and a menu that covers its own close button, and the language
+   * switcher next to it, is a trap. Floating the controls over the card is
+   * also what makes it read as hanging off the bar rather than replacing it.
+   */
+  .menu {
+    position: relative;
+    /* Stacks the card and its control together, so the bar can order the
+       whole menu against the switcher beside it in one place. */
+    z-index: 1;
+  }
+
+  .menu :global([data-menu-trigger]) {
+    position: relative;
+    z-index: 2;
+  }
+
+  /*
+   * The corner may hang past the right edge, which echoes the crop on the
+   * hero and makes the two read as one idea rather than two tricks. The links
+   * stay fully inside: decoration can be cropped, a target cannot.
+   */
+  @media (width >= 768px) {
+    .menu__card {
+      top: 0;
+      right: -24px;
+      width: 480px;
+      padding-right: calc(var(--spacing-5) + 24px);
+    }
+  }
+
+  .menu__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /*
+   * Size, weight, tracking, fill, radius and tilt are identical at every
+   * width. Only the card's width and anchor change. Do not scale this down on
+   * a phone.
+   */
+  .menu__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 88px;
+    padding: var(--spacing-4) var(--spacing-5);
+    border-radius: var(--radius-panel);
+    color: var(--color-ink);
+    font-size: var(--text-display-s);
+    font-weight: var(--font-weight-display);
+    letter-spacing: -0.055em;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-state);
+  }
+
+  .menu__link:hover {
+    background-color: var(--color-paper);
+  }
+
+  .menu__arrow {
+    opacity: 0;
+    transform: translateX(-8px);
+    transition:
+      opacity var(--duration-fast) var(--ease-state),
+      transform var(--duration-fast) var(--ease-state);
+  }
+
+  /*
+   * The arrow also appears on keyboard focus, not hover alone — otherwise it
+   * is information only a mouse user ever receives.
+   */
+  .menu__link:hover .menu__arrow,
+  .menu__link:focus-visible .menu__arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .menu__link:focus-visible {
+    outline: 2px solid var(--color-ink);
+    /* Inside the row, so the ring is never clipped by the card's edge. */
+    outline-offset: -2px;
+  }
+
+  .menu__link:active {
+    transform: scale(0.99);
+  }
+
+  /* --- Open and closed ---------------------------------------------------
+     Closed is the default, so the card is inert and unpainted before any
+     script has run. */
+  /*
+   * Closed is transparent and untouchable, but deliberately *not*
+   * `visibility: hidden`.
+   *
+   * Hiding it that way is the obvious thing to reach for and it breaks the
+   * keyboard. A hidden element cannot take focus, the property still computes
+   * as hidden in the frame the menu opens in, and moving focus into the card
+   * therefore does nothing at all — silently. Transitioning the property
+   * instead leaves it stuck on `visible` after closing, which is the same
+   * subtlety biting from the other end.
+   *
+   * `inert` already does the work that mattered: while it is set, nothing
+   * inside is reachable by pointer, by keyboard, or by a screen reader. The
+   * pointer rule below is belt and braces.
+   */
+  .menu__card {
+    opacity: 0;
+    pointer-events: none;
+    transform: rotate(1.4deg) translateX(8px);
+    transition:
+      opacity var(--duration-mid) var(--ease-reveal),
+      transform var(--duration-mid) var(--ease-reveal);
+  }
+
+  .menu[data-open] .menu__card {
+    opacity: 1;
+    pointer-events: auto;
+    transform: rotate(1.4deg) translateX(0);
+  }
+
+  .menu__link {
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity var(--duration-mid) var(--ease-reveal),
+      transform var(--duration-mid) var(--ease-reveal),
+      background-color var(--duration-fast) var(--ease-state);
+  }
+
+  .menu[data-open] .menu__link {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--i) * 40ms);
+  }
+
+  /*
+   * The two marks sit on top of one another so the circle never changes size.
+   * Nothing about this control moves or resizes as it toggles; only what it
+   * is pointing at changes.
+   */
+  .menu__icon {
+    grid-area: 1 / 1;
+    transition: opacity var(--duration-fast) var(--ease-state);
+  }
+
+  .menu__icon[data-icon="open"] {
+    opacity: 0;
+  }
+
+  .menu[data-open] .menu__icon[data-icon="closed"] {
+    opacity: 0;
+  }
+
+  .menu[data-open] .menu__icon[data-icon="open"] {
+    opacity: 1;
+  }
+
+  /* Opacity only, no travel and no stagger. */
+  @media (prefers-reduced-motion: reduce) {
+    .menu__card,
+    .menu__link,
+    .menu__arrow {
+      transition-property: opacity, visibility;
+    }
+
+    .menu__card {
+      transform: rotate(1.4deg);
+    }
+
+    .menu[data-open] .menu__link {
+      transition-delay: 0ms;
+    }
+
+    .menu__link {
+      transform: none;
+    }
+
+    .menu__link:active {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Opening and closing the menu.
+   *
+   * `inert` does the heavy lifting: while the card carries it, everything
+   * inside is unreachable by pointer, by keyboard and by assistive tech, so
+   * there is no separate list of things to disable. The trap below only has
+   * to keep focus inside once the card is open.
+   */
+  const MENU = "[data-menu]"
+
+  for (const menu of document.querySelectorAll<HTMLElement>(MENU)) {
+    const trigger = menu.querySelector<HTMLElement>("[data-menu-trigger]")
+    const card = menu.querySelector<HTMLElement>("[data-menu-card]")
+    if (!trigger || !card) continue
+
+    const focusable = () => [
+      ...card.querySelectorAll<HTMLElement>("a[href], button:not(:disabled)"),
+    ]
+
+    const isOpen = () => menu.hasAttribute("data-open")
+
+    const text = trigger.querySelector<HTMLElement>("[data-pill-text]")
+    const labelClosed = trigger.dataset.labelClosed ?? ""
+    const labelOpen = trigger.dataset.labelOpen ?? ""
+
+    /* Both the visible word and the accessible name, kept in step. */
+    const setLabel = (value: string) => {
+      trigger.setAttribute("aria-label", value)
+      if (!text) return
+      text.textContent = value
+      text.dataset.text = value
+    }
+
+    const open = () => {
+      menu.setAttribute("data-open", "")
+      card.removeAttribute("inert")
+      trigger.setAttribute("aria-expanded", "true")
+      setLabel(labelOpen)
+      focusable()[0]?.focus()
+    }
+
+    const close = ({ returnFocus = true } = {}) => {
+      menu.removeAttribute("data-open")
+      trigger.setAttribute("aria-expanded", "false")
+      setLabel(labelClosed)
+      /*
+       * Focus has to leave before the card is made inert. Marking an element
+       * inert while it still holds focus drops focus to the document body,
+       * which strands a keyboard user at the top of the page.
+       */
+      if (returnFocus) trigger.focus()
+      card.setAttribute("inert", "")
+    }
+
+    trigger.addEventListener("click", () => (isOpen() ? close() : open()))
+
+    document.addEventListener("keydown", (event) => {
+      if (!isOpen()) return
+
+      if (event.key === "Escape") {
+        event.preventDefault()
+        close()
+        return
+      }
+
+      if (event.key !== "Tab") return
+
+      // Keep focus inside the card by wrapping it around at either end.
+      const items = focusable()
+      if (items.length === 0) return
+      const first = items[0]!
+      const last = items[items.length - 1]!
+      const active = document.activeElement
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    })
+
+    // A click anywhere else means they are done with it.
+    document.addEventListener("pointerdown", (event) => {
+      if (!isOpen()) return
+      const target = event.target as Node
+      if (menu.contains(target)) return
+      close({ returnFocus: false })
+    })
+  }
+</script>

@@ -35,15 +35,21 @@ export const en = {
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Close",
   "nav.homeLink": "Farul Ivan — home",
+  "nav.menuLabel": "Site",
 
   // Home
   "home.scrollCue": "Scroll",
+
+  // Page titles. The bodies are placeholders until the real content lands.
+  "work.title": "Work",
+  "about.title": "About",
+  "contact.title": "Contact",
+  "page.comingSoon": "This page is still being written.",
 
   // Footer
   "footer.menu": "Menu",
   "footer.social": "Social",
   "footer.contact": "Contact",
-  "footer.language": "Language",
   "footer.rights": "© {year} Farul Ivan",
   "footer.builtWith": "Built with Astro",
 
@@ -108,13 +114,18 @@ export const id: Record<TranslationKey, string> = {
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Tutup",
   "nav.homeLink": "Farul Ivan — beranda",
+  "nav.menuLabel": "Situs",
 
   "home.scrollCue": "Gulir",
+
+  "work.title": "Karya",
+  "about.title": "Tentang",
+  "contact.title": "Kontak",
+  "page.comingSoon": "Halaman ini masih dalam penulisan.",
 
   "footer.menu": "Menu",
   "footer.social": "Sosial",
   "footer.contact": "Kontak",
-  "footer.language": "Bahasa",
   "footer.rights": "© {year} Farul Ivan",
   "footer.builtWith": "Dibuat dengan Astro",
 

@@ -9,6 +9,15 @@ import type { HTMLAttributes } from "astro/types"
 const ICONS = {
   // Interface icons.
   menu: '<path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>',
+  /*
+   * The menu control's two states. Filled dots rather than strokes, so they
+   * read at 16px, and the same count of marks turned through a right angle —
+   * the control changes what it is pointing at, not how much of it there is.
+   */
+  dotsHorizontal:
+    '<circle cx="8" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="16" cy="12" r="2" fill="currentColor" stroke="none"/>',
+  dotsVertical:
+    '<circle cx="12" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="2" fill="currentColor" stroke="none"/>',
   close: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
   chevronLeft: '<path d="m15 18-6-6 6-6"/>',

@@ -1,10 +1,15 @@
 ---
+/**
+ * The footer, on every page.
+ *
+ * The left half is empty on purpose. The columns are dense, and confining them
+ * to half the available space is what makes the whole thing read as calm
+ * rather than crowded. Resist filling it.
+ */
+import Wordmark from "@/components/Wordmark.astro"
 import { siteConfig } from "@/config/site"
 import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
-
-import Container from "./ui/Container.astro"
-import Wordmark from "./Wordmark.astro"
 
 interface Props {
   lang: Locale
@@ -14,71 +19,185 @@ const { lang } = Astro.props
 const t = useTranslations(lang)
 const year = new Date().getFullYear()
 
-/**
- * Only genuinely off-site links get the new-tab treatment. While the social
- * entries are "/#" placeholders they stay ordinary internal links, so the
- * screen-reader note never promises a new tab that will not open.
- */
-const isExternal = (href: string) => /^https?:\/\//.test(href)
-const githubHref = siteConfig.social.github
-const linkedinHref = siteConfig.social.linkedin
+const menu = siteConfig.menu.map((item) => ({
+  label: t(item.key),
+  href: localizePath(item.href, lang),
+}))
+
+const social = [
+  { label: "GitHub", href: siteConfig.social.github },
+  { label: "LinkedIn", href: siteConfig.social.linkedin },
+]
 ---
 
-<footer class="border-rule border-t py-10">
-  <Container
-    class="text-ink-muted text-ui flex flex-col items-center justify-between gap-4 sm:flex-row"
-  >
-    <p>{t("footer.rights", { year, name: siteConfig.name })}</p>
+<footer class="foot">
+  <div class="foot__columns">
+    <section class="foot__col">
+      <h2 class="foot__label">{t("footer.menu")}</h2>
+      <ul class="foot__list">
+        {
+          menu.map((item) => (
+            <li>
+              <a class="foot__link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
 
-    <div class="flex items-center gap-4">
-      <a
-        href={githubHref}
-        rel={isExternal(githubHref) ? "noopener noreferrer" : undefined}
-        target={isExternal(githubHref) ? "_blank" : undefined}
-        class="hover:text-ink transition-colors"
-      >
-        GitHub{
-          isExternal(githubHref) && (
-            <span class="sr-only"> {t("a11y.externalLink")}</span>
-          )
+    <section class="foot__col">
+      <h2 class="foot__label">{t("footer.social")}</h2>
+      <ul class="foot__list">
+        {
+          social.map((item) => (
+            <li>
+              <a
+                class="foot__link"
+                href={item.href}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {item.label}
+                <span class="sr-only"> {t("a11y.externalLink")}</span>
+              </a>
+            </li>
+          ))
         }
-      </a>
-      <a
-        href={linkedinHref}
-        rel={isExternal(linkedinHref) ? "noopener noreferrer" : undefined}
-        target={isExternal(linkedinHref) ? "_blank" : undefined}
-        class="hover:text-ink transition-colors"
-      >
-        LinkedIn{
-          isExternal(linkedinHref) && (
-            <span class="sr-only"> {t("a11y.externalLink")}</span>
-          )
-        }
-      </a>
-      <a
-        href={localizePath("/blog", lang)}
-        class="hover:text-ink transition-colors"
-      >
-        {t("nav.writing")}
-      </a>
-      <a
-        href={localizePath("/rss.xml", lang)}
-        class="hover:text-ink transition-colors"
-      >
-        RSS
-      </a>
-      <span>{t("footer.builtWith")}</span>
-    </div>
-  </Container>
+      </ul>
+    </section>
+
+    <section class="foot__col">
+      <h2 class="foot__label">{t("footer.contact")}</h2>
+      <ul class="foot__list">
+        <li>
+          <a class="foot__link" href={`mailto:${siteConfig.contact.email}`}>
+            {siteConfig.contact.email}
+          </a>
+        </li>
+        <li>
+          {
+            /*
+             * Says what it is and how big before anyone commits to the click.
+             * The size is stated in the configuration and has to be updated
+             * whenever the file is replaced.
+             */
+          }
+          <a class="foot__link" href={siteConfig.cv.href} download>
+            {
+              t("cv.label", {
+                format: siteConfig.cv.format,
+                size: siteConfig.cv.size,
+              })
+            }
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <p class="foot__rights">{t("footer.rights", { year })}</p>
 
   {
     /*
      * The site opens by writing the name and closes with the same name set
-     * large and still. One draw per visit is a signature; twice is a tic — so
-     * this one never animates.
+     * large and still. One drawing per visit is a signature; twice is a tic,
+     * so this never animates.
      */
   }
-  <Container class="mt-9">
-    <Wordmark variant="footer" />
-  </Container>
+  <Wordmark variant="footer" class="foot__mark" />
 </footer>
+
+<style>
+  .foot {
+    padding: var(--spacing-9) var(--spacing-page-margin)
+      var(--spacing-page-margin);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  /* Starting at the halfway mark is the whole idea. */
+  .foot__columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-5);
+    margin-inline-start: 50%;
+  }
+
+  .foot__label {
+    margin: 0 0 var(--spacing-5);
+    color: var(--color-ink-muted);
+    font-size: var(--text-micro);
+    font-weight: var(--font-weight-label);
+    letter-spacing: var(--text-micro--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  .foot__list {
+    display: flex;
+    flex-direction: column;
+    /* The measured row pitch, held by the line box rather than by margins. */
+    gap: calc(28px - 1.4 * var(--text-ui));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .foot__link {
+    color: var(--color-ink);
+    font-size: var(--text-ui);
+    line-height: 1.4;
+    text-decoration: none;
+    text-underline-offset: 2px;
+    transition: text-underline-offset var(--duration-fast) var(--ease-state);
+  }
+
+  /* The underline is the signal, and the offset is what moves — colour alone
+     would be a change only some readers can see. */
+  .foot__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .foot__link:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .foot__rights {
+    margin: var(--spacing-8) 0 0 50%;
+    color: var(--color-ink-muted);
+    font-size: var(--text-micro);
+    letter-spacing: var(--text-micro--letter-spacing);
+    text-transform: uppercase;
+  }
+
+  /* Margin to margin, sitting on the page's bottom edge without touching it. */
+  .foot__mark {
+    margin-top: var(--spacing-8);
+  }
+
+  @media (width < 768px) {
+    .foot {
+      padding-top: var(--spacing-8);
+    }
+
+    /* The columns stack and take the full width; the lettering does not
+       change at all. */
+    .foot__columns {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-7);
+      margin-inline-start: 0;
+    }
+
+    .foot__rights {
+      margin-inline-start: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .foot__link {
+      transition: none;
+    }
+  }
+</style>

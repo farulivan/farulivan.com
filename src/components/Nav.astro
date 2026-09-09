@@ -1,0 +1,133 @@
+---
+/**
+ * The bar across the top of every page.
+ *
+ * Three zones: the lettering, the descriptor, and the controls. The
+ * specification also had the name set as text beside the lettering; that would
+ * print it twice, since the lettering already spells it, so the descriptor
+ * takes the middle instead.
+ */
+import LanguagePicker from "@/components/LanguagePicker.astro"
+import MenuCard from "@/components/MenuCard.astro"
+import Wordmark from "@/components/Wordmark.astro"
+import type { Locale } from "@/content/schemas"
+import { localizePath, useTranslations } from "@/i18n/utils"
+
+interface Props {
+  lang: Locale
+  /** Locale-less path of the current page. */
+  path: string
+  /** Where the language picker points, when that is not the current page. */
+  switchPath?: string | undefined
+}
+
+const { lang, path, switchPath = path } = Astro.props
+const t = useTranslations(lang)
+---
+
+{
+  /*
+   * The bar spans the full width but takes no clicks of its own, so it never
+   * steals one from the hero underneath it. Each child turns the pointer back
+   * on for itself.
+   */
+}
+<header class="nav">
+  <a
+    href={localizePath("/", lang)}
+    aria-label={t("nav.homeLink")}
+    class="nav__home"
+  >
+    {
+      /*
+       * Always the complete word, and it never drops on a narrow screen. That
+       * is a requirement rather than a preference: the lettering in the hero
+       * is cut off mid-letter, and it only reads as deliberate because this
+       * has already told the reader what the word is.
+       */
+    }
+    <Wordmark variant="nav" />
+  </a>
+
+  {
+    /*
+     * A descriptor kept in the bar at all times is free, constant positioning.
+     * On a site whose job is to be read by an employer, this line is doing
+     * real work, so it is content rather than decoration.
+     */
+  }
+  <p class="nav__descriptor">{t("site.descriptor")}</p>
+
+  <div class="nav__controls">
+    <LanguagePicker lang={lang} path={switchPath} />
+    <MenuCard lang={lang} />
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-5);
+    padding: var(--spacing-6) var(--spacing-page-margin);
+    pointer-events: none;
+  }
+
+  .nav > * {
+    pointer-events: auto;
+  }
+
+  .nav__home {
+    display: block;
+    flex: none;
+  }
+
+  .nav__home:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .nav__descriptor {
+    flex: 1;
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--text-ui);
+    letter-spacing: var(--text-ui--letter-spacing);
+  }
+
+  .nav__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    margin-inline-start: auto;
+  }
+
+  /*
+   * The switcher sits above the menu, which on a wide screen hangs from the
+   * very top of the window and would otherwise cover it. Being unable to
+   * change language while the menu is open is the kind of thing nobody
+   * notices until they try it.
+   */
+  .nav__controls > :global(.langs) {
+    position: relative;
+    z-index: 2;
+  }
+
+  /*
+   * Below this the descriptor goes and the bar is the lettering plus the
+   * controls. The lettering stays, always.
+   */
+  @media (width < 768px) {
+    .nav {
+      padding-block: var(--spacing-4);
+    }
+
+    .nav__descriptor {
+      display: none;
+    }
+  }
+</style>

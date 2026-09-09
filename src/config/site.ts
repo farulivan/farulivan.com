@@ -29,6 +29,17 @@ export const siteConfig = {
     { key: "nav.writing", href: "/blog" },
   ],
   /**
+   * The site menu. Four links and no more — the card is built around large
+   * type, and a fifth would either shrink it or push the card off screen.
+   * Home is the lettering in the corner, so it is not repeated here.
+   */
+  menu: [
+    { key: "nav.work", href: "/work" },
+    { key: "nav.about", href: "/about" },
+    { key: "nav.writing", href: "/blog" },
+    { key: "nav.contact", href: "/contact" },
+  ],
+  /**
    * Where to reach him. Two links rather than three: an employer follows a
    * GitHub profile and a LinkedIn profile, and a third account nobody checks
    * is worse than no link at all.
@@ -56,6 +67,7 @@ export const siteConfig = {
   ogImage: string
   postsPerPage: number
   nav: readonly { key: TranslationKey; href: string }[]
+  menu: readonly { key: TranslationKey; href: string }[]
   social: Readonly<Record<string, string>>
   contact: { email: string }
   cv: { href: string; format: string; size: string }
