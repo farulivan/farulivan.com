@@ -1,0 +1,338 @@
+# Components — farulivan.com
+
+> Anatomy, states, responsive behaviour and accessibility for every component.
+> Tokens are from [foundations.md](foundations.md); animation numbers from
+> [motion.md](motion.md).
+>
+> **Every interactive component must specify all five states** — default, hover,
+> focus-visible, active, disabled. A component spec without them is incomplete.
+
+---
+
+## C1 · Nav
+
+Fixed, always visible on desktop. Four zones on the 12-column grid.
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│ [mark-nav]   farul.ivan    Frontend & Fullstack     [pills]    │
+│  0%          25%           50%                       right     │
+└────────────────────────────────────────────────────────────────┘
+```
+
+```
+padding:     var(--s-6) var(--page-margin)
+position:    fixed; inset-inline: 0; top: 0
+pointer-events: none          ← on the <header>
+             auto             ← on every child
+```
+
+> The `pointer-events` split matters: the bar spans the full width but never
+> steals clicks from the hero beneath it.
+
+**Zone 3 is a permanent one-line descriptor** (`Frontend & Fullstack Engineer`).
+A descriptor kept in the nav at all times is free, constant positioning. Since
+this site is employer-facing, this line is doing real work; treat it as content,
+not decoration.
+
+**Responsive.** Below `768px`, zones 2 and 3 drop; mark + menu pill only. The
+mark **never** drops — the hero crop depends on it ([wordmark.md §3](wordmark.md)).
+
+**A11y.** `<header>` + `<nav aria-label="Primary">`. Skip link is the first
+focusable element on the page.
+
+---
+
+## C2 · Pill button
+
+Two variants of one component.
+
+```
+        ┌──────────────────────────────┐
+        │  LABEL              ( ◯ )    │   height 56px
+        └──────────────────────────────┘   circle 44px, 6px shell
+```
+
+| | Light | Dark |
+|---|---|---|
+| fill | `--surface` | `--ink` |
+| label | `--ink` | `--paper` |
+| circle | `--paper` | `#2E2E2E` |
+
+```
+height:        56px
+shell padding: 6px            (56 − 44 = 12, split)
+circle:        44px           ← also the minimum touch target
+radius:        var(--r-control)
+label:         var(--t-label), --w-label, uppercase
+label padding: 0 var(--s-6) 0 var(--s-7)    ← asymmetric, optically centres
+                                              the label against the right circle
+```
+
+> **The circle fill is a *step* from the pill fill**, never the same and never
+> pure contrast. It makes the button read as a control seated in a housing.
+
+**States**
+
+| State | Change |
+|---|---|
+| default | as above |
+| hover | label slide-and-swaps (M5); circle fill lightens one step |
+| focus-visible | `--focus-ring` 2px, 2px offset, outside the pill |
+| active | scale `0.98`, `--d-fast` |
+| disabled | `--ink-faint` label, no hover, `cursor: not-allowed`, `aria-disabled` |
+
+**Responsive.** Label may hide below `480px`, leaving the circle alone — if it
+does, the button **must** keep an `aria-label`.
+
+---
+
+## C3 · Menu card
+
+One component, two anchors. **Identical on mobile and desktop** except width and
+vertical anchor — this is the point of the pattern, not an implementation detail.
+
+```
+fill:     --surface
+radius:   var(--r-panel)
+padding:  var(--s-7) var(--s-5)
+tilt:     rotate(1.4deg)     ← static, never animated
+anchor:   desktop  fixed, right: 0, top: 0,   width 480px
+          mobile   fixed, right: 0, top: 72px, width 100%
+links:    var(--t-display-s) / --w-display / −0.055em
+          row height 88px, padding var(--s-4) var(--s-5), radius var(--r-panel)
+```
+
+**Link type size, weight, tracking, fill, radius and tilt do not change between
+breakpoints.** Only width and anchor. Do not scale the type down on mobile.
+
+> The 1.4° tilt is what stops the card reading as a system dropdown — it looks
+> placed by hand. More would look like a bug; less would do nothing.
+
+**Overflow.** The card's corner may bleed past the right edge by roughly 60px —
+this echoes the hero crop and makes the two read as one system. **Links
+must stay fully inside.** Crop decoration, never interaction.
+
+**States** — per link: hover fills the row with `--paper` and reveals a trailing
+arrow; focus-visible ring inside the row; active scales 0.99.
+
+**A11y.** `aria-expanded` on the trigger; focus moves in on open and is trapped;
+`Escape` closes and returns focus to the trigger; the card is `inert` when closed.
+
+---
+
+## C4 · Section header
+
+The repeating skeleton. Opens every major section.
+
+```
+┌──────────────────────┬─────────────────────────────────────────┐
+│ ■ SELECTED WORK      │ One sentence describing the section.    │
+│ (col 1–3)            │ (col 5–8)                               │
+└──────────────────────┴─────────────────────────────────────────┘
+```
+
+```
+label:  var(--t-label), --w-label, uppercase, --ink
+        ■ marker: 8px square, --ink, margin-right var(--s-2)
+desc:   var(--t-ui), --w-body, --ink-muted, max 2 lines
+rule:   1px --rule below, full bleed, margin-top var(--s-5)
+```
+
+On a lime field the description is `--ink`, **not** `--ink-muted` — see the
+foundations lime rule (3.65:1 fails).
+
+---
+
+## C5 · Project row
+
+The core of the Work page.
+
+```
+┌───────────────────────────┬───────────────────────────────────┐
+│                           │  01                        2025   │
+│    [ screenshot ]         │  Project Name                     │
+│    col 1–6, 16:10         │  Role · Stack · Outcome           │
+│                           │  Short description, 2–3 lines.    │
+│                           │  [ CASE STUDY ]  [ LIVE ]         │
+└───────────────────────────┴───────────────────────────────────┘
+```
+
+```
+grid:        2 columns, var(--gutter)
+image:       16:10, radius --r-none, cell-dissolve reveal (M2)
+index:       var(--t-micro), --ink-muted
+title:       var(--t-h-l), --w-display
+meta:        var(--t-label), uppercase, --ink-muted
+description: var(--t-ui), --w-body
+separator:   1px --rule between rows, full bleed
+```
+
+**Rows alternate image side** (odd left, even right) to stop the list marching.
+
+### C5b · No-image variant
+
+Required — some work is NDA-private, and screenshots are being captured (see
+[handover.md](handover.md)), so the list must stay coherent while images are
+missing.
+
+The image cell is replaced by a **type block on `--surface`** at the same aspect
+ratio: project name at `--t-display-s`, stack list at `--t-label` beneath. Same
+cell size, same rhythm, no gap in the grid. Never render an empty box or a
+placeholder icon.
+
+**States.** Whole row is a link. Hover: row background → `--surface`, image
+scales 1.02. Focus-visible: ring around the whole row, not the image.
+
+---
+
+## C6 · Hairline data table
+
+**A hairline table is the right form for any dense, scannable index.** Used here
+for the Work index, the Writing index, and the Experience list.
+
+```
+┌────┬──────────────────────────┬─────────────┬──────────┬────────┐
+│ NN │ TITLE                    │ ROLE        │ STACK    │  YEAR  │
+├────┼──────────────────────────┼─────────────┼──────────┼────────┤
+```
+
+```
+header:  var(--t-micro), uppercase, --ink-muted
+cell:    var(--t-ui), --ink
+title:   var(--t-h-m), --w-body
+rule:    1px --rule between rows; header rule --rule-strong
+row pad: var(--s-5) 0
+bleed:   full width to var(--page-margin)
+```
+
+**Responsive.** Below `768px` the table becomes stacked blocks — each row a card
+with its column labels inline as `--t-micro` above each value. Never
+horizontally scroll a table of links.
+
+**A11y.** Real `<table>` with `<th scope="col">`. If rows are links, the link
+wraps the title cell, not the row.
+
+---
+
+## C7 · CTA box
+
+Confidence through emptiness.
+
+```
+┌───────────────────────────────────┐
+│                                   │
+│           GET IN TOUCH            │   min-height 120px
+│                                   │
+└───────────────────────────────────┘
+```
+
+```
+border:      var(--border)
+radius:      var(--r-none)
+min-height:  120px
+label:       var(--t-label), uppercase, --w-label, centred
+fill:        none
+```
+
+**States.** Hover: border → `--rule-strong`, fill → `--surface`.
+Focus-visible: `--focus-ring`, offset. Active: scale 0.995.
+
+**Responsive.** Full width, stacked, and **keeps its height** — do not let these
+collapse into ordinary buttons on mobile. That restraint is the pattern.
+
+---
+
+## C8 · Timeline row (staircase)
+
+Used on **About** for the career timeline — directly relevant now that the site
+is employer-facing.
+
+```
+2019  ( 01 )
+  ────────────────────────────────────────────────
+   2021  ( 02 )
+     ────────────────────────────────────────────
+      2023  ( 03 )
+```
+
+```
+year:    var(--t-display-l), --w-display
+index:   var(--t-micro), uppercase, --ink-muted, superscript
+step:    each row indents by 72px × index
+rule:    1px --rule, full bleed, one per row
+detail:  right column — role, company, 2-line description at --t-ui
+```
+
+**Responsive.** Below `768px` the indent step drops to `24px` — the staircase
+survives but does not push content off screen. Do not remove it entirely; the
+stagger is the pattern.
+
+---
+
+## C9 · Tech stack band
+
+A scroll-driven band of large type for the stack.
+
+**Vertical fret-like rules are explicitly rejected.** What we keep is the
+underlying idea: *a scale the words are positioned against*, so horizontal
+position reads as meaningful rather than arbitrary.
+
+**Chosen device: row-band parallax.**
+
+```
+rows:      3–4 full-width rows, one per stack group
+type:      var(--t-display-m), --w-display, uppercase
+rule:      1px --rule between rows — HORIZONTAL only, no vertical rules
+motion:    each row translates X at its own rate on scroll
+           row n: translateX(scrollProgress × (n odd ? -1 : 1) × 8%)
+overflow:  hidden on the band; rows may extend past both edges
+```
+
+This keeps the family resemblance to C8's staircase (horizontal rules, offset per
+row) without borrowing the fret grid.
+
+**Reduced motion.** Rows sit at their mid position, static.
+
+**A11y.** The stack is a real `<ul>`. The parallax is presentational; the list is
+readable and in the DOM regardless.
+
+---
+
+## C10 · Footer
+
+Appears on every page.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│ [mark]                                                       │
+│                    MENU        SOCIAL       CONTACT          │
+│                    Work        GitHub       hi@farulivan.com │
+│                    About       LinkedIn                      │
+│                    Writing     X            CV               │
+│                                             Download PDF     │
+│                                                              │
+│  farul.ivan                          ← full content width    │
+└──────────────────────────────────────────────────────────────┘
+```
+
+```
+padding:  var(--s-9) var(--page-margin) var(--page-margin)
+columns:  start at 50% of the viewport — the left half stays empty
+          apart from the small mark on the margin
+labels:   var(--t-micro), uppercase, --ink-muted
+links:    var(--t-ui), --ink, row pitch 28px
+wordmark: mark-footer, full content width, bottom-flush, STATIC
+```
+
+> **The left half is empty on purpose.** Dense content occupying half the
+> available space is what makes the footer read as calm rather than crowded.
+
+> **The footer wordmark does not animate.** The site opens by writing the name
+> and closes with the same name set huge and still. One draw per visit.
+
+**Employer-facing addition:** the CV download lives here and in Contact. Label
+it with format and size — `CV — PDF, 240KB`.
+
+**Responsive.** Below `768px`, columns stack full-width; the wordmark stays
+full-bleed and bottom-flush.

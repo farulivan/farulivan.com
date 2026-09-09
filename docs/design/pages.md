@@ -1,0 +1,180 @@
+# Pages — farulivan.com
+
+> Section order, layout and content slots per page. Components are `C1`–`C10`
+> from [components.md](components.md).
+>
+> **Purpose: employer-facing.** Farul is looking for a role. Every page carries a
+> clear seniority signal, and the CV is never more than one click away. Copy is
+> framed as *what was built and what it did*, not *technologies I have touched*.
+
+**Five pages.** Homepage is a long index of teaser sections; each feeds a real
+page.
+
+```
+/            Home
+/work        Work index → /work/[slug]
+/about       About + experience timeline
+/writing     Writing index → /writing/[slug]
+/contact     Contact
+```
+
+---
+
+## Home
+
+A long index. Every section is a teaser that leads somewhere.
+
+| # | Section | Field | Components | Notes |
+|---|---|---|---|---|
+| 1 | Hero | `--paper` | wordmark `mark-hero` + standfirst | M1 stroke-draw. Standfirst aligns to the wordmark's left edge (20%). |
+| 2 | Positioning | `--paper` | `--t-display-m` statement | One sentence on what he builds and for whom. Seniority signal lives here. |
+| 3 | Stack | `--paper` | C9 | Row-band parallax. |
+| 4 | Selected work | `--surface` | C4 + C5 ×3 | Three projects only. Leads to `/work`. |
+| 5 | Experience | `--paper` | C4 + C8 (compressed) | Three most recent roles. Leads to `/about`. |
+| 6 | Writing | `--accent-field` | C4 + C6 | Latest three posts as a hairline table. **Lime field, `--ink` text.** |
+| 7 | Contact | `--surface-invert` | C4 + C7 | Black field. `GET IN TOUCH` + `DOWNLOAD CV`. |
+| 8 | Footer | `--paper` | C10 | Static full-bleed wordmark. |
+
+**Field rhythm:** paper → paper → paper → surface → paper → **lime** → **black** →
+paper. Lime appears exactly once, and black exactly once, both near the end where
+the page is asking for something. Colour is a signal here, not decoration.
+
+### Hero detail
+
+```
+wordmark:    83.8vw, right: -3.8%, bottom: 26%   — one value at every width
+standfirst:  var(--t-display-s), left edge at 20% — same as the wordmark
+scroll cue:  bottom-left at var(--page-margin), --t-micro, --ink-muted
+             deliberately OUTSIDE the 20% alignment, so it reads as chrome
+```
+
+The hero is `100vh` on desktop, `min(72vh, 640px)` on mobile — short enough that
+section 2 is visible on first scroll.
+
+---
+
+## Work
+
+### Index
+
+C4 header, then **C6 hairline table** listing everything, then C5 rows for the
+three featured projects.
+
+```
+columns: NN · PROJECT · ROLE · STACK · YEAR
+```
+
+Table first, then featured rows — an employer scanning for a specific technology
+finds it in the table; someone browsing gets the visual rows.
+
+### `/work/[slug]` — case study
+
+| # | Block | Notes |
+|---|---|---|
+| 1 | Title | `--t-display-l`, project name |
+| 2 | Meta bar | Role · Team size · Duration · Stack — C6 styling, single row |
+| 3 | Lead image | full bleed, M2 cell dissolve |
+| 4 | The problem | `--t-read` prose, `--measure` |
+| 5 | What I built | `--t-read` prose + inline images |
+| 6 | Outcome | **numbers where they exist** — `--t-display-s` figures with `--t-label` captions |
+| 7 | Stack detail | C6 table |
+| 8 | Next project | C5 row |
+
+> Section 6 is the one that matters for a job search. If a project has no
+> measurable outcome, say what changed qualitatively — never omit the block.
+
+---
+
+## About
+
+| # | Section | Field | Components |
+|---|---|---|---|
+| 1 | Title | `--paper` | `--t-display-l` |
+| 2 | Bio | `--paper` | `--t-read`, `--measure`, 3–4 paragraphs |
+| 3 | Portrait | `--paper` | full-bleed image, M2 |
+| 4 | Experience | `--paper` | **C8 staircase timeline** |
+| 5 | Capabilities | `--surface` | C6 table — grouped by domain |
+| 6 | CV | `--accent-field` | C7 — `DOWNLOAD CV — PDF` |
+
+The staircase timeline is the centrepiece. Each row: year, index, role, company,
+and two lines on what shipped.
+
+---
+
+## Writing
+
+**This is why `--t-read` (17px / 1.6 / weight 400) exists.** Design-led sites
+routinely set body copy at 13–14px with line-height near 1.0. That is unreadable
+for articles. Prose on this site does not use `--t-ui`.
+
+### Index
+C4 header + C6 table: `DATE · TITLE · TOPIC · READ TIME`. Newest first.
+
+### `/writing/[slug]`
+
+```
+title:      var(--t-display-m)
+meta:       date · read time — var(--t-label), --ink-muted
+body:       var(--t-read), max-width var(--measure), left-aligned
+h2:         var(--t-h-l), margin-top var(--s-8)
+h3:         var(--t-h-m), margin-top var(--s-6)
+code:       var(--surface) block, --r-none, --t-ui, horizontal scroll inside
+            its own container — the page body never scrolls sideways
+blockquote: 3px --accent left border, --s-5 padding, --ink
+images:     full --measure width, --r-none, caption at --t-micro --ink-muted
+```
+
+Prose is a single column. No sidebars, no floating TOC — at this length it is
+noise.
+
+---
+
+## Contact
+
+Short page, one job.
+
+| # | Block | Field |
+|---|---|---|
+| 1 | Statement | `--paper` — `--t-display-m`, one line on what he's looking for |
+| 2 | Direct | `--paper` — email as a large link at `--t-display-s` |
+| 3 | Elsewhere | `--paper` — C6 table: GitHub · LinkedIn · X |
+| 4 | CV | `--surface-invert` — C7, `DOWNLOAD CV — PDF, 240KB` |
+
+**No contact form.** An email link is more likely to be used, needs no backend,
+no spam handling and no privacy policy. If a form is added later it needs a
+written justification.
+
+---
+
+## Responsive
+
+Three breakpoints. Below `768px` everything is one column.
+
+| | `<768px` | `768–1024px` | `>1024px` |
+|---|---|---|---|
+| grid | 4 col | 8 col | 12 col |
+| wordmark | `83.8vw` | `83.8vw` | `83.8vw` |
+| nav | mark + pill | + descriptor | all 4 zones |
+| C5 project row | stacked | stacked | 2 col |
+| C6 table | stacked blocks | table | table |
+| C8 timeline step | 24px | 48px | 72px |
+
+The `--page-margin` and the full-bleed treatments are preserved at every
+breakpoint. That is what keeps the poster feeling on a phone.
+
+---
+
+## Content Farul needs to supply
+
+Blocking the build. Tracked in [handover.md](handover.md).
+
+- [ ] Positioning sentence (Home §2) and the nav descriptor line
+- [ ] 3 featured projects — name, role, team size, duration, stack, problem, what was built, **outcome**
+- [ ] Full project list for the Work table
+- [ ] Bio, 3–4 paragraphs
+- [ ] Experience: year, role, company, 2 lines each
+- [ ] Capabilities, grouped by domain
+- [ ] CV as PDF
+- [ ] Portrait photograph
+- [ ] Project screenshots — **capture recipe in handover.md**
+- [ ] At least 2 posts before Writing ships publicly

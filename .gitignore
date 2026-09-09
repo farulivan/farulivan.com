@@ -1,0 +1,29 @@
+# --- AI tooling (local only; process documented in AGENTS.md / README) ---
+.agents/
+.claude/
+.windsurf/
+skills-lock.json
+
+# --- Local working files (never published) ---
+# The specs in docs/design/ are the shipped output and stand on their own.
+# Everything below is working material that stays on the authoring machine.
+raw-assets/
+docs/design/references/
+docs/design/patterns-to-carry.md
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# --- Node / build ---
+node_modules/
+dist/
+.astro/
+*.log
+.env
+.env.*
+!.env.example
