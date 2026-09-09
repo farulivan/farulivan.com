@@ -1,0 +1,42 @@
+---
+import type { HTMLAttributes } from "astro/types"
+
+import { cn } from "@/lib/utils"
+
+/**
+ * The brand mark: an O that is also a band twisting back through itself.
+ *
+ * Two crescents — each the region inside one circle and outside another
+ * offset from it — rotated 180° apart. The union is a ring whose thickness
+ * varies, and the seam is what makes the twist legible: the front crescent is
+ * outlined in the page background, so where the two cross you see one pass
+ * behind the other rather than a flat blob.
+ *
+ * The fill is `currentColor` so the mark takes the color of whatever it sits
+ * in. The seam is `--color-background`, which is correct on the page and on
+ * anything else painted in the background color; on a card it would need the
+ * card color instead. The same geometry is duplicated once, in
+ * public/favicon.svg, because a favicon cannot import an Astro component.
+ */
+type Props = HTMLAttributes<"svg">
+
+const { class: className, ...rest } = Astro.props
+
+const CRESCENT = "M82.90 27.25A40 40 0 1 0 82.90 72.75A36 36 0 1 1 82.90 27.25Z"
+---
+
+<svg
+  viewBox="0 0 100 100"
+  aria-hidden="true"
+  class={cn("size-5", className)}
+  {...rest}
+>
+  <g fill="currentColor" transform="rotate(-35 50 50)">
+    <path d={CRESCENT} transform="rotate(180 50 50)"></path>
+    <path
+      d={CRESCENT}
+      stroke="var(--color-background)"
+      stroke-width="2.4"
+      paint-order="stroke"></path>
+  </g>
+</svg>

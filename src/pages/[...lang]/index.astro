@@ -1,0 +1,39 @@
+---
+import type { InferGetStaticPropsType } from "astro"
+
+import { LOCALES } from "@/content/schemas"
+import { langParam, useTranslations } from "@/i18n/utils"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+
+export function getStaticPaths() {
+  // `langParam` yields undefined for the default locale, which is what makes
+  // the rest parameter emit "/" rather than "/en/".
+  return LOCALES.map((lang) => ({
+    params: { lang: langParam(lang) },
+    props: { lang },
+  }))
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+---
+
+{
+  /*
+   * TODO(content): the homepage is a placeholder until the wordmark, the
+   * sections and the copy land. It renders the real page heading so the
+   * document outline and the language routing can be checked now.
+   */
+}
+<BaseLayout
+  lang={lang}
+  path="/"
+  title={t("site.descriptor")}
+  description={t("site.description")}
+>
+  <h1 class="text-display-m font-display text-ink px-page-margin py-9">
+    {t("site.title")}
+  </h1>
+</BaseLayout>

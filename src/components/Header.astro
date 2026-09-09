@@ -1,0 +1,131 @@
+---
+import { siteConfig } from "@/config/site"
+import type { Locale } from "@/content/schemas"
+import { localizePath, useTranslations } from "@/i18n/utils"
+
+import LanguagePicker from "./LanguagePicker.astro"
+import Container from "./ui/Container.astro"
+import Icon from "./ui/Icon.astro"
+import Mark from "./ui/Mark.astro"
+
+interface Props {
+  lang: Locale
+  /** Locale-less path of the current page. */
+  path: string
+  /** Where the language picker points, when that is not the current page. */
+  switchPath?: string | undefined
+}
+
+const { lang, path, switchPath = path } = Astro.props
+const t = useTranslations(lang)
+
+/**
+ * Nav hrefs are authored locale-less in site.ts and localized here, so adding
+ * a language never means editing the navigation.
+ */
+const items = siteConfig.nav.map((item) => ({
+  label: t(item.key),
+  href: localizePath(item.href, lang),
+}))
+---
+
+<header
+  class="border-rule bg-paper/85 sticky top-0 z-40 border-b backdrop-blur"
+>
+  <Container class="flex h-16 items-center gap-4">
+    <a href={localizePath("/", lang)} class="font-emph flex items-center gap-2">
+      <Mark class="text-ink size-5" />
+      {siteConfig.name}
+    </a>
+
+    <nav aria-label={t("nav.main")} class="ml-auto hidden md:block">
+      <ul class="flex items-center gap-1">
+        {
+          items.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-ink-muted hover:bg-surface hover:text-ink rounded-control text-ui px-3 py-2 transition-colors"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-1 md:ml-0">
+      <LanguagePicker lang={lang} path={switchPath} class="hidden sm:flex" />
+      <button
+        type="button"
+        id="nav-toggle"
+        class="text-ink-muted hover:bg-surface hover:text-ink rounded-control inline-flex size-9 items-center justify-center transition-colors md:hidden"
+        aria-label={t("nav.openMenu")}
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        data-label-open={t("nav.openMenu")}
+        data-label-close={t("nav.closeMenu")}
+      >
+        <Icon name="menu" class="size-5" data-nav-icon="closed" />
+        <Icon name="close" class="size-5" data-nav-icon="open" />
+      </button>
+    </div>
+  </Container>
+
+  <div id="mobile-nav" class="border-rule border-t md:hidden" hidden>
+    <Container class="py-3">
+      <nav aria-label={t("nav.main")}>
+        <ul class="grid gap-1">
+          {
+            items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="text-ink-muted hover:bg-surface hover:text-ink rounded-control text-ui block px-3 py-2 transition-colors"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <LanguagePicker lang={lang} path={switchPath} class="mt-3 sm:hidden" />
+    </Container>
+  </div>
+</header>
+
+<style>
+  [data-nav-icon="open"] {
+    display: none;
+  }
+  button[aria-expanded="true"] [data-nav-icon="open"] {
+    display: block;
+  }
+  button[aria-expanded="true"] [data-nav-icon="closed"] {
+    display: none;
+  }
+</style>
+
+<script>
+  function setUp() {
+    const toggle = document.getElementById("nav-toggle")
+    const panel = document.getElementById("mobile-nav")
+    if (!toggle || !panel) return
+
+    toggle.addEventListener("click", () => {
+      const willOpen = toggle.getAttribute("aria-expanded") !== "true"
+      toggle.setAttribute("aria-expanded", String(willOpen))
+      // `hidden` rather than a display class: it keeps the panel out of the
+      // accessibility tree and out of the tab order while closed.
+      panel.hidden = !willOpen
+      toggle.setAttribute(
+        "aria-label",
+        (willOpen ? toggle.dataset.labelClose : toggle.dataset.labelOpen) ?? ""
+      )
+    })
+  }
+
+  setUp()
+</script>

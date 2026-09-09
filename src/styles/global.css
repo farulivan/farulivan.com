@@ -1,0 +1,309 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/*
+ * The external-links plugin injects `class="sr-only"` as a raw string from a
+ * .ts file, so it is safelisted rather than left to class detection.
+ */
+@source inline("sr-only");
+
+/* ==========================================================================
+   Design tokens
+   ==========================================================================
+
+   Every colour, size, weight and easing on this site comes from this block.
+   Nothing else should introduce a raw value.
+
+   Names are Tailwind's, so each token is also a utility class:
+
+     --color-ink          →  text-ink  bg-ink  border-ink
+     --text-display-l     →  text-display-l   (carries its own leading+tracking)
+     --spacing-7          →  p-7  m-7  gap-7
+     --radius-control     →  rounded-control
+     --font-weight-label  →  font-label
+     --ease-reveal        →  ease-reveal
+     --container-measure  →  max-w-measure
+
+   Use the same names inside scoped <style> blocks — var(--color-ink), not a
+   hex code — so there is one vocabulary rather than two.
+
+   ⚠ THE SPACING SCALE IS NOT TAILWIND'S DEFAULT. It is the design's twelve
+   steps, which stop being linear after step 4: p-5 is 24px, p-7 is 48px, p-9
+   is 96px. Tailwind's own linear generator is switched off below, so any step
+   not listed here simply produces no CSS instead of a plausible wrong number.
+   ========================================================================== */
+
+/*
+ * `static` matters here. By default Tailwind only emits a theme variable if a
+ * utility class uses it, which would be fine if utilities were the only
+ * consumer — but the bespoke CSS in this project (the wordmark mask, the image
+ * dissolve, the stack band) reaches for these by name inside scoped <style>
+ * blocks, and Tailwind cannot see those references. Without `static` those
+ * tokens silently resolve to nothing.
+ */
+@theme static {
+  /* --- Type families -----------------------------------------------------
+     Lexend is loaded by Astro's font pipeline, which also generates the
+     metric-matched fallback that keeps the page from shifting as the webfont
+     arrives. Code blocks are the only monospace on the site, so they use what
+     the operating system already has rather than a second download. */
+  --font-sans: var(--font-lexend), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+
+  /* --- Neutrals ----------------------------------------------------------
+     Ink is #1D1D1D rather than pure black. Both pass AAA, so contrast did not
+     decide it: pure black leaves no room for an inverted surface, because ink
+     and the dark field would be the same colour. At #1D1D1D we can set type on
+     a #0A0A0A field and it still reads. Pure black also glares in long prose,
+     and this site has a writing section. */
+  --color-paper: #ffffff;
+  --color-ink: #1d1d1d; /* 16.86:1 on paper — AAA */
+  --color-ink-muted: #6e6e6e; /*  5.10:1 on paper — AA  */
+  --color-ink-faint: #8a8a8a; /*  3.45:1 — non-text and large text only */
+  --color-surface: #f5f5f5;
+  --color-rule: rgb(29 29 29 / 0.15);
+  --color-rule-strong: #1d1d1d;
+  --color-surface-invert: #0a0a0a;
+  --color-ink-invert: #ffffff; /* 19.80:1 on surface-invert — AAA */
+  --color-ink-invert-muted: #a8a8a8; /*  8.33:1 on surface-invert — AAA */
+
+  /* --- Lime --------------------------------------------------------------
+     Lime is a surface, not a text colour. On white it measures 2.06:1 at
+     step 500 and still fails at 600 (2.50) and 700 (3.96). Only step 800
+     passes, at 6.40:1.
+
+     As a field with ink on top it is excellent: 12.05 on 300, 9.78 on 400,
+     8.18 on 500 — all AAA. And it inverts well: on the near-black surface,
+     step 400 is 11.48:1 and step 500 is 9.60:1, so lime *is* readable there.
+
+     Two rules fall out of those numbers and both are enforced in CI:
+       · lime is never text on a light ground, except accent-text
+       · ink-muted never appears on a lime field (3.65:1) — it is ink or nothing */
+  --color-lime-50: #fbfdf9;
+  --color-lime-100: #f4f9ee;
+  --color-lime-200: #e2efd4;
+  --color-lime-300: #cae2b0;
+  --color-lime-400: #abd183;
+  --color-lime-500: #92c35d;
+  --color-lime-600: #7cb342;
+  --color-lime-700: #618c34;
+  --color-lime-800: #486826;
+  --color-lime-900: #344a1b;
+  --color-lime-950: #17220c;
+
+  --color-accent: var(--color-lime-500); /* fill only, never text on light */
+  --color-accent-field: var(--color-lime-300); /* full-section field */
+  --color-accent-text: var(--color-lime-800); /* the only lime text on light */
+  --color-accent-on-dark: var(
+    --color-lime-400
+  ); /* lime text, dark field only */
+
+  /* --- Type ramp ---------------------------------------------------------
+     Tailwind's own scale is switched off first, so `text-sm` and `text-2xl`
+     produce nothing and the nine steps below are the only sizes on the site.
+     A ramp where every step has a stated job stops being one the moment an
+     unnamed tenth size is one keystroke away.
+
+     Nine steps, each with a job. Display sizes are fluid, text sizes fixed.
+     Tracking tightens as size grows and loosens as it shrinks; uppercase
+     always gets positive tracking, display never does. */
+  --text-*: initial;
+
+  --text-display-l: clamp(64px, 10.4vw, 150px);
+  --text-display-l--line-height: 0.88;
+  --text-display-l--letter-spacing: -0.045em;
+
+  --text-display-m: clamp(48px, 6.7vw, 96px);
+  --text-display-m--line-height: 0.9;
+  --text-display-m--letter-spacing: -0.04em;
+
+  --text-display-s: clamp(32px, 3.9vw, 56px);
+  --text-display-s--line-height: 0.95;
+  --text-display-s--letter-spacing: -0.03em;
+
+  --text-h-l: 32px;
+  --text-h-l--line-height: 1.1;
+  --text-h-l--letter-spacing: -0.02em;
+
+  --text-h-m: 21px;
+  --text-h-m--line-height: 1.2;
+  --text-h-m--letter-spacing: -0.01em;
+
+  /* Prose only. Deliberately larger and looser than the rest of the ramp —
+     see the note in the base layer below. */
+  --text-read: 17px;
+  --text-read--line-height: 1.6;
+  --text-read--letter-spacing: 0em;
+
+  --text-ui: 14px;
+  --text-ui--line-height: 1.4;
+  --text-ui--letter-spacing: 0em;
+
+  --text-label: 13px;
+  --text-label--line-height: 1.2;
+  --text-label--letter-spacing: 0.04em;
+
+  --text-micro: 11px;
+  --text-micro--line-height: 1.2;
+  --text-micro--letter-spacing: 0.06em;
+
+  /* --- Weight by role, never by whim -------------------------------------
+     The wordmark has to stay at 300 or below: Lexend is monoline there, and
+     above 600 stroke modulation appears and the letters stop being drawable. */
+  --font-weight-*: initial;
+
+  --font-weight-mark: 300;
+  --font-weight-display: 300;
+  --font-weight-body: 400;
+  --font-weight-label: 500;
+  --font-weight-emph: 600;
+
+  /* --- Space -------------------------------------------------------------
+     Off, so only the twelve steps below exist. See the warning at the top. */
+  --spacing: initial;
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+  --spacing-7: 48px;
+  --spacing-8: 64px;
+  --spacing-9: 96px;
+  --spacing-10: 128px;
+  --spacing-11: 192px;
+  --spacing-12: 256px;
+
+  /* The page margin is small on purpose: it is what lets the wordmark and
+     media run edge to edge and keeps the poster feeling. One value used
+     identically by the nav, the footer and the full-bleed wordmark. */
+  --spacing-page-margin: clamp(12px, 1vw, 20px);
+  --spacing-gutter: clamp(16px, 1.5vw, 24px);
+
+  /* Longest comfortable line for prose. */
+  --container-measure: 68ch;
+
+  /* --- Shape -------------------------------------------------------------
+     Radius is functional, never decorative. If it is a control, it is fully
+     round. If it is a floating panel, 16px. If it is structure or content, it
+     is square. There is no fourth case, and there are no shadows or gradients
+     anywhere — depth comes from the field colour changing. */
+  --radius-*: initial;
+
+  --radius-control: 999px;
+  --radius-panel: 16px;
+
+  /* --- Motion ------------------------------------------------------------ */
+  --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1); /* entrances */
+  --ease-state: cubic-bezier(0.65, 0, 0.35, 1); /* state changes, morphs */
+  --ease-draw: cubic-bezier(0.4, 0, 0.2, 1); /* the wordmark stroke */
+}
+
+/*
+ * Durations live outside @theme because they are read by scoped component
+ * CSS and keyframes rather than by utility classes.
+ */
+:root {
+  --duration-fast: 180ms;
+  --duration-mid: 320ms;
+  --duration-slow: 500ms;
+  --duration-draw: 900ms;
+
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-weight: var(--font-weight-body);
+  }
+
+  /*
+   * Deliberately no `scroll-behavior: smooth`. Native scrolling is already
+   * smooth, hijacking it breaks scroll anchoring and find-in-page, and a
+   * smooth scroll is cancelled by anything that interrupts it — a font
+   * swapping in, or the browser's own scroll on a page loaded with a hash.
+   * The observed result is anchor links that set the hash and never move the
+   * page. Instant anchor jumps always land.
+   */
+
+  /* Anchor links land below the fixed header rather than under it. */
+  [id] {
+    scroll-margin-top: var(--spacing-9);
+  }
+
+  /*
+   * Focus is always visible. Ink reads on both white and lime (8.18:1 on the
+   * strongest lime we use as a field); anything sitting on the near-black
+   * surface overrides this to paper locally.
+   */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  /*
+   * The floor for reduced motion. Every named animation on this site also
+   * needs its own rule rendering the *final state* — not a faster version of
+   * itself — which is why this blanket rule is a starting point and not the
+   * whole answer.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /*
+   * Links leaving the site get a visible marker to match the screen-reader
+   * note the external-links plugin appends. Colour is never the only signal.
+   */
+  .prose a[data-external]::after {
+    content: "↗";
+    display: inline-block;
+    margin-inline-start: 0.15em;
+    font-size: 0.85em;
+    vertical-align: baseline;
+    text-decoration: none;
+  }
+}
+
+/*
+ * Code blocks.
+ *
+ * Shiki is configured with `defaultColor: false`, so it emits both themes as
+ * custom properties on every token and picks no winner. This site is light
+ * only, so these rules choose the light one.
+ *
+ * They sit outside every @layer on purpose. Tailwind registers `prose` as a
+ * utility, so the Typography plugin's own `pre` rule lands in the utilities
+ * layer and beats anything in `components` however specific it is — which
+ * leaves a dark background under light tokens. Unlayered rules win over every
+ * layer, so this is the one place in the file that opts out.
+ *
+ * Only the <pre> takes a background: setting one on the token spans as well
+ * paints a box behind every word.
+ */
+.prose .astro-code {
+  background-color: var(--color-surface);
+}
+
+.prose .astro-code,
+.prose .astro-code span {
+  color: var(--shiki-light);
+}

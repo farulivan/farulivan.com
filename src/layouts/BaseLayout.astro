@@ -1,0 +1,87 @@
+---
+import { Font } from "astro:assets"
+
+import Footer from "@/components/Footer.astro"
+import Header from "@/components/Header.astro"
+import Seo from "@/components/Seo.astro"
+import { siteConfig } from "@/config/site"
+import { LOCALE_TAGS, type Locale } from "@/content/schemas"
+import { localizePath, useTranslations } from "@/i18n/utils"
+import "@/styles/global.css"
+
+interface Props {
+  title: string
+  description: string
+  lang: Locale
+  /** Locale-less path, e.g. "/blog/my-post". Drives canonical + hreflang. */
+  path: string
+  /**
+   * Where the language picker should point, when it is not this page. Tag
+   * pages use it: their slug is authored per locale, so the same tag has no
+   * address in another language.
+   */
+  switchPath?: string
+  availableLocales?: readonly Locale[]
+  image?: string
+  type?: "website" | "article"
+  publishedTime?: Date
+  modifiedTime?: Date
+  tags?: readonly string[]
+  noindex?: boolean
+}
+
+const { lang, path, switchPath, ...seo } = Astro.props
+const t = useTranslations(lang)
+---
+
+<!doctype html>
+<html lang={LOCALE_TAGS[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    {/* The site is light only, so the browser chrome matches the page. */}
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="generator" content={Astro.generator} />
+
+    {
+      /*
+      One family sets the whole site, and the wordmark in the hero is the first
+      thing painted, so this is preloaded rather than merely linked. Astro also
+      emits a metric-matched fallback, which is what stops the page shifting as
+      the real face arrives.
+    */
+    }
+    <Font cssVariable="--font-lexend" preload />
+
+    <Seo lang={lang} path={path} {...seo} />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${siteConfig.name} — ${t("blog.title")}`}
+      href={new URL(localizePath("/rss.xml", lang), Astro.site).href}
+    />
+  </head>
+
+  <body class="min-h-svh">
+    <a
+      href="#main"
+      class="bg-ink text-paper rounded-control sr-only px-3 py-2 focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50"
+    >
+      {t("a11y.skipToContent")}
+    </a>
+
+    <Header lang={lang} path={path} switchPath={switchPath} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer lang={lang} />
+  </body>
+</html>

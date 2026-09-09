@@ -1,0 +1,53 @@
+---
+import Container from "@/components/ui/Container.astro"
+import { cn } from "@/lib/utils"
+
+/**
+ * A page section, and the colour field it sits on.
+ *
+ * Sections are full-bleed: the field runs edge to edge and only the content
+ * inside it is inset by the page margin. That is what lets the homepage read
+ * as a stack of bands rather than a column of boxes.
+ *
+ * Fields are used sparingly and on purpose. On the homepage the order runs
+ * paper, paper, paper, surface, paper, accent, invert, paper — so the lime
+ * band and the black band each appear exactly once, near the end, where the
+ * page is asking the reader for something.
+ */
+interface Props {
+  field?: "paper" | "surface" | "accent" | "invert"
+  /** Vertical rhythm. Sections deliberately do not all breathe the same. */
+  space?: "sm" | "md" | "lg"
+  id?: string
+  tag?: "section" | "div"
+  class?: string
+  "aria-label"?: string
+  "aria-labelledby"?: string
+}
+
+const {
+  field = "paper",
+  space = "md",
+  tag = "section",
+  class: className,
+  ...rest
+} = Astro.props
+
+/*
+ * On the lime field text is ink or nothing: the muted grey drops to 3.65:1
+ * there and fails. On the near-black field the muted tone is a lighter grey
+ * that still clears AAA.
+ */
+const fields = {
+  paper: "bg-paper text-ink",
+  surface: "bg-surface text-ink",
+  accent: "bg-accent-field text-ink",
+  invert: "bg-surface-invert text-ink-invert",
+}[field]
+
+const spacing = { sm: "py-8", md: "py-9", lg: "py-10" }[space]
+---
+
+<Container {tag} class={cn(fields, spacing, className)} {...rest}>
+  <slot />
+</Container>

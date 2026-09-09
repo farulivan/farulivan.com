@@ -1,0 +1,11 @@
+dist
+.astro
+pnpm-lock.yaml
+coverage
+stats.html
+
+# The design specs are authored documents, not code. Their alignment carries
+# meaning — the token blocks are lined up in columns so values can be scanned
+# and compared — and the formatter would collapse that, lowercase every hex
+# code and re-pad every table. Prose belongs to whoever wrote it.
+docs/design

@@ -1,0 +1,26 @@
+---
+import { cn } from "@/lib/utils"
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
+---
+
+<!--
+  Tailwind Typography styles the HTML that Markdown produces, which is the one
+  place utility classes cannot reach — the markup is generated, not authored.
+-->
+<div
+  class={cn(
+    "prose prose-neutral max-w-none",
+    "prose-headings:scroll-mt-24 prose-headings:font-emph prose-headings:",
+    "prose-a:text-ink prose-a:underline-offset-4",
+    "prose-pre:rounded-panel prose-pre:border prose-pre:border-rule",
+    "prose-img:rounded-panel",
+    className
+  )}
+>
+  <slot />
+</div>
