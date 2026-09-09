@@ -89,9 +89,14 @@ const svg = mark.replaceAll("wordmark-wipe", `wordmark-wipe-${variant}`)
    *
    * One width at every breakpoint, and a percentage rather than a pixel
    * overflow, so the same fraction of the same letter is always missing —
-   * which is what makes it read as composed rather than truncated. The cut
-   * lands on the right-hand stem of the final letter and the left edge sits at
-   * exactly 20%, which is where the standfirst aligns to.
+   * which is what makes it read as composed rather than truncated.
+   *
+   * The cut takes a slice off the right-hand stem of the final n and leaves
+   * 85% of it standing. An earlier version cut 45% away, which left the stem
+   * and the arch and nothing else — and that shape is an r. The name read as
+   * the wrong name entirely, which is a misreading rather than a
+   * composition. Cutting less costs almost nothing: the lettering goes from
+   * 84% of the page width to 81%.
    *
    * Both values are percentages of the same box, and that matters. Setting the
    * width in `vw` while offsetting in `%` mixes two different widths, because
@@ -109,73 +114,51 @@ const svg = mark.replaceAll("wordmark-wipe", `wordmark-wipe-${variant}`)
    */
   .mark--hero {
     position: absolute;
-    width: 83.8%;
-    right: -3.8%;
+    width: 81.36%;
+    right: -1.36%;
     bottom: 26%;
   }
 
   /*
-   * The intro.
+   * The hero lettering does not write itself. The word is already written by
+   * the time the page is revealed — that happens on the opening screen — so
+   * this one arrives by a different move, rising into place. Writing it twice
+   * in three seconds would read as a stutter rather than a signature.
    *
-   * What animates is the mask, never the letter. Stroking a letter's outline
-   * and animating the dash offset traces its perimeter — up one side and back
-   * down the other — and draws the enclosed shapes in a, u and o as separate
-   * loops. Rendered, that gives hollow colouring-book letters, not writing.
-   * Uncovering the real filled letter avoids the problem entirely, and the
-   * finished state is identical to static lettering.
-   *
-   * The under-layer is structural, not decoration: it occupies the final width
-   * from the first frame, so nothing on the page moves as the intro plays.
+   * The under-layer and the mask belong to the writing animation, so neither
+   * is used here.
    */
-  .mark--hero .mark__ghost path {
-    fill: color-mix(in srgb, var(--color-ink) 12%, transparent);
-  }
-
-  .mark--hero mask rect {
-    transform-box: fill-box;
-    transform-origin: left center;
-    transform: scaleX(0);
-    animation: mark-wipe 420ms var(--ease-draw) forwards;
-    /* Left to right, one letter every 55ms, after the page has painted.
-       Ten letters at 420ms each lands the last one just under a second. */
-    animation-delay: calc(var(--i) * 55ms + 120ms);
-  }
-
-  @keyframes mark-wipe {
-    to {
-      transform: scaleX(1);
-    }
-  }
-
-  /*
-   * Two ways to arrive at the finished state without the animation: the reader
-   * asked for less motion, or they have already seen it this visit. Both
-   * render the final frame outright — not a faster animation — by dropping the
-   * mask so the lettering is simply there.
-   */
-  @media (prefers-reduced-motion: reduce) {
-    .mark--hero .mark__ghost {
-      display: none;
-    }
-    .mark--hero .mark__draw {
-      mask: none;
-    }
-    .mark--hero mask rect {
-      animation: none;
-      transform: none;
-    }
-  }
-
-  [data-wordmark-seen] .mark--hero .mark__ghost {
+  .mark--hero .mark__ghost {
     display: none;
   }
 
-  [data-wordmark-seen] .mark--hero .mark__draw {
+  .mark--hero .mark__draw {
     mask: none;
   }
 
-  [data-wordmark-seen] .mark--hero mask rect {
-    animation: none;
-    transform: none;
+  .mark--hero {
+    animation: mark-rise 700ms var(--ease-reveal) both;
+    /* Starts as the opening screen begins lifting, so the two overlap rather
+       than queueing. The delay is a custom property so a page without the
+       opening screen can set it to zero. */
+    animation-delay: var(--hero-enter-delay, 0ms);
+  }
+
+  @keyframes mark-rise {
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Less motion means the finished frame outright, not a faster animation. */
+  @media (prefers-reduced-motion: reduce) {
+    .mark--hero {
+      animation: none;
+    }
   }
 </style>

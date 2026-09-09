@@ -10,6 +10,11 @@
  * real font and is not in this repository — a clone already has the finished
  * SVG and never needs to run this. Re-run it only if the lettering changes.
  *
+ * The lettering is set at weight 500. An earlier note said never to go above
+ * 300, because the letters had to stay an even thickness to be drawn stroke by
+ * stroke. That technique was not used — the animation uncovers filled letters
+ * instead — so the ceiling went with it.
+ *
  * What it adds on top of the outlines is the machinery the intro animation
  * needs: one mask rectangle per letter, sized to that letter's ink, so each can
  * be uncovered on its own. Those rectangles are measured here rather than in
@@ -21,7 +26,7 @@ import { dirname, join } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..")
-const SOURCE = join(root, "raw-assets/wordmark/farul-ivan-300.svg")
+const SOURCE = join(root, "raw-assets/wordmark/farul-ivan-500.svg")
 const OUTPUT = join(root, "src/assets/wordmark/mark.svg")
 
 /** Breathing room around each letter, so a mask never clips its own glyph. */

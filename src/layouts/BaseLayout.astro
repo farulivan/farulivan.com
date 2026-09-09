@@ -23,6 +23,8 @@ interface Props {
   switchPath?: string
   availableLocales?: readonly Locale[]
   image?: string
+  /** Shows the opening screen. The homepage only. */
+  intro?: boolean
   type?: "website" | "article"
   publishedTime?: Date
   modifiedTime?: Date
@@ -30,7 +32,27 @@ interface Props {
   noindex?: boolean
 }
 
-const { lang, path, switchPath, ...seo } = Astro.props
+const { lang, path, switchPath, intro = false, ...seo } = Astro.props
+
+/**
+ * Decides whether the opening screen runs, before anything paints.
+ *
+ * The screen is inert markup until this sets the attribute, which is what
+ * makes it safe: with scripting off, or if this never runs, there is no
+ * covering layer and the page is simply the page.
+ *
+ * Storage is read and written in its own guard so that a browser refusing it
+ * outright still shows the screen rather than throwing the whole check away.
+ */
+const introScript = `try {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) throw 0
+  var seen = false
+  try { seen = sessionStorage.getItem("intro") === "seen" } catch (e) {}
+  if (!seen) {
+    document.documentElement.dataset.intro = ""
+    try { sessionStorage.setItem("intro", "seen") } catch (e) {}
+  }
+} catch (e) {}`
 const t = useTranslations(lang)
 ---
 
@@ -48,30 +70,14 @@ const t = useTranslations(lang)
     <meta name="theme-color" content="#ffffff" />
     <meta name="generator" content={Astro.generator} />
 
-    <!--
-      The lettering in the hero writes itself in once per visit. This records
-      that it has happened, so coming back to the homepage later in the same
-      visit shows the finished word instead of replaying the introduction. A
-      greeting repeated on every navigation stops being a greeting.
-
-      Inline and blocking on purpose. Deferring it — an external file, `defer`,
-      or an Astro script — would let the page paint first, and the animation
-      would start over for a frame before this could stop it.
-
-      Storage throws outright in some privacy modes, so a failure here has to
-      mean "play the introduction", never "break the page".
-    -->
-    <script is:inline>
-      try {
-        if (sessionStorage.getItem("wordmark") === "seen") {
-          document.documentElement.dataset.wordmarkSeen = ""
-        } else {
-          sessionStorage.setItem("wordmark", "seen")
-        }
-      } catch {
-        /* No storage: the introduction simply plays every time. */
-      }
-    </script>
+    {
+      /*
+       * Inline and blocking on purpose. Deferring this would let the page
+       * paint first, and the screen would drop over content the reader could
+       * already see.
+       */
+    }
+    {intro && <script is:inline set:html={introScript} />}
 
     {
       /*

@@ -10,8 +10,8 @@
 
 Three independent reasons, each sufficient on its own:
 
-1. **The crop rule needs it.** The hero wordmark is `83.8vw` wide, anchored
-   `right: -3.8%` (see §4). Live text at that width *reflows* — the glyphs do not
+1. **The crop rule needs it.** The hero wordmark is `81.36%` wide, anchored
+   `right: -1.36%` (see §4). Live text at that width *reflows* — the glyphs do not
    scale, so the crop lands on a different part of a different letter at every
    viewport width and the composition falls apart between breakpoints. An SVG
    scales as one object, so the cut is always in the same place.
@@ -24,12 +24,14 @@ Three independent reasons, each sufficient on its own:
 
 ## 2. Generating it from Lexend
 
-**Set at `wght` 300.** Verified monoline at 100–300; at 600+ stroke modulation
-appears and the letters stop being drawable. Never above 300.
+**Set at `wght` 500.** An earlier note capped this at 300 so the letters could
+be drawn stroke by stroke. That technique was rejected during build, and the
+animation uncovers filled letters instead, which does not care how thick they
+are.
 
 ```
 text:      farul.ivan
-weight:    300
+weight:    500
 tracking:  -0.045em   (matches --t-display-l)
 case:      lowercase, exactly as written
 ```
@@ -80,7 +82,7 @@ glyph.
 | Variant | Where | Size | Fill | Animated |
 |---|---|---|---|---|
 | `mark-nav` | nav, top-left | 22px cap height | `--ink` | no |
-| `mark-hero` | homepage hero | `83.8vw`, cropped | `--ink` | **yes — stroke-draw** |
+| `mark-hero` | homepage hero | `81.36%`, cropped | `--ink` | rises into place |
 | `mark-footer` | footer, every page | full content width | `--ink` | no |
 
 **`mark-nav` must always show the complete, uncropped word.** This is a hard
@@ -105,8 +107,8 @@ Derived from the real Lexend outlines and rendered at 375 / 768 / 1200px:
 ```css
 .mark-hero {
   position: absolute;
-  width: 83.8vw;            /* same at every breakpoint */
-  right: -3.8%;             /* of the viewport, not of the element */
+  width: 81.36%;            /* same at every breakpoint */
+  right: -1.36%;            /* both percentages of the same box */
   bottom: 26%;
 }
 ```
@@ -135,7 +137,12 @@ alignment is what stops the two elements reading as unrelated objects.
 
 If the wordmark text ever changes, re-derive: the rule is
 `width = 0.80 / cutFraction`, `right = width − 0.80`, holding the left edge at
-20%. At `cutFraction = 0.955` that gives 83.8% / −3.8%.
+20%. At `cutFraction = 0.9833` that gives 81.36% / −1.36%, which leaves 85% of
+the `n` standing.
+
+> **Do not cut deeper than this.** At `cutFraction = 0.955` the `n` loses its
+> right-hand stem, and what remains — a stem and an arch — is an `r`. Rendered,
+> the name reads as a different name. Verified by building it.
 
 ---
 

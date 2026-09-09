@@ -1,6 +1,7 @@
 ---
 import type { InferGetStaticPropsType } from "astro"
 
+import Intro from "@/components/Intro.astro"
 import Wordmark from "@/components/Wordmark.astro"
 import { LOCALES } from "@/content/schemas"
 import { langParam, useTranslations } from "@/i18n/utils"
@@ -24,9 +25,12 @@ const t = useTranslations(lang)
 <BaseLayout
   lang={lang}
   path="/"
+  intro
   title={t("site.descriptor")}
   description={t("site.description")}
 >
+  <Intro />
+
   {
     /*
      * The hero.
@@ -48,7 +52,7 @@ const t = useTranslations(lang)
      */
   }
   <section
-    class="relative min-h-[min(72vh,640px)] overflow-x-clip lg:min-h-svh"
+    class="intro-follows relative min-h-[min(72vh,640px)] overflow-x-clip lg:min-h-svh"
   >
     {/* The lettering is decorative, so the real heading is text. */}
     <h1 class="sr-only">{t("site.title")}</h1>
@@ -62,7 +66,8 @@ const t = useTranslations(lang)
        */
     }
     <p
-      class="text-display-s font-display text-ink absolute top-[22%] left-[20%] w-[62%] text-balance"
+      class="text-display-s font-display text-ink hero-enter absolute top-[22%] left-[20%] w-[62%] text-balance"
+      style="--enter-step: 1"
     >
       {t("site.descriptor")}
     </p>
@@ -71,9 +76,41 @@ const t = useTranslations(lang)
 
     {/* Deliberately outside the 20% alignment, so it reads as chrome. */}
     <p
-      class="text-micro text-ink-muted px-page-margin absolute bottom-5 left-0 uppercase"
+      class="text-micro text-ink-muted px-page-margin hero-enter absolute bottom-5 left-0 uppercase"
+      style="--enter-step: 2"
     >
       {t("home.scrollCue")}
     </p>
   </section>
 </BaseLayout>
+
+<style is:global>
+  /*
+   * The standfirst and the scroll cue follow the lettering in, one after the
+   * other, so the hero assembles rather than appearing all at once. Same
+   * delay as the lettering, plus a step each.
+   */
+  .hero-enter {
+    animation: hero-enter 600ms var(--ease-reveal) both;
+    animation-delay: calc(
+      var(--hero-enter-delay, 0ms) + var(--enter-step) * 120ms
+    );
+  }
+
+  @keyframes hero-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-enter {
+      animation: none;
+    }
+  }
+</style>

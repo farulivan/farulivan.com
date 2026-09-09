@@ -14,14 +14,20 @@ Four questions had to be settled before anything else could be specified:
 | Question | Decision | Why |
 |---|---|---|
 | Typeface | **Lexend**, one family | One family keeps the system coherent at every size. Lexend is variable (`wght` 100–900, **no italic**). |
-| Weight | **Light system**, 300 display / 400 prose / 500 labels | The wordmark's stroke-draw requires a monoline, which forces low weights. The whole system follows. |
+| Weight | **Light system**, 300 display / 400 prose / 500 labels | Keeps the page quiet. The wordmark is the exception, at 500 — see below. |
 | Ground | **White base**, with lime and black as *section fields* | A quiet white ground carrying flat colour-block sections. |
 | Radius | **Functional, never decorative** | Resolves 0 vs 8 vs 24px — see §5. |
 
-**Lexend is monoline at wght 100–300** (verified by rendering `farul.ivan` across
-the axis and inspecting the bowls of `a`, `u`, `o`, `v`, `n`). At 600+ stroke
-modulation appears and the letterforms stop being drawable. **Never set the
-wordmark above 300.**
+**The wordmark is set at 500. Superseded during build.** The ceiling of 300
+existed for one reason: the letters had to stay an even thickness so they could
+be drawn stroke by stroke. That technique was rejected — stroking a letter's
+outline traces its perimeter and renders as a hollow colouring-book shape — and
+the animation uncovers filled letters instead. Nothing about uncovering a letter
+cares how thick it is, so the constraint went with the technique.
+
+The rest of the system still runs light. The wordmark is the one place that does
+not, and it is deliberate: it is the only thing on the page that has to hold its
+own at 80% of the viewport width.
 
 ---
 
@@ -123,7 +129,7 @@ static cuts in `raw-assets/fonts/Lexend/static/` are a fallback only.
 
 | Token | Value | Used for |
 |---|---|---|
-| `--w-mark` | 100–300 | the wordmark **only**; monoline requirement |
+| `--w-mark` | 500 | the wordmark **only** |
 | `--w-display` | 300 | display sizes |
 | `--w-body` | 400 | prose |
 | `--w-label` | 500 | labels, nav, table headers, metadata |
@@ -243,7 +249,7 @@ state immediately. This is a build requirement, not a nicety.
 
   /* type */
   --font:'Lexend',ui-sans-serif,system-ui,sans-serif;
-  --w-mark:300; --w-display:300; --w-body:400; --w-label:500; --w-emph:600;
+  --w-mark:500; --w-display:300; --w-body:400; --w-label:500; --w-emph:600;
   --t-display-l:clamp(64px,10.4vw,150px); --t-display-m:clamp(48px,6.7vw,96px);
   --t-display-s:clamp(32px,3.9vw,56px);   --t-h-l:32px; --t-h-m:21px;
   --t-read:17px; --t-ui:14px; --t-label:13px; --t-micro:11px;

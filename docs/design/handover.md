@@ -127,7 +127,7 @@ Sequenced so nothing is blocked behind unfinished content.
    redraw it.
 6. `Wordmark.astro` with three variants, ghost + wipe-masked draw layer
 7. M1 wipe reveal + reduced-motion + session flag
-8. ~~Verify the crop~~ — **resolved during design.** `width: 83.8vw; right: -3.8%`,
+8. ~~Verify the crop~~ — **resolved during design.** `width: 81.36%; right: -1.36%`,
    one value at every breakpoint. Rendered and measured at 375 / 768 / 1200: left
    edge 20.00%, cut at 95.47%, every time. See
    [wordmark.md §4](wordmark.md).
@@ -180,8 +180,8 @@ Things most likely to go wrong:
 | Risk | Guard |
 |---|---|
 | **Stroking glyph outlines.** Rendered, it gives hollow colouring-book letters — not writing. | Per-glyph wipe mask over the filled glyph. Never stroke the outlines. |
-| **Reaching for a −13% crop.** At 10 glyphs it eats the whole `n`. | `83.8vw / −3.8%`. Re-derive if the text ever changes. |
-| **An intro that gates the page.** A preloader can stall indefinitely with every asset at HTTP 200 and leave the site blank. | No overlay. The wordmark animates in place over content that has already rendered. |
+| **Cutting the `n` too deep.** Past about 85% of it, the stem and arch that remain read as an `r`. | `81.36% / −1.36%`. Re-derive if the text ever changes. |
+| **An intro that gates the page.** A preloader can stall indefinitely with every asset at HTTP 200 and leave the site blank. | There *is* an opening screen, added after the specs were written. It is dismissed by a CSS animation rather than by script, never waits on a load event, and ignores the pointer throughout. See motion.md. |
 | **The crop becoming a pixel value.** It is `right: -13%` at every width. | Test at four widths; the same fraction of the same letter must be missing. |
 | **Lime used as text.** Lime-500 is 2.06:1 on white. | Lint for lime on light backgrounds. Only `--accent-text` (lime-800) is permitted. |
 | **`--ink-muted` on a lime field** — 3.65:1. | On lime, text is `--ink` or nothing. |
