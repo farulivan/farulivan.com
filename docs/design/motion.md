@@ -23,21 +23,60 @@ explicit final-state handling on top of it.
 
 ---
 
-## M1 · The intro stroke-draw ⭐
+## M1 · The opening screen ⭐
 
-The site's opening moment. Runs once per page load, on the **homepage hero
-wordmark only**.
+The site's opening moment, on the **homepage only**: a blank field with the
+name writing itself, which then slides up to reveal the page.
 
-### It must not gate the page
+It runs on a reload every time. Refreshing is a deliberate act, and someone
+doing it wants to see the page open again. It does *not* run when they merely
+arrive back here from another page in the same visit — clicking "home" and
+being made to wait through it is the point where an opening stops being a
+greeting and becomes a toll. The hero wordmark underneath arrives by a different move — it rises into
+place — because writing the same word twice in three seconds reads as a stutter
+rather than a signature.
 
-Nav, layout and content render on the first paint. The wordmark animates **in
-place**, inside an element that already occupies its final size.
+### Changed after the specs were written
 
-> A preloader that gates the page can stall indefinitely and leave the whole
-> site blank while every asset returns HTTP 200. Nothing is missing; the gate
-> simply never opens, and there is no error to debug. **There is no loading
-> overlay on this site.** If the animation never runs, the page is still
-> complete.
+These specs originally said there was no opening screen and the wordmark
+animated in place. That was decided against during build; the risk it was
+avoiding is real, so it is handled rather than accepted.
+
+**Three properties, all of which matter more than the animation does:**
+
+1. **It cannot be stranded.** It is dismissed by a CSS animation that ends
+   hidden, not by JavaScript. Script only ever *starts* it. If script dies
+   immediately afterwards, the screen still lifts on time.
+2. **It never waits for anything.** No load event, no asset, no network — a
+   fixed length, decided up front. The failure being avoided is a screen that
+   waits for something that never arrives and leaves the site blank while every
+   request returned HTTP 200. Nothing is missing; the gate simply never opens,
+   and there is no error to debug.
+3. **It cannot block the page.** It ignores the pointer throughout, so the
+   content underneath stays clickable even while it is on screen.
+
+It is absent entirely for anyone who has asked for less motion, anyone who has
+already seen it this visit, and anyone without JavaScript — the markup stays
+inert until a script in the document head opts into it.
+
+```
+writing   180ms wait, then 700ms per letter, 80ms apart   → 1600ms
+hold      450ms                                           → 2050ms
+slide up  750ms                                           → 2800ms
+```
+
+The hero lettering starts rising at 2050ms, so the reveal and the arrival
+overlap instead of queueing.
+
+Deliberately unhurried. It is the one moment on the site that exists to be
+watched rather than read, and at half this length it was over before the eye
+had followed the word across. Everything that makes it safe holds at any
+length, so the length is free to be a taste decision.
+
+> **It slides rather than fades.** Fading crossfades two different
+> compositions — the centred word on the screen and the large cropped one in
+> the hero — and for a few hundred milliseconds both are visible at once, at
+> different sizes, overlapping. Sliding reveals the page cleanly instead.
 
 ### Two layers
 

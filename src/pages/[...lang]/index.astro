@@ -1,6 +1,8 @@
 ---
 import type { InferGetStaticPropsType } from "astro"
 
+import Intro from "@/components/Intro.astro"
+import Wordmark from "@/components/Wordmark.astro"
 import { LOCALES } from "@/content/schemas"
 import { langParam, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -20,20 +22,95 @@ const { lang } = Astro.props
 const t = useTranslations(lang)
 ---
 
-{
-  /*
-   * TODO(content): the homepage is a placeholder until the wordmark, the
-   * sections and the copy land. It renders the real page heading so the
-   * document outline and the language routing can be checked now.
-   */
-}
 <BaseLayout
   lang={lang}
   path="/"
+  intro
   title={t("site.descriptor")}
   description={t("site.description")}
 >
-  <h1 class="text-display-m font-display text-ink px-page-margin py-9">
-    {t("site.title")}
-  </h1>
+  <Intro />
+
+  {
+    /*
+     * The hero.
+     *
+     * Short enough on a phone that the section below it is reachable on the
+     * first scroll, and full height on a desktop where there is room for it.
+     *
+     * TODO(content): the positioning sentence and the sections beneath it.
+     * This is the hero only, so the crop can be checked before the rest of the
+     * page is built on top of it.
+     */
+  }
+  {
+    /*
+     * `overflow-x: clip` is what lets the lettering run past the right edge
+     * without the page gaining a sideways scrollbar. Clip rather than hidden,
+     * because hidden would make this a scroll container and quietly break
+     * sticky positioning inside it later.
+     */
+  }
+  <section
+    class="intro-follows relative min-h-[min(72vh,640px)] overflow-x-clip lg:min-h-svh"
+  >
+    {/* The lettering is decorative, so the real heading is text. */}
+    <h1 class="sr-only">{t("site.title")}</h1>
+
+    {
+      /*
+       * Anchored to the top and sharing the lettering's left edge at 20%.
+       * That shared alignment is what stops the two reading as unrelated
+       * objects. Measured from the top rather than the bottom so it cannot
+       * collide with the lettering on a tall, narrow screen.
+       */
+    }
+    <p
+      class="text-display-s font-display text-ink hero-enter absolute top-[22%] left-[20%] w-[62%] text-balance"
+      style="--enter-step: 1"
+    >
+      {t("site.descriptor")}
+    </p>
+
+    <Wordmark variant="hero" />
+
+    {/* Deliberately outside the 20% alignment, so it reads as chrome. */}
+    <p
+      class="text-micro text-ink-muted px-page-margin hero-enter absolute bottom-5 left-0 uppercase"
+      style="--enter-step: 2"
+    >
+      {t("home.scrollCue")}
+    </p>
+  </section>
 </BaseLayout>
+
+<style is:global>
+  /*
+   * The standfirst and the scroll cue follow the lettering in, one after the
+   * other, so the hero assembles rather than appearing all at once. Same
+   * delay as the lettering, plus a step each.
+   */
+  .hero-enter {
+    animation: hero-enter 800ms var(--ease-reveal) both;
+    animation-delay: calc(
+      var(--hero-enter-delay, 0ms) + var(--enter-step) * 160ms
+    );
+  }
+
+  @keyframes hero-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-enter {
+      animation: none;
+    }
+  }
+</style>

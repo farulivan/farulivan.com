@@ -42,7 +42,7 @@ the page is asking for something. Colour is a signal here, not decoration.
 ### Hero detail
 
 ```
-wordmark:    83.8vw, right: -3.8%, bottom: 26%   — one value at every width
+wordmark:    81.36%, right: -1.36%, bottom: 26%  — one value at every width
 standfirst:  var(--t-display-s), left edge at 20% — same as the wordmark
 scroll cue:  bottom-left at var(--page-margin), --t-micro, --ink-muted
              deliberately OUTSIDE the 20% alignment, so it reads as chrome
@@ -153,7 +153,7 @@ Three breakpoints. Below `768px` everything is one column.
 | | `<768px` | `768–1024px` | `>1024px` |
 |---|---|---|---|
 | grid | 4 col | 8 col | 12 col |
-| wordmark | `83.8vw` | `83.8vw` | `83.8vw` |
+| wordmark | `81.36%` | `81.36%` | `81.36%` |
 | nav | mark + pill | + descriptor | all 4 zones |
 | C5 project row | stacked | stacked | 2 col |
 | C6 table | stacked blocks | table | table |

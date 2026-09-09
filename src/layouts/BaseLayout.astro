@@ -23,6 +23,8 @@ interface Props {
   switchPath?: string
   availableLocales?: readonly Locale[]
   image?: string
+  /** Shows the opening screen. The homepage only. */
+  intro?: boolean
   type?: "website" | "article"
   publishedTime?: Date
   modifiedTime?: Date
@@ -30,7 +32,40 @@ interface Props {
   noindex?: boolean
 }
 
-const { lang, path, switchPath, ...seo } = Astro.props
+const { lang, path, switchPath, intro = false, ...seo } = Astro.props
+
+/**
+ * Decides whether the opening screen runs, before anything paints.
+ *
+ * The screen is inert markup until this sets the attribute, which is what
+ * makes it safe: with scripting off, or if this never runs, there is no
+ * covering layer and the page is simply the page.
+ *
+ * It runs on a reload every time. Refreshing is a deliberate act — someone
+ * doing it wants to see the page open again — so remembering that they have
+ * already seen it would be second-guessing them.
+ *
+ * It does not run when they merely arrive back here from another page in the
+ * same visit. Clicking "home" and being made to wait through it is the point
+ * at which an opening stops being a greeting and becomes a toll.
+ *
+ * Storage is read and written inside its own guard, so a browser refusing it
+ * outright still shows the screen rather than discarding the whole check.
+ */
+const introScript = `try {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) throw 0
+
+  var nav = performance.getEntriesByType("navigation")[0]
+  var reloaded = nav ? nav.type === "reload" : false
+
+  var seen = false
+  try { seen = sessionStorage.getItem("intro") === "seen" } catch (e) {}
+
+  if (reloaded || !seen) {
+    document.documentElement.dataset.intro = ""
+    try { sessionStorage.setItem("intro", "seen") } catch (e) {}
+  }
+} catch (e) {}`
 const t = useTranslations(lang)
 ---
 
@@ -47,6 +82,15 @@ const t = useTranslations(lang)
     {/* The site is light only, so the browser chrome matches the page. */}
     <meta name="theme-color" content="#ffffff" />
     <meta name="generator" content={Astro.generator} />
+
+    {
+      /*
+       * Inline and blocking on purpose. Deferring this would let the page
+       * paint first, and the screen would drop over content the reader could
+       * already see.
+       */
+    }
+    {intro && <script is:inline set:html={introScript} />}
 
     {
       /*
