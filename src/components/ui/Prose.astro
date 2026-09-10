@@ -17,8 +17,8 @@ const { class: className } = Astro.props
     "prose prose-neutral max-w-none",
     "prose-headings:scroll-mt-10 prose-headings:font-emph",
     "prose-a:text-ink prose-a:underline-offset-4",
-    "prose-pre:rounded-panel prose-pre:border prose-pre:border-rule",
-    "prose-img:rounded-panel",
+    // Square rather than rounded: a code block is structure, not a control.
+    "prose-pre:border prose-pre:border-rule",
     className
   )}
 >

@@ -69,6 +69,19 @@
   --color-ink-invert: #ffffff; /* 19.80:1 on surface-invert — AAA */
   --color-ink-invert-muted: #a8a8a8; /*  8.33:1 on surface-invert — AAA */
 
+  /* --- Field-relative ink and rules --------------------------------------
+     The same table, header and box appear on white, on grey, on lime and on
+     near-black, and "quiet" means a different colour on each. These three
+     hold whichever one is correct for the field you are on, and `Section`
+     re-points them when it paints one — so a component writes
+     `text-section-muted` once instead of taking a prop that says where it is.
+
+     The values below are the light-field answers. The lime override matters
+     most: the muted grey drops to 3.65:1 there, so on lime it is ink. */
+  --color-section-muted: var(--color-ink-muted);
+  --color-section-rule: var(--color-rule);
+  --color-section-rule-strong: var(--color-rule-strong);
+
   /* --- Lime --------------------------------------------------------------
      Lime is a surface, not a text colour. On white it measures 2.06:1 at
      step 500 and still fails at 600 (2.50) and 700 (3.96). Only step 800
@@ -314,6 +327,91 @@
     vertical-align: baseline;
     text-decoration: none;
   }
+}
+
+/*
+ * Prose.
+ *
+ * The Typography plugin ships a complete type scale of its own, and it is a
+ * good one — for a site that has not already decided. This one has, so the
+ * plugin's sizes are replaced by the design's.
+ *
+ * The size that matters is the body. Display-led sites routinely set article
+ * text at 13 or 14 pixels with the line height of a caption, and it is
+ * unreadable at article length; `--text-read` is 17px on 1.6 and exists for
+ * exactly this. Everything else here follows from it: the headings are the
+ * site's own steps, and the space above a heading is a spacing step rather
+ * than a multiple of the font size, so a heading sits at the same distance in
+ * a case study as it does in a post.
+ *
+ * Unlayered, like the code-block rules below and for the same reason: Tailwind
+ * registers `prose` as a utility, so the plugin's rules land in the utilities
+ * layer and beat anything written in a layer, however specific.
+ */
+.prose {
+  color: var(--color-ink);
+  font-size: var(--text-read);
+  line-height: var(--text-read--line-height);
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote {
+  font-size: var(--text-read);
+  line-height: var(--text-read--line-height);
+}
+
+.prose h2 {
+  margin-top: var(--spacing-8);
+  margin-bottom: var(--spacing-4);
+  font-size: var(--text-h-l);
+  line-height: var(--text-h-l--line-height);
+  letter-spacing: var(--text-h-l--letter-spacing);
+  font-weight: var(--font-weight-emph);
+}
+
+.prose h3 {
+  margin-top: var(--spacing-6);
+  margin-bottom: var(--spacing-3);
+  font-size: var(--text-h-m);
+  line-height: var(--text-h-m--line-height);
+  letter-spacing: var(--text-h-m--letter-spacing);
+  font-weight: var(--font-weight-emph);
+}
+
+/* The first heading in a run has the section's own space above it already. */
+.prose > :first-child {
+  margin-top: 0;
+}
+
+/*
+ * Lime as a rule rather than as text: it is the one place the accent appears
+ * inside prose, and at 2.06:1 it could never be the words themselves.
+ */
+.prose blockquote {
+  border-inline-start: 3px solid var(--color-accent);
+  padding-inline-start: var(--spacing-5);
+  color: var(--color-ink);
+  font-style: normal;
+  quotes: none;
+}
+
+/* Square, like everything else that is structure rather than a control. */
+.prose pre,
+.prose img,
+.prose figure > * {
+  border-radius: 0;
+}
+
+.prose pre {
+  font-size: var(--text-ui);
+}
+
+.prose figcaption {
+  font-size: var(--text-micro);
+  letter-spacing: var(--text-micro--letter-spacing);
+  color: var(--color-ink-muted);
 }
 
 /*
