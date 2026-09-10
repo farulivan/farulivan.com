@@ -54,6 +54,8 @@ const meta = [role, ...stack.slice(0, 3)].join(" · ")
 
 <a
   {href}
+  data-reveal
+  style={`--reveal-step: ${index % 6}`}
   class={cn(
     "group hover:bg-surface border-section-rule block border-b transition-colors duration-fast ease-state no-underline motion-reduce:transition-none",
     className

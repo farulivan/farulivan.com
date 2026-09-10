@@ -34,6 +34,8 @@ const indent = `calc(${step} * var(--timeline-step))`
 ---
 
 <li
+  data-reveal
+  style={`--reveal-step: ${step % 6}`}
   class={cn(
     "border-section-rule list-none border-b [--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
     className
