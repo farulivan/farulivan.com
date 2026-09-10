@@ -132,7 +132,7 @@ const social = [
       >
         {t("footer.social")}
       </h2>
-      <ul class="m-0 flex list-none flex-col gap-[var(--row-gap)] p-0">
+      <ul class="m-0 flex list-none flex-col gap-(--row-gap) p-0">
         {
           social.map((item) => (
             <li>
@@ -157,7 +157,7 @@ const social = [
       >
         {t("footer.contact")}
       </h2>
-      <ul class="m-0 flex list-none flex-col gap-[var(--row-gap)] p-0">
+      <ul class="m-0 flex list-none flex-col gap-(--row-gap) p-0">
         <li>
           <a
             class="text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper no-underline underline-offset-2 transition-[text-underline-offset] hover:underline hover:underline-offset-4 motion-reduce:transition-none"
@@ -181,7 +181,7 @@ const social = [
              */
           }
           <a
-            class="group/cv text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper flex items-center justify-between gap-3 border border-[color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] px-4 py-3 leading-[1.4] whitespace-nowrap no-underline transition-colors hover:border-[var(--color-ink-invert)] hover:bg-[color-mix(in_srgb,var(--color-ink-invert)_10%,transparent)] motion-reduce:transition-none"
+            class="group/cv text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper flex items-center justify-between gap-3 border border-[color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] px-4 py-3 leading-[1.4] whitespace-nowrap no-underline transition-colors hover:border-(--color-ink-invert) hover:bg-[color-mix(in_srgb,var(--color-ink-invert)_10%,transparent)] motion-reduce:transition-none"
             href={siteConfig.cv.href}
             download
           >
@@ -191,7 +191,7 @@ const social = [
             }
             <Icon
               name="arrowRight"
-              class="duration-fast ease-state size-4 rotate-[-45deg] transition-[translate] group-hover/cv:translate-x-[2px] group-hover/cv:translate-y-[-2px] motion-reduce:transition-none"
+              class="duration-fast ease-state size-4 -rotate-45 transition-[translate] group-hover/cv:translate-x-[2px] group-hover/cv:translate-y-[-2px] motion-reduce:transition-none"
             />
           </a>
           {

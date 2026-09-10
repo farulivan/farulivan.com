@@ -47,7 +47,7 @@ const links = siteConfig.menu.map((item) => ({
    * large number would achieve nothing beyond what these two do.
    */
 }
-<div class="group relative z-[1]" data-menu>
+<div class="group relative z-1" data-menu>
   <Pill
     tone="dark"
     label={t("nav.openMenu")}
@@ -56,7 +56,7 @@ const links = siteConfig.menu.map((item) => ({
     data-menu-trigger
     data-label-closed={t("nav.openMenu")}
     data-label-open={t("nav.closeMenu")}
-    class="relative z-[2]"
+    class="relative z-2"
   >
     <Fragment slot="circle">
       {
@@ -79,15 +79,17 @@ const links = siteConfig.menu.map((item) => ({
 
   <div
     class:list={[
-      "rounded-panel bg-surface fixed top-[88px] right-0 z-[1] w-full max-w-[480px]",
+      "rounded-panel bg-surface fixed top-[88px] right-0 z-1 w-full max-w-[480px]",
       // Static tilt, never animated. A degree and a half is the whole reason
       // this reads as placed by hand rather than as a system dropdown.
       "rotate-[1.4deg] px-5 py-7",
       // Clears the bar on a narrow screen: 16px of padding, a 56px control and
       // 16px again. From 768 up it hangs from the very top, and its corner may
       // bleed past the right edge — which echoes the crop on the hero. The
-      // links stay fully inside: decoration can be cropped, a target cannot.
-      "md:top-0 md:right-[-24px] md:w-[480px] md:pe-[calc(var(--spacing-5)+24px)]",
+      // links stay fully inside: decoration can be cropped, a target cannot,
+      // so the padding on that side is the usual one plus however far the card
+      // hangs over. Both read the same step, so they cannot come apart.
+      "md:top-0 md:-right-5 md:w-[480px] md:pe-[calc(var(--spacing-5)*2)]",
       // It arrives from off the right edge and leaves the same way, rather
       // than fading in place — the card comes and goes, so it should come from
       // somewhere. 130% because it is tilted and already hangs past the edge,

@@ -61,6 +61,16 @@ runs at the end of `pnpm verify`. It has caught a fixed bar that was never
 pinned, a page with no padding, and a class list edited down to a bare
 `prose-headings:`.
 
+**Tailwind renames its own class names, and the CLI rewrites them for you.**
+`start-0` became `inset-s-0`, `[&>*]:` became `*:`, `z-[1]` became `z-1`,
+`gap-[var(--row-gap)]` became `gap-(--row-gap)`. The editor extension offers a
+quick fix one class at a time; `npx @tailwindcss/upgrade` does the whole
+project in one pass and is the official tool for it. Run it on a clean tree
+after every Tailwind version bump, then read the diff — it is a codemod, not a
+formatter, and it has been seen escaping `<` inside a CSS comment. Nothing runs
+it automatically, because a codemod that fires on save is a codemod nobody
+reads.
+
 **Do not restate `global.css`.** Every `:focus-visible` already gets a 2px ink
 outline at 2px offset. Only write focus classes when the element genuinely needs
 something else — a light ring on the inverted footer, an inset ring on a link
