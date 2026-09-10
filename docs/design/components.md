@@ -318,15 +318,26 @@ Appears on every page.
 
 ```
 padding:  var(--s-9) var(--page-margin) var(--page-margin)
-columns:  start at 50% of the viewport — the left half stays empty
-          apart from the small mark on the margin
-labels:   var(--t-micro), uppercase, --ink-muted
-links:    var(--t-ui), --ink, row pitch 28px
+field:    --surface-invert, with --ink-invert text
+columns:  menu on the left margin, social and contact hard right
+labels:   var(--t-micro), uppercase, --ink-invert-muted
+menu:     var(--t-h-l), no label above it
+links:    var(--t-ui), --ink-invert, row pitch 28px
 wordmark: mark-footer, full content width, bottom-flush, STATIC
+rights:   below the wordmark, --t-micro, --ink-invert-muted
 ```
 
-> **The left half is empty on purpose.** Dense content occupying half the
-> available space is what makes the footer read as calm rather than crowded.
+> **Changed after the specification was written.** This originally kept every
+> column in the right half, with the left one empty apart from a small mark on
+> the margin, on the reasoning that dense content in half the space reads as
+> calm rather than crowded.
+>
+> That held while the footer was ink on paper and the menu was set at reading
+> size. Inverting it to a black field and setting the menu at heading size
+> changed the arithmetic: a black empty half is much heavier than a white one,
+> and it stopped reading as restraint and started reading as a hole. The menu
+> now holds the left edge instead, which keeps the band weighted rather than
+> evenly divided.
 
 > **The footer wordmark does not animate.** The site opens by writing the name
 > and closes with the same name set huge and still. One draw per visit.

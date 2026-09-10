@@ -2,9 +2,12 @@
 /**
  * The footer, on every page.
  *
- * The left half is empty on purpose. The columns are dense, and confining them
- * to half the available space is what makes the whole thing read as calm
- * rather than crowded. Resist filling it.
+ * The menu holds the left edge and the two small lists sit hard right, so the
+ * band is weighted rather than centred. The specification originally kept
+ * every column in the right half with the left one empty, which worked when
+ * this was ink on paper and the menu was set at reading size. Inverted to a
+ * black field, with the menu at heading size, that empty half stopped reading
+ * as calm and started reading as a hole.
  */
 import Wordmark from "@/components/Wordmark.astro"
 import { siteConfig } from "@/config/site"
@@ -132,13 +135,15 @@ const social = [
     color: var(--color-ink-invert);
   }
 
-  /* Starting at the halfway mark is the whole idea. */
+  /*
+   * The menu takes whatever is left over, which pushes the two small lists to
+   * the far edge. Weighted left and light right, rather than a row of three
+   * even columns — that shape is the most ordinary footer there is.
+   */
   .foot__columns {
     display: grid;
-    /* The menu carries the largest type, so it takes the widest column. */
-    grid-template-columns: 1.4fr 1fr 1fr;
-    gap: var(--spacing-5);
-    margin-inline-start: 50%;
+    grid-template-columns: 1fr auto auto;
+    gap: var(--spacing-7);
   }
 
   .foot__label {
@@ -232,7 +237,6 @@ const social = [
     .foot__columns {
       grid-template-columns: 1fr 1fr;
       gap: var(--spacing-7) var(--spacing-5);
-      margin-inline-start: 0;
     }
 
     .foot__col--menu {
