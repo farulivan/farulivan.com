@@ -13,9 +13,9 @@ import { glob } from "astro/loaders"
 import { postSchema } from "./content/schemas"
 
 /** Locale lives in frontmatter, so these folders are organization only. */
-const blog = defineCollection({
-  loader: glob({ base: "./src/content/blog", pattern: "**/*.mdx" }),
+const writing = defineCollection({
+  loader: glob({ base: "./src/content/writing", pattern: "**/*.mdx" }),
   schema: postSchema,
 })
 
-export const collections = { blog }
+export const collections = { writing }

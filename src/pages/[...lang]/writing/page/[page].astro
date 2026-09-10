@@ -2,8 +2,8 @@
 import type { InferGetStaticPropsType } from "astro"
 
 /**
- * Pages 2..N only — page 1 lives at /blog so the canonical blog URL has no
- * page number in it. Astro resolves this ahead of `blog/[slug]` because the
+ * Pages 2..N only — page 1 lives at /writing so the canonical writing URL has no
+ * page number in it. Astro resolves this ahead of `writing/[slug]` because the
  * static `page/` segment is more specific than a dynamic parameter.
  */
 import Pagination from "@/components/Pagination.astro"
@@ -44,23 +44,23 @@ const page = paginate(all, pageNumber, siteConfig.postsPerPage)
 
 <BaseLayout
   lang={lang}
-  path={`/blog/page/${page.current}`}
-  title={`${t("blog.title")} — ${t("pagination.status", { current: page.current, total: page.total })}`}
-  description={t("blog.subtitle")}
+  path={`/writing/page/${page.current}`}
+  title={`${t("writing.title")} — ${t("pagination.status", { current: page.current, total: page.total })}`}
+  description={t("writing.subtitle")}
 >
   <Section>
     <header class="mb-10 max-w-2xl">
       <h1 class="text-h-l font-emph">
-        {t("blog.title")}
+        {t("writing.title")}
       </h1>
-      <p class="text-ink-muted mt-3 text-pretty">{t("blog.subtitle")}</p>
+      <p class="text-ink-muted mt-3 text-pretty">{t("writing.subtitle")}</p>
     </header>
 
     <PostList
       lang={lang}
       posts={page.items}
-      hrefFor={(slug) => localizePath(`/blog/${slug}`, lang)}
-      tagHrefFor={(slug) => localizePath(`/blog/tag/${slug}`, lang)}
+      hrefFor={(slug) => localizePath(`/writing/${slug}`, lang)}
+      tagHrefFor={(slug) => localizePath(`/writing/tag/${slug}`, lang)}
     />
     <Pagination lang={lang} current={page.current} total={page.total} />
   </Section>

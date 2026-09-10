@@ -2,7 +2,7 @@
 import Icon from "@/components/ui/Icon.astro"
 import type { Locale } from "@/content/schemas"
 import { useTranslations } from "@/i18n/utils"
-import { blogPageHref } from "@/lib/pagination"
+import { writingPageHref } from "@/lib/pagination"
 
 interface Props {
   lang: Locale
@@ -34,7 +34,7 @@ const hasNext = current < total
         in opposite directions. The empty span preserves the layout.
       */}
       {hasPrev ? (
-        <a href={blogPageHref(lang, current - 1)} rel="prev" class={link}>
+        <a href={writingPageHref(lang, current - 1)} rel="prev" class={link}>
           <Icon name="chevronLeft" class="size-4" />
           {t("pagination.previous")}
         </a>
@@ -47,7 +47,7 @@ const hasNext = current < total
       </span>
 
       {hasNext ? (
-        <a href={blogPageHref(lang, current + 1)} rel="next" class={link}>
+        <a href={writingPageHref(lang, current + 1)} rel="next" class={link}>
           {t("pagination.next")}
           <Icon name="chevronRight" class="size-4" />
         </a>

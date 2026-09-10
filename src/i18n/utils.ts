@@ -3,8 +3,8 @@
  * component, so every function here is unit-testable in isolation.
  *
  * The URL shape these encode (`prefixDefaultLocale: false`):
- *   English      /            /blog        /blog/my-post
- *   Indonesian   /id/         /id/blog     /id/blog/my-post
+ *   English      /            /writing        /writing/my-post
+ *   Indonesian   /id/         /id/writing     /id/writing/my-post
  */
 import {
   DEFAULT_LOCALE,
@@ -24,7 +24,7 @@ export function isLocale(value: unknown): value is Locale {
 /**
  * Reads the active locale out of a pathname. The default locale has no
  * prefix, so anything unrecognized is simply the default rather than a 404 —
- * `/blog` and `/about` must not be mistaken for language codes.
+ * `/writing` and `/about` must not be mistaken for language codes.
  */
 export function getLangFromPath(pathname: string): Locale {
   const first = pathname.split("/").filter(Boolean)[0]
@@ -65,7 +65,7 @@ export function stripLocale(pathname: string): string {
 /**
  * Prefixes a locale-less path for the given locale. The default locale is
  * returned unprefixed, which is what makes `lang: undefined` in
- * `getStaticPaths` produce `/blog` rather than `/en/blog`.
+ * `getStaticPaths` produce `/writing` rather than `/en/writing`.
  *
  * A hash or query string is split off first and re-attached afterwards, so
  * callers can pass "/#pricing" and get "/id#pricing" rather than the

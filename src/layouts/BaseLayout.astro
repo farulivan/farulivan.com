@@ -13,7 +13,7 @@ interface Props {
   title: string
   description: string
   lang: Locale
-  /** Locale-less path, e.g. "/blog/my-post". Drives canonical + hreflang. */
+  /** Locale-less path, e.g. "/writing/my-post". Drives canonical + hreflang. */
   path: string
   /**
    * Where the language picker should point, when it is not this page. Tag
@@ -119,7 +119,7 @@ const t = useTranslations(lang)
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={`${siteConfig.name} — ${t("blog.title")}`}
+      title={`${siteConfig.name} — ${t("writing.title")}`}
       href={new URL(localizePath("/rss.xml", lang), Astro.site).href}
     />
   </head>

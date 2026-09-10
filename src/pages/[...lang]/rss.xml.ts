@@ -24,8 +24,8 @@ export async function GET(context: APIContext) {
   const posts = await getPosts(lang)
 
   return rss({
-    title: `${siteConfig.name} — ${t("blog.title")}`,
-    description: t("blog.subtitle"),
+    title: `${siteConfig.name} — ${t("writing.title")}`,
+    description: t("writing.subtitle"),
     site: context.site ?? siteConfig.url,
     // Untranslated articles appear in the feed as their fallback version,
     // matching what the site itself serves at that URL.
@@ -33,7 +33,7 @@ export async function GET(context: APIContext) {
       title: entry.data.title,
       description: entry.data.description,
       pubDate: entry.data.pubDate,
-      link: localizePath(`/blog/${postSlug(entry)}`, lang),
+      link: localizePath(`/writing/${postSlug(entry)}`, lang),
       categories: [...entry.data.tags],
     })),
     customData: `<language>${LOCALE_TAGS[lang]}</language>`,

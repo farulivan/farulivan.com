@@ -2,10 +2,10 @@
  * The content query layer — the only module besides pages that is allowed to
  * touch `getCollection`.
  *
- * It exists because three blog routes (index, paginated index, post) need the
+ * It exists because three writing routes (index, paginated index, post) need the
  * same non-obvious rules: drop drafts, prefer the requested locale, fall back
  * to the default locale when a translation is missing, and key URLs off
- * `translationKey` so `/blog/x` and `/id/blog/x` are always the same article.
+ * `translationKey` so `/writing/x` and `/id/writing/x` are always the same article.
  * Duplicating that across three files is how the three quietly drift apart.
  *
  * Data access lives in one place, and pages compose it.
@@ -16,7 +16,7 @@ import { slugify } from "@/lib/slugify"
 
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./schemas"
 
-export type PostEntry = CollectionEntry<"blog">
+export type PostEntry = CollectionEntry<"writing">
 
 export interface LocalizedPost {
   entry: PostEntry
@@ -38,7 +38,7 @@ const newestFirst = (a: LocalizedPost, b: LocalizedPost) =>
   b.entry.data.pubDate.getTime() - a.entry.data.pubDate.getTime()
 
 async function publishedPosts(): Promise<PostEntry[]> {
-  return getCollection("blog", (entry) => entry.data.draft !== true)
+  return getCollection("writing", (entry) => entry.data.draft !== true)
 }
 
 /**
@@ -83,7 +83,7 @@ export async function getPost(
   return posts.find((post) => postSlug(post.entry) === slug)
 }
 
-/** Every (locale, slug) pair the blog should generate. */
+/** Every (locale, slug) pair the writing section should generate. */
 export async function getPostRoutes(): Promise<
   { lang: Locale; slug: string; post: LocalizedPost }[]
 > {
@@ -96,7 +96,7 @@ export async function getPostRoutes(): Promise<
   return routes
 }
 
-/** Shape the blog list renders. Kept here so both index routes agree on it. */
+/** Shape the writing list renders. Kept here so both index routes agree on it. */
 export interface PostListItem {
   slug: string
   title: string
@@ -109,7 +109,7 @@ export interface PostListItem {
 /**
  * Reading time is written into frontmatter by the Sätteri plugin and is only
  * readable after `render()`, so the list renders each entry to reach it. At
- * static-build time over a blog-sized collection that is a non-issue; if a
+ * static-build time over a writing-sized collection that is a non-issue; if a
  * collection ever grew large enough for it to matter, the fix is to move the
  * count into the loader rather than to drop the feature.
  */
@@ -146,7 +146,7 @@ export interface TagSummary {
  * Tags are authored per locale, so a tag has no cross-locale identity: the
  * English post carries "deployment" and the Indonesian one "penerapan". That
  * is why tag routes are generated per locale and why the language picker on a
- * tag page falls back to the blog index rather than switching to a URL that
+ * tag page falls back to the writing index rather than switching to a URL that
  * would not exist.
  */
 export async function getTags(lang: Locale): Promise<TagSummary[]> {
@@ -167,7 +167,7 @@ export async function getTags(lang: Locale): Promise<TagSummary[]> {
   )
 }
 
-/** The blog list, narrowed to one tag. */
+/** The writing list, narrowed to one tag. */
 export async function getPostListItemsByTag(
   lang: Locale,
   tagSlug: string

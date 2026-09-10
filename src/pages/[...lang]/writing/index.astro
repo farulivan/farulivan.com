@@ -29,23 +29,23 @@ const page = paginate(all, 1, siteConfig.postsPerPage)
 
 <BaseLayout
   lang={lang}
-  path="/blog"
-  title={t("blog.title")}
-  description={t("blog.subtitle")}
+  path="/writing"
+  title={t("writing.title")}
+  description={t("writing.subtitle")}
 >
   <Section>
     <header class="mb-10 max-w-2xl">
       <h1 class="text-h-l font-emph">
-        {t("blog.title")}
+        {t("writing.title")}
       </h1>
-      <p class="text-ink-muted mt-3 text-pretty">{t("blog.subtitle")}</p>
+      <p class="text-ink-muted mt-3 text-pretty">{t("writing.subtitle")}</p>
     </header>
 
     <PostList
       lang={lang}
       posts={page.items}
-      hrefFor={(slug) => localizePath(`/blog/${slug}`, lang)}
-      tagHrefFor={(slug) => localizePath(`/blog/tag/${slug}`, lang)}
+      hrefFor={(slug) => localizePath(`/writing/${slug}`, lang)}
+      tagHrefFor={(slug) => localizePath(`/writing/tag/${slug}`, lang)}
     />
     <Pagination lang={lang} current={page.current} total={page.total} />
   </Section>

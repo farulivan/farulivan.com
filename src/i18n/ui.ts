@@ -59,16 +59,16 @@ export const en = {
   "cv.detail": "{format}, {size}",
 
   // Writing
-  "blog.title": "Writing",
-  "blog.subtitle":
+  "writing.title": "Writing",
+  "writing.subtitle":
     "Notes on building for the web — what worked, and what did not.",
-  "blog.readingTime": "{minutes} min read",
-  "blog.published": "Published {date}",
-  "blog.updated": "Updated {date}",
-  "blog.backToBlog": "Back to writing",
-  "blog.allPosts": "All posts",
-  "blog.empty": "Nothing published yet.",
-  "blog.untranslated":
+  "writing.readingTime": "{minutes} min read",
+  "writing.published": "Published {date}",
+  "writing.updated": "Updated {date}",
+  "writing.backToIndex": "Back to writing",
+  "writing.allPosts": "All posts",
+  "writing.empty": "Nothing published yet.",
+  "writing.untranslated":
     "This post isn't available in your language yet — showing the English version.",
 
   // Pagination
@@ -132,16 +132,16 @@ export const id: Record<TranslationKey, string> = {
   "cv.see": "Lihat resume saya",
   "cv.detail": "{format}, {size}",
 
-  "blog.title": "Tulisan",
-  "blog.subtitle":
+  "writing.title": "Tulisan",
+  "writing.subtitle":
     "Catatan membangun untuk web — yang berhasil, dan yang tidak.",
-  "blog.readingTime": "{minutes} menit baca",
-  "blog.published": "Terbit {date}",
-  "blog.updated": "Diperbarui {date}",
-  "blog.backToBlog": "Kembali ke tulisan",
-  "blog.allPosts": "Semua tulisan",
-  "blog.empty": "Belum ada tulisan.",
-  "blog.untranslated":
+  "writing.readingTime": "{minutes} menit baca",
+  "writing.published": "Terbit {date}",
+  "writing.updated": "Diperbarui {date}",
+  "writing.backToIndex": "Kembali ke tulisan",
+  "writing.allPosts": "Semua tulisan",
+  "writing.empty": "Belum ada tulisan.",
+  "writing.untranslated":
     "Tulisan ini belum tersedia dalam bahasa Anda — menampilkan versi Inggris.",
 
   "pagination.label": "Navigasi halaman tulisan",
