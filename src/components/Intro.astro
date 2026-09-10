@@ -77,6 +77,14 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
     display: block;
     width: 100%;
     height: auto;
+    /*
+     * The lettering's box is drawn tight to its ink, and the full stop is the
+     * lowest thing in it — its base lands exactly on the bottom edge. An SVG
+     * clips to that edge by default, so the last row of the dot was being
+     * shaved off by rounding. The same rule is on the lettering everywhere
+     * else; this copy was the one that missed it.
+     */
+    overflow: visible;
   }
 
   .intro__mark .mark__ghost path {

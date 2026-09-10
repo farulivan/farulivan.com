@@ -191,7 +191,13 @@ const snippet: { text: string; kind: string }[] = [
     background-color: var(--color-ink);
   }
 
-  [data-sf-state="typing"] .sf__caret {
+  /*
+   * Solid while the line is being typed, blinking once it stops — which is
+   * what a cursor in an editor does. It was the other way round, so the caret
+   * flickered through the whole of the writing and read as though it kept
+   * disappearing.
+   */
+  [data-sf-state="holding-code"] .sf__caret {
     animation: sf-blink 1s steps(1, end) infinite;
   }
 
