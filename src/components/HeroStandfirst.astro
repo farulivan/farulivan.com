@@ -32,23 +32,44 @@ const { lang, class: className, ...rest } = Astro.props
 const t = useTranslations(lang)
 
 /**
- * The real element's markup, class list and all, on a single line.
+ * The one place on the site with colours outside the palette, and deliberately
+ * so: it is depicting an editor, and an editor that renders everything in one
+ * ink is not depicting anything. They are the same family the code blocks in
+ * the writing section use, so the site only ever has one idea of what code
+ * looks like.
  *
- * 133 characters, which is what decides the type size below: at the block's
- * width there is exactly one size that fits them on one line on a wide screen.
+ * Measured on white: 7.39, 7.59, 12.81, 7.39 and 5.10 to one. All clear AA.
+ */
+const ink = {
+  tag: "text-[#116329]",
+  attr: "text-[#0550ae]",
+  string: "text-[#0a3069]",
+  entity: "text-[#953800]",
+  mark: "text-ink-muted",
+  text: "text-ink",
+} as const
+
+/**
+ * The line's own markup, class list and all, on one line.
  *
- * The `style` attribute the real element also carries is left out. It holds an
+ * Every class here is really on the sentence or on the box holding it — it is
+ * the two class lists read as one element, not an invention. 138 characters,
+ * which is what decides the type size below: at the block's width there is
+ * exactly one size that fits them on a single line on a wide screen. Changing
+ * the string means changing that size with it.
+ *
+ * The `style` attribute the box also carries is left out. It holds an
  * animation offset rather than a class, so it adds 28 characters of build
  * detail and costs the one-line fit on every screen narrower than about 1700.
  */
-const snippet: { text: string; kind: string }[] = [
+const snippet: { text: string; kind: keyof typeof ink }[] = [
   { text: "<", kind: "mark" },
   { text: "p", kind: "tag" },
   { text: " ", kind: "mark" },
   { text: "class", kind: "attr" },
   { text: "=", kind: "mark" },
   {
-    text: '"text-display-s font-display text-ink hero-enter hero__standfirst absolute left-[20%]"',
+    text: '"text-display-s font-display text-ink text-pretty hero-enter absolute top-[77%] left-[20%]"',
     kind: "string",
   },
   { text: ">", kind: "mark" },
@@ -61,190 +82,107 @@ const snippet: { text: string; kind: string }[] = [
 ]
 ---
 
+{
+  /*
+   * Both states share one grid cell, so the box is as tall as the taller of
+   * the two and nothing below it moves as they swap. They are centred in that
+   * cell rather than top-aligned: the code is the taller of the two, and a
+   * one-line sentence pinned to the top of a three-line box reads as though it
+   * slipped upwards when the two swap.
+   *
+   * `@container` lets the snippet size itself against this box rather than the
+   * window, which is what makes the one-line fit exact rather than tuned.
+   *
+   * Both halves start at zero opacity, and each is turned on by the state the
+   * script writes here — so one fades out as the other fades in.
+   */
+}
 <div
-  class:list={["sf", className]}
+  class:list={[
+    "group @container grid *:col-start-1 *:row-start-1 *:m-0 *:self-center *:text-left",
+    className,
+  ]}
   aria-hidden="true"
   data-standfirst
   {...rest}
 >
-  <code class="sf__code" data-sf-code
-    >{
-      snippet.map((token) => (
-        <span class={`sf__t sf__t--${token.kind}`} data-t>
-          {token.text}
-        </span>
-      ))
-    }<span class="sf__caret" data-sf-caret></span></code
-  >
-
-  <p class="sf__text" data-sf-text>{t("site.descriptor")}</p>
-</div>
-
-<style>
-  /*
-   * Both states share one grid cell, so the box is as tall as the taller of
-   * the two and nothing below it moves as they swap.
-   */
-  .sf {
-    display: grid;
-    grid-template-areas: "sf";
-    /* Lets the snippet size itself against this box rather than the window,
-       which is what makes the one-line fit exact rather than tuned. */
-    container-type: inline-size;
-  }
-
-  /*
-   * Centred in the cell, not top-aligned. The code is the taller of the two,
-   * so the cell is its height — and a one-line sentence pinned to the top of a
-   * three-line box reads as though it slipped upwards when the two swap.
-   */
-  .sf > * {
-    grid-area: sf;
-    margin: 0;
-    align-self: center;
-    text-align: left;
-  }
-
-  .sf__text {
-    /*
-     * On the sentence rather than on the box around it: `ch` is relative to
-     * the element's own font size, and the box inherits the page's 16px while
-     * this is set at the display size. Measured from the box it came out about
-     * a third of the intended width and broke one line into three.
-     */
-    max-width: 22ch;
-    font-size: var(--text-display-s);
-    line-height: var(--text-display-s--line-height);
-    letter-spacing: var(--text-display-s--letter-spacing);
-    font-weight: var(--font-weight-display);
-    color: var(--color-ink);
-    text-wrap: pretty;
-  }
-
-  .sf__code {
-    font-family: var(--font-mono);
+  {
     /*
      * Sized so the snippet is exactly one line, derived rather than tuned.
      *
-     * It is 133 characters, and the monospace here advances 0.602em each, so
-     * the line is 80.07em wide. A font size of a hundredth of the box divided
+     * It is 138 characters, and the monospace here advances 0.602em each, so
+     * the line is 83.09em wide. A font size of a hundredth of the box divided
      * by that makes the line exactly as wide as the box, at any width.
      *
-     * Divided by 82 rather than 80.07, for two reasons. Sub-pixel rounding
+     * Divided by 85 rather than 83.09, for two reasons. Sub-pixel rounding
      * broke the line at 1440 with the exact figure, and the reader's operating
      * system may not supply the same monospace this was measured against —
      * they vary from about 0.55em to 0.6em a character. The headroom costs a
      * couple of per cent of size and buys a line that does not wrap on a
      * machine nobody here has.
      *
-     * The floor is where one line stops being readable. Below about 780px of
-     * box, roughly a 980px page, it would need type under 9.5px, so it wraps
-     * instead — 133 characters do not cross a phone at any size worth reading.
+     * The floor is where one line stops being readable. Measured, one line
+     * survives down to a 795px box — a 1024px page — and below that it would
+     * need type under 9.5px, so it wraps instead. 138 characters do not cross
+     * a phone at any size worth reading. The ceiling stops it growing into the
+     * sentence it sits under.
      *
-     * The ceiling stops it growing into the sentence it sits under.
+     * `wrap-anywhere` is what makes wrapping safe: a long attribute value is
+     * one unbreakable word, and without it the line pushes past the edge
+     * instead of falling to the next.
+     *
+     * With no script, and for anyone who asked for less motion, this half is
+     * removed outright rather than hidden, so it cannot be read out or found
+     * by a page search.
      */
-    font-size: clamp(9.5px, calc(100cqi / 82), 14px);
-    line-height: 1.7;
-    white-space: pre-wrap;
-    /* Long attribute values break rather than pushing past the edge. */
-    overflow-wrap: anywhere;
   }
+  <code
+    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi_/_85),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
+    data-sf-code
+    >{
+      snippet.map((token) => (
+        <span class={ink[token.kind]} data-t>
+          {token.text}
+        </span>
+      ))
+    }<span
+      class="bg-ink inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] group-data-[sf-state=holding-code]:animate-[caret-blink_1s_steps(1,end)_infinite]"
+      data-sf-caret></span></code
+  >
 
+  {
+    /*
+     * The measure is set on the sentence rather than on the box around it:
+     * `ch` is relative to the element's own font size, and the box inherits
+     * the page's 16px while this is set at the display size. Measured from the
+     * box it came out about a third of the intended width and broke one line
+     * into three.
+     *
+     * Balancing the lines helps a two-line sentence on a wide screen and
+     * actively costs a line on a narrow one, where every line is already full.
+     */
+  }
+  <p
+    class="ease-state text-display-s font-display text-ink duration-mid max-w-[22ch] text-pretty opacity-0 transition-opacity group-not-data-sf-state:opacity-100 group-data-[sf-state=showing-text]:opacity-100 motion-reduce:opacity-100 motion-reduce:transition-none md:text-balance"
+    data-sf-text
+  >
+    {t("site.descriptor")}
+  </p>
+</div>
+
+<style is:global>
   /*
-   * The one place on the site with colours outside the palette, and
-   * deliberately so: it is depicting an editor, and an editor that renders
-   * everything in one ink is not depicting anything. They are the same family
-   * the code blocks in the writing section use, so the site only ever has one
-   * idea of what code looks like.
+   * A keyframe list has to be declared somewhere — there is no element to hang
+   * it on.
    *
-   * Measured on white: 7.39, 7.59, 12.81, 7.39 and 5.10 to one. All clear AA.
+   * Solid while the line is being typed, blinking once it stops, which is what
+   * a cursor in an editor does. It was the other way round at first, so the
+   * caret flickered through the whole of the writing and read as though it
+   * kept disappearing.
    */
-  .sf__t--tag {
-    color: #116329;
-  }
-
-  .sf__t--attr {
-    color: #0550ae;
-  }
-
-  .sf__t--string {
-    color: #0a3069;
-  }
-
-  .sf__t--entity {
-    color: #953800;
-  }
-
-  .sf__t--mark {
-    color: var(--color-ink-muted);
-  }
-
-  .sf__t--text {
-    color: var(--color-ink);
-  }
-
-  .sf__caret {
-    display: inline-block;
-    width: 0.55em;
-    height: 1.1em;
-    translate: 0 0.2em;
-    background-color: var(--color-ink);
-  }
-
-  /*
-   * Solid while the line is being typed, blinking once it stops — which is
-   * what a cursor in an editor does. It was the other way round, so the caret
-   * flickered through the whole of the writing and read as though it kept
-   * disappearing.
-   */
-  [data-sf-state="holding-code"] .sf__caret {
-    animation: sf-blink 1s steps(1, end) infinite;
-  }
-
-  @keyframes sf-blink {
+  @keyframes caret-blink {
     50% {
       opacity: 0;
-    }
-  }
-
-  /* One fades out as the other fades in. The script decides which. */
-  .sf__code,
-  .sf__text {
-    opacity: 0;
-    transition: opacity 320ms var(--ease-state);
-  }
-
-  [data-sf-state="typing"] .sf__code,
-  [data-sf-state="holding-code"] .sf__code,
-  [data-sf-state="showing-text"] .sf__text {
-    opacity: 1;
-  }
-
-  /*
-   * With no script, and for anyone who asked for less motion, this is just the
-   * sentence. The code half is removed outright rather than hidden, so it
-   * cannot be read out or found by a page search.
-   */
-  .sf:not([data-sf-state]) .sf__text {
-    opacity: 1;
-  }
-
-  .sf:not([data-sf-state]) .sf__code {
-    display: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .sf__code {
-      display: none;
-    }
-
-    .sf__text {
-      opacity: 1;
-      transition: none;
-    }
-
-    .sf__caret {
-      animation: none;
     }
   }
 </style>

@@ -34,7 +34,20 @@ const links = siteConfig.menu.map((item) => ({
 }))
 ---
 
-<div class="menu" data-menu>
+{
+  /*
+   * The control stays on top of the card it opens. On a wide screen the card
+   * is anchored to the very top of the window, which puts it exactly where the
+   * control is — and a menu that covers its own close button, and the language
+   * switcher next to it, is a trap. Floating the controls over the card is
+   * also what makes it read as hanging off the bar rather than replacing it.
+   *
+   * The stacking is ordered against the bar, not against the page. The bar is
+   * a fixed, stacked element, so everything here is painted inside it and a
+   * large number would achieve nothing beyond what these two do.
+   */
+}
+<div class="group relative z-[1]" data-menu>
   <Pill
     tone="dark"
     label={t("nav.openMenu")}
@@ -43,42 +56,113 @@ const links = siteConfig.menu.map((item) => ({
     data-menu-trigger
     data-label-closed={t("nav.openMenu")}
     data-label-open={t("nav.closeMenu")}
+    class="relative z-[2]"
   >
     <Fragment slot="circle">
-      <Icon name="dots" class="menu__icon size-5" />
+      {
+        /*
+         * The dots turn a quarter circle rather than being swapped for a
+         * different mark: nothing resizes and nothing is replaced, so there is
+         * no frame where the control looks like it flinched. Upright on hover,
+         * and upright while the menu is open. Keyboard focus is matched on the control itself
+         * rather than with `:focus-within`, which stays true for as long as the
+         * menu is open and would leave them contradicting the state they
+         * report.
+         */
+      }
+      <Icon
+        name="dots"
+        class="duration-mid ease-state size-5 transition-transform group-hover:rotate-90 group-has-[[data-menu-trigger]:focus-visible]:rotate-90 group-data-open:rotate-90 motion-reduce:transition-none"
+      />
     </Fragment>
   </Pill>
 
   <div
-    class="menu__card"
+    class:list={[
+      "rounded-panel bg-surface fixed top-[88px] right-0 z-[1] w-full max-w-[480px]",
+      // Static tilt, never animated. A degree and a half is the whole reason
+      // this reads as placed by hand rather than as a system dropdown.
+      "rotate-[1.4deg] px-5 py-7",
+      // Clears the bar on a narrow screen: 16px of padding, a 56px control and
+      // 16px again. From 768 up it hangs from the very top, and its corner may
+      // bleed past the right edge — which echoes the crop on the hero. The
+      // links stay fully inside: decoration can be cropped, a target cannot.
+      "md:top-0 md:right-[-24px] md:w-[480px] md:pe-[calc(var(--spacing-5)+24px)]",
+      // It arrives from off the right edge and leaves the same way, rather
+      // than fading in place — the card comes and goes, so it should come from
+      // somewhere. 130% because it is tilted and already hangs past the edge,
+      // so a full width alone leaves a corner showing. Under reduced motion it
+      // is simply not there and then it is, which is the finished state rather
+      // than a faster journey to it.
+      "duration-slow ease-reveal pointer-events-none translate-x-[130%] transition-transform",
+      "group-data-open:pointer-events-auto group-data-open:translate-x-0",
+      "motion-reduce:transition-none",
+    ]}
     id="site-menu"
     aria-label={t("nav.menuLabel")}
     data-menu-card
     inert
   >
+    {
+      /*
+       * Closed is the default, so the card is inert and parked before any
+       * script has run.
+       *
+       * It is deliberately *not* hidden with `visibility`. That is the obvious
+       * thing to reach for and it breaks the keyboard: a hidden element cannot
+       * take focus, the property still computes as hidden in the frame the
+       * menu opens in, and moving focus into the card therefore does nothing
+       * at all — silently. `inert` already does the work that mattered: while
+       * it is set, nothing inside is reachable by pointer, keyboard or screen
+       * reader, and the pointer rule above is belt and braces.
+       *
+       * The links ride in on the card rather than animating separately. They
+       * used to fade up on a stagger, which was a second entrance competing
+       * with the first, and staggering a list that is already sliding across
+       * the screen reads as lag rather than choreography.
+       */
+    }
     <nav aria-label={t("nav.menuLabel")}>
-      <ul class="menu__list">
+      {
+        /*
+         * Size, weight, tracking, fill, radius and tilt are identical at every
+         * width. Only the card's width and its anchor change. Do not scale
+         * this down on a phone.
+         */
+      }
+      <ul class="m-0 flex list-none flex-col p-0">
         {
-          links.map((link, index) =>
+          links.map((link) =>
             link.current ? (
               /*
                * The page you are already on is not a link. Rendering it as one
                * and then disabling it leaves something that invites a click,
-               * sits in the tab order, and goes nowhere.
+               * sits in the tab order, and goes nowhere. Present, readable,
+               * and clearly not going anywhere.
                */
-              <li style={`--i:${index}`}>
+              <li>
                 <span
-                  class="menu__link menu__link--current"
+                  class="rounded-panel text-display-s font-display text-ink-muted flex min-h-[88px] cursor-default items-center justify-between px-5 py-4 leading-none tracking-[-0.055em] no-underline"
                   aria-current="page"
                 >
                   {link.label}
                 </span>
               </li>
             ) : (
-              <li style={`--i:${index}`}>
-                <a class="menu__link" href={link.href}>
+              <li>
+                <a
+                  class="rounded-panel text-display-s font-display group/link text-ink duration-fast ease-state hover:bg-paper flex min-h-[88px] cursor-pointer items-center justify-between px-5 py-4 leading-none tracking-[-0.055em] no-underline transition-colors focus-visible:-outline-offset-2 active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100"
+                  href={link.href}
+                >
                   <span>{link.label}</span>
-                  <span class="menu__arrow" aria-hidden="true">
+                  {/*
+                   * On keyboard focus too, not hover alone — otherwise it is
+                   * information only a mouse user ever receives.
+                   */}
+                  <span
+                    class="duration-fast ease-state -translate-x-2 opacity-0 transition-[opacity,transform] group-hover/link:translate-x-0 group-hover/link:opacity-100 group-focus-visible/link:translate-x-0 group-focus-visible/link:opacity-100 motion-reduce:transition-none"
+                    aria-hidden="true"
+                  >
                     →
                   </span>
                 </a>
@@ -90,214 +174,6 @@ const links = siteConfig.menu.map((item) => ({
     </nav>
   </div>
 </div>
-
-<style>
-  .menu__card {
-    position: fixed;
-    /* Clears the bar on a narrow screen: 16px of padding, a 56px control,
-       and 16px again. */
-    top: 88px;
-    right: 0;
-    width: 100%;
-    max-width: 480px;
-    padding: var(--spacing-7) var(--spacing-5);
-    border-radius: var(--radius-panel);
-    background-color: var(--color-surface);
-    /*
-     * Static, never animated. A degree and a half is the whole reason this
-     * reads as placed by hand rather than as a system dropdown — more would
-     * look like a bug, less would do nothing.
-     */
-    transform: rotate(1.4deg);
-    /*
-     * Ordered against the control beside it, not against the page. The bar is
-     * a fixed, stacked element, so everything in here is painted inside it and
-     * a large number would achieve nothing beyond what this does.
-     */
-    z-index: 1;
-  }
-
-  /*
-   * The control stays on top of the card it opens. On a wide screen the card
-   * is anchored to the very top of the window, which puts it exactly where the
-   * control is — and a menu that covers its own close button, and the language
-   * switcher next to it, is a trap. Floating the controls over the card is
-   * also what makes it read as hanging off the bar rather than replacing it.
-   */
-  .menu {
-    position: relative;
-    /* Stacks the card and its control together, so the bar can order the
-       whole menu against the switcher beside it in one place. */
-    z-index: 1;
-  }
-
-  .menu :global([data-menu-trigger]) {
-    position: relative;
-    z-index: 2;
-  }
-
-  /*
-   * The corner may hang past the right edge, which echoes the crop on the
-   * hero and makes the two read as one idea rather than two tricks. The links
-   * stay fully inside: decoration can be cropped, a target cannot.
-   */
-  @media (width >= 768px) {
-    .menu__card {
-      top: 0;
-      right: -24px;
-      width: 480px;
-      padding-right: calc(var(--spacing-5) + 24px);
-    }
-  }
-
-  .menu__list {
-    display: flex;
-    flex-direction: column;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  /*
-   * Size, weight, tracking, fill, radius and tilt are identical at every
-   * width. Only the card's width and anchor change. Do not scale this down on
-   * a phone.
-   */
-  .menu__link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 88px;
-    padding: var(--spacing-4) var(--spacing-5);
-    border-radius: var(--radius-panel);
-    color: var(--color-ink);
-    font-size: var(--text-display-s);
-    font-weight: var(--font-weight-display);
-    letter-spacing: -0.055em;
-    line-height: 1;
-    text-decoration: none;
-    transition: background-color var(--duration-fast) var(--ease-state);
-  }
-
-  a.menu__link {
-    cursor: pointer;
-  }
-
-  a.menu__link:hover {
-    background-color: var(--color-paper);
-  }
-
-  /* Present, readable, and clearly not going anywhere. */
-  .menu__link--current {
-    color: var(--color-ink-muted);
-    cursor: default;
-  }
-
-  .menu__arrow {
-    opacity: 0;
-    transform: translateX(-8px);
-    transition:
-      opacity var(--duration-fast) var(--ease-state),
-      transform var(--duration-fast) var(--ease-state);
-  }
-
-  /*
-   * The arrow also appears on keyboard focus, not hover alone — otherwise it
-   * is information only a mouse user ever receives.
-   */
-  .menu__link:hover .menu__arrow,
-  .menu__link:focus-visible .menu__arrow {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .menu__link:focus-visible {
-    outline: 2px solid var(--color-ink);
-    /* Inside the row, so the ring is never clipped by the card's edge. */
-    outline-offset: -2px;
-  }
-
-  .menu__link:active {
-    transform: scale(0.99);
-  }
-
-  /* --- Open and closed ---------------------------------------------------
-     Closed is the default, so the card is inert and unpainted before any
-     script has run. */
-  /*
-   * It arrives from off the right edge and leaves the same way, rather than
-   * fading in place. The card is a thing that comes and goes, so it should
-   * come from somewhere.
-   *
-   * It is deliberately *not* hidden with `visibility`. Hiding it that way is
-   * the obvious thing to reach for and it breaks the keyboard: a hidden
-   * element cannot take focus, the property still computes as hidden in the
-   * frame the menu opens in, and moving focus into the card therefore does
-   * nothing at all — silently. `inert` already does the work that mattered.
-   * While it is set nothing inside is reachable by pointer, keyboard or screen
-   * reader, and the pointer rule below is belt and braces.
-   *
-   * 130% rather than 100%: the card is tilted and hangs past the edge already,
-   * so a full width alone leaves a corner of it showing.
-   */
-  .menu__card {
-    pointer-events: none;
-    transform: rotate(1.4deg) translateX(130%);
-    transition: transform var(--duration-slow) var(--ease-reveal);
-  }
-
-  .menu[data-open] .menu__card {
-    pointer-events: auto;
-    transform: rotate(1.4deg) translateX(0);
-  }
-
-  /*
-   * The links ride in on the card rather than animating separately. They used
-   * to fade up on a stagger, which was a second entrance competing with the
-   * first — and staggering a list that is already sliding across the screen
-   * reads as lag rather than choreography.
-   */
-
-  /*
-   * The dots turn a quarter circle rather than being swapped for a different
-   * mark. Nothing resizes and nothing is replaced, so there is no frame where
-   * the control looks like it flinched.
-   *
-   * Upright on hover, and upright while the menu is open. Keyboard focus is
-   * matched on the control itself rather than with `:focus-within`, which is
-   * true for as long as the menu is open — focus moves into the card — and so
-   * would leave the dots contradicting the state they are meant to report.
-   */
-  .menu__icon {
-    grid-area: circle;
-    transition: transform var(--duration-mid) var(--ease-state);
-  }
-
-  .menu:hover .menu__icon,
-  .menu:has([data-menu-trigger]:focus-visible) .menu__icon,
-  .menu[data-open] .menu__icon {
-    transform: rotate(90deg);
-  }
-
-  /*
-   * No travel. The card is simply not there and then it is, which is the
-   * finished state rather than a faster journey to it. It still has to leave
-   * the screen when closed, so the transform stays and only the transition
-   * goes.
-   */
-  @media (prefers-reduced-motion: reduce) {
-    .menu__card,
-    .menu__icon,
-    .menu__link,
-    .menu__arrow {
-      transition: none;
-    }
-
-    .menu__link:active {
-      transform: none;
-    }
-  }
-</style>
 
 <script>
   /**

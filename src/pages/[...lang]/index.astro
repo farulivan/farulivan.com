@@ -40,6 +40,12 @@ const t = useTranslations(lang)
      * Short enough on a phone that the section below it is reachable on the
      * first scroll, and full height on a desktop where there is room for it.
      *
+     * The 560px floor is not arbitrary. Everything under the lettering — the
+     * gap, two lines of standfirst, another gap and the scroll cue — needs
+     * about 142px, and only 26% of the hero is below the lettering. Under
+     * about 546px tall that stops fitting and the standfirst lands on the cue;
+     * measured, a 360×640 screen overlapped by two pixels.
+     *
      * TODO(content): the positioning sentence and the sections beneath it.
      * This is the hero only, so the crop can be checked before the rest of the
      * page is built on top of it.
@@ -53,7 +59,9 @@ const t = useTranslations(lang)
      * sticky positioning inside it later.
      */
   }
-  <section class="intro-follows hero relative overflow-x-clip">
+  <section
+    class="intro-follows relative min-h-[max(min(72vh,640px),560px)] overflow-x-clip lg:min-h-svh"
+  >
     {/* The lettering is decorative, so the real heading is text. */}
     <h1 class="sr-only">{t("site.title")}</h1>
 
@@ -69,11 +77,17 @@ const t = useTranslations(lang)
        * whatever the screen is doing. Anchoring it to the bottom instead lets
        * it drift into the lettering on a short screen and away from it on a
        * tall one.
+       *
+       * The lettering sits 26% up from the bottom, so its lower edge is at 74%
+       * from the top and this goes one gap past that — a share of the hero
+       * rather than a fixed number, so it opens up on a tall screen and
+       * tightens on a short one instead of crowding the cue. The width runs to
+       * the page margin, the same edge the lettering is cut on.
        */
     }
     <HeroStandfirst
       lang={lang}
-      class="hero-enter hero__standfirst absolute left-[20%]"
+      class="hero-enter absolute top-[77%] left-[20%] w-[calc(80%-var(--spacing-page-margin))]"
       style="--enter-step: 1"
     />
 
@@ -89,58 +103,12 @@ const t = useTranslations(lang)
 
 <style is:global>
   /*
-   * Directly under the lettering, measured from the lettering rather than
-   * from the floor of the hero.
+   * A keyframe list has to be declared somewhere — there is no element to hang
+   * it on. The class using it stays here too, because a delay built from two
+   * custom properties is not something a utility can express.
    *
-   * The lettering sits 26% up from the bottom, so its lower edge is at 74%
-   * from the top — and one gap past that is where this goes. Anchoring it to
-   * the bottom instead would let it drift into the lettering on a short
-   * screen and away from it on a tall one.
-   */
-  /*
-   * Short enough on a phone that the next section is reachable on the first
-   * scroll, full height where there is room for it.
-   *
-   * The floor is not arbitrary. Everything below the lettering — the gap, two
-   * lines of standfirst, another gap and the scroll cue — needs about 142px,
-   * and only 26% of the hero is below the lettering. Under about 546px tall
-   * that stops fitting and the standfirst lands on the cue; measured, a
-   * 360×640 screen overlapped by two pixels.
-   */
-  .hero {
-    min-height: max(min(72vh, 640px), 560px);
-  }
-
-  @media (width >= 1024px) {
-    .hero {
-      min-height: 100svh;
-    }
-  }
-
-  .hero__standfirst {
-    /*
-     * The lettering's lower edge is at 74%, and the gap past it is a share of
-     * the hero rather than a fixed number — so it opens up on a tall screen
-     * and tightens on a short one instead of crowding the scroll cue.
-     */
-    top: 77%;
-    /* Runs to the page margin, the same edge the lettering is cut on. Held
-       back to a comfortable measure once there is room for one. */
-    width: calc(80% - var(--spacing-page-margin));
-  }
-
-  /* Balancing the lines helps a two-line standfirst on a wide screen and
-     actively costs a line on a narrow one, where every line is already full. */
-  @media (width >= 768px) {
-    .hero__standfirst {
-      text-wrap: balance;
-    }
-  }
-
-  /*
    * The standfirst and the scroll cue follow the lettering in, one after the
-   * other, so the hero assembles rather than appearing all at once. Same
-   * delay as the lettering, plus a step each.
+   * other, so the hero assembles rather than appearing all at once.
    */
   .hero-enter {
     animation: hero-enter 800ms var(--ease-reveal) both;
