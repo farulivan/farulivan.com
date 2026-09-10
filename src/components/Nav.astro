@@ -76,19 +76,33 @@ const t = useTranslations(lang)
   .nav__home {
     display: block;
     flex: none;
-    transition:
-      transform var(--duration-mid) var(--ease-reveal),
-      opacity var(--duration-mid) var(--ease-reveal);
+    transition: transform var(--duration-mid) var(--ease-reveal);
   }
 
   /*
-   * Straight up and out, rather than fading in place. It is leaving the
-   * screen, so it should look like it went somewhere.
+   * Off the top of the screen and back, the way the menu card leaves to the
+   * right. Movement only — it does not fade on the way, because a thing that
+   * fades while it travels reads as two effects rather than one departure.
+   *
+   * The distance has to clear the bar, not just the lettering. The mark is 22px
+   * tall but rests 49px down, because it is centred against the taller control
+   * beside it — so its own height plus 64px is what takes its lower edge past
+   * the top of the screen, with a little to spare. Measured: a plain `-150%`
+   * of a 22px mark is 33px, which parks it halfway out, and its own height
+   * plus 48px still left a pixel of it showing.
    */
   :global(:root[data-mark-hidden]) .nav__home {
-    opacity: 0;
-    transform: translateY(-150%);
-    pointer-events: none;
+    transform: translateY(calc(-100% - var(--spacing-8)));
+  }
+
+  /*
+   * Except when it is focused. Tabbing to a link that sits off the screen is
+   * how a keyboard user loses track of where they are, so reaching it brings
+   * it back — which is better than taking the way home out of the tab order
+   * for everyone who scrolled.
+   */
+  :global(:root[data-mark-hidden]) .nav__home:focus-visible {
+    transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
