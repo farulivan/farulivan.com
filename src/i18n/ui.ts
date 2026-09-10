@@ -46,6 +46,34 @@ export const en = {
   "contact.title": "Contact",
   "page.comingSoon": "This page is still being written.",
 
+  // Home sections. Each one is a teaser that leads somewhere real.
+  // TODO(content): the positioning sentence. This is the right length.
+  "home.positioning":
+    "I build web products that stay fast and maintainable as they grow.",
+  "home.stackLabel": "What I work with",
+  "home.stackDescription":
+    "Grouped by what it is for. The full list is on the about page.",
+  "home.workLabel": "Selected work",
+  "home.workDescription":
+    "Three projects with what they were for and what changed once they shipped.",
+  "home.workCta": "See all work",
+  "home.experienceLabel": "Experience",
+  "home.experienceDescription": "The three most recent roles.",
+  "home.experienceCta": "Read the full history",
+  "home.writingLabel": "Writing",
+  "home.writingDescription":
+    "Notes on building and shipping, when I have something worth adding.",
+  "home.writingCta": "Read everything",
+  "home.contactLabel": "Get in touch",
+  "home.contactDescription":
+    "I am looking for a role where the front end is treated as engineering.",
+  "home.getInTouch": "Send an email",
+
+  "writing.col.date": "Date",
+  "writing.col.title": "Title",
+  "writing.col.topic": "Topic",
+  "writing.col.readTime": "Read",
+
   // About
   "about.subtitle":
     "Nine years of building web products, most of them the kind that have to keep working after launch.",
@@ -197,6 +225,33 @@ export const id: Record<TranslationKey, string> = {
   "about.title": "Tentang",
   "contact.title": "Kontak",
   "page.comingSoon": "Halaman ini masih dalam penulisan.",
+
+  // Home sections. Each one is a teaser that leads somewhere real.
+  "home.positioning":
+    "Saya membangun produk web yang tetap cepat dan mudah dirawat saat ia tumbuh.",
+  "home.stackLabel": "Yang saya pakai",
+  "home.stackDescription":
+    "Dikelompokkan menurut kegunaannya. Daftar lengkapnya ada di halaman tentang.",
+  "home.workLabel": "Karya pilihan",
+  "home.workDescription":
+    "Tiga proyek beserta tujuannya dan apa yang berubah setelah rilis.",
+  "home.workCta": "Lihat semua karya",
+  "home.experienceLabel": "Pengalaman",
+  "home.experienceDescription": "Tiga peran terakhir.",
+  "home.experienceCta": "Baca riwayat lengkapnya",
+  "home.writingLabel": "Tulisan",
+  "home.writingDescription":
+    "Catatan soal membangun dan merilis, saat ada yang layak ditambahkan.",
+  "home.writingCta": "Baca semuanya",
+  "home.contactLabel": "Hubungi saya",
+  "home.contactDescription":
+    "Saya mencari peran yang memperlakukan front end sebagai pekerjaan teknik.",
+  "home.getInTouch": "Kirim email",
+
+  "writing.col.date": "Tanggal",
+  "writing.col.title": "Judul",
+  "writing.col.topic": "Topik",
+  "writing.col.readTime": "Baca",
 
   // About
   "about.subtitle":

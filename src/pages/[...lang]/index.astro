@@ -1,12 +1,31 @@
 ---
 import type { InferGetStaticPropsType } from "astro"
 
+import CtaBox from "@/components/CtaBox.astro"
+import DataTable, {
+  type DataCell,
+  type DataColumn,
+} from "@/components/DataTable.astro"
 import HeroStandfirst from "@/components/HeroStandfirst.astro"
 import Intro from "@/components/Intro.astro"
+import ProjectRow from "@/components/ProjectRow.astro"
+import SectionHeader from "@/components/SectionHeader.astro"
+import StackBand from "@/components/StackBand.astro"
+import TimelineRow from "@/components/TimelineRow.astro"
+import Section from "@/components/ui/Section.astro"
 import Wordmark from "@/components/Wordmark.astro"
+import { siteConfig } from "@/config/site"
+import {
+  getCapabilities,
+  getExperience,
+  getFeaturedProjects,
+  getPostListItems,
+  projectSlug,
+} from "@/content/queries"
 import { LOCALES } from "@/content/schemas"
-import { langParam, useTranslations } from "@/i18n/utils"
+import { langParam, localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { formatDate } from "@/lib/format"
 
 export function getStaticPaths() {
   // `langParam` yields undefined for the default locale, which is what makes
@@ -21,6 +40,41 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { lang } = Astro.props
 const t = useTranslations(lang)
+
+const capabilities = await getCapabilities(lang)
+const featured = await getFeaturedProjects(lang)
+
+/*
+ * Three of each. The homepage is an index of teasers, and a teaser that lists
+ * everything has stopped teasing — each of these sections leads to a page that
+ * holds the rest.
+ */
+const roles = (await getExperience(lang)).slice(0, 3)
+const posts = (await getPostListItems(lang)).slice(0, 3)
+
+const stackGroups = capabilities.map(({ entry }) => ({
+  domain: entry.data.domain,
+  items: entry.data.items,
+}))
+
+const writingColumns: DataColumn[] = [
+  { label: t("writing.col.date") },
+  { label: t("writing.col.title"), title: true },
+  { label: t("writing.col.topic") },
+  { label: t("writing.col.readTime"), align: "end" },
+]
+
+const writingRows: DataCell[][] = posts.map((post) => [
+  formatDate(post.date, lang),
+  { text: post.title, href: localizePath(`/writing/${post.slug}`, lang) },
+  /* The first tag is the topic. Tags are authored per locale already, and
+     adding a second field saying almost the same thing would invite the two
+     to disagree. */
+  post.tags[0] ?? "",
+  post.minutesRead
+    ? t("writing.readingTime", { minutes: post.minutesRead })
+    : "",
+])
 ---
 
 <BaseLayout
@@ -46,9 +100,6 @@ const t = useTranslations(lang)
      * about 546px tall that stops fitting and the standfirst lands on the cue;
      * measured, a 360×640 screen overlapped by two pixels.
      *
-     * TODO(content): the positioning sentence and the sections beneath it.
-     * This is the hero only, so the crop can be checked before the rest of the
-     * page is built on top of it.
      */
   }
   {
@@ -99,6 +150,128 @@ const t = useTranslations(lang)
       {t("home.scrollCue")}
     </p>
   </section>
+
+  {
+    /*
+     * One sentence at display size, and nothing else in the section. It is the
+     * first thing after the name and the only claim the page makes directly.
+     */
+  }
+  <Section space="lg">
+    <p
+      class="text-display-m font-display text-ink m-0 max-w-[16ch] text-balance break-words hyphens-auto"
+    >
+      {t("home.positioning")}
+    </p>
+  </Section>
+
+  <Section space="md">
+    <SectionHeader
+      label={t("home.stackLabel")}
+      description={t("home.stackDescription")}
+    />
+    <StackBand groups={stackGroups} label={t("home.stackLabel")} class="mt-7" />
+  </Section>
+
+  <Section field="surface" space="md">
+    <SectionHeader
+      label={t("home.workLabel")}
+      description={t("home.workDescription")}
+    />
+    <div class="mt-7">
+      {
+        featured.map(({ entry }, index) => (
+          <ProjectRow
+            href={localizePath(`/work/${projectSlug(entry)}`, lang)}
+            index={index + 1}
+            title={entry.data.title}
+            year={entry.data.year}
+            role={entry.data.role}
+            stack={entry.data.stack}
+            summary={entry.data.summary}
+            screenshot={entry.data.screenshot}
+            flip={index % 2 === 1}
+          />
+        ))
+      }
+    </div>
+    <a
+      href={localizePath("/work", lang)}
+      class="text-label font-label duration-fast ease-state mt-7 inline-block uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
+    >
+      {t("home.workCta")}
+    </a>
+  </Section>
+
+  <Section space="md">
+    <SectionHeader
+      label={t("home.experienceLabel")}
+      description={t("home.experienceDescription")}
+    />
+    <ol class="m-0 mt-7 list-none p-0">
+      {
+        roles.map(({ entry }, index) => (
+          <TimelineRow
+            step={index}
+            year={entry.data.year}
+            role={entry.data.role}
+            company={entry.data.company}
+            description={entry.data.description}
+          />
+        ))
+      }
+    </ol>
+    <a
+      href={localizePath("/about", lang)}
+      class="text-label font-label duration-fast ease-state mt-7 inline-block uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
+    >
+      {t("home.experienceCta")}
+    </a>
+  </Section>
+
+  {
+    /*
+     * The one lime field on the page. It and the black one below it are the
+     * last two sections, which is where the page stops describing and starts
+     * asking — colour is a signal here rather than decoration.
+     */
+  }
+  <Section field="accent" space="md">
+    <SectionHeader
+      label={t("home.writingLabel")}
+      description={t("home.writingDescription")}
+    />
+    {
+      posts.length > 0 && (
+        <DataTable columns={writingColumns} rows={writingRows} class="mt-7" />
+      )
+    }
+    <a
+      href={localizePath("/writing", lang)}
+      class="text-label font-label duration-fast ease-state mt-7 inline-block uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
+    >
+      {t("home.writingCta")}
+    </a>
+  </Section>
+
+  <Section field="invert" space="md">
+    <SectionHeader
+      label={t("home.contactLabel")}
+      description={t("home.contactDescription")}
+    />
+    <div class="gap-gutter mt-7 grid sm:grid-cols-2">
+      <CtaBox
+        href={`mailto:${siteConfig.contact.email}`}
+        label={t("home.getInTouch")}
+      />
+      <CtaBox
+        href={siteConfig.cv.href}
+        label={t("contact.cvLabel")}
+        detail={`${siteConfig.cv.format} · ${siteConfig.cv.size}`}
+        download
+      />
+    </div>
+  </Section>
 </BaseLayout>
 
 <style is:global>
