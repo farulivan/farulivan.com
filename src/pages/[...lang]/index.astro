@@ -1,6 +1,7 @@
 ---
 import type { InferGetStaticPropsType } from "astro"
 
+import HeroStandfirst from "@/components/HeroStandfirst.astro"
 import Intro from "@/components/Intro.astro"
 import Wordmark from "@/components/Wordmark.astro"
 import { LOCALES } from "@/content/schemas"
@@ -70,12 +71,11 @@ const t = useTranslations(lang)
        * tall one.
        */
     }
-    <p
-      class="text-display-s font-display text-ink hero-enter hero__standfirst absolute left-[20%]"
+    <HeroStandfirst
+      lang={lang}
+      class="hero-enter hero__standfirst absolute left-[20%]"
       style="--enter-step: 1"
-    >
-      {t("site.descriptor")}
-    </p>
+    />
 
     {/* Deliberately outside the 20% alignment, so it reads as chrome. */}
     <p
@@ -127,7 +127,6 @@ const t = useTranslations(lang)
     /* Runs to the page margin, the same edge the lettering is cut on. Held
        back to a comfortable measure once there is room for one. */
     width: calc(80% - var(--spacing-page-margin));
-    max-width: 34ch;
   }
 
   /* Balancing the lines helps a two-line standfirst on a wide screen and
