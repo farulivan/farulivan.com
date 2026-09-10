@@ -161,8 +161,14 @@
   --font-weight-emph: 600;
 
   /* --- Space -------------------------------------------------------------
-     Off, so only the twelve steps below exist. See the warning at the top. */
+     Off, so only the steps below exist. See the warning at the top. */
   --spacing: initial;
+
+  /* Zero has to be a step of its own. With the multiplier off, Tailwind builds
+     `p-0`, `top-0` and `inset-x-0` from it, and without it those classes are
+     never emitted at all — they vanish from the stylesheet with no warning and
+     the element quietly keeps whatever it had. */
+  --spacing-0: 0px;
 
   --spacing-1: 4px;
   --spacing-2: 8px;
@@ -185,6 +191,15 @@
 
   /* Longest comfortable line for prose. */
   --container-measure: 68ch;
+
+  /*
+   * The smallest a target is allowed to be, and the height of the control that
+   * sits around one. Named because the number carries a rule rather than a
+   * taste — and because the numbered steps above cannot express it: this scale
+   * is the design's, so `11` is 192px, not 44.
+   */
+  --spacing-tap: 44px;
+  --spacing-control: 56px;
 
   /* --- Shape -------------------------------------------------------------
      Radius is functional, never decorative. If it is a control, it is fully
@@ -213,6 +228,24 @@
   --duration-draw: 900ms;
 
   color-scheme: light;
+}
+
+/*
+ * Durations as utilities, because Tailwind has no theme namespace for them —
+ * `ease-*` is themeable and `duration-*` is not. Without these every
+ * transition would either hardcode a number or carry a var() in an arbitrary
+ * value, and these three are the whole vocabulary for a transition.
+ */
+@utility duration-fast {
+  transition-duration: var(--duration-fast);
+}
+
+@utility duration-mid {
+  transition-duration: var(--duration-mid);
+}
+
+@utility duration-slow {
+  transition-duration: var(--duration-slow);
 }
 
 @layer base {

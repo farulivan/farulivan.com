@@ -17,6 +17,7 @@ import type { HTMLAttributes } from "astro/types"
 
 import { LOCALES, LOCALE_TAGS, type Locale } from "@/content/schemas"
 import { switchLocalePath, useTranslations } from "@/i18n/utils"
+import { cn } from "@/lib/utils"
 
 type Props = {
   lang: Locale
@@ -31,67 +32,30 @@ const t = useTranslations(lang)
 const other = LOCALES.find((locale) => locale !== lang) ?? lang
 ---
 
-<a
-  href={switchLocalePath(path, other)}
-  hreflang={LOCALE_TAGS[other]}
-  aria-label={t("lang.switch", { language: t(`lang.${other}`) })}
-  class:list={["lang", className]}
-  {...rest}
->
-  {lang}
-</a>
-
-<style>
+{
   /*
    * A filled circle rather than bare text. The bar has no background of its
    * own and sits over whatever the page happens to be showing, so two grey
    * letters alone would be legible on some pages and not on others. The fill
    * gives it the same contrast everywhere.
    *
-   * Sized to the smallest a target is allowed to be, rather than to the two
-   * letters inside it.
+   * Sized to the smallest a target is allowed to be, not to the two letters
+   * inside it.
    */
-  .lang {
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-control);
-    background-color: var(--color-surface);
-    color: var(--color-ink);
-    cursor: pointer;
-    font-size: var(--text-label);
-    font-weight: var(--font-weight-label);
-    letter-spacing: var(--text-label--letter-spacing);
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background-color var(--duration-fast) var(--ease-state);
-  }
-
-  .lang:hover {
-    background-color: color-mix(
-      in srgb,
-      var(--color-ink) 12%,
-      var(--color-surface)
-    );
-  }
-
-  .lang:focus-visible {
-    outline: 2px solid var(--color-ink);
-    outline-offset: 2px;
-  }
-
-  .lang:active {
-    transform: scale(0.98);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .lang {
-      transition: none;
-    }
-
-    .lang:active {
-      transform: none;
-    }
-  }
-</style>
+}
+<a
+  href={switchLocalePath(path, other)}
+  hreflang={LOCALE_TAGS[other]}
+  aria-label={t("lang.switch", { language: t(`lang.${other}`) })}
+  class={cn(
+    "grid size-tap cursor-pointer place-items-center rounded-control",
+    "bg-surface text-ink text-label font-label uppercase no-underline",
+    "transition-colors duration-fast ease-state active:scale-[0.98]",
+    "hover:bg-[color-mix(in_srgb,var(--color-ink)_12%,var(--color-surface))]",
+    "motion-reduce:transition-none motion-reduce:active:scale-100",
+    className
+  )}
+  {...rest}
+>
+  {lang}
+</a>

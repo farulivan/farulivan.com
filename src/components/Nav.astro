@@ -32,11 +32,30 @@ const t = useTranslations(lang)
    * on for itself.
    */
 }
-<header class="nav">
+<header
+  class="px-page-margin pointer-events-none fixed inset-x-0 top-0 z-50 flex items-center gap-5 py-6 *:pointer-events-auto max-md:py-4"
+>
+  {
+    /*
+     * Straight up and out once you scroll past the marker, rather than fading
+     * in place — it is leaving the screen, so it should look like it went
+     * somewhere. Movement only, no fade on the way: a thing that fades while
+     * it travels reads as two effects rather than one departure. Its own height plus 64px is what takes its lower edge past
+     * the top: the lettering is 22px tall but rests 49px down, because it is
+     * centred against the taller control beside it. Measured, a plain -150%
+     * parks it halfway out and its own height plus 48px still left a pixel
+     * showing.
+     *
+     * Except when focused. Tabbing to a link that sits off the screen is how a
+     * keyboard user loses track of where they are, so reaching it brings it
+     * back — better than taking the way home out of the tab order for everyone
+     * who scrolled.
+     */
+  }
   <a
     href={localizePath("/", lang)}
     aria-label={t("nav.homeLink")}
-    class="nav__home"
+    class="duration-mid ease-reveal block flex-none transition-transform motion-reduce:transition-none [:root[data-mark-hidden]_&]:-translate-y-[calc(100%+var(--spacing-8))] [:root[data-mark-hidden]_&]:focus-visible:translate-y-0"
     data-nav-mark
   >
     {
@@ -50,111 +69,26 @@ const t = useTranslations(lang)
     <Wordmark variant="nav" />
   </a>
 
-  <div class="nav__controls">
-    <LanguagePicker lang={lang} path={switchPath} data-menu-covers />
+  {
+    /*
+     * Three layers, in this order from the top: the control, the card it
+     * opens, and the switcher underneath both. The switcher gets out of the
+     * way rather than being half covered — on a wide screen the card hangs
+     * from the very top of the window, which is exactly where it sits — and it
+     * is made inert at the same time, so it never waits invisibly in the tab
+     * order.
+     */
+  }
+  <div class="ms-auto flex items-center gap-4">
+    <LanguagePicker
+      lang={lang}
+      path={switchPath}
+      class="duration-fast ease-state relative z-0 transition-opacity motion-reduce:transition-none [:root[data-menu-open]_&]:opacity-0"
+      data-menu-covers
+    />
     <MenuCard lang={lang} path={path} />
   </div>
 </header>
-
-<style>
-  .nav {
-    position: fixed;
-    inset-inline: 0;
-    top: 0;
-    z-index: 50;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-5);
-    padding: var(--spacing-6) var(--spacing-page-margin);
-    pointer-events: none;
-  }
-
-  .nav > * {
-    pointer-events: auto;
-  }
-
-  .nav__home {
-    display: block;
-    flex: none;
-    transition: transform var(--duration-mid) var(--ease-reveal);
-  }
-
-  /*
-   * Off the top of the screen and back, the way the menu card leaves to the
-   * right. Movement only — it does not fade on the way, because a thing that
-   * fades while it travels reads as two effects rather than one departure.
-   *
-   * The distance has to clear the bar, not just the lettering. The mark is 22px
-   * tall but rests 49px down, because it is centred against the taller control
-   * beside it — so its own height plus 64px is what takes its lower edge past
-   * the top of the screen, with a little to spare. Measured: a plain `-150%`
-   * of a 22px mark is 33px, which parks it halfway out, and its own height
-   * plus 48px still left a pixel of it showing.
-   */
-  :global(:root[data-mark-hidden]) .nav__home {
-    transform: translateY(calc(-100% - var(--spacing-8)));
-  }
-
-  /*
-   * Except when it is focused. Tabbing to a link that sits off the screen is
-   * how a keyboard user loses track of where they are, so reaching it brings
-   * it back — which is better than taking the way home out of the tab order
-   * for everyone who scrolled.
-   */
-  :global(:root[data-mark-hidden]) .nav__home:focus-visible {
-    transform: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .nav__home {
-      transition: none;
-    }
-  }
-
-  .nav__home:focus-visible {
-    outline: 2px solid var(--color-ink);
-    outline-offset: 2px;
-  }
-
-  .nav__controls {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-4);
-    margin-inline-start: auto;
-  }
-
-  /*
-   * Three layers, in this order from the top: the control, the card it opens,
-   * and the switcher underneath both.
-   *
-   * The switcher gets out of the way rather than being overlapped. On a wide
-   * screen the card hangs from the very top of the window, which is exactly
-   * where the switcher is, and a half-covered control is worse than an absent
-   * one. It is made inert at the same time, so it does not stay in the tab
-   * order while invisible.
-   */
-  .nav__controls > :global(.langs) {
-    position: relative;
-    z-index: 0;
-    transition: opacity var(--duration-fast) var(--ease-state);
-  }
-
-  :global(:root[data-menu-open]) .nav__controls > :global(.langs) {
-    opacity: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .nav__controls > :global(.langs) {
-      transition: none;
-    }
-  }
-
-  @media (width < 768px) {
-    .nav {
-      padding-block: var(--spacing-4);
-    }
-  }
-</style>
 
 <script>
   /**

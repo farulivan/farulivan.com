@@ -45,9 +45,10 @@
     "format:check": "prettier --check .",
     "spell": "cspell --no-progress --gitignore .",
     "analyze": "ANALYZE=true astro build",
-    "verify": "pnpm format:check && pnpm lint && pnpm spell && pnpm check:arch && pnpm test && pnpm build",
+    "verify": "pnpm format:check && pnpm lint && pnpm spell && pnpm check:arch && pnpm test && pnpm build && pnpm check:classes",
     "astro": "astro",
-    "build:fast": "astro build"
+    "build:fast": "astro build",
+    "check:classes": "node scripts/check-classes.mjs"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "^0.4.0",
