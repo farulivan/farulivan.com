@@ -1,0 +1,63 @@
+---
+/**
+ * The heading that opens a major section: a short label on the left, a
+ * sentence explaining the section on the right, and a hairline under both.
+ *
+ * It repeats on nearly every section of every page, which is the whole reason
+ * it exists — the three pieces have to line up identically each time or the
+ * page stops reading as one document.
+ *
+ * The label is the accessible heading. `level` exists because the same block
+ * opens a section on the homepage, where the page title is elsewhere, and
+ * opens the only section on a subpage, where it may be the `h2` under a real
+ * `h1`. Nothing here ever renders an `h1`: the page owns that.
+ */
+import { cn } from "@/lib/utils"
+
+interface Props {
+  label: string
+  /** One or two lines. Longer than that and it stops being a signpost. */
+  description?: string | undefined
+  level?: 2 | 3
+  id?: string | undefined
+  class?: string | undefined
+}
+
+const { label, description, level = 2, id, class: className } = Astro.props
+
+const Heading = `h${level}` as const
+---
+
+{
+  /*
+   * Label left, description right, with an empty column between them. The gap
+   * is what makes the two read as two things rather than as a sentence that
+   * happens to start in bold — on a phone there is no room for it, so they
+   * stack and the gap becomes vertical.
+   */
+}
+<div class={cn("border-section-rule border-b pb-5", className)}>
+  <div class="md:gap-gutter grid gap-4 md:grid-cols-12">
+    <Heading
+      {id}
+      class="text-label font-label text-ink flex items-center gap-2 uppercase md:col-span-3"
+    >
+      {
+        /*
+         * A filled square rather than a bullet or an icon. It is the only
+         * decoration on the page and it is a shape the type already contains.
+         */
+      }
+      <span class="size-2 flex-none bg-current" aria-hidden="true"></span>
+      {label}
+    </Heading>
+
+    {
+      description && (
+        <p class="text-ui text-section-muted m-0 text-pretty md:col-span-8 md:col-start-5">
+          {description}
+        </p>
+      )
+    }
+  </div>
+</div>

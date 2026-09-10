@@ -1,0 +1,116 @@
+---
+/**
+ * One project in the work list: a wide image cell beside a column of type.
+ *
+ * **The whole row is a single link, and nothing else in it is clickable.** The
+ * sketch this came from had a pair of buttons in the corner — "case study" and
+ * "live" — which would have put two links inside a third. The live URL lives on
+ * the case study instead, one click further in and no longer competing with it.
+ *
+ * Rows alternate which side the image sits on, which is the only thing
+ * stopping a list of them from marching.
+ */
+import { Image } from "astro:assets"
+
+import { cn } from "@/lib/utils"
+
+interface Props {
+  href: string
+  index: number
+  title: string
+  year: number
+  role: string
+  stack: readonly string[]
+  summary: string
+  screenshot?: { src: ImageMetadata; alt: string } | undefined
+  /** Puts the image on the right. Callers alternate it down the list. */
+  flip?: boolean | undefined
+  class?: string | undefined
+}
+
+const {
+  href,
+  index,
+  title,
+  year,
+  role,
+  stack,
+  summary,
+  screenshot,
+  flip,
+  class: className,
+} = Astro.props
+
+/** "01", not "1" — a counter that keeps its width down the page. */
+const counter = String(index).padStart(2, "0")
+
+/*
+ * Role and stack on one line, in the order somebody scanning for a technology
+ * reads them. Three of the stack rather than all of it: the full list is on
+ * the case study, and a row that prints nine tools is a row nobody finishes.
+ */
+const meta = [role, ...stack.slice(0, 3)].join(" · ")
+---
+
+<a
+  {href}
+  class={cn(
+    "group hover:bg-surface border-section-rule block border-b transition-colors duration-fast ease-state no-underline motion-reduce:transition-none",
+    className
+  )}
+>
+  <div class="gap-gutter grid items-center py-7 lg:grid-cols-2">
+    {
+      /*
+       * 16:10, the same shape a screenshot is captured at, so the cell is the
+       * same size whether there is an image in it or not and the list keeps
+       * its rhythm while the pictures are still being taken.
+       */
+    }
+    <div class={cn("aspect-[16/10] overflow-hidden", flip && "lg:order-2")}>
+      {
+        screenshot ? (
+          <Image
+            src={screenshot.src}
+            alt={screenshot.alt}
+            widths={[640, 1024, 1600]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="duration-mid ease-state h-full w-full object-cover object-top transition-transform group-hover:scale-[1.02] motion-reduce:transition-none"
+          />
+        ) : (
+          /*
+           * Not a placeholder — a designed state. Some of this work is covered
+           * by an agreement and will never have a picture, and a blurred
+           * screenshot reads as a mistake where a type block reads as a
+           * decision.
+           */
+          <div class="bg-surface flex h-full w-full flex-col justify-end gap-3 p-6">
+            <span class="text-display-s font-display text-ink leading-none tracking-[-0.03em] break-words hyphens-auto">
+              {title}
+            </span>
+            <span class="text-label text-section-muted uppercase">
+              {stack.join(" · ")}
+            </span>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="lg:px-gutter flex flex-col gap-3">
+      <div
+        class="text-micro text-section-muted flex items-center justify-between uppercase"
+      >
+        <span>{counter}</span>
+        <span>{year}</span>
+      </div>
+
+      <h3 class="text-h-l font-display text-ink m-0 break-words hyphens-auto">
+        {title}
+      </h3>
+
+      <p class="text-label text-section-muted m-0 uppercase">{meta}</p>
+
+      <p class="text-ui text-ink m-0 text-pretty">{summary}</p>
+    </div>
+  </div>
+</a>

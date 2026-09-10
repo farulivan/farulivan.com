@@ -1,0 +1,60 @@
+---
+/**
+ * A large empty box with a short label in the middle of it.
+ *
+ * The restraint is the point: it is a call to action that trusts the reader to
+ * find it, and its size is what does the work rather than a fill or an arrow.
+ * It keeps that size on a phone — letting these collapse into ordinary buttons
+ * on a narrow screen would throw away the only thing they are.
+ */
+import { cn } from "@/lib/utils"
+
+interface Props {
+  href: string
+  label: string
+  /**
+   * A second line under the label — the format and size of a download, say.
+   * Nobody should have to click to find out what it will cost them.
+   */
+  detail?: string | undefined
+  /** Serves the file rather than navigating to it. */
+  download?: boolean | undefined
+  /** Opens in a new tab, with the warning a screen reader needs. */
+  external?: boolean | undefined
+  externalLabel?: string | undefined
+  class?: string | undefined
+}
+
+const {
+  href,
+  label,
+  detail,
+  download,
+  external,
+  externalLabel,
+  class: className,
+} = Astro.props
+---
+
+<a
+  {href}
+  download={download}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  class={cn(
+    "border-section-rule flex min-h-[120px] flex-col items-center justify-center gap-2 border px-5 py-7 text-center no-underline",
+    "hover:border-section-rule-strong hover:bg-[color-mix(in_srgb,currentColor_6%,transparent)] transition-colors duration-fast ease-state",
+    "active:scale-[0.995] motion-reduce:transition-none motion-reduce:active:scale-100",
+    className
+  )}
+>
+  <span class="text-label font-label uppercase">
+    {label}
+    {external && externalLabel && <span class="sr-only"> {externalLabel}</span>}
+  </span>
+  {
+    detail && (
+      <span class="text-micro text-section-muted uppercase">{detail}</span>
+    )
+  }
+</a>
