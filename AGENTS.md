@@ -10,6 +10,7 @@ pnpm setup       # rewrite the placeholder identity (takes --name= --url= --repo
 pnpm verify      # everything CI runs
 pnpm check       # astro check on its own
 pnpm check:arch  # just the layering rules
+pnpm check:classes # every class in the built HTML has a rule (needs a build first)
 pnpm build       # runs `astro check` first, then builds
 pnpm build:fast  # skips the type check, for quick local iteration
 ```
@@ -29,6 +30,41 @@ When starting the dev server for a long-running task, use `astro dev --backgroun
 7. Lime is never a text colour. It is 2.06:1 on white. Only `text-accent-text` is legal on a light ground and only `text-accent-on-dark` on the dark one.
 
 It also prints what is still a placeholder — `TODO(asset):`, `TODO(content):` and `data-placeholder` — as a note rather than a failure, so an unfinished site stays reviewable. `LAUNCH=true pnpm check:arch` turns that note into an error, which is what stops a grey box reaching production.
+
+## Styling
+
+**Tailwind, in the markup, by default.** A long class list on the element beats
+a short one plus a rule further down the file: you read what an element looks
+like where the element is, and you change it there too. Mixing the two means
+every edit starts by working out which of the two places the answer is in.
+
+Two things stay in a `<style>` block, because they cannot be classes:
+
+- **`@keyframes`.** There is no element to hang a keyframe list on. Use
+  `<style is:global>` — a keyframe name in a scoped block is rewritten, so a
+  class elsewhere that names it stops matching.
+- **Markup injected as a string.** `Wordmark.astro` and `Intro.astro` drop an
+  SVG in with `set:html`. Tailwind never sees inside a string, so those two
+  keep their CSS. Nothing else should.
+
+**Repetition is a token before it is a component.** When the same value shows up
+in several places, the fix is usually a variable in `src/styles/global.css` —
+`--spacing-tap`, `--duration-mid` — not a new file. A component is worth it when
+there is real markup and behaviour to share, not just a class list; a wrapper
+that only forwards classes is a layer of indirection charging rent.
+
+**A class that does not exist fails silently.** Tailwind generates nothing for
+a name it does not recognise, so the class sits in the markup looking correct
+while the element keeps whatever it had. `pnpm check:classes` reads the built
+HTML and the built stylesheet and reports any class with no rule behind it; it
+runs at the end of `pnpm verify`. It has caught a fixed bar that was never
+pinned, a page with no padding, and a class list edited down to a bare
+`prose-headings:`.
+
+**Do not restate `global.css`.** Every `:focus-visible` already gets a 2px ink
+outline at 2px offset. Only write focus classes when the element genuinely needs
+something else — a light ring on the inverted footer, an inset ring on a link
+whose card would clip an outset one.
 
 ## Traps
 
