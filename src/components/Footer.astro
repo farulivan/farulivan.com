@@ -150,6 +150,7 @@ const social = [
     display: grid;
     grid-template-columns: 1fr auto auto;
     gap: var(--spacing-7);
+    padding-inline: var(--spacing-8);
   }
 
   /*
@@ -159,6 +160,10 @@ const social = [
    */
   .foot__col {
     --row-gap: calc(28px - 1.4 * var(--text-ui));
+  }
+
+  .foot__col--menu {
+    align-self: center;
   }
 
   .foot__label {
@@ -194,7 +199,7 @@ const social = [
   }
 
   .foot__list--menu {
-    gap: var(--spacing-2);
+    gap: var(--spacing-4);
   }
 
   /*
@@ -349,6 +354,7 @@ const social = [
     .foot__columns {
       grid-template-columns: 1fr 1fr;
       gap: var(--spacing-7) var(--spacing-5);
+      padding-inline: var(--spacing-4);
     }
 
     .foot__col--menu {
