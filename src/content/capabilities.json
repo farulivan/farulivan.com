@@ -1,0 +1,118 @@
+[
+  {
+    "id": "en-craft",
+    "lang": "en",
+    "translationKey": "craft",
+    "domain": "Interface",
+    "items": [
+      "TypeScript",
+      "React",
+      "Astro",
+      "Vue",
+      "CSS architecture",
+      "Design systems"
+    ],
+    "order": 1
+  },
+  {
+    "id": "id-craft",
+    "lang": "id",
+    "translationKey": "craft",
+    "domain": "Antarmuka",
+    "items": [
+      "TypeScript",
+      "React",
+      "Astro",
+      "Vue",
+      "Arsitektur CSS",
+      "Design system"
+    ],
+    "order": 1
+  },
+  {
+    "id": "en-backend",
+    "lang": "en",
+    "translationKey": "backend",
+    "domain": "Services and data",
+    "items": [
+      "Node",
+      "Go",
+      "PostgreSQL",
+      "Redis",
+      "REST and GraphQL",
+      "Schema design"
+    ],
+    "order": 2
+  },
+  {
+    "id": "id-backend",
+    "lang": "id",
+    "translationKey": "backend",
+    "domain": "Layanan dan data",
+    "items": [
+      "Node",
+      "Go",
+      "PostgreSQL",
+      "Redis",
+      "REST dan GraphQL",
+      "Desain skema"
+    ],
+    "order": 2
+  },
+  {
+    "id": "en-delivery",
+    "lang": "en",
+    "translationKey": "delivery",
+    "domain": "Delivery",
+    "items": [
+      "CI pipelines",
+      "Preview environments",
+      "Playwright",
+      "Observability",
+      "Incident response"
+    ],
+    "order": 3
+  },
+  {
+    "id": "id-delivery",
+    "lang": "id",
+    "translationKey": "delivery",
+    "domain": "Pengiriman",
+    "items": [
+      "Pipeline CI",
+      "Lingkungan pratinjau",
+      "Playwright",
+      "Observability",
+      "Penanganan insiden"
+    ],
+    "order": 3
+  },
+  {
+    "id": "en-working",
+    "lang": "en",
+    "translationKey": "working",
+    "domain": "Working with people",
+    "items": [
+      "Technical writing",
+      "Code review",
+      "Mentoring",
+      "Scoping with designers",
+      "English and Indonesian"
+    ],
+    "order": 4
+  },
+  {
+    "id": "id-working",
+    "lang": "id",
+    "translationKey": "working",
+    "domain": "Bekerja dengan orang",
+    "items": [
+      "Penulisan teknis",
+      "Code review",
+      "Mentoring",
+      "Penentuan cakupan bersama desainer",
+      "Inggris dan Indonesia"
+    ],
+    "order": 4
+  }
+]

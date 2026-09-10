@@ -14,20 +14,11 @@ import { getCollection, render, type CollectionEntry } from "astro:content"
 
 import { slugify } from "@/lib/slugify"
 
-import { DEFAULT_LOCALE, LOCALES, type Locale } from "./schemas"
+import { localize, type Localized } from "./localize"
+import { LOCALES, type Locale } from "./schemas"
 
 export type PostEntry = CollectionEntry<"writing">
-
-export interface LocalizedPost {
-  entry: PostEntry
-  /**
-   * True when the requested locale has no translation and the default-locale
-   * entry is standing in. The UI says so rather than switching silently.
-   */
-  isFallback: boolean
-  /** Locales this article genuinely exists in — drives hreflang. */
-  availableLocales: Locale[]
-}
+export type LocalizedPost = Localized<PostEntry>
 
 /** URL slug. Shared across locales so the language picker can stay on the page. */
 export function postSlug(entry: PostEntry): string {
@@ -47,32 +38,7 @@ async function publishedPosts(): Promise<PostEntry[]> {
  * not. An article missing from both is simply absent.
  */
 export async function getPosts(lang: Locale): Promise<LocalizedPost[]> {
-  const all = await publishedPosts()
-
-  const byKey = new Map<string, PostEntry[]>()
-  for (const entry of all) {
-    const bucket = byKey.get(entry.data.translationKey)
-    if (bucket) bucket.push(entry)
-    else byKey.set(entry.data.translationKey, [entry])
-  }
-
-  const posts: LocalizedPost[] = []
-  for (const entries of byKey.values()) {
-    const translated = entries.find((entry) => entry.data.lang === lang)
-    const fallback = entries.find((entry) => entry.data.lang === DEFAULT_LOCALE)
-    const entry = translated ?? fallback
-    if (!entry) continue
-
-    posts.push({
-      entry,
-      isFallback: translated === undefined,
-      availableLocales: LOCALES.filter((locale) =>
-        entries.some((candidate) => candidate.data.lang === locale)
-      ),
-    })
-  }
-
-  return posts.sort(newestFirst)
+  return localize(await publishedPosts(), lang).sort(newestFirst)
 }
 
 export async function getPost(
@@ -175,5 +141,115 @@ export async function getPostListItemsByTag(
   const items = await getPostListItems(lang)
   return items.filter((item) =>
     item.tags.some((tag) => slugify(tag) === tagSlug)
+  )
+}
+
+/* --- Projects -------------------------------------------------------------
+   The work index and the case studies. */
+
+export type ProjectEntry = CollectionEntry<"projects">
+export type LocalizedProject = Localized<ProjectEntry>
+
+/**
+ * URL slug, shared across locales so the language picker stays on the page —
+ * the same rule the writing section uses, for the same reason.
+ */
+export function projectSlug(entry: ProjectEntry): string {
+  return entry.data.translationKey
+}
+
+/**
+ * Every project visible in `lang`, in the order the author set.
+ *
+ * Not newest first. A portfolio leads with its strongest work, and the year it
+ * happened is a fact about it rather than a ranking of it.
+ */
+export async function getProjects(lang: Locale): Promise<LocalizedProject[]> {
+  const all = await getCollection("projects")
+  return localize(all, lang).sort(
+    (a, b) => a.entry.data.order - b.entry.data.order
+  )
+}
+
+/** The three or so that get a full row rather than a table line. */
+export async function getFeaturedProjects(
+  lang: Locale
+): Promise<LocalizedProject[]> {
+  const projects = await getProjects(lang)
+  return projects.filter((project) => project.entry.data.featured)
+}
+
+export async function getProject(
+  lang: Locale,
+  slug: string
+): Promise<LocalizedProject | undefined> {
+  const projects = await getProjects(lang)
+  return projects.find((project) => projectSlug(project.entry) === slug)
+}
+
+/** Every (locale, slug) pair the work section should generate. */
+export async function getProjectRoutes(): Promise<
+  { lang: Locale; slug: string; project: LocalizedProject }[]
+> {
+  const routes: { lang: Locale; slug: string; project: LocalizedProject }[] = []
+  for (const lang of LOCALES) {
+    for (const project of await getProjects(lang)) {
+      routes.push({ lang, slug: projectSlug(project.entry), project })
+    }
+  }
+  return routes
+}
+
+/**
+ * The project after this one in the list, wrapping at the end.
+ *
+ * Wrapping rather than stopping: a case study with nowhere to go next is a dead
+ * end on the page most likely to be someone's entry to the site.
+ */
+export async function getNextProject(
+  lang: Locale,
+  slug: string
+): Promise<LocalizedProject | undefined> {
+  const projects = await getProjects(lang)
+  if (projects.length < 2) return undefined
+
+  const index = projects.findIndex(
+    (project) => projectSlug(project.entry) === slug
+  )
+  if (index === -1) return undefined
+
+  return projects[(index + 1) % projects.length]
+}
+
+/* --- Experience ----------------------------------------------------------- */
+
+export type ExperienceEntry = CollectionEntry<"experience">
+export type LocalizedExperience = Localized<ExperienceEntry>
+
+/**
+ * The career timeline, in the order the entries set — which is most recent
+ * first, the way a CV is read. Ordered explicitly rather than by year, because
+ * two roles in the same year still need a fixed sequence.
+ */
+export async function getExperience(
+  lang: Locale
+): Promise<LocalizedExperience[]> {
+  const all = await getCollection("experience")
+  return localize(all, lang).sort(
+    (a, b) => a.entry.data.order - b.entry.data.order
+  )
+}
+
+/* --- Capabilities --------------------------------------------------------- */
+
+export type CapabilityEntry = CollectionEntry<"capabilities">
+export type LocalizedCapability = Localized<CapabilityEntry>
+
+export async function getCapabilities(
+  lang: Locale
+): Promise<LocalizedCapability[]> {
+  const all = await getCollection("capabilities")
+  return localize(all, lang).sort(
+    (a, b) => a.entry.data.order - b.entry.data.order
   )
 }

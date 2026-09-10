@@ -1,0 +1,42 @@
+---
+# TODO(content): placeholder project. Replace every field and the body.
+lang: "en"
+translationKey: "fleet-console"
+title: "Fleet Tracking Console"
+summary: "A live map and dispatch tool for a logistics operator, built to stay usable on a five-year-old Android phone in a warehouse with poor signal."
+year: 2024
+role: "Fullstack engineer"
+teamSize: "3 engineers"
+duration: "9 months"
+stack: ["TypeScript", "Vue", "Go", "Redis", "MapLibre"]
+featured: true
+order: 2
+outcome:
+  summary: "Dispatchers stopped keeping a parallel spreadsheet, which had been the real system of record for two years."
+  figures:
+    - value: "-40%"
+      caption: "Time to assign a job"
+    - value: "0"
+      caption: "Spreadsheets still in use"
+---
+
+## The problem
+
+The office had a tracking system and the drivers had WhatsApp, and the two
+never met. Dispatchers reconciled them by hand in a spreadsheet that had grown
+into the real system of record — the one everybody trusted and nobody could
+back up.
+
+## What I built
+
+The console shows one map and one list, and they are the same data. Assigning a
+job is a single action from either.
+
+Most of the work was in the parts nobody demos. Position updates arrive over a
+socket and are batched into animation frames, so a hundred moving vehicles cost
+one repaint rather than a hundred. The client keeps a small queue of actions
+taken while offline and replays them on reconnect, with conflicts resolved by
+the server rather than by whoever reconnected last.
+
+The phone build is the same code as the desktop one. There is no separate
+mobile app to fall behind.
