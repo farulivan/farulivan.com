@@ -1,50 +1,97 @@
 ---
 /**
- * Plain links, no JavaScript. Each one points at the *same* page in the other
- * locale — `switchLocalePath` swaps the prefix and keeps the rest of the path
- * — so switching language from a blog post lands on that post, not the home
- * page, which is the usual bug in hand-rolled language switchers.
+ * One control showing the language you are reading in. Pressing it switches.
+ *
+ * It is a link rather than a button because that is what it does: it goes to
+ * the same page in the other language. `switchLocalePath` keeps you on the
+ * page you are on rather than sending you home, which is the usual bug in a
+ * hand-rolled switcher.
+ *
+ * The label says what will happen — the visible text alone names the current
+ * language, which does not tell anyone what pressing it is for.
+ *
+ * This shape only works while there are exactly two languages. A third would
+ * need a real menu, not a toggle.
  */
+import type { HTMLAttributes } from "astro/types"
+
 import { LOCALES, LOCALE_TAGS, type Locale } from "@/content/schemas"
 import { switchLocalePath, useTranslations } from "@/i18n/utils"
-import { cn } from "@/lib/utils"
 
-interface Props {
+type Props = {
   lang: Locale
-  /** Locale-less path of the current page, e.g. "/blog/my-post". */
+  /** Locale-less path of the current page. */
   path: string
   class?: string
-}
+} & Omit<HTMLAttributes<"a">, "class">
 
-const { lang, path, class: className } = Astro.props
+const { lang, path, class: className, ...rest } = Astro.props
 const t = useTranslations(lang)
+
+const other = LOCALES.find((locale) => locale !== lang) ?? lang
 ---
 
-<nav
-  aria-label={t("lang.switch")}
-  class={cn("flex items-center gap-0.5", className)}
+<a
+  href={switchLocalePath(path, other)}
+  hreflang={LOCALE_TAGS[other]}
+  aria-label={t("lang.switch", { language: t(`lang.${other}`) })}
+  class:list={["lang", className]}
+  {...rest}
 >
-  {
-    LOCALES.map((locale) => {
-      const isActive = locale === lang
-      return (
-        <a
-          href={switchLocalePath(path, locale)}
-          hreflang={LOCALE_TAGS[locale]}
-          lang={LOCALE_TAGS[locale]}
-          aria-current={isActive ? "true" : undefined}
-          title={t(`lang.${locale}`)}
-          class={cn(
-            "text-label font-label rounded px-2 py-1 uppercase transition-colors",
-            isActive
-              ? "bg-surface text-ink"
-              : "text-ink-muted hover:bg-surface/60 hover:text-ink"
-          )}
-        >
-          {locale}
-          <span class="sr-only"> — {t(`lang.${locale}`)}</span>
-        </a>
-      )
-    })
+  {lang}
+</a>
+
+<style>
+  /*
+   * A filled circle rather than bare text. The bar has no background of its
+   * own and sits over whatever the page happens to be showing, so two grey
+   * letters alone would be legible on some pages and not on others. The fill
+   * gives it the same contrast everywhere.
+   *
+   * Sized to the smallest a target is allowed to be, rather than to the two
+   * letters inside it.
+   */
+  .lang {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-control);
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    cursor: pointer;
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-label);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background-color var(--duration-fast) var(--ease-state);
   }
-</nav>
+
+  .lang:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--color-ink) 12%,
+      var(--color-surface)
+    );
+  }
+
+  .lang:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .lang:active {
+    transform: scale(0.98);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lang {
+      transition: none;
+    }
+
+    .lang:active {
+      transform: none;
+    }
+  }
+</style>

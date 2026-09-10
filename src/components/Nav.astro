@@ -1,0 +1,201 @@
+---
+/**
+ * The bar across the top of every page: the lettering, and the controls.
+ *
+ * The lettering leaves once you have scrolled past the point where the large
+ * version of it sits in the hero, and does not come back until you are at the
+ * top again. Two copies of the same word arriving at the same place is the
+ * thing worth avoiding, and past that point the name has been said.
+ */
+import LanguagePicker from "@/components/LanguagePicker.astro"
+import MenuCard from "@/components/MenuCard.astro"
+import Wordmark from "@/components/Wordmark.astro"
+import type { Locale } from "@/content/schemas"
+import { localizePath, useTranslations } from "@/i18n/utils"
+
+interface Props {
+  lang: Locale
+  /** Locale-less path of the current page. */
+  path: string
+  /** Where the language picker points, when that is not the current page. */
+  switchPath?: string | undefined
+}
+
+const { lang, path, switchPath = path } = Astro.props
+const t = useTranslations(lang)
+---
+
+{
+  /*
+   * The bar spans the full width but takes no clicks of its own, so it never
+   * steals one from the hero underneath it. Each child turns the pointer back
+   * on for itself.
+   */
+}
+<header class="nav">
+  <a
+    href={localizePath("/", lang)}
+    aria-label={t("nav.homeLink")}
+    class="nav__home"
+    data-nav-mark
+  >
+    {
+      /*
+       * Always the complete word, and it never drops on a narrow screen. That
+       * is a requirement rather than a preference: the lettering in the hero
+       * is cut off mid-letter, and it only reads as deliberate because this
+       * has already told the reader what the word is.
+       */
+    }
+    <Wordmark variant="nav" />
+  </a>
+
+  <div class="nav__controls">
+    <LanguagePicker lang={lang} path={switchPath} data-menu-covers />
+    <MenuCard lang={lang} path={path} />
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-5);
+    padding: var(--spacing-6) var(--spacing-page-margin);
+    pointer-events: none;
+  }
+
+  .nav > * {
+    pointer-events: auto;
+  }
+
+  .nav__home {
+    display: block;
+    flex: none;
+    transition: transform var(--duration-mid) var(--ease-reveal);
+  }
+
+  /*
+   * Off the top of the screen and back, the way the menu card leaves to the
+   * right. Movement only — it does not fade on the way, because a thing that
+   * fades while it travels reads as two effects rather than one departure.
+   *
+   * The distance has to clear the bar, not just the lettering. The mark is 22px
+   * tall but rests 49px down, because it is centred against the taller control
+   * beside it — so its own height plus 64px is what takes its lower edge past
+   * the top of the screen, with a little to spare. Measured: a plain `-150%`
+   * of a 22px mark is 33px, which parks it halfway out, and its own height
+   * plus 48px still left a pixel of it showing.
+   */
+  :global(:root[data-mark-hidden]) .nav__home {
+    transform: translateY(calc(-100% - var(--spacing-8)));
+  }
+
+  /*
+   * Except when it is focused. Tabbing to a link that sits off the screen is
+   * how a keyboard user loses track of where they are, so reaching it brings
+   * it back — which is better than taking the way home out of the tab order
+   * for everyone who scrolled.
+   */
+  :global(:root[data-mark-hidden]) .nav__home:focus-visible {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__home {
+      transition: none;
+    }
+  }
+
+  .nav__home:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .nav__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    margin-inline-start: auto;
+  }
+
+  /*
+   * Three layers, in this order from the top: the control, the card it opens,
+   * and the switcher underneath both.
+   *
+   * The switcher gets out of the way rather than being overlapped. On a wide
+   * screen the card hangs from the very top of the window, which is exactly
+   * where the switcher is, and a half-covered control is worse than an absent
+   * one. It is made inert at the same time, so it does not stay in the tab
+   * order while invisible.
+   */
+  .nav__controls > :global(.langs) {
+    position: relative;
+    z-index: 0;
+    transition: opacity var(--duration-fast) var(--ease-state);
+  }
+
+  :global(:root[data-menu-open]) .nav__controls > :global(.langs) {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__controls > :global(.langs) {
+      transition: none;
+    }
+  }
+
+  @media (width < 768px) {
+    .nav {
+      padding-block: var(--spacing-4);
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Hides the lettering in the bar once you have scrolled past the point the
+   * page marks as its own.
+   *
+   * On the homepage that point is the large lettering in the hero: the small
+   * copy leaves exactly as the large one arrives, so the same word is never in
+   * two places at once. Elsewhere it is the top of the content, so the bar
+   * clears itself as soon as you start reading.
+   *
+   * A scroll listener rather than an observer, because the interesting moment
+   * is one edge of the marker crossing one line, and an observer only reports
+   * whole-element overlap — for something as tall as the hero lettering that
+   * fires hundreds of pixels late. Passive, and read inside a frame callback,
+   * so it never blocks scrolling.
+   */
+  const bar = document.querySelector<HTMLElement>(".nav")
+  const marker = document.querySelector<HTMLElement>("[data-mark-hide-trigger]")
+
+  if (bar && marker) {
+    const root = document.documentElement
+    let queued = false
+
+    const update = () => {
+      queued = false
+      const passed = marker.getBoundingClientRect().top <= bar.offsetHeight
+      root.toggleAttribute("data-mark-hidden", passed)
+    }
+
+    addEventListener(
+      "scroll",
+      () => {
+        if (queued) return
+        queued = true
+        requestAnimationFrame(update)
+      },
+      { passive: true }
+    )
+
+    // Restoring a scroll position on load lands past the marker already.
+    update()
+  }
+</script>

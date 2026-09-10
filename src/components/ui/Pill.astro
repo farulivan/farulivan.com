@@ -1,0 +1,202 @@
+---
+/**
+ * A pill with a circle seated at its right end.
+ *
+ * The circle's fill is a *step* from the pill's fill rather than a contrast to
+ * it: a light pill takes a near-white circle, a dark pill takes a lighter dark
+ * one. That is what makes it read as a control seated in a housing instead of
+ * a button with a dot on it.
+ *
+ * Renders as a button or a link depending on whether `href` is given, because
+ * the menu trigger and a plain call to action look identical and behave
+ * differently.
+ */
+import type { HTMLAttributes } from "astro/types"
+
+import Icon, { type IconName } from "@/components/ui/Icon.astro"
+
+type Props = {
+  tone?: "light" | "dark"
+  /** Ignored when the `circle` slot is filled. */
+  icon?: IconName
+  /** Renders an anchor instead of a button. */
+  href?: string
+  /** Required when the label is hidden, which it is on the narrowest screens. */
+  label: string
+  class?: string
+} & Omit<HTMLAttributes<"button">, "class">
+
+const {
+  tone = "light",
+  icon,
+  href,
+  label,
+  class: className,
+  ...rest
+} = Astro.props
+
+const Tag = href ? "a" : "button"
+---
+
+<Tag
+  class:list={["pill", `pill--${tone}`, className]}
+  href={href}
+  type={href ? undefined : "button"}
+  aria-label={label}
+  {...rest}
+>
+  {
+    /* The text is hidden from assistive tech: the label above already names it. */
+  }
+  <span class="pill__label" aria-hidden="true">
+    <span class="pill__text" data-pill-text data-text={label}>{label}</span>
+  </span>
+  <span class="pill__circle">
+    <slot name="circle">{icon && <Icon name={icon} class="size-4" />}</slot>
+  </span>
+</Tag>
+
+<style>
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    height: 56px;
+    /* 56 − 44 = 12, split either side of the circle. */
+    padding: 6px;
+    border-radius: var(--radius-control);
+    cursor: pointer;
+    font-size: var(--text-label);
+    font-weight: var(--font-weight-label);
+    letter-spacing: var(--text-label--letter-spacing);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background-color var(--duration-fast) var(--ease-state),
+      transform var(--duration-fast) var(--ease-state);
+  }
+
+  /*
+   * Asymmetric on purpose: more room on the left than the right, which
+   * optically centres the text against the weight of the circle.
+   */
+  .pill__label {
+    display: block;
+    overflow: hidden;
+    /* Matches the line box, so the swap below lands exactly. */
+    height: 1.2em;
+    padding-inline: calc(var(--spacing-7) - 6px) var(--spacing-6);
+  }
+
+  /*
+   * The label slides up and a copy of itself arrives from below. The copy is
+   * generated from an attribute rather than duplicated in the markup, so
+   * there is only ever one piece of text to translate.
+   */
+  .pill__text {
+    display: block;
+    position: relative;
+    line-height: 1.2;
+    transition: transform var(--duration-fast) var(--ease-state);
+  }
+
+  .pill__text::after {
+    content: attr(data-text);
+    position: absolute;
+    inset-inline-start: 0;
+    top: 100%;
+  }
+
+  .pill:hover .pill__text,
+  .pill:focus-visible .pill__text {
+    transform: translateY(-100%);
+  }
+
+  .pill__circle {
+    /* A single cell, so a caller stacking two icons gets them on top of one
+       another rather than side by side. */
+    display: grid;
+    grid-template-areas: "circle";
+    place-items: center;
+    flex: none;
+    /* Also the smallest a target is allowed to be. */
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-control);
+    transition: background-color var(--duration-fast) var(--ease-state);
+  }
+
+  /* --- Tones --------------------------------------------------------------
+     The circle is one step from the pill, never the opposite of it. */
+  .pill--light {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+  }
+
+  .pill--light .pill__circle {
+    background-color: var(--color-paper);
+  }
+
+  .pill--light:hover .pill__circle {
+    background-color: color-mix(
+      in srgb,
+      var(--color-paper) 60%,
+      var(--color-surface)
+    );
+  }
+
+  .pill--dark {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  /* Lands on the same grey as the specification's #2E2E2E, but derived from
+     ink so the two cannot drift apart. */
+  .pill--dark .pill__circle {
+    background-color: color-mix(in srgb, var(--color-ink) 92%, white);
+  }
+
+  .pill--dark:hover .pill__circle {
+    background-color: color-mix(in srgb, var(--color-ink) 84%, white);
+  }
+
+  /* --- States ------------------------------------------------------------ */
+  .pill:active {
+    transform: scale(0.98);
+  }
+
+  .pill[aria-disabled="true"],
+  .pill:disabled {
+    color: var(--color-ink-faint);
+    cursor: not-allowed;
+  }
+
+  .pill[aria-disabled="true"]:hover .pill__text,
+  .pill:disabled:hover .pill__text {
+    transform: none;
+  }
+
+  .pill[aria-disabled="true"]:hover .pill__circle,
+  .pill:disabled:hover .pill__circle {
+    background-color: inherit;
+  }
+
+  /* The text is the first thing to go when there is no room for it; the
+     accessible name is on the element itself, so nothing is lost. */
+  @media (width < 480px) {
+    .pill__label {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pill,
+    .pill__text,
+    .pill__circle {
+      transition: none;
+    }
+
+    .pill:active {
+      transform: none;
+    }
+  }
+</style>

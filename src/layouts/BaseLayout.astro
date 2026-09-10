@@ -2,7 +2,7 @@
 import { Font } from "astro:assets"
 
 import Footer from "@/components/Footer.astro"
-import Header from "@/components/Header.astro"
+import Nav from "@/components/Nav.astro"
 import Seo from "@/components/Seo.astro"
 import { siteConfig } from "@/config/site"
 import { LOCALE_TAGS, type Locale } from "@/content/schemas"
@@ -25,6 +25,11 @@ interface Props {
   image?: string
   /** Shows the opening screen. The homepage only. */
   intro?: boolean
+  /**
+   * Lets the page start at the very top, under the fixed bar. For a page whose
+   * first thing is a full-height composition the bar is meant to sit on.
+   */
+  flushTop?: boolean
   type?: "website" | "article"
   publishedTime?: Date
   modifiedTime?: Date
@@ -32,7 +37,14 @@ interface Props {
   noindex?: boolean
 }
 
-const { lang, path, switchPath, intro = false, ...seo } = Astro.props
+const {
+  lang,
+  path,
+  switchPath,
+  intro = false,
+  flushTop = false,
+  ...seo
+} = Astro.props
 
 /**
  * Decides whether the opening screen runs, before anything paints.
@@ -120,9 +132,25 @@ const t = useTranslations(lang)
       {t("a11y.skipToContent")}
     </a>
 
-    <Header lang={lang} path={path} switchPath={switchPath} />
+    <Nav lang={lang} path={path} switchPath={switchPath} />
 
-    <main id="main">
+    {
+      /*
+       * The bar is fixed and has no fill, so every page has to start below it
+       * or its first line slides underneath. The homepage sets this to zero:
+       * its hero is a full-height composition that the bar sits *on*, which is
+       * the one place the overlap is the intention.
+       */
+    }
+    <main id="main" class:list={[!flushTop && "pt-10"]}>
+      {
+        /*
+         * Where the bar's lettering gives up and slides away. The homepage
+         * marks its hero lettering instead, so that the small copy leaves as
+         * the large one arrives.
+         */
+      }
+      {!flushTop && <div data-mark-hide-trigger aria-hidden="true" />}
       <slot />
     </main>
 

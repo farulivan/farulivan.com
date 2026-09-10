@@ -35,22 +35,28 @@ export const en = {
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Close",
   "nav.homeLink": "Farul Ivan — home",
+  "nav.menuLabel": "Site",
 
   // Home
   "home.scrollCue": "Scroll",
+
+  // Page titles. The bodies are placeholders until the real content lands.
+  "work.title": "Work",
+  "about.title": "About",
+  "contact.title": "Contact",
+  "page.comingSoon": "This page is still being written.",
 
   // Footer
   "footer.menu": "Menu",
   "footer.social": "Social",
   "footer.contact": "Contact",
-  "footer.language": "Language",
-  "footer.rights": "© {year} Farul Ivan",
+  "footer.rights": "© Farul Ivan {year} • All rights reserved.",
   "footer.builtWith": "Built with Astro",
 
   // The CV download states its format and size, so nobody has to guess what
   // the link will do before clicking it.
-  "cv.download": "Download CV",
-  "cv.label": "CV — {format}, {size}",
+  "cv.see": "See my resume",
+  "cv.detail": "{format}, {size}",
 
   // Writing
   "blog.title": "Writing",
@@ -72,7 +78,7 @@ export const en = {
   "pagination.status": "Page {current} of {total}",
 
   // Language
-  "lang.switch": "Change language",
+  "lang.switch": "Switch to {language}",
   "lang.en": "English",
   "lang.id": "Bahasa Indonesia",
 
@@ -108,18 +114,23 @@ export const id: Record<TranslationKey, string> = {
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Tutup",
   "nav.homeLink": "Farul Ivan — beranda",
+  "nav.menuLabel": "Situs",
 
   "home.scrollCue": "Gulir",
+
+  "work.title": "Karya",
+  "about.title": "Tentang",
+  "contact.title": "Kontak",
+  "page.comingSoon": "Halaman ini masih dalam penulisan.",
 
   "footer.menu": "Menu",
   "footer.social": "Sosial",
   "footer.contact": "Kontak",
-  "footer.language": "Bahasa",
-  "footer.rights": "© {year} Farul Ivan",
+  "footer.rights": "© Farul Ivan {year} • Seluruh hak cipta dilindungi.",
   "footer.builtWith": "Dibuat dengan Astro",
 
-  "cv.download": "Unduh CV",
-  "cv.label": "CV — {format}, {size}",
+  "cv.see": "Lihat resume saya",
+  "cv.detail": "{format}, {size}",
 
   "blog.title": "Tulisan",
   "blog.subtitle":
@@ -138,7 +149,7 @@ export const id: Record<TranslationKey, string> = {
   "pagination.next": "Berikutnya",
   "pagination.status": "Halaman {current} dari {total}",
 
-  "lang.switch": "Ubah bahasa",
+  "lang.switch": "Ganti ke {language}",
   "lang.en": "English",
   "lang.id": "Bahasa Indonesia",
 

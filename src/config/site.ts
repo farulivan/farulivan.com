@@ -29,6 +29,18 @@ export const siteConfig = {
     { key: "nav.writing", href: "/blog" },
   ],
   /**
+   * The site menu. Five entries is what the card holds at this type size on
+   * the shortest phone it has to work on; a sixth would either shrink the
+   * type or push the last one off screen.
+   */
+  menu: [
+    { key: "nav.home", href: "/" },
+    { key: "nav.work", href: "/work" },
+    { key: "nav.about", href: "/about" },
+    { key: "nav.writing", href: "/blog" },
+    { key: "nav.contact", href: "/contact" },
+  ],
+  /**
    * Where to reach him. Two links rather than three: an employer follows a
    * GitHub profile and a LinkedIn profile, and a third account nobody checks
    * is worse than no link at all.
@@ -56,6 +68,7 @@ export const siteConfig = {
   ogImage: string
   postsPerPage: number
   nav: readonly { key: TranslationKey; href: string }[]
+  menu: readonly { key: TranslationKey; href: string }[]
   social: Readonly<Record<string, string>>
   contact: { email: string }
   cv: { href: string; format: string; size: string }
