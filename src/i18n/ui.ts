@@ -55,8 +55,8 @@ export const en = {
 
   // The CV download states its format and size, so nobody has to guess what
   // the link will do before clicking it.
-  "cv.download": "Download CV",
-  "cv.label": "CV — {format}, {size}",
+  "cv.see": "See my resume",
+  "cv.detail": "{format}, {size}",
 
   // Writing
   "blog.title": "Writing",
@@ -129,8 +129,8 @@ export const id: Record<TranslationKey, string> = {
   "footer.rights": "© Farul Ivan {year} • Seluruh hak cipta dilindungi.",
   "footer.builtWith": "Dibuat dengan Astro",
 
-  "cv.download": "Unduh CV",
-  "cv.label": "CV — {format}, {size}",
+  "cv.see": "Lihat resume saya",
+  "cv.detail": "{format}, {size}",
 
   "blog.title": "Tulisan",
   "blog.subtitle":
