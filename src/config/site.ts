@@ -26,7 +26,7 @@ export const siteConfig = {
   nav: [
     // Work, About and Contact join this list in the change that adds their
     // pages. Listing them before the routes exist would ship dead links.
-    { key: "nav.writing", href: "/blog" },
+    { key: "nav.writing", href: "/writing" },
   ],
   /**
    * The site menu. Five entries is what the card holds at this type size on
@@ -37,7 +37,7 @@ export const siteConfig = {
     { key: "nav.home", href: "/" },
     { key: "nav.work", href: "/work" },
     { key: "nav.about", href: "/about" },
-    { key: "nav.writing", href: "/blog" },
+    { key: "nav.writing", href: "/writing" },
     { key: "nav.contact", href: "/contact" },
   ],
   /**

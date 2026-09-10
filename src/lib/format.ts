@@ -3,7 +3,7 @@
  *
  * A single-locale site could hold its `Intl` objects in module-level
  * constants. With several locales the equivalent is a small cache:
- * constructing an `Intl.DateTimeFormat` is genuinely expensive, and a blog
+ * constructing an `Intl.DateTimeFormat` is genuinely expensive, and a writing
  * index would otherwise build one per row per render.
  */
 import { LOCALE_TAGS, type Locale } from "../content/schemas"

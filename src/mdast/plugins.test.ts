@@ -110,7 +110,7 @@ describe("external-links", () => {
   })
 
   it("leaves relative links alone", () => {
-    const { setProperty, appendChild } = run("/blog/preview-urls")
+    const { setProperty, appendChild } = run("/writing/preview-urls")
     expect(setProperty).not.toHaveBeenCalled()
     expect(appendChild).not.toHaveBeenCalled()
   })

@@ -12,38 +12,38 @@ import {
 
 describe("getLangFromPath", () => {
   it("reads a prefixed locale", () => {
-    expect(getLangFromPath("/id/blog")).toBe("id")
+    expect(getLangFromPath("/id/writing")).toBe("id")
     expect(getLangFromPath("/id")).toBe("id")
   })
 
   it("treats an unprefixed path as the default locale", () => {
     expect(getLangFromPath("/")).toBe("en")
-    expect(getLangFromPath("/blog")).toBe("en")
+    expect(getLangFromPath("/writing")).toBe("en")
   })
 
   it("does not mistake an ordinary first segment for a locale", () => {
     // The bug this guards: a future page at /it/... or a slug that happens to
     // look like a language code silently switching the site's language.
-    expect(getLangFromPath("/blog/id")).toBe("en")
+    expect(getLangFromPath("/writing/id")).toBe("en")
     expect(getLangFromPath("/index")).toBe("en")
   })
 })
 
 describe("localizePath", () => {
   it("leaves the default locale unprefixed", () => {
-    expect(localizePath("/blog", "en")).toBe("/blog")
+    expect(localizePath("/writing", "en")).toBe("/writing")
     expect(localizePath("/", "en")).toBe("/")
   })
 
   it("prefixes other locales", () => {
-    expect(localizePath("/blog", "id")).toBe("/id/blog")
+    expect(localizePath("/writing", "id")).toBe("/id/writing")
     // No trailing slash: the site is configured trailingSlash: "never".
     expect(localizePath("/", "id")).toBe("/id")
   })
 
   it("normalizes duplicate and missing slashes", () => {
-    expect(localizePath("blog", "id")).toBe("/id/blog")
-    expect(localizePath("//blog//", "en")).toBe("/blog")
+    expect(localizePath("writing", "id")).toBe("/id/writing")
+    expect(localizePath("//writing//", "en")).toBe("/writing")
   })
 })
 
@@ -51,12 +51,16 @@ describe("switchLocalePath", () => {
   it("keeps the reader on the same page", () => {
     // The classic bug in hand-rolled language switchers is dumping the reader
     // on the home page; this is the test that stops it coming back.
-    expect(switchLocalePath("/blog/my-post", "id")).toBe("/id/blog/my-post")
-    expect(switchLocalePath("/id/blog/my-post", "en")).toBe("/blog/my-post")
+    expect(switchLocalePath("/writing/my-post", "id")).toBe(
+      "/id/writing/my-post"
+    )
+    expect(switchLocalePath("/id/writing/my-post", "en")).toBe(
+      "/writing/my-post"
+    )
   })
 
   it("round-trips", () => {
-    const original = "/blog/page/2"
+    const original = "/writing/page/2"
     expect(switchLocalePath(switchLocalePath(original, "id"), "en")).toBe(
       original
     )
@@ -65,9 +69,9 @@ describe("switchLocalePath", () => {
 
 describe("stripLocale", () => {
   it("removes only a leading locale segment", () => {
-    expect(stripLocale("/id/blog")).toBe("/blog")
-    expect(stripLocale("/blog")).toBe("/blog")
-    expect(stripLocale("/blog/id")).toBe("/blog/id")
+    expect(stripLocale("/id/writing")).toBe("/writing")
+    expect(stripLocale("/writing")).toBe("/writing")
+    expect(stripLocale("/writing/id")).toBe("/writing/id")
   })
 })
 
@@ -94,7 +98,7 @@ describe("useTranslations", () => {
   })
 
   it("substitutes placeholders", () => {
-    expect(useTranslations("en")("blog.readingTime", { minutes: 4 })).toBe(
+    expect(useTranslations("en")("writing.readingTime", { minutes: 4 })).toBe(
       "4 min read"
     )
     expect(
@@ -103,7 +107,9 @@ describe("useTranslations", () => {
   })
 
   it("leaves an unsupplied placeholder intact rather than printing undefined", () => {
-    expect(useTranslations("en")("blog.readingTime")).toBe("{minutes} min read")
+    expect(useTranslations("en")("writing.readingTime")).toBe(
+      "{minutes} min read"
+    )
   })
 })
 
@@ -116,12 +122,14 @@ describe("localizePath with hashes and queries", () => {
   })
 
   it("handles an anchor on a nested path", () => {
-    expect(localizePath("/blog#top", "id")).toBe("/id/blog#top")
-    expect(localizePath("/blog#top", "en")).toBe("/blog#top")
+    expect(localizePath("/writing#top", "id")).toBe("/id/writing#top")
+    expect(localizePath("/writing#top", "en")).toBe("/writing#top")
   })
 
   it("preserves a query string", () => {
-    expect(localizePath("/blog?tag=process", "id")).toBe("/id/blog?tag=process")
+    expect(localizePath("/writing?tag=process", "id")).toBe(
+      "/id/writing?tag=process"
+    )
   })
 
   it("still returns the bare root", () => {

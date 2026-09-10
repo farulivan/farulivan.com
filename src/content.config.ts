@@ -8,14 +8,44 @@
  * network boundary does in an application that talks to a server.
  */
 import { defineCollection } from "astro:content"
-import { glob } from "astro/loaders"
+import { file, glob } from "astro/loaders"
 
-import { postSchema } from "./content/schemas"
+import {
+  capabilitySchema,
+  experienceSchema,
+  postSchema,
+  projectSchema,
+} from "./content/schemas"
 
 /** Locale lives in frontmatter, so these folders are organization only. */
-const blog = defineCollection({
-  loader: glob({ base: "./src/content/blog", pattern: "**/*.mdx" }),
+const writing = defineCollection({
+  loader: glob({ base: "./src/content/writing", pattern: "**/*.mdx" }),
   schema: postSchema,
 })
 
-export const collections = { blog }
+/** Case studies. The body is the narrative; the frontmatter is everything else. */
+const projects = defineCollection({
+  loader: glob({ base: "./src/content/projects", pattern: "**/*.mdx" }),
+  schema: projectSchema,
+})
+
+/** Career timeline rows. Plain Markdown: there is no body, only frontmatter. */
+const experience = defineCollection({
+  loader: glob({ base: "./src/content/experience", pattern: "**/*.md" }),
+  schema: experienceSchema,
+})
+
+/**
+ * One file rather than one per row. These are a handful of short lists that
+ * are read and edited together, and splitting them across a folder would be
+ * filing for its own sake.
+ *
+ * TODO(content): the lists in capabilities.json are placeholders. JSON has no
+ * comments, so the marker for them lives here.
+ */
+const capabilities = defineCollection({
+  loader: file("./src/content/capabilities.json"),
+  schema: capabilitySchema,
+})
+
+export const collections = { writing, projects, experience, capabilities }

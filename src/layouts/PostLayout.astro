@@ -51,7 +51,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
 
 <BaseLayout
   lang={lang}
-  path={`/blog/${slug}`}
+  path={`/writing/${slug}`}
   title={title}
   description={description}
   type="article"
@@ -63,13 +63,13 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
   <Section space="sm">
     <div class="max-w-2xl">
       <Button
-        href={localizePath("/blog", lang)}
+        href={localizePath("/writing", lang)}
         variant="ghost"
         size="sm"
         class="text-ink-muted mb-8 -ml-3"
       >
         <Icon name="chevronLeft" class="size-4" />
-        {t("blog.backToBlog")}
+        {t("writing.backToIndex")}
       </Button>
 
       {
@@ -78,7 +78,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
             role="status"
             class="border-rule bg-surface/50 text-ink-muted rounded-panel text-ui mb-8 border px-4 py-3"
           >
-            {t("blog.untranslated")}
+            {t("writing.untranslated")}
           </p>
         )
       }
@@ -95,8 +95,8 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
             {
               t(
                 displayed.kind === "updated"
-                  ? "blog.updated"
-                  : "blog.published",
+                  ? "writing.updated"
+                  : "writing.published",
                 {
                   date: formatDate(displayed.date, lang),
                 }
@@ -107,7 +107,9 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
             minutesRead !== undefined && (
               <>
                 <span aria-hidden="true">·</span>
-                <span>{t("blog.readingTime", { minutes: minutesRead })}</span>
+                <span>
+                  {t("writing.readingTime", { minutes: minutesRead })}
+                </span>
               </>
             )
           }
@@ -119,7 +121,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
               {tags.map((tag) => (
                 <li>
                   <a
-                    href={localizePath(`/blog/tag/${slugify(tag)}`, lang)}
+                    href={localizePath(`/writing/tag/${slugify(tag)}`, lang)}
                     class="hover:text-ink transition-colors"
                   >
                     {tag}

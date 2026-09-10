@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { blogPageHref, extraPageNumbers, paginate } from "./pagination"
+import { writingPageHref, extraPageNumbers, paginate } from "./pagination"
 
 const items = Array.from({ length: 7 }, (_, i) => i + 1)
 
@@ -27,7 +27,7 @@ describe("paginate", () => {
 })
 
 describe("extraPageNumbers", () => {
-  it("omits page 1, which lives at /blog rather than /blog/page/1", () => {
+  it("omits page 1, which lives at /writing rather than /writing/page/1", () => {
     expect(extraPageNumbers(7, 3)).toEqual([2, 3])
   })
 
@@ -37,14 +37,14 @@ describe("extraPageNumbers", () => {
   })
 })
 
-describe("blogPageHref", () => {
-  it("keeps page 1 at the bare blog URL", () => {
-    expect(blogPageHref("en", 1)).toBe("/blog")
-    expect(blogPageHref("id", 1)).toBe("/id/blog")
+describe("writingPageHref", () => {
+  it("keeps page 1 at the bare writing URL", () => {
+    expect(writingPageHref("en", 1)).toBe("/writing")
+    expect(writingPageHref("id", 1)).toBe("/id/writing")
   })
 
   it("numbers later pages under /page", () => {
-    expect(blogPageHref("en", 2)).toBe("/blog/page/2")
-    expect(blogPageHref("id", 3)).toBe("/id/blog/page/3")
+    expect(writingPageHref("en", 2)).toBe("/writing/page/2")
+    expect(writingPageHref("id", 3)).toBe("/id/writing/page/3")
   })
 })
