@@ -86,6 +86,13 @@ whose card would clip an outset one.
   for every import, which points at the imports rather than the comment. Put
   the comment in the frontmatter.
 - **Keep angle-bracket tag names out of `.astro` frontmatter comments.** Writing `<section>` in a JSDoc block there can panic the `.astro` to TSX transform (`slice bounds out of range`), after which every importing file reports "is not a module". Write "a section element" instead.
+- **No `as` casts in a page's frontmatter.** A single `as const` or `as string`
+  there stops Astro binding `Props`, and the page then fails to type-check with
+  `'Props' is declared but never used` — an error that points at the line you
+  did not touch. A type annotation is unaffected, so write
+  `const columns: DataColumn[] = [...]` rather than `align: "end" as const`.
+  This is the same family as the `as` prop trap above; the keyword is the
+  problem, not the position.
 - **Import Zod from `astro/zod`,** never a separate `zod` install — two copies break `defineCollection`.
 - **TypeScript stays on 6.0.x.** `@astrojs/check` and typescript-eslint both reject TS 7 today.
 - **Adding a string?** Add it to `en` in `src/i18n/ui.ts` first; typecheck will then demand the Indonesian one.

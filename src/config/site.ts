@@ -24,9 +24,11 @@ export const siteConfig = {
    * so adding a locale never means touching this file.
    */
   nav: [
-    // Work, About and Contact join this list in the change that adds their
-    // pages. Listing them before the routes exist would ship dead links.
+    // About joins this list in the change that adds its page. Listing it
+    // before the route exists would ship a dead link.
+    { key: "nav.work", href: "/work" },
     { key: "nav.writing", href: "/writing" },
+    { key: "nav.contact", href: "/contact" },
   ],
   /**
    * The site menu. Five entries is what the card holds at this type size on

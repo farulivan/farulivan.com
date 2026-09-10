@@ -1,0 +1,129 @@
+---
+/**
+ * A hairline table: rules and space, no fills, no zebra striping, no box.
+ *
+ * It is the right shape for any dense list somebody scans rather than reads —
+ * the work index, the writing index, the capabilities list, the links on the
+ * contact page. Four uses is why this is a component rather than four tables.
+ *
+ * **It becomes stacked blocks below 768px rather than scrolling sideways.** A
+ * table of links that scrolls horizontally is a table whose links you cannot
+ * reach on a phone. Each cell keeps its column name and prints it above the
+ * value instead.
+ */
+import { cn } from "@/lib/utils"
+
+export interface DataColumn {
+  /** Printed in the header, and above the value once the table stacks. */
+  label: string
+  /**
+   * The one column set at heading size, which also carries the row's link.
+   * The link wraps this cell rather than the whole row: a row-sized target
+   * that contains other links is a target nobody can use.
+   */
+  title?: boolean
+  align?: "start" | "end"
+  /**
+   * Dropped when the table stacks. For a column that is a counter rather than
+   * information — "01" under the heading "NN" helps nobody on a phone.
+   */
+  omitOnStack?: boolean
+}
+
+export type DataCell = string | number | { text: string; href: string }
+
+interface Props {
+  columns: DataColumn[]
+  rows: DataCell[][]
+  /** Names the table for screen readers when no visible heading does. */
+  caption?: string | undefined
+  class?: string | undefined
+}
+
+const { columns, rows, caption, class: className } = Astro.props
+
+const text = (cell: DataCell) =>
+  typeof cell === "object" ? cell.text : String(cell)
+const href = (cell: DataCell) =>
+  typeof cell === "object" ? cell.href : undefined
+---
+
+{
+  /*
+   * `max-md:block` on every part turns the table into blocks: the header is
+   * dropped, each row becomes a bordered group, and each cell prints its
+   * column name above itself. The elements keep their table roles for
+   * assistive tech, which is why this is a real table and not a grid of divs.
+   */
+}
+<table
+  class={cn(
+    "border-section-rule w-full border-collapse text-left max-md:block",
+    className
+  )}
+>
+  {caption && <caption class="sr-only">{caption}</caption>}
+
+  <thead class="max-md:hidden">
+    <tr class="border-section-rule-strong border-b">
+      {
+        columns.map((column) => (
+          <th
+            scope="col"
+            class={cn(
+              // `font-body`, not `font-normal`: Tailwind's own weight scale is off here,
+              // and a `th` is bold until something says otherwise.
+              "text-micro text-section-muted font-body py-3 uppercase",
+              column.align === "end" && "text-right"
+            )}
+          >
+            {column.label}
+          </th>
+        ))
+      }
+    </tr>
+  </thead>
+
+  <tbody class="max-md:block">
+    {
+      rows.map((row) => (
+        <tr class="border-section-rule border-b max-md:block max-md:py-2">
+          {row.map((cell, index) => {
+            const column = columns[index]
+            const link = href(cell)
+            const label = text(cell)
+
+            return (
+              <td
+                data-label={column?.label}
+                class={cn(
+                  "text-ui py-5 align-top",
+                  column?.align === "end" && "text-right",
+                  column?.title && "text-h-m",
+                  // Stacked, every cell is a full-width line with its column
+                  // name above it, and the padding moves to the row.
+                  "max-md:block max-md:py-1 max-md:text-left",
+                  column?.omitOnStack && "max-md:hidden",
+                  column?.label &&
+                    !column.omitOnStack &&
+                    "max-md:before:text-micro max-md:before:text-section-muted max-md:before:block max-md:before:uppercase max-md:before:content-[attr(data-label)]"
+                )}
+              >
+                {link ? (
+                  <a
+                    href={link}
+                    class="hover:decoration-section-rule-strong duration-fast ease-state underline decoration-transparent underline-offset-4 transition-[text-decoration-color] motion-reduce:transition-none"
+                  >
+                    {label}
+                  </a>
+                ) : (
+                  label
+                )}
+              </td>
+            )
+          })}
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

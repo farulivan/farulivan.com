@@ -1,0 +1,121 @@
+---
+/**
+ * The work index: everything in a table, then the three best in full.
+ *
+ * The table comes first on purpose. Someone hiring for a specific technology
+ * arrives looking for it, and a scannable list answers that in seconds; someone
+ * browsing scrolls past it to the rows. Putting the rows first would serve the
+ * second reader and make the first one hunt.
+ */
+import type { InferGetStaticPropsType } from "astro"
+
+import DataTable, {
+  type DataCell,
+  type DataColumn,
+} from "@/components/DataTable.astro"
+import ProjectRow from "@/components/ProjectRow.astro"
+import SectionHeader from "@/components/SectionHeader.astro"
+import Section from "@/components/ui/Section.astro"
+import {
+  getFeaturedProjects,
+  getProjects,
+  projectSlug,
+} from "@/content/queries"
+import { LOCALES } from "@/content/schemas"
+import { langParam, localizePath, useTranslations } from "@/i18n/utils"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+
+export function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang: langParam(lang) },
+    props: { lang },
+  }))
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+
+const projects = await getProjects(lang)
+const featured = await getFeaturedProjects(lang)
+
+/* Annotated rather than cast: `as` in a page's frontmatter costs the page its
+   Props binding. See the trap in AGENTS.md. */
+const columns: DataColumn[] = [
+  { label: t("work.col.index"), omitOnStack: true },
+  { label: t("work.col.project"), title: true },
+  { label: t("work.col.role") },
+  { label: t("work.col.stack") },
+  { label: t("work.col.year"), align: "end" },
+]
+
+const rows: DataCell[][] = projects.map(({ entry }, index) => [
+  String(index + 1).padStart(2, "0"),
+  {
+    text: entry.data.title,
+    href: localizePath(`/work/${projectSlug(entry)}`, lang),
+  },
+  entry.data.role,
+  entry.data.stack.join(", "),
+  entry.data.year,
+])
+---
+
+<BaseLayout
+  {lang}
+  path="/work"
+  title={t("work.title")}
+  description={t("work.subtitle")}
+>
+  <Section space="lg">
+    <h1
+      class="text-display-l font-display text-ink m-0 break-words hyphens-auto"
+    >
+      {t("work.title")}
+    </h1>
+    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
+      {t("work.subtitle")}
+    </p>
+  </Section>
+
+  <Section field="surface" space="md">
+    <SectionHeader
+      label={t("work.allLabel")}
+      description={t("work.allDescription")}
+    />
+    {
+      projects.length > 0 ? (
+        <DataTable {columns} {rows} class="mt-7" />
+      ) : (
+        <p class="text-ui text-section-muted mt-7">{t("work.empty")}</p>
+      )
+    }
+  </Section>
+
+  {
+    featured.length > 0 && (
+      <Section space="md">
+        <SectionHeader
+          label={t("work.featuredLabel")}
+          description={t("work.featuredDescription")}
+        />
+        <div class="mt-7">
+          {featured.map(({ entry }, index) => (
+            <ProjectRow
+              href={localizePath(`/work/${projectSlug(entry)}`, lang)}
+              index={index + 1}
+              title={entry.data.title}
+              year={entry.data.year}
+              role={entry.data.role}
+              stack={entry.data.stack}
+              summary={entry.data.summary}
+              screenshot={entry.data.screenshot}
+              flip={index % 2 === 1}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+</BaseLayout>

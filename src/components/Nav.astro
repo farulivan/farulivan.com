@@ -33,6 +33,7 @@ const t = useTranslations(lang)
    */
 }
 <header
+  data-nav
   class="px-page-margin pointer-events-none fixed inset-x-0 top-0 z-50 flex items-center gap-5 py-6 *:pointer-events-auto max-md:py-4"
 >
   {
@@ -97,8 +98,11 @@ const t = useTranslations(lang)
    *
    * On the homepage that point is the large lettering in the hero: the small
    * copy leaves exactly as the large one arrives, so the same word is never in
-   * two places at once. Elsewhere it is the top of the content, so the bar
-   * clears itself as soon as you start reading.
+   * two places at once.
+   *
+   * Every other page has no such marker, so the bar clears itself as soon as
+   * you scroll past its own height. Without that it sits over the first table
+   * on the page and stays there, which is what it did until this was noticed.
    *
    * A scroll listener rather than an observer, because the interesting moment
    * is one edge of the marker crossing one line, and an observer only reports
@@ -106,16 +110,18 @@ const t = useTranslations(lang)
    * fires hundreds of pixels late. Passive, and read inside a frame callback,
    * so it never blocks scrolling.
    */
-  const bar = document.querySelector<HTMLElement>(".nav")
+  const bar = document.querySelector<HTMLElement>("[data-nav]")
   const marker = document.querySelector<HTMLElement>("[data-mark-hide-trigger]")
 
-  if (bar && marker) {
+  if (bar) {
     const root = document.documentElement
     let queued = false
 
     const update = () => {
       queued = false
-      const passed = marker.getBoundingClientRect().top <= bar.offsetHeight
+      const passed = marker
+        ? marker.getBoundingClientRect().top <= bar.offsetHeight
+        : scrollY > bar.offsetHeight
       root.toggleAttribute("data-mark-hidden", passed)
     }
 

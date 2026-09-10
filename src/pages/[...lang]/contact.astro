@@ -1,7 +1,21 @@
 ---
+/**
+ * A short page with one job.
+ *
+ * **No contact form.** An email link needs no backend, no spam handling and no
+ * privacy policy, and it is the thing people actually use. If a form is ever
+ * added here it needs a written reason, not a preference.
+ */
 import type { InferGetStaticPropsType } from "astro"
 
+import CtaBox from "@/components/CtaBox.astro"
+import DataTable, {
+  type DataCell,
+  type DataColumn,
+} from "@/components/DataTable.astro"
+import SectionHeader from "@/components/SectionHeader.astro"
 import Section from "@/components/ui/Section.astro"
+import { siteConfig } from "@/config/site"
 import { LOCALES } from "@/content/schemas"
 import { langParam, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -17,23 +31,94 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { lang } = Astro.props
 const t = useTranslations(lang)
+
+const columns: DataColumn[] = [
+  { label: t("contact.col.channel") },
+  { label: t("contact.col.link"), title: true },
+]
+
+/* The handle rather than the URL: nobody reads a domain as a name. */
+const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "")
+
+const rows: DataCell[][] = [
+  [
+    t("contact.github"),
+    { text: handle(siteConfig.social.github), href: siteConfig.social.github },
+  ],
+  [
+    t("contact.linkedin"),
+    {
+      text: handle(siteConfig.social.linkedin),
+      href: siteConfig.social.linkedin,
+    },
+  ],
+]
 ---
 
-{
-  /*
-   * TODO(content): a title and nothing else, so the menu links somewhere real
-   * while the chrome is being reviewed. The sections and the copy arrive with
-   * the rest of the pages.
-   */
-}
 <BaseLayout
-  lang={lang}
+  {lang}
   path="/contact"
   title={t("contact.title")}
-  description={t("site.description")}
+  description={t("contact.statement")}
 >
-  <Section>
-    <h1 class="text-display-l font-display text-ink">{t("contact.title")}</h1>
-    <p class="text-read text-ink-muted mt-5">{t("page.comingSoon")}</p>
+  <Section space="lg">
+    <h1 class="sr-only">{t("contact.title")}</h1>
+    {
+      /*
+       * The statement is the heading here in every sense but the markup. It is
+       * set at display size and says what the page is for, so a second visible
+       * "Contact" above it would be a label on something already labelled.
+       */
+    }
+    <p
+      class="text-display-m font-display text-ink m-0 max-w-[14ch] text-balance break-words hyphens-auto"
+    >
+      {t("contact.statement")}
+    </p>
+  </Section>
+
+  <Section space="md">
+    <SectionHeader
+      label={t("contact.directLabel")}
+      description={t("contact.directDescription")}
+    />
+    {
+      /*
+       * The email set large enough to read across a room, because it is the
+       * one thing on this page anyone is looking for.
+       */
+    }
+    <a
+      href={`mailto:${siteConfig.contact.email}`}
+      class="text-display-s font-display text-ink duration-fast ease-state mt-7 inline-block break-all no-underline underline-offset-[6px] hover:underline motion-reduce:transition-none"
+    >
+      {siteConfig.contact.email}
+    </a>
+  </Section>
+
+  <Section space="md">
+    <SectionHeader
+      label={t("contact.elsewhereLabel")}
+      description={t("contact.elsewhereDescription")}
+    />
+    <DataTable {columns} {rows} class="mt-7" />
+  </Section>
+
+  {
+    /*
+     * Lime rather than the black the spec asked for. The footer became a black
+     * field after those specs were written, so a black band here would put two
+     * of them back to back — and the footer already offers the same download.
+     * Lime keeps this the moment the page asks for something without repeating
+     * the field directly beneath it.
+     */
+  }
+  <Section field="accent" space="md">
+    <CtaBox
+      href={siteConfig.cv.href}
+      label={t("contact.cvLabel")}
+      detail={`${siteConfig.cv.format} · ${siteConfig.cv.size}`}
+      download
+    />
   </Section>
 </BaseLayout>

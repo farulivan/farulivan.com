@@ -34,15 +34,21 @@ const {
 } = Astro.props
 
 /*
+ * Each field also re-points the three field-relative tokens, so a header, a
+ * table or a box inside it is quiet in whatever way is correct here without
+ * being told which field it landed on.
+ *
  * On the lime field text is ink or nothing: the muted grey drops to 3.65:1
  * there and fails. On the near-black field the muted tone is a lighter grey
- * that still clears AAA.
+ * that still clears AAA, and the hairlines have to be light rather than ink or
+ * they disappear.
  */
 const fields = {
   paper: "bg-paper text-ink",
   surface: "bg-surface text-ink",
-  accent: "bg-accent-field text-ink",
-  invert: "bg-surface-invert text-ink-invert",
+  accent: "bg-accent-field text-ink [--color-section-muted:var(--color-ink)]",
+  invert:
+    "bg-surface-invert text-ink-invert [--color-section-muted:var(--color-ink-invert-muted)] [--color-section-rule:color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] [--color-section-rule-strong:var(--color-ink-invert)]",
 }[field]
 
 const spacing = { sm: "py-8", md: "py-9", lg: "py-10" }[space]
