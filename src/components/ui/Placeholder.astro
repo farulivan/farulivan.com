@@ -1,0 +1,39 @@
+---
+/**
+ * A flat grey block standing in for an image that has not been supplied yet.
+ *
+ * It holds the shape the real picture will occupy, so dropping the file in
+ * later moves nothing on the page — which is the only reason to draw a box at
+ * all rather than leave a gap. A full-bleed image is also capped in height by
+ * its caller, because a photograph taller than the screen is a photograph
+ * nobody sees the top and bottom of; the real one takes the same cap and covers
+ * the box.
+ *
+ * **Deliberately still.** The usual animated skeleton would break the motion
+ * budget, which says nothing on this site loops. A still field is also more
+ * honest: it reads as "not supplied yet" rather than "still loading", and this
+ * one is never going to finish loading.
+ *
+ * `data-placeholder` is what the architecture check counts, so an unfinished
+ * page is visible in every run and a launch build refuses to ship one.
+ */
+import { cn } from "@/lib/utils"
+
+interface Props {
+  /** As a CSS ratio: "3/2", "16/10". The real image must match it. */
+  ratio: string
+  /** What the picture will be. Shown to nobody; it explains the box in the DOM. */
+  label: string
+  class?: string
+}
+
+const { ratio, label, class: className } = Astro.props
+---
+
+<div
+  class={cn("bg-surface w-full", className)}
+  style={`aspect-ratio: ${ratio}`}
+  data-placeholder={label}
+  aria-hidden="true"
+>
+</div>

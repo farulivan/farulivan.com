@@ -5,6 +5,7 @@ angkanya
 animasinya
 deskripsinya
 dicermati
+didaftar
 ditelusuri
 fiturnya
 Inggrisnya
@@ -13,6 +14,7 @@ kodenya
 migrasinya
 produknya
 situsnya
+tahapnya
 tersendat
 terukur
 tombolnya
