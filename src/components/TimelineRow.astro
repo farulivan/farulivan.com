@@ -1,0 +1,68 @@
+---
+/**
+ * One role in the career timeline, drawn as a step in a staircase.
+ *
+ * Each row starts a little further right than the one above it, so the list
+ * descends across the page as well as down it. That stagger is the pattern —
+ * the year is large enough to read as a date on its own, and the indent is what
+ * turns a stack of dates into a career.
+ *
+ * The step shrinks on narrower screens rather than disappearing. Removing it
+ * would leave an ordinary list; keeping it at desktop size on a phone would
+ * push the last role off the edge.
+ */
+import { cn } from "@/lib/utils"
+
+interface Props {
+  /** Position in the staircase, from 0. Decides how far in the row starts. */
+  step: number
+  year: number
+  role: string
+  company: string
+  /** Two lines on what shipped. The row is drawn at that height. */
+  description: string
+  class?: string
+}
+
+const { step, year, role, company, description, class: className } = Astro.props
+
+/**
+ * The indent, as a multiple of one step. Three sizes rather than a fluid
+ * value, because the design names all three and the jumps are the point.
+ */
+const indent = `calc(${step} * var(--timeline-step))`
+---
+
+<li
+  class={cn(
+    "border-section-rule list-none border-b [--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
+    className
+  )}
+>
+  <div
+    class="md:gap-gutter grid gap-4 py-7 md:grid-cols-12"
+    style={`padding-inline-start: ${indent}`}
+  >
+    <p class="m-0 flex items-baseline gap-2 md:col-span-5">
+      <span class="text-display-l font-display text-ink leading-none">
+        {year}
+      </span>
+      {
+        /*
+         * The counter is decoration: the years already say the order, and a
+         * screen reader announcing "zero one" before each date would be
+         * reading out the furniture.
+         */
+      }
+      <span class="text-micro text-section-muted uppercase" aria-hidden="true">
+        {String(step + 1).padStart(2, "0")}
+      </span>
+    </p>
+
+    <div class="flex flex-col gap-1 md:col-span-6 md:col-start-7">
+      <p class="text-h-m font-display text-ink m-0">{role}</p>
+      <p class="text-label text-section-muted m-0 uppercase">{company}</p>
+      <p class="text-ui text-ink m-0 mt-2 text-pretty">{description}</p>
+    </div>
+  </div>
+</li>

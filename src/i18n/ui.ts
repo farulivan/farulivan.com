@@ -46,6 +46,30 @@ export const en = {
   "contact.title": "Contact",
   "page.comingSoon": "This page is still being written.",
 
+  // About
+  "about.subtitle":
+    "Nine years of building web products, most of them the kind that have to keep working after launch.",
+  // TODO(content): four real paragraphs. These are the right length, not the
+  // right words.
+  "about.bio.1":
+    "I build web products, mostly the front end and enough of the back end to know why the front end is slow. Nine years of it, across a payments company, a logistics operator and a studio that shipped for other people.",
+  "about.bio.2":
+    "The work I am proudest of is rarely the work that looks impressive in a screenshot. It is the reporting query that stopped taking eleven seconds, the form that finally filled itself in correctly, the release that nobody noticed because nothing broke.",
+  "about.bio.3":
+    "I care about the parts of a codebase that decide how it ages: where the boundaries are, what the types promise, whether a new person can find the thing they came for. Speed matters, and so does the second year.",
+  "about.bio.4":
+    "I write in English and Indonesian, review code carefully, and would rather ask a question early than build the wrong thing well.",
+  "about.portraitLabel": "Portrait photograph",
+  "about.experienceLabel": "Experience",
+  "about.experienceDescription":
+    "Where the last nine years went, and what shipped in each of them.",
+  "about.capabilitiesLabel": "Capabilities",
+  "about.capabilitiesDescription":
+    "Grouped by what it is for rather than listed by name, because a pile of tools says nothing about what you can do with them.",
+  "about.col.domain": "Area",
+  "about.col.items": "What that covers",
+  "about.cvLabel": "Download CV",
+
   // Work index and case studies
   "work.subtitle":
     "Selected projects, with what the work was for and what changed once it shipped.",
@@ -173,6 +197,28 @@ export const id: Record<TranslationKey, string> = {
   "about.title": "Tentang",
   "contact.title": "Kontak",
   "page.comingSoon": "Halaman ini masih dalam penulisan.",
+
+  // About
+  "about.subtitle":
+    "Sembilan tahun membangun produk web, sebagian besar jenis yang harus tetap jalan setelah rilis.",
+  "about.bio.1":
+    "Saya membangun produk web, terutama sisi depan dan cukup banyak sisi belakang untuk paham kenapa sisi depannya lambat. Sudah sembilan tahun, di sebuah perusahaan pembayaran, operator logistik, dan studio yang mengerjakan produk orang lain.",
+  "about.bio.2":
+    "Pekerjaan yang paling saya banggakan jarang terlihat mengesankan dalam tangkapan layar. Bentuknya kueri laporan yang tak lagi butuh sebelas detik, formulir yang akhirnya terisi dengan benar, rilis yang tak disadari siapa pun karena tak ada yang rusak.",
+  "about.bio.3":
+    "Saya peduli pada bagian basis kode yang menentukan bagaimana ia menua: di mana batasnya, apa yang dijanjikan tipenya, apakah orang baru bisa menemukan yang ia cari. Kecepatan itu penting, dan tahun kedua juga.",
+  "about.bio.4":
+    "Saya menulis dalam bahasa Inggris dan Indonesia, mengulas kode dengan teliti, dan lebih suka bertanya lebih awal daripada membangun hal yang salah dengan rapi.",
+  "about.portraitLabel": "Foto potret",
+  "about.experienceLabel": "Pengalaman",
+  "about.experienceDescription":
+    "Ke mana sembilan tahun terakhir pergi, dan apa yang dirilis di tiap tahapnya.",
+  "about.capabilitiesLabel": "Kemampuan",
+  "about.capabilitiesDescription":
+    "Dikelompokkan menurut kegunaannya, bukan didaftar per nama, karena tumpukan perkakas tak menjelaskan apa pun soal hasilnya.",
+  "about.col.domain": "Bidang",
+  "about.col.items": "Cakupannya",
+  "about.cvLabel": "Unduh CV",
 
   // Work index and case studies
   "work.subtitle":

@@ -1,7 +1,25 @@
 ---
+/**
+ * Who is writing, in roughly the order somebody wants it: a sentence, a face,
+ * a career, and then the CV for anyone who would rather read the short form.
+ *
+ * The timeline is the centrepiece. It is the block an employer scans first, and
+ * the reason it is a staircase rather than a list is that a staircase can be
+ * read at a glance and a list has to be read.
+ */
 import type { InferGetStaticPropsType } from "astro"
 
+import CtaBox from "@/components/CtaBox.astro"
+import DataTable, {
+  type DataCell,
+  type DataColumn,
+} from "@/components/DataTable.astro"
+import SectionHeader from "@/components/SectionHeader.astro"
+import TimelineRow from "@/components/TimelineRow.astro"
+import Placeholder from "@/components/ui/Placeholder.astro"
 import Section from "@/components/ui/Section.astro"
+import { siteConfig } from "@/config/site"
+import { getCapabilities, getExperience } from "@/content/queries"
 import { LOCALES } from "@/content/schemas"
 import { langParam, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -17,23 +35,107 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { lang } = Astro.props
 const t = useTranslations(lang)
+
+const experience = await getExperience(lang)
+const capabilities = await getCapabilities(lang)
+
+const bio = [
+  t("about.bio.1"),
+  t("about.bio.2"),
+  t("about.bio.3"),
+  t("about.bio.4"),
+]
+
+const columns: DataColumn[] = [
+  { label: t("about.col.domain"), title: true },
+  { label: t("about.col.items") },
+]
+
+const rows: DataCell[][] = capabilities.map(({ entry }) => [
+  entry.data.domain,
+  entry.data.items.join(" · "),
+])
 ---
 
-{
-  /*
-   * TODO(content): a title and nothing else, so the menu links somewhere real
-   * while the chrome is being reviewed. The sections and the copy arrive with
-   * the rest of the pages.
-   */
-}
 <BaseLayout
-  lang={lang}
+  {lang}
   path="/about"
   title={t("about.title")}
-  description={t("site.description")}
+  description={t("about.subtitle")}
 >
-  <Section>
-    <h1 class="text-display-l font-display text-ink">{t("about.title")}</h1>
-    <p class="text-read text-ink-muted mt-5">{t("page.comingSoon")}</p>
+  <Section space="lg">
+    <h1
+      class="text-display-l font-display text-ink m-0 break-words hyphens-auto"
+    >
+      {t("about.title")}
+    </h1>
+    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
+      {t("about.subtitle")}
+    </p>
+  </Section>
+
+  <Section space="sm">
+    {
+      /*
+       * Prose width rather than page width. Four paragraphs set edge to edge
+       * on a wide screen is the one layout guaranteed to go unread.
+       */
+    }
+    <div class="max-w-measure flex flex-col gap-5">
+      {
+        bio.map((paragraph) => (
+          <p class="text-read text-ink m-0 text-pretty">{paragraph}</p>
+        ))
+      }
+    </div>
+  </Section>
+
+  {
+    /*
+     * TODO(asset): the portrait. A grey field at the shape the photograph will
+     * take, so dropping the file in later moves nothing on the page.
+     */
+  }
+  <Placeholder
+    ratio="16/9"
+    label={t("about.portraitLabel")}
+    class="my-9 max-h-[70svh]"
+  />
+
+  <Section space="md">
+    <SectionHeader
+      label={t("about.experienceLabel")}
+      description={t("about.experienceDescription")}
+    />
+    <ol class="m-0 mt-7 list-none p-0">
+      {
+        experience.map(({ entry }, index) => (
+          <TimelineRow
+            step={index}
+            year={entry.data.year}
+            role={entry.data.role}
+            company={entry.data.company}
+            description={entry.data.description}
+          />
+        ))
+      }
+    </ol>
+  </Section>
+
+  <Section field="surface" space="md">
+    <SectionHeader
+      label={t("about.capabilitiesLabel")}
+      description={t("about.capabilitiesDescription")}
+    />
+    <DataTable {columns} {rows} class="mt-7" />
+  </Section>
+
+  <Section field="accent" space="md">
+    <CtaBox
+      href={siteConfig.cv.href}
+      label={t("about.cvLabel")}
+      detail={`${siteConfig.cv.format} · ${siteConfig.cv.size}`}
+      download
+    />
   </Section>
 </BaseLayout>

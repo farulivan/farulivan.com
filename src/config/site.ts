@@ -24,9 +24,8 @@ export const siteConfig = {
    * so adding a locale never means touching this file.
    */
   nav: [
-    // About joins this list in the change that adds its page. Listing it
-    // before the route exists would ship a dead link.
     { key: "nav.work", href: "/work" },
+    { key: "nav.about", href: "/about" },
     { key: "nav.writing", href: "/writing" },
     { key: "nav.contact", href: "/contact" },
   ],
