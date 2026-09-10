@@ -32,12 +32,14 @@ const { lang, class: className, ...rest } = Astro.props
 const t = useTranslations(lang)
 
 /**
- * The snippet, as an editor would format it.
+ * The real element's markup, class list and all, on a single line.
  *
- * Trimmed from the real element, which carries eight utility classes on one
- * line. Reproduced in full it is 160 characters that cannot wrap tidily at any
- * width, and the point is to be recognisably the markup rather than to be a
- * diff of it.
+ * 133 characters, which is what decides the type size below: at the block's
+ * width there is exactly one size that fits them on one line on a wide screen.
+ *
+ * The `style` attribute the real element also carries is left out. It holds an
+ * animation offset rather than a class, so it adds 28 characters of build
+ * detail and costs the one-line fit on every screen narrower than about 1700.
  */
 const snippet: { text: string; kind: string }[] = [
   { text: "<", kind: "mark" },
@@ -45,13 +47,14 @@ const snippet: { text: string; kind: string }[] = [
   { text: " ", kind: "mark" },
   { text: "class", kind: "attr" },
   { text: "=", kind: "mark" },
-  { text: '"text-display-s text-ink"', kind: "string" },
+  {
+    text: '"text-display-s font-display text-ink hero-enter hero__standfirst absolute left-[20%]"',
+    kind: "string",
+  },
   { text: ">", kind: "mark" },
-  { text: "\n  ", kind: "mark" },
   { text: "Frontend ", kind: "text" },
   { text: "&amp;", kind: "entity" },
   { text: " Fullstack Engineer", kind: "text" },
-  { text: "\n", kind: "mark" },
   { text: "</", kind: "mark" },
   { text: "p", kind: "tag" },
   { text: ">", kind: "mark" },
@@ -85,12 +88,21 @@ const snippet: { text: string; kind: string }[] = [
   .sf {
     display: grid;
     grid-template-areas: "sf";
+    /* Lets the snippet size itself against this box rather than the window,
+       which is what makes the one-line fit exact rather than tuned. */
+    container-type: inline-size;
   }
 
+  /*
+   * Centred in the cell, not top-aligned. The code is the taller of the two,
+   * so the cell is its height — and a one-line sentence pinned to the top of a
+   * three-line box reads as though it slipped upwards when the two swap.
+   */
   .sf > * {
     grid-area: sf;
     margin: 0;
-    align-self: start;
+    align-self: center;
+    text-align: left;
   }
 
   .sf__text {
@@ -111,7 +123,27 @@ const snippet: { text: string; kind: string }[] = [
 
   .sf__code {
     font-family: var(--font-mono);
-    font-size: clamp(11px, 1.05vw, 15px);
+    /*
+     * Sized so the snippet is exactly one line, derived rather than tuned.
+     *
+     * It is 133 characters, and the monospace here advances 0.602em each, so
+     * the line is 80.07em wide. A font size of a hundredth of the box divided
+     * by that makes the line exactly as wide as the box, at any width.
+     *
+     * Divided by 82 rather than 80.07, for two reasons. Sub-pixel rounding
+     * broke the line at 1440 with the exact figure, and the reader's operating
+     * system may not supply the same monospace this was measured against —
+     * they vary from about 0.55em to 0.6em a character. The headroom costs a
+     * couple of per cent of size and buys a line that does not wrap on a
+     * machine nobody here has.
+     *
+     * The floor is where one line stops being readable. Below about 780px of
+     * box, roughly a 980px page, it would need type under 9.5px, so it wraps
+     * instead — 133 characters do not cross a phone at any size worth reading.
+     *
+     * The ceiling stops it growing into the sentence it sits under.
+     */
+    font-size: clamp(9.5px, calc(100cqi / 82), 14px);
     line-height: 1.7;
     white-space: pre-wrap;
     /* Long attribute values break rather than pushing past the edge. */
