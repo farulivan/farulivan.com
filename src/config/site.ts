@@ -20,19 +20,13 @@ export const siteConfig = {
   /** Posts per page on the writing index. */
   postsPerPage: 10,
   /**
-   * Primary navigation. `key` is a translation key rather than literal text,
-   * so adding a locale never means touching this file.
-   */
-  nav: [
-    { key: "nav.work", href: "/work" },
-    { key: "nav.about", href: "/about" },
-    { key: "nav.writing", href: "/writing" },
-    { key: "nav.contact", href: "/contact" },
-  ],
-  /**
-   * The site menu. Five entries is what the card holds at this type size on
-   * the shortest phone it has to work on; a sixth would either shrink the
-   * type or push the last one off screen.
+   * The site menu, and the only navigation there is — the bar holds the mark,
+   * the language switcher and this. A separate list of primary links existed
+   * for a while and nothing ever rendered it.
+   *
+   * Five entries is what the card holds at this type size on the shortest
+   * phone it has to work on; a sixth would either shrink the type or push the
+   * last one off screen.
    */
   menu: [
     { key: "nav.home", href: "/" },
@@ -68,7 +62,6 @@ export const siteConfig = {
   url: string
   ogImage: string
   postsPerPage: number
-  nav: readonly { key: TranslationKey; href: string }[]
   menu: readonly { key: TranslationKey; href: string }[]
   social: Readonly<Record<string, string>>
   contact: { email: string }

@@ -34,15 +34,8 @@ vi.mock("astro:content", () => ({
   })),
 }))
 
-const {
-  getPost,
-  getPostListItems,
-  getPostListItemsByTag,
-  getPostRoutes,
-  getPosts,
-  getTags,
-  postSlug,
-} = await import("./queries")
+const { getPost, getPostListItems, getPostRoutes, getPosts, postSlug } =
+  await import("./queries")
 
 let n = 0
 const post = (
@@ -173,51 +166,5 @@ describe("getPostListItems", () => {
     entries = [post({ minutesRead: undefined }), post({ minutesRead: "12" })]
     const items = await getPostListItems("en")
     expect(items.map((i) => i.minutesRead)).toEqual([undefined, undefined])
-  })
-})
-
-describe("getTags", () => {
-  it("counts each tag and sorts by how often it is used", async () => {
-    entries = [
-      post({ tags: ["deployment", "process"] }),
-      post({ tags: ["deployment"] }),
-    ]
-    expect(await getTags("en")).toEqual([
-      { label: "deployment", slug: "deployment", count: 2 },
-      { label: "process", slug: "process", count: 1 },
-    ])
-  })
-
-  it("groups tags that differ only in casing", async () => {
-    entries = [post({ tags: ["Deployment"] }), post({ tags: ["deployment"] })]
-    const tags = await getTags("en")
-    expect(tags).toHaveLength(1)
-    expect(tags[0]?.count).toBe(2)
-  })
-
-  it("sees only the tags of the locale being read", async () => {
-    entries = [
-      post({ lang: "en", translationKey: "shared", tags: ["process"] }),
-      post({ lang: "id", translationKey: "shared", tags: ["proses"] }),
-    ]
-    expect((await getTags("en")).map((t) => t.slug)).toEqual(["process"])
-    expect((await getTags("id")).map((t) => t.slug)).toEqual(["proses"])
-  })
-})
-
-describe("getPostListItemsByTag", () => {
-  it("narrows the list to one tag", async () => {
-    entries = [
-      post({ translationKey: "a", tags: ["deployment"] }),
-      post({ translationKey: "b", tags: ["process"] }),
-    ]
-    const items = await getPostListItemsByTag("en", "deployment")
-    expect(items.map((i) => i.slug)).toEqual(["a"])
-  })
-
-  it("matches on the slug, not the authored casing", async () => {
-    entries = [post({ translationKey: "a", tags: ["Continuous Delivery"] })]
-    const items = await getPostListItemsByTag("en", "continuous-delivery")
-    expect(items).toHaveLength(1)
   })
 })

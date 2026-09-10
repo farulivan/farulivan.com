@@ -2,16 +2,13 @@
 import type { InferGetStaticPropsType } from "astro"
 
 import CtaBox from "@/components/CtaBox.astro"
-import DataTable, {
-  type DataCell,
-  type DataColumn,
-} from "@/components/DataTable.astro"
 import HeroStandfirst from "@/components/HeroStandfirst.astro"
 import Intro from "@/components/Intro.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
 import StackBand from "@/components/StackBand.astro"
 import TimelineRow from "@/components/TimelineRow.astro"
+import WritingTable from "@/components/WritingTable.astro"
 import Section from "@/components/ui/Section.astro"
 import Wordmark from "@/components/Wordmark.astro"
 import { siteConfig } from "@/config/site"
@@ -25,7 +22,6 @@ import {
 import { LOCALES } from "@/content/schemas"
 import { langParam, localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
-import { formatDate } from "@/lib/format"
 
 export function getStaticPaths() {
   // `langParam` yields undefined for the default locale, which is what makes
@@ -56,25 +52,6 @@ const stackGroups = capabilities.map(({ entry }) => ({
   domain: entry.data.domain,
   items: entry.data.items,
 }))
-
-const writingColumns: DataColumn[] = [
-  { label: t("writing.col.date") },
-  { label: t("writing.col.title"), title: true },
-  { label: t("writing.col.topic") },
-  { label: t("writing.col.readTime"), align: "end" },
-]
-
-const writingRows: DataCell[][] = posts.map((post) => [
-  formatDate(post.date, lang),
-  { text: post.title, href: localizePath(`/writing/${post.slug}`, lang) },
-  /* The first tag is the topic. Tags are authored per locale already, and
-     adding a second field saying almost the same thing would invite the two
-     to disagree. */
-  post.tags[0] ?? "",
-  post.minutesRead
-    ? t("writing.readingTime", { minutes: post.minutesRead })
-    : "",
-])
 ---
 
 <BaseLayout
@@ -197,7 +174,7 @@ const writingRows: DataCell[][] = posts.map((post) => [
     </div>
     <a
       href={localizePath("/work", lang)}
-      class="text-label font-label duration-fast ease-state mt-7 inline-block uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
+      class="text-label font-label duration-fast ease-state min-h-tap mt-4 inline-flex items-center uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
     >
       {t("home.workCta")}
     </a>
@@ -223,7 +200,7 @@ const writingRows: DataCell[][] = posts.map((post) => [
     </ol>
     <a
       href={localizePath("/about", lang)}
-      class="text-label font-label duration-fast ease-state mt-7 inline-block uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
+      class="text-label font-label duration-fast ease-state min-h-tap mt-4 inline-flex items-center uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
     >
       {t("home.experienceCta")}
     </a>
@@ -241,14 +218,10 @@ const writingRows: DataCell[][] = posts.map((post) => [
       label={t("home.writingLabel")}
       description={t("home.writingDescription")}
     />
-    {
-      posts.length > 0 && (
-        <DataTable columns={writingColumns} rows={writingRows} class="mt-7" />
-      )
-    }
+    {posts.length > 0 && <WritingTable {lang} {posts} class="mt-7" />}
     <a
       href={localizePath("/writing", lang)}
-      class="text-label font-label duration-fast ease-state mt-7 inline-block uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
+      class="text-label font-label duration-fast ease-state min-h-tap mt-4 inline-flex items-center uppercase no-underline underline-offset-4 hover:underline motion-reduce:transition-none"
     >
       {t("home.writingCta")}
     </a>
