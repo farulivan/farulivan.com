@@ -1,0 +1,209 @@
+---
+/**
+ * One case study.
+ *
+ * The order is deliberate and it is not the order the work happened in: the
+ * facts first so the page can be skimmed, then the story, then what changed.
+ * Someone reading this is deciding whether to keep reading, and the outcome is
+ * the part they came for.
+ *
+ * The spec had the facts in a bar at the top and the stack again in a table at
+ * the bottom. They are one table here — printing the same list twice on one
+ * page is repetition rather than structure.
+ */
+import type { InferGetStaticPropsType } from "astro"
+
+import { Image } from "astro:assets"
+import { render } from "astro:content"
+
+import CtaBox from "@/components/CtaBox.astro"
+import DataTable, { type DataCell } from "@/components/DataTable.astro"
+import ProjectRow from "@/components/ProjectRow.astro"
+import SectionHeader from "@/components/SectionHeader.astro"
+import Prose from "@/components/ui/Prose.astro"
+import Section from "@/components/ui/Section.astro"
+import {
+  getNextProject,
+  getProjectRoutes,
+  projectSlug,
+} from "@/content/queries"
+import { langParam, localizePath, useTranslations } from "@/i18n/utils"
+import BaseLayout from "@/layouts/BaseLayout.astro"
+
+export async function getStaticPaths() {
+  const routes = await getProjectRoutes()
+  return routes.map(({ lang, slug, project }) => ({
+    params: { lang: langParam(lang), slug },
+    props: { lang, slug, project },
+  }))
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>
+
+const { lang, slug, project } = Astro.props
+const t = useTranslations(lang)
+
+const { Content } = await render(project.entry)
+const data = project.entry.data
+const next = await getNextProject(lang, slug)
+
+/*
+ * One row of facts in the hairline styling, which stacks into labelled lines
+ * on a phone. Team and duration are optional in the schema — freelance work
+ * often has neither — so the columns for them only appear when they do.
+ */
+const columns = [
+  { label: t("project.role") },
+  ...(data.teamSize ? [{ label: t("project.team") }] : []),
+  ...(data.duration ? [{ label: t("project.duration") }] : []),
+  { label: t("project.year") },
+  { label: t("project.stack") },
+]
+
+const rows: DataCell[][] = [
+  [
+    data.role,
+    ...(data.teamSize ? [data.teamSize] : []),
+    ...(data.duration ? [data.duration] : []),
+    data.year,
+    data.stack.join(", "),
+  ],
+]
+
+const links: { href: string; label: string }[] = []
+if (data.liveUrl) links.push({ href: data.liveUrl, label: t("project.live") })
+if (data.sourceUrl) {
+  links.push({ href: data.sourceUrl, label: t("project.source") })
+}
+---
+
+<BaseLayout
+  {lang}
+  path={`/work/${slug}`}
+  title={data.title}
+  description={data.summary}
+  availableLocales={project.availableLocales}
+>
+  <Section space="lg">
+    <a
+      href={localizePath("/work", lang)}
+      class="text-label text-section-muted duration-fast ease-state inline-block uppercase no-underline hover:underline hover:underline-offset-4 motion-reduce:transition-none"
+    >
+      {t("project.backToIndex")}
+    </a>
+
+    <h1
+      class="text-display-l font-display text-ink mt-5 mb-0 break-words hyphens-auto"
+    >
+      {data.title}
+    </h1>
+    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
+      {data.summary}
+    </p>
+
+    {
+      project.isFallback && (
+        <p class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5">
+          {t("project.untranslated")}
+        </p>
+      )
+    }
+
+    <DataTable {columns} {rows} caption={data.title} class="mt-9" />
+  </Section>
+
+  {
+    data.screenshot && (
+      <Image
+        src={data.screenshot.src}
+        alt={data.screenshot.alt}
+        widths={[640, 1024, 1600, 2000]}
+        sizes="100vw"
+        class="aspect-[16/10] w-full object-cover object-top"
+      />
+    )
+  }
+
+  {/* The narrative: the problem, then what was built. */}
+  <Section space="md">
+    <Prose class="max-w-measure">
+      <Content />
+    </Prose>
+  </Section>
+
+  <Section field="surface" space="md">
+    <SectionHeader
+      label={t("project.outcomeLabel")}
+      description={t("project.outcomeDescription")}
+    />
+
+    {
+      /*
+       * Figures where they exist, and the sentence either way. Plenty of good
+       * work moved something nobody counted, and the sentence is what stops
+       * that project reading as a project that did nothing.
+       */
+    }
+    {
+      data.outcome.figures.length > 0 && (
+        <dl class="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+          {data.outcome.figures.map((figure) => (
+            <div class="flex flex-col gap-2">
+              <dt class="text-display-s font-display text-ink order-1 leading-none">
+                {figure.value}
+              </dt>
+              <dd class="text-label text-section-muted order-2 m-0 uppercase">
+                {figure.caption}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+
+    <p class="text-read text-ink max-w-measure mt-7 text-pretty">
+      {data.outcome.summary}
+    </p>
+  </Section>
+
+  {
+    links.length > 0 && (
+      <Section space="md">
+        <SectionHeader label={t("project.linksLabel")} />
+        <div class="gap-gutter mt-7 grid sm:grid-cols-2">
+          {links.map((link) => (
+            <CtaBox
+              href={link.href}
+              label={link.label}
+              external
+              externalLabel={t("a11y.externalLink")}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    next && (
+      <Section field="surface" space="md">
+        <SectionHeader
+          label={t("project.nextLabel")}
+          description={t("project.nextDescription")}
+        />
+        <div class="mt-7">
+          <ProjectRow
+            href={localizePath(`/work/${projectSlug(next.entry)}`, lang)}
+            index={1}
+            title={next.entry.data.title}
+            year={next.entry.data.year}
+            role={next.entry.data.role}
+            stack={next.entry.data.stack}
+            summary={next.entry.data.summary}
+            screenshot={next.entry.data.screenshot}
+          />
+        </div>
+      </Section>
+    )
+  }
+</BaseLayout>

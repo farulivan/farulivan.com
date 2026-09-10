@@ -46,6 +46,57 @@ export const en = {
   "contact.title": "Contact",
   "page.comingSoon": "This page is still being written.",
 
+  // Work index and case studies
+  "work.subtitle":
+    "Selected projects, with what the work was for and what changed once it shipped.",
+  "work.allLabel": "All projects",
+  "work.allDescription":
+    "Everything worth listing, newest work first. Scan the stack column if you are looking for something in particular.",
+  "work.featuredLabel": "Selected work",
+  "work.featuredDescription":
+    "Three projects in more detail. Each one has a case study behind it.",
+  "work.col.index": "NN",
+  "work.col.project": "Project",
+  "work.col.role": "Role",
+  "work.col.stack": "Stack",
+  "work.col.year": "Year",
+  "work.empty": "No projects published yet.",
+
+  "project.backToIndex": "Back to work",
+  "project.role": "Role",
+  "project.team": "Team",
+  "project.duration": "Duration",
+  "project.year": "Year",
+  "project.stack": "Stack",
+  "project.outcomeLabel": "Outcome",
+  "project.outcomeDescription":
+    "What changed once it was in use. Numbers where they exist, and a plain sentence where they do not.",
+  "project.stackLabel": "Built with",
+  "project.stackDescription":
+    "The tools this was made from, and what each was for.",
+  "project.linksLabel": "Links",
+  "project.live": "Visit the live site",
+  "project.source": "Read the source",
+  "project.nextLabel": "Next project",
+  "project.nextDescription": "Keep going through the work.",
+  "project.untranslated":
+    "This case study has not been translated yet, so you are reading the English version.",
+
+  // Contact
+  "contact.statement":
+    "I am looking for a role where the front end is treated as engineering.",
+  "contact.directLabel": "Direct",
+  "contact.directDescription":
+    "If that is what you are building, I would like to hear about it. Email reaches me fastest, and I reply to everything.",
+  "contact.elsewhereLabel": "Elsewhere",
+  "contact.elsewhereDescription":
+    "The same person, in the places you would expect.",
+  "contact.col.channel": "Channel",
+  "contact.col.link": "Link",
+  "contact.github": "GitHub",
+  "contact.linkedin": "LinkedIn",
+  "contact.cvLabel": "Download CV",
+
   // Footer
   "footer.menu": "Menu",
   "footer.social": "Social",
@@ -122,6 +173,57 @@ export const id: Record<TranslationKey, string> = {
   "about.title": "Tentang",
   "contact.title": "Kontak",
   "page.comingSoon": "Halaman ini masih dalam penulisan.",
+
+  // Work index and case studies
+  "work.subtitle":
+    "Proyek pilihan, lengkap dengan tujuan pengerjaannya dan apa yang berubah setelah rilis.",
+  "work.allLabel": "Semua proyek",
+  "work.allDescription":
+    "Semua yang layak dicantumkan, dari yang terbaru. Telusuri kolom teknologi jika Anda mencari sesuatu yang spesifik.",
+  "work.featuredLabel": "Karya pilihan",
+  "work.featuredDescription":
+    "Tiga proyek dengan penjelasan lebih rinci. Masing-masing punya studi kasusnya sendiri.",
+  "work.col.index": "NN",
+  "work.col.project": "Proyek",
+  "work.col.role": "Peran",
+  "work.col.stack": "Teknologi",
+  "work.col.year": "Tahun",
+  "work.empty": "Belum ada proyek yang diterbitkan.",
+
+  "project.backToIndex": "Kembali ke karya",
+  "project.role": "Peran",
+  "project.team": "Tim",
+  "project.duration": "Durasi",
+  "project.year": "Tahun",
+  "project.stack": "Teknologi",
+  "project.outcomeLabel": "Hasil",
+  "project.outcomeDescription":
+    "Apa yang berubah setelah dipakai. Ada angkanya bila memang terukur, dan satu kalimat jelas bila tidak.",
+  "project.stackLabel": "Dibangun dengan",
+  "project.stackDescription":
+    "Perkakas yang dipakai, dan untuk apa masing-masing.",
+  "project.linksLabel": "Tautan",
+  "project.live": "Kunjungi situsnya",
+  "project.source": "Baca kodenya",
+  "project.nextLabel": "Proyek berikutnya",
+  "project.nextDescription": "Lanjut menelusuri karya lainnya.",
+  "project.untranslated":
+    "Studi kasus ini belum diterjemahkan, jadi yang Anda baca adalah versi Inggrisnya.",
+
+  // Contact
+  "contact.statement":
+    "Saya mencari peran yang memperlakukan front end sebagai pekerjaan teknik.",
+  "contact.directLabel": "Langsung",
+  "contact.directDescription":
+    "Jika itu yang sedang Anda bangun, saya ingin mendengarnya. Email paling cepat sampai, dan semua saya balas.",
+  "contact.elsewhereLabel": "Di tempat lain",
+  "contact.elsewhereDescription":
+    "Orang yang sama, di tempat-tempat yang biasa.",
+  "contact.col.channel": "Kanal",
+  "contact.col.link": "Tautan",
+  "contact.github": "GitHub",
+  "contact.linkedin": "LinkedIn",
+  "contact.cvLabel": "Unduh CV",
 
   "footer.menu": "Menu",
   "footer.social": "Sosial",

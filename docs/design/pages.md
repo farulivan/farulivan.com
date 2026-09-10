@@ -138,7 +138,13 @@ Short page, one job.
 | 1 | Statement | `--paper` — `--t-display-m`, one line on what he's looking for |
 | 2 | Direct | `--paper` — email as a large link at `--t-display-s` |
 | 3 | Elsewhere | `--paper` — C6 table: GitHub · LinkedIn · X |
-| 4 | CV | `--surface-invert` — C7, `DOWNLOAD CV — PDF, 240KB` |
+| 4 | CV | `--accent-field` — C7, `DOWNLOAD CV — PDF, 240KB` |
+
+**Changed during build.** This block was specified on `--surface-invert`. The
+footer became a full black field after these specs were written, so a black band
+here would sit directly on top of another one — and the footer already carries
+the same download. It is on lime instead, which keeps this the moment the page
+asks for something without repeating the field below it.
 
 **No contact form.** An email link is more likely to be used, needs no backend,
 no spam handling and no privacy policy. If a form is added later it needs a
