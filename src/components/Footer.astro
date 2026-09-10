@@ -32,20 +32,26 @@ const social = [
 
 <footer class="foot">
   <div class="foot__columns">
-    <section class="foot__col">
-      <h2 class="foot__label">{t("footer.menu")}</h2>
-      <ul class="foot__list">
+    {
+      /*
+       * No visible heading. At this size the list says what it is, and a
+       * label over it would be a caption on something already obvious. The
+       * name moves onto the landmark instead, so it is still announced.
+       */
+    }
+    <nav class="foot__col foot__col--menu" aria-label={t("footer.menu")}>
+      <ul class="foot__list foot__list--menu">
         {
           menu.map((item) => (
             <li>
-              <a class="foot__link" href={item.href}>
+              <a class="foot__link foot__link--menu" href={item.href}>
                 {item.label}
               </a>
             </li>
           ))
         }
       </ul>
-    </section>
+    </nav>
 
     <section class="foot__col">
       <h2 class="foot__label">{t("footer.social")}</h2>
@@ -129,7 +135,8 @@ const social = [
   /* Starting at the halfway mark is the whole idea. */
   .foot__columns {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* The menu carries the largest type, so it takes the widest column. */
+    grid-template-columns: 1.4fr 1fr 1fr;
     gap: var(--spacing-5);
     margin-inline-start: 50%;
   }
@@ -153,6 +160,10 @@ const social = [
     padding: 0;
   }
 
+  .foot__list--menu {
+    gap: var(--spacing-2);
+  }
+
   .foot__link {
     color: var(--color-ink-invert);
     font-size: var(--text-ui);
@@ -160,6 +171,23 @@ const social = [
     text-decoration: none;
     text-underline-offset: 2px;
     transition: text-underline-offset var(--duration-fast) var(--ease-state);
+  }
+
+  /*
+   * Set at the heading size rather than the interface one, a little over twice
+   * as large. The footer is the one full black field on the site and it
+   * carries the lettering; small links in the middle of that read as an
+   * afterthought.
+   *
+   * Declared after the rule it overrides on purpose. Astro gives both the same
+   * scoping attribute, so the two match on specificity and source order is
+   * what decides it — placed above, this silently lost.
+   */
+  .foot__link--menu {
+    font-size: var(--text-h-l);
+    line-height: var(--text-h-l--line-height);
+    letter-spacing: var(--text-h-l--letter-spacing);
+    font-weight: var(--font-weight-display);
   }
 
   /* The underline is the signal, and the offset is what moves — colour alone
@@ -195,12 +223,20 @@ const social = [
       padding-top: var(--spacing-8);
     }
 
-    /* The columns stack and take the full width; the lettering does not
-       change at all. */
+    /*
+     * The menu takes a row of its own and the other two share the next one.
+     * Stacking all three put a single short list on each of three rows, which
+     * is a lot of scrolling past almost nothing. The lettering below does not
+     * change at all.
+     */
     .foot__columns {
-      grid-template-columns: 1fr;
-      gap: var(--spacing-7);
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-7) var(--spacing-5);
       margin-inline-start: 0;
+    }
+
+    .foot__col--menu {
+      grid-column: 1 / -1;
     }
   }
 
