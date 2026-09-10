@@ -330,6 +330,54 @@
 }
 
 /*
+ * Scroll reveals.
+ *
+ * Blocks rise 24px into place as they come into view, once each, never again on
+ * the way back up.
+ *
+ * **It moves and it does not fade, and that is deliberate.** The specification
+ * pairs the rise with an opacity fade, and building it that way put a project
+ * row on the work page at zero opacity and left it there: its scroll timeline
+ * stopped updating and the row never finished revealing. Measured, not
+ * theorised. A fade is one bad frame away from content nobody can read, and a
+ * rise that fails leaves a block sitting 24 pixels low — the difference between
+ * a cosmetic bug and a page with a hole in it.
+ *
+ * **On a scroll-driven animation rather than an observer**, for the same reason
+ * one layer down. The obvious build is an IntersectionObserver that adds a
+ * class, which ships the page with its content hidden and waits for script to
+ * reveal it — one failed request and the site is blank with every asset
+ * returning 200. Here the animation only exists inside a rule the browser has
+ * to understand before it applies, so anything that does not support it shows
+ * the finished page and loses only the movement.
+ *
+ * The `@supports` guard is the same one the stack band needs: without it this
+ * would run on the document clock and play itself out on load.
+ *
+ * `--reveal-step` staggers siblings by shifting where each one's range starts.
+ * The design caps a stagger at six, past which the last item reads as broken
+ * rather than choreographed, so callers number within a group and start again.
+ */
+@keyframes reveal {
+  from {
+    translate: 0 24px;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal] {
+      animation: reveal var(--ease-reveal) both;
+      animation-timeline: view();
+      animation-range: entry calc(5% + var(--reveal-step, 0) * 4%) entry 90%;
+    }
+  }
+}
+
+/*
  * Prose.
  *
  * The Typography plugin ships a complete type scale of its own, and it is a

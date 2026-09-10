@@ -26,7 +26,6 @@ export const en = {
     "Frontend and fullstack engineer. I build web products that stay fast and maintainable as they grow.",
 
   // Navigation
-  "nav.main": "Primary",
   "nav.home": "Home",
   "nav.work": "Work",
   "nav.about": "About",
@@ -44,7 +43,36 @@ export const en = {
   "work.title": "Work",
   "about.title": "About",
   "contact.title": "Contact",
-  "page.comingSoon": "This page is still being written.",
+
+  // Home sections. Each one is a teaser that leads somewhere real.
+  // TODO(content): the positioning sentence. This is the right length.
+  "home.positioning":
+    "I build web products that stay fast and maintainable as they grow.",
+  "home.stackLabel": "What I work with",
+  "home.stackDescription":
+    "Grouped by what it is for. The full list is on the about page.",
+  "home.workLabel": "Selected work",
+  "home.workDescription":
+    "Three projects with what they were for and what changed once they shipped.",
+  "home.workCta": "See all work",
+  "home.experienceLabel": "Experience",
+  "home.experienceDescription": "The three most recent roles.",
+  "home.experienceCta": "Read the full history",
+  "home.writingLabel": "Writing",
+  "home.writingDescription":
+    "Notes on building and shipping, when I have something worth adding.",
+  "home.writingCta": "Read everything",
+  "home.contactLabel": "Get in touch",
+  "home.contactDescription":
+    "I am looking for a role where the front end is treated as engineering.",
+  "home.getInTouch": "Send an email",
+
+  "writing.allLabel": "All posts",
+  "writing.allDescription": "Everything published, newest first.",
+  "writing.col.date": "Date",
+  "writing.col.title": "Title",
+  "writing.col.topic": "Topic",
+  "writing.col.readTime": "Read",
 
   // About
   "about.subtitle":
@@ -95,9 +123,6 @@ export const en = {
   "project.outcomeLabel": "Outcome",
   "project.outcomeDescription":
     "What changed once it was in use. Numbers where they exist, and a plain sentence where they do not.",
-  "project.stackLabel": "Built with",
-  "project.stackDescription":
-    "The tools this was made from, and what each was for.",
   "project.linksLabel": "Links",
   "project.live": "Visit the live site",
   "project.source": "Read the source",
@@ -126,7 +151,6 @@ export const en = {
   "footer.social": "Social",
   "footer.contact": "Contact",
   "footer.rights": "© Farul Ivan {year} • All rights reserved.",
-  "footer.builtWith": "Built with Astro",
 
   // The CV download states its format and size, so nobody has to guess what
   // the link will do before clicking it.
@@ -141,7 +165,6 @@ export const en = {
   "writing.published": "Published {date}",
   "writing.updated": "Updated {date}",
   "writing.backToIndex": "Back to writing",
-  "writing.allPosts": "All posts",
   "writing.empty": "Nothing published yet.",
   "writing.untranslated":
     "This post isn't available in your language yet — showing the English version.",
@@ -180,7 +203,6 @@ export const id: Record<TranslationKey, string> = {
   "site.description":
     "Frontend dan fullstack engineer. Saya membangun produk web yang tetap cepat dan mudah dirawat seiring pertumbuhannya.",
 
-  "nav.main": "Utama",
   "nav.home": "Beranda",
   "nav.work": "Karya",
   "nav.about": "Tentang",
@@ -196,7 +218,35 @@ export const id: Record<TranslationKey, string> = {
   "work.title": "Karya",
   "about.title": "Tentang",
   "contact.title": "Kontak",
-  "page.comingSoon": "Halaman ini masih dalam penulisan.",
+
+  // Home sections. Each one is a teaser that leads somewhere real.
+  "home.positioning":
+    "Saya membangun produk web yang tetap cepat dan mudah dirawat saat ia tumbuh.",
+  "home.stackLabel": "Yang saya pakai",
+  "home.stackDescription":
+    "Dikelompokkan menurut kegunaannya. Daftar lengkapnya ada di halaman tentang.",
+  "home.workLabel": "Karya pilihan",
+  "home.workDescription":
+    "Tiga proyek beserta tujuannya dan apa yang berubah setelah rilis.",
+  "home.workCta": "Lihat semua karya",
+  "home.experienceLabel": "Pengalaman",
+  "home.experienceDescription": "Tiga peran terakhir.",
+  "home.experienceCta": "Baca riwayat lengkapnya",
+  "home.writingLabel": "Tulisan",
+  "home.writingDescription":
+    "Catatan soal membangun dan merilis, saat ada yang layak ditambahkan.",
+  "home.writingCta": "Baca semuanya",
+  "home.contactLabel": "Hubungi saya",
+  "home.contactDescription":
+    "Saya mencari peran yang memperlakukan front end sebagai pekerjaan teknik.",
+  "home.getInTouch": "Kirim email",
+
+  "writing.allLabel": "Semua tulisan",
+  "writing.allDescription": "Semua yang sudah terbit, dari yang terbaru.",
+  "writing.col.date": "Tanggal",
+  "writing.col.title": "Judul",
+  "writing.col.topic": "Topik",
+  "writing.col.readTime": "Baca",
 
   // About
   "about.subtitle":
@@ -245,9 +295,6 @@ export const id: Record<TranslationKey, string> = {
   "project.outcomeLabel": "Hasil",
   "project.outcomeDescription":
     "Apa yang berubah setelah dipakai. Ada angkanya bila memang terukur, dan satu kalimat jelas bila tidak.",
-  "project.stackLabel": "Dibangun dengan",
-  "project.stackDescription":
-    "Perkakas yang dipakai, dan untuk apa masing-masing.",
   "project.linksLabel": "Tautan",
   "project.live": "Kunjungi situsnya",
   "project.source": "Baca kodenya",
@@ -275,7 +322,6 @@ export const id: Record<TranslationKey, string> = {
   "footer.social": "Sosial",
   "footer.contact": "Kontak",
   "footer.rights": "© Farul Ivan {year} • Seluruh hak cipta dilindungi.",
-  "footer.builtWith": "Dibuat dengan Astro",
 
   "cv.see": "Lihat resume saya",
   "cv.detail": "{format}, {size}",
@@ -287,7 +333,6 @@ export const id: Record<TranslationKey, string> = {
   "writing.published": "Terbit {date}",
   "writing.updated": "Diperbarui {date}",
   "writing.backToIndex": "Kembali ke tulisan",
-  "writing.allPosts": "Semua tulisan",
   "writing.empty": "Belum ada tulisan.",
   "writing.untranslated":
     "Tulisan ini belum tersedia dalam bahasa Anda — menampilkan versi Inggris.",

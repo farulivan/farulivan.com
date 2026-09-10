@@ -1,0 +1,57 @@
+---
+/**
+ * The list of posts, as a table.
+ *
+ * Three places render it — the writing index, its later pages, and the
+ * homepage teaser — and they have to agree on the columns or the same list
+ * looks like two different lists.
+ */
+import DataTable, {
+  type DataCell,
+  type DataColumn,
+} from "@/components/DataTable.astro"
+import type { PostListItem } from "@/content/queries"
+import type { Locale } from "@/content/schemas"
+import { localizePath, useTranslations } from "@/i18n/utils"
+import { formatDate } from "@/lib/format"
+
+interface Props {
+  lang: Locale
+  posts: readonly PostListItem[]
+  class?: string | undefined
+}
+
+const { lang, posts, class: className } = Astro.props
+const t = useTranslations(lang)
+
+const columns: DataColumn[] = [
+  { label: t("writing.col.date") },
+  { label: t("writing.col.title"), title: true },
+  { label: t("writing.col.topic") },
+  { label: t("writing.col.readTime"), align: "end" },
+]
+
+const rows: DataCell[][] = posts.map((post) => [
+  formatDate(post.date, lang),
+  { text: post.title, href: localizePath(`/writing/${post.slug}`, lang) },
+  /*
+   * The first tag is the topic. Tags are already authored per locale, and a
+   * second field saying almost the same thing would only invite the two to
+   * disagree about which one a post is really about.
+   */
+  post.tags[0] ?? "",
+  post.minutesRead === undefined
+    ? ""
+    : t("writing.readingTime", { minutes: post.minutesRead }),
+])
+---
+
+{
+  posts.length === 0 ? (
+    <p class="text-ui text-section-muted border-section-rule border-t py-8">
+      {t("writing.empty")}
+    </p>
+  ) : (
+    <DataTable {columns} {rows} class={className} />
+  )
+}

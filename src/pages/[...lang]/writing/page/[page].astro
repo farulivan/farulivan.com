@@ -7,12 +7,13 @@ import type { InferGetStaticPropsType } from "astro"
  * static `page/` segment is more specific than a dynamic parameter.
  */
 import Pagination from "@/components/Pagination.astro"
-import PostList from "@/components/sections/PostList.astro"
+import SectionHeader from "@/components/SectionHeader.astro"
+import WritingTable from "@/components/WritingTable.astro"
 import Section from "@/components/ui/Section.astro"
 import { siteConfig } from "@/config/site"
 import { getPostListItems } from "@/content/queries"
 import { LOCALES } from "@/content/schemas"
-import { langParam, localizePath, useTranslations } from "@/i18n/utils"
+import { langParam, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { extraPageNumbers, paginate } from "@/lib/pagination"
 
@@ -48,20 +49,21 @@ const page = paginate(all, pageNumber, siteConfig.postsPerPage)
   title={`${t("writing.title")} — ${t("pagination.status", { current: page.current, total: page.total })}`}
   description={t("writing.subtitle")}
 >
-  <Section>
-    <header class="mb-10 max-w-2xl">
-      <h1 class="text-h-l font-emph">
-        {t("writing.title")}
-      </h1>
-      <p class="text-ink-muted mt-3 text-pretty">{t("writing.subtitle")}</p>
-    </header>
+  <Section space="lg">
+    <h1 class="text-display-l font-display m-0 break-words hyphens-auto">
+      {t("writing.title")}
+    </h1>
+    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
+      {t("writing.subtitle")}
+    </p>
+  </Section>
 
-    <PostList
-      lang={lang}
-      posts={page.items}
-      hrefFor={(slug) => localizePath(`/writing/${slug}`, lang)}
-      tagHrefFor={(slug) => localizePath(`/writing/tag/${slug}`, lang)}
+  <Section space="md">
+    <SectionHeader
+      label={t("writing.allLabel")}
+      description={t("writing.allDescription")}
     />
+    <WritingTable {lang} posts={page.items} class="mt-7" />
     <Pagination lang={lang} current={page.current} total={page.total} />
   </Section>
 </BaseLayout>

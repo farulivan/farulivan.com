@@ -57,6 +57,12 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
     display: none;
   }
 
+  /*
+   * Everything here is gated on `data-intro`, which the script in the document
+   * head only sets when the reader has not asked for less motion — so the
+   * reduced-motion path is "none of this exists" rather than a media query in
+   * this file. See the opening-screen script in BaseLayout.
+   */
   :root[data-intro] .intro {
     display: grid;
     place-items: center;

@@ -36,11 +36,11 @@ const Heading = `h${level}` as const
    * stack and the gap becomes vertical.
    */
 }
-<div class={cn("border-section-rule border-b pb-5", className)}>
+<div class={cn("border-section-rule border-b pb-5", className)} data-reveal>
   <div class="md:gap-gutter grid gap-4 md:grid-cols-12">
     <Heading
       {id}
-      class="text-label font-label text-ink flex items-center gap-2 uppercase md:col-span-3"
+      class="text-label font-label flex items-center gap-2 uppercase md:col-span-3"
     >
       {
         /*

@@ -1,15 +1,12 @@
 ---
 import { Image } from "astro:assets"
 
-import Button from "@/components/ui/Button.astro"
 import Section from "@/components/ui/Section.astro"
-import Icon from "@/components/ui/Icon.astro"
 import Prose from "@/components/ui/Prose.astro"
 import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { formatDate, resolvePostDate, toDateAttribute } from "@/lib/format"
-import { slugify } from "@/lib/slugify"
 
 interface Props {
   lang: Locale
@@ -60,36 +57,42 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
   tags={tags}
   availableLocales={availableLocales}
 >
-  <Section space="sm">
-    <div class="max-w-2xl">
-      <Button
+  <Section space="lg">
+    <div class="max-w-measure">
+      <a
         href={localizePath("/writing", lang)}
-        variant="ghost"
-        size="sm"
-        class="text-ink-muted mb-8 -ml-3"
+        class="text-label text-section-muted duration-fast ease-state min-h-tap -mt-3 inline-flex items-center uppercase no-underline hover:underline hover:underline-offset-4 motion-reduce:transition-none"
       >
-        <Icon name="chevronLeft" class="size-4" />
         {t("writing.backToIndex")}
-      </Button>
+      </a>
 
       {
         isFallback && (
           <p
             role="status"
-            class="border-rule bg-surface/50 text-ink-muted rounded-panel text-ui mb-8 border px-4 py-3"
+            class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5"
           >
             {t("writing.untranslated")}
           </p>
         )
       }
 
-      <header class="mb-10">
-        <h1 class="text-h-l font-emph text-balance">
+      <header class="mt-5 mb-9">
+        <h1
+          class="text-display-m font-display m-0 text-balance break-words hyphens-auto"
+        >
           {title}
         </h1>
 
+        {
+          /*
+           * Lexend at the label size, not a monospace. The starter set every
+           * date and tag in mono; this design has one family and small
+           * uppercase type with open tracking is what it uses for metadata.
+           */
+        }
         <div
-          class="text-ink-muted text-label mt-4 flex flex-wrap items-center gap-x-2 gap-y-1 font-mono tracking-[0.08em] uppercase"
+          class="text-label text-section-muted mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 uppercase"
         >
           <time datetime={toDateAttribute(displayed.date)}>
             {
@@ -116,17 +119,17 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
         </div>
 
         {
+          /*
+           * Text rather than links. Tag pages were dropped for this version —
+           * the writing index shows the topic as a column instead — and a link
+           * to a route that does not exist is worse than no link at all.
+           */
+        }
+        {
           tags.length > 0 && (
-            <ul class="text-ink-muted text-label mt-4 flex flex-wrap gap-x-3 font-mono tracking-[0.08em] uppercase">
+            <ul class="text-label text-section-muted m-0 mt-3 flex list-none flex-wrap gap-x-3 p-0 uppercase">
               {tags.map((tag) => (
-                <li>
-                  <a
-                    href={localizePath(`/writing/tag/${slugify(tag)}`, lang)}
-                    class="hover:text-ink transition-colors"
-                  >
-                    {tag}
-                  </a>
-                </li>
+                <li>{tag}</li>
               ))}
             </ul>
           )
@@ -140,7 +143,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
             alt={hero.alt}
             widths={[640, 960, 1280]}
             sizes="(min-width: 768px) 42rem, 100vw"
-            class="border-rule rounded-panel mb-10 border"
+            class="border-section-rule mb-9 border"
             loading="eager"
           />
         )

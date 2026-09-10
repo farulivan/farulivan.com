@@ -1,0 +1,92 @@
+---
+/**
+ * The stack, set large, in rows that drift sideways as the page scrolls.
+ *
+ * One row per group, each drifting the opposite way to the one above it, so
+ * horizontal position reads as something the page is doing rather than as an
+ * arbitrary layout. It is the same idea as the timeline's staircase — a rule
+ * per row and an offset per row — without a grid.
+ *
+ * **The drift is decoration and it costs nothing.** It runs on a scroll-driven
+ * CSS animation where the browser has one and simply does not run anywhere
+ * else, including for anyone who has asked for less motion. There is no
+ * JavaScript fallback: the rows are a readable list either way, and shipping a
+ * scroll handler to slide some words about would be the most expensive
+ * decoration on the site.
+ *
+ * The rows are wider than the band and the band clips them, so a row that has
+ * drifted still reaches both edges.
+ */
+import { cn } from "@/lib/utils"
+
+interface Props {
+  /** One row each. Three or four; more turns a band into a page. */
+  groups: readonly { domain: string; items: readonly string[] }[]
+  label: string
+  class?: string
+}
+
+const { groups, label, class: className } = Astro.props
+---
+
+<div class={cn("overflow-x-clip", className)}>
+  <ul class="m-0 list-none p-0" aria-label={label}>
+    {
+      groups.map((group, index) => (
+        <li
+          class="border-section-rule border-b py-5"
+          data-band-row
+          style={`--band-direction: ${index % 2 === 0 ? -1 : 1}`}
+        >
+          {/*
+           * The domain is the claim and the items are the evidence, so the
+           * domain leads at display size and the tools follow it small. Both
+           * on one line: this is a band to be glanced at, not read.
+           */}
+          <p class="m-0 flex flex-wrap items-baseline gap-x-5 gap-y-2 whitespace-nowrap">
+            <span class="text-display-m font-display uppercase">
+              {group.domain}
+            </span>
+            <span class="text-label text-section-muted uppercase">
+              {group.items.join(" · ")}
+            </span>
+          </p>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<style is:global>
+  /*
+   * A keyframe list has to be declared somewhere, and the rule that uses it
+   * builds its direction from a custom property, which is not something a
+   * utility can express.
+   *
+   * `view()` ties the animation to the row's own passage through the viewport
+   * rather than to a clock, so the position is a function of the scroll offset
+   * and nothing runs when the page is still.
+   *
+   * The `@supports` guard is not optional. Where `animation-timeline` is not
+   * understood the declaration is dropped and the animation would run on the
+   * document timeline instead — playing itself out once, immediately, on load,
+   * which is the opposite of what it is for.
+   */
+  @keyframes band-drift {
+    from {
+      translate: calc(var(--band-direction) * -4%) 0;
+    }
+    to {
+      translate: calc(var(--band-direction) * 4%) 0;
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      [data-band-row] {
+        animation: band-drift linear both;
+        animation-timeline: view();
+      }
+    }
+  }
+</style>

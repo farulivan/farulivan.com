@@ -34,6 +34,8 @@ const indent = `calc(${step} * var(--timeline-step))`
 ---
 
 <li
+  data-reveal
+  style={`--reveal-step: ${step % 6}`}
   class={cn(
     "border-section-rule list-none border-b [--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
     className
@@ -44,7 +46,7 @@ const indent = `calc(${step} * var(--timeline-step))`
     style={`padding-inline-start: ${indent}`}
   >
     <p class="m-0 flex items-baseline gap-2 md:col-span-5">
-      <span class="text-display-l font-display text-ink leading-none">
+      <span class="text-display-l font-display leading-none">
         {year}
       </span>
       {
@@ -60,9 +62,9 @@ const indent = `calc(${step} * var(--timeline-step))`
     </p>
 
     <div class="flex flex-col gap-1 md:col-span-6 md:col-start-7">
-      <p class="text-h-m font-display text-ink m-0">{role}</p>
+      <p class="text-h-m font-display m-0">{role}</p>
       <p class="text-label text-section-muted m-0 uppercase">{company}</p>
-      <p class="text-ui text-ink m-0 mt-2 text-pretty">{description}</p>
+      <p class="text-ui m-0 mt-2 text-pretty">{description}</p>
     </div>
   </div>
 </li>

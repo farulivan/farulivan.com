@@ -109,10 +109,13 @@ const href = (cell: DataCell) =>
                     "max-md:before:text-micro max-md:before:text-section-muted max-md:before:block max-md:before:uppercase max-md:before:content-[attr(data-label)]"
                 )}
               >
+                {/* The link fills its cell rather than hugging its text, so
+                     the whole row-height area is the target — which is what
+                     this table's own note about row links asks for. */}
                 {link ? (
                   <a
                     href={link}
-                    class="hover:decoration-section-rule-strong duration-fast ease-state underline decoration-transparent underline-offset-4 transition-[text-decoration-color] motion-reduce:transition-none"
+                    class="hover:decoration-section-rule-strong duration-fast ease-state min-h-tap -my-5 flex items-center py-5 underline decoration-transparent underline-offset-4 transition-[text-decoration-color] motion-reduce:transition-none max-md:my-0 max-md:py-0"
                   >
                     {label}
                   </a>
