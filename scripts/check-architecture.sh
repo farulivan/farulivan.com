@@ -127,7 +127,7 @@ fi
 #
 #   TODO(asset):      a file that is still missing
 #   TODO(content):    words that are still missing
-#   data-placeholder  an element rendering a grey block instead of real media
+#   <Placeholder      a page rendering a grey block instead of real media
 #
 # This reports and does not fail, so a half-finished site is still reviewable.
 # Setting LAUNCH=true turns it into an error, which is what makes it impossible
@@ -135,14 +135,22 @@ fi
 
 # Plain grep, not code_matches: these markers live *in* comments, which is
 # exactly what code_matches filters out.
-placeholder_hits=$(grep -rn 'TODO(asset):\|TODO(content):\|data-placeholder' \
-  src public 2>/dev/null | grep -v '\.test\.' || true)
+#
+# Grey blocks are counted by who renders one, not by the attribute they carry.
+# Counting `data-placeholder` matched only Placeholder.astro itself, which meant
+# the number never moved however many pages used it — and meant the gate could
+# never pass while the component existed. Its own file is excluded for the same
+# reason: it is the mechanism, not an outstanding placeholder.
+placeholder_hits=$(grep -rn 'TODO(asset):\|TODO(content):\|<Placeholder' \
+  src public 2>/dev/null \
+  | grep -v '\.test\.' \
+  | grep -v 'src/components/ui/Placeholder\.astro' || true)
 
 echo
 if [ -n "$placeholder_hits" ]; then
   n_asset=$(printf '%s\n' "$placeholder_hits" | grep -c 'TODO(asset):' || true)
   n_content=$(printf '%s\n' "$placeholder_hits" | grep -c 'TODO(content):' || true)
-  n_media=$(printf '%s\n' "$placeholder_hits" | grep -c 'data-placeholder' || true)
+  n_media=$(printf '%s\n' "$placeholder_hits" | grep -c '<Placeholder' || true)
 
   if [ "${LAUNCH:-}" = "true" ]; then
     fail "placeholders present: ${n_asset} files, ${n_content} strings, ${n_media} images" \
