@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
 interface Props {
   field?: "paper" | "surface" | "accent" | "invert"
   /** Vertical rhythm. Sections deliberately do not all breathe the same. */
-  space?: "sm" | "md" | "lg"
+  space?: "sm" | "md" | "lg" | "xl"
   id?: string
   tag?: "section" | "div"
   class?: string
@@ -51,7 +51,9 @@ const fields = {
     "bg-surface-invert text-ink-invert [--color-section-muted:var(--color-ink-invert-muted)] [--color-section-rule:color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] [--color-section-rule-strong:var(--color-ink-invert)]",
 }[field]
 
-const spacing = { sm: "py-8", md: "py-9", lg: "py-10" }[space]
+/* `xl` exists for the one section that is a single sentence and needs the
+   room to read as a statement rather than as a paragraph between two others. */
+const spacing = { sm: "py-8", md: "py-9", lg: "py-10", xl: "py-11" }[space]
 ---
 
 <Container {tag} class={cn(fields, spacing, className)} {...rest}>

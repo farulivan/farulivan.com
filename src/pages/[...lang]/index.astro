@@ -49,6 +49,13 @@ const featured = await getFeaturedProjects(lang)
 const roles = (await getExperience(lang)).slice(0, 3)
 const posts = (await getPostListItems(lang)).slice(0, 3)
 
+/*
+ * The statement is set one word per element so each can be moved on its own.
+ * Splitting it here rather than in the browser keeps it a string in the
+ * dictionary, which is what the translators and the typecheck both want.
+ */
+const statement = t("home.positioning").split(" ")
+
 const stackGroups = capabilities.map(({ entry }) => ({
   domain: entry.data.domain,
   items: entry.data.items,
@@ -146,15 +153,44 @@ const stackGroups = capabilities.map(({ entry }) => ({
 
   {
     /*
-     * One sentence at display size, and nothing else in the section. It is the
-     * first thing after the name and the only claim the page makes directly.
+     * One sentence at display size, centred, and nothing else in the section.
+     * It is the first thing after the name and the only claim the page makes
+     * directly, so it gets the largest vertical margins on the site: the space
+     * either side is what stops it reading as a paragraph between two others.
+     *
+     * Each word rises out of its own mask as the block comes into view, a
+     * fraction behind the one before it. Lines lower down enter later, so the
+     * sentence assembles roughly line by line without anything having to know
+     * where the lines fall.
+     *
+     * Both the mask and the movement live inside the guarded rule in
+     * global.css. Where scroll-driven animation is missing, or where less
+     * motion has been asked for, the words are neither clipped nor moved and
+     * the sentence is simply there.
      */
   }
-  <Section space="lg">
+  <Section space="xl">
     <p
-      class="text-display-m font-display text-ink m-0 max-w-[22ch] text-balance break-words hyphens-auto"
+      class="text-display-m font-display text-ink m-0 mx-auto max-w-[20ch] text-center text-balance"
+      data-statement
     >
-      {t("home.positioning")}
+      {
+        /*
+         * A real space between the words rather than a margin, so the sentence
+         * centres, wraps and copies as a sentence. Spacing inline blocks by
+         * margin puts the words on somebody's clipboard with nothing between
+         * them.
+         */
+      }
+      {
+        statement.map((word, index) => (
+          <Fragment>
+            <span class="inline-block" style={`--word-step: ${index}`}>
+              <span class="inline-block break-words hyphens-auto">{word}</span>
+            </span>{" "}
+          </Fragment>
+        ))
+      }
     </p>
   </Section>
 

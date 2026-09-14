@@ -372,6 +372,63 @@
 }
 
 /*
+ * The statement, a word at a time.
+ *
+ * Each word sits in a box that clips it and rises out of that box as the block
+ * comes into view, a fraction behind the word before it. Words further down the
+ * sentence enter the viewport later anyway, so it assembles roughly line by
+ * line without anything needing to know where the lines fall.
+ *
+ * **The clipping only exists inside this guard, and that is the whole safety
+ * argument.** A word held below its mask is a word nobody can read, so the
+ * state that hides it may never outlive the animation that is supposed to undo
+ * it. Where scroll-driven animation is missing, and for anyone who asked for
+ * less motion, there is no mask and no movement — the sentence is just text.
+ *
+ * The mask leaks a little at the bottom on purpose: a box that clips exactly at
+ * the baseline cuts the tails off every `y` and `g`. The padding gives the
+ * descenders somewhere to live and the negative margin takes the space back.
+ */
+@keyframes word-rise {
+  from {
+    translate: 0 110%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /*
+     * One timeline for the whole sentence, named on the paragraph and read by
+     * the words inside it. A word is forty pixels tall, so its own view
+     * timeline would start and finish inside forty pixels of scrolling and the
+     * reveal would be over before it was seen. The sentence is ten times that,
+     * which is a reveal you can actually watch.
+     */
+    [data-statement] {
+      view-timeline-name: --statement;
+    }
+
+    [data-statement] > span {
+      overflow: hidden;
+      padding-bottom: 0.16em;
+      margin-bottom: -0.16em;
+    }
+
+    [data-statement] > span > span {
+      animation-name: word-rise;
+      animation-timing-function: var(--ease-reveal);
+      animation-fill-mode: both;
+      animation-timeline: --statement;
+      animation-range: entry calc(8% + var(--word-step, 0) * 2%) entry
+        calc(48% + var(--word-step, 0) * 2%);
+    }
+  }
+}
+
+/*
  * Scroll reveals.
  *
  * Blocks rise 24px into place as they come into view, once each, never again on
