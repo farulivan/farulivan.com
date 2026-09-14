@@ -2,9 +2,9 @@
 lang: "en"
 translationKey: "norven"
 title: "Norven"
-summary: "A marketing site for a fictional architecture studio, built to production standards — accessibility gates and performance budgets on every pull request."
+summary: "A marketing site for a fictional architecture studio, built to production standards. Accessibility gates and performance budgets on every pull request."
 year: 2026
-role: "Solo — design, build, deploy"
+role: "Solo. Design, build, deploy"
 duration: "May 2026 – ongoing"
 stack:
   [
@@ -29,8 +29,8 @@ sourceUrl: "https://github.com/farulivan/norven"
 ## The studio is fictional. The build is not.
 
 Norven is an architecture studio that does not exist. The point was never the
-firm — it was having a real site, with real content and real constraints, that
-I could hold to production standards without a client's deadline deciding what
+firm. It was having a real site, with real content and real constraints, that I
+could hold to production standards without a client's deadline deciding what
 got cut first.
 
 ## What gets enforced
@@ -39,7 +39,7 @@ One command, `pnpm verify`, runs format, lint, typecheck, unit tests, build and
 a bundle budget. On top of that, every pull request runs:
 
 - **Playwright end-to-end tests with axe**, gating on WCAG AA. Not a report
-  somebody reads later — a gate that fails the PR.
+  somebody reads later, but a gate that fails the PR.
 - **Lighthouse CI budgets, per page.** Performance, accessibility, SEO and best
   practices each have a floor.
 - **CodeQL and dependency review.**
@@ -51,7 +51,7 @@ and never pay the difference.
 
 ## Motion behind one callback
 
-The site is photography-led with scroll-driven motion — GSAP and ScrollTrigger
+The site is photography-led with scroll-driven motion. GSAP and ScrollTrigger
 underneath, but every effect goes through a single `scrollEffect` runtime
 rather than each component reaching for the library.
 
@@ -62,10 +62,11 @@ motion, and a pure core that unit tests without a browser.
 
 Static output to S3, behind a single Cloudflare edge, with an IP-allowlisted
 origin. Deploys run from GitHub Actions over OIDC, so there are no long-lived
-AWS keys anywhere — not in the repo, not in the CI settings, nowhere to leak.
+AWS keys anywhere. Not in the repo, not in the CI settings, nowhere to leak.
 
-Response headers — CSP, HSTS, Permissions-Policy — are committed as Cloudflare
-Transform Rules rather than configured by hand in a dashboard nobody can diff.
+Response headers, CSP and HSTS and Permissions-Policy, are committed as
+Cloudflare Transform Rules rather than configured by hand in a dashboard
+nobody can diff.
 
 A $5/month AWS budget sits over it as a ceiling. Steady state is about two
 cents.

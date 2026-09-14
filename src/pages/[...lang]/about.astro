@@ -39,21 +39,28 @@ const t = useTranslations(lang)
 const experience = await getExperience(lang)
 const capabilities = await getCapabilities(lang)
 
-const bio = [
-  t("about.bio.1"),
-  t("about.bio.2"),
-  t("about.bio.3"),
-  t("about.bio.4"),
-]
+/*
+ * Three paragraphs, not four, and most visitors skim: who I am and how I work,
+ * where I am going, then one line of background. The third is context, not the
+ * pitch, and it stays short on purpose.
+ */
+const bio = [t("about.bio.1"), t("about.bio.2"), t("about.bio.3")]
 
+/*
+ * Three columns rather than two. A list of tools says what somebody has
+ * touched; the third column is the one that says how deep it goes, which is
+ * the only part of a skills table an interviewer actually tests.
+ */
 const columns: DataColumn[] = [
   { label: t("about.col.domain"), title: true },
   { label: t("about.col.items") },
+  { label: t("about.col.note") },
 ]
 
 const rows: DataCell[][] = capabilities.map(({ entry }) => [
   entry.data.domain,
   entry.data.items.join(" · "),
+  entry.data.note ?? "",
 ])
 ---
 
@@ -128,6 +135,23 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
       description={t("about.capabilitiesDescription")}
     />
     <DataTable {columns} {rows} class="mt-7" />
+  </Section>
+
+  {
+    /*
+     * What is being learned right now, kept to one line. It is the section
+     * that says the trajectory is deliberate rather than claimed, and the
+     * moment it becomes a paragraph it stops being believable.
+     */
+  }
+  <Section space="sm">
+    <SectionHeader
+      label={t("about.nowLabel")}
+      description={t("about.nowDescription")}
+    />
+    <p class="text-h-m font-display max-w-measure mt-7 text-pretty">
+      {t("about.now")}
+    </p>
   </Section>
 
   <Section field="accent" space="md">

@@ -168,5 +168,15 @@ export const capabilitySchema = z.object({
   ...localized,
   domain: z.string().min(1),
   items: z.array(z.string().min(1)).min(1),
+  /**
+   * One honest line about how deep this actually goes.
+   *
+   * A list of tools says what you have touched; it does not say which of them
+   * you would want to be woken up about. Saying "growing, deliberately" of a
+   * group is worth more than letting it sit at the same weight as the one you
+   * have spent three years in, and it is the sentence that survives contact
+   * with an interview.
+   */
+  note: z.string().min(1).max(160).optional(),
   order: z.number().int(),
 })

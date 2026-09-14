@@ -11,8 +11,8 @@ draft: false
 Every system that sends something has to answer a question it would rather
 avoid: when you cannot be certain a message arrived, do you send it again?
 
-Answer yes and you have at-least-once delivery — nothing is ever lost, and some
-things arrive twice. Answer no and you have at-most-once — nothing ever
+Answer yes and you have at-least-once delivery. Nothing is ever lost, and some
+things arrive twice. Answer no and you have at-most-once. Nothing ever
 duplicates, and occasionally something is lost. There is no third option that
 is simply better; the middle ground is exactly-once, and it costs more than
 most products are worth.
@@ -28,12 +28,12 @@ of thing you notice and move on from.
 
 A duplicated reminder is your phone buzzing twice with the same message. Do
 that a few times and the bot becomes noise, and a reminder nobody reads is
-worse than no reminder at all — it has trained people to ignore it.
+worse than no reminder at all. It has trained people to ignore it.
 
 So: at-most-once. Losing one is recoverable. Becoming ignorable is not.
 
 That is not a general truth. A payment confirmation goes the other way without
-hesitating — send it twice, apologise for the duplicate email, never leave
+hesitating. Send it twice, apologise for the duplicate email, never leave
 someone wondering whether their money moved. The right answer is a property of
 what you are sending, not of your infrastructure.
 
@@ -70,6 +70,6 @@ will retry it.
 
 That is the whole cost of the choice, and it is one line in a decision record
 rather than a surprise somebody finds later. Writing it down is most of what
-makes it a decision instead of an accident — the alternative is a future me
+makes it a decision instead of an accident. The alternative is a future me
 reading this code, seeing the gap, assuming it is a bug, and "fixing" it into
 duplicates.

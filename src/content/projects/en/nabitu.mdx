@@ -2,7 +2,7 @@
 lang: "en"
 translationKey: "nabitu"
 title: "Nabitu & Zeed Sharia"
-summary: "The shariah investment platform I rewrote as its only frontend engineer — seventy pages, two brands, three currencies."
+summary: "The shariah investment platform I rewrote as its only frontend engineer. Seventy pages, two brands, three currencies, and nobody else on the front end."
 year: 2026
 role: "Sole frontend engineer"
 duration: "Feb 2023 – Jan 2026"
@@ -32,7 +32,7 @@ liveUrl: "https://nabitu.id"
 
 Nabitu is a shariah investment platform: small businesses raise money, and
 people who do not want to earn interest invest it. By the time I arrived it
-existed as an MVP — enough to prove the idea, not enough to run a financial
+existed as an MVP. Enough to prove the idea, not enough to run a financial
 product for years.
 
 I was the only frontend engineer, and stayed the only one for three years.
@@ -59,7 +59,7 @@ a design system, an API layer and a type contract, and almost nothing else.
 ## Two brands out of one codebase
 
 Nabitu is the Indonesian brand. Zeed Sharia is the same platform for an
-international audience — a different name, a different visual identity, a
+international audience: a different name, a different visual identity, a
 different language, and money in a different currency.
 
 Both ship from one codebase. What varies is more than a theme: copy,
@@ -73,16 +73,16 @@ can read it any more.
 
 The rewrite roughly doubled page performance. Very little of that came from
 micro-optimising components. Most of it came from reading how the API actually
-behaved — what it returned, when, and how often the interface asked for things
-it already had — and then changing the fetching patterns to match. The
+behaved. What it returned, when, and how often the interface asked for things
+it already had. The fetching patterns changed to match, and the
 component work followed the data, not the other way round.
 
 ## Working across the stack
 
 The backends were Go and Laravel, owned by other people. My part was defining
-the API contracts with them, and — when something broke across the boundary —
-reading enough of their code to say precisely where it broke rather than filing
-a ticket that said the page was wrong.
+the API contracts with them. When something broke across the boundary, it meant
+reading enough of their code to say precisely where it broke, rather than
+filing a ticket that said the page was wrong.
 
 That is cross-layer fluency, not backend ownership. I consumed those services;
 I did not build them.
@@ -91,5 +91,5 @@ I did not build them.
 
 The platform serves more than 3,000 investors across both brands. The support
 team's feedback after launch was that the experience and usability had improved
-markedly — which, from the people who hear every complaint first, is the
-review I trust most.
+markedly. From the people who hear every complaint first, that is the review I
+trust most.

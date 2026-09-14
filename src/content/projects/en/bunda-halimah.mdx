@@ -2,7 +2,7 @@
 lang: "en"
 translationKey: "bunda-halimah"
 title: "RS Hj. Bunda Halimah"
-summary: "Two frontends for a Batam hospital — a patient portal with doctor search and booking, and the CMS the staff run it with."
+summary: "Two frontends for a Batam hospital. A patient portal with doctor search and booking, and the CMS the staff run it with."
 year: 2025
 role: "Frontend engineer, freelance"
 duration: "Nov 2024 – Mar 2025"
@@ -16,9 +16,9 @@ stack:
     "React Hook Form",
   ]
 featured: true
-order: 2
+order: 3
 outcome:
-  summary: "Both frontends shipped, the contract closed, and the hospital has run them ever since. The handover held — which is the part of freelance work that usually does not."
+  summary: "Both frontends shipped, the contract closed, and the hospital has run them ever since. The handover held, which is the part of freelance work that usually does not."
   figures:
     - { value: "2", caption: "Frontends delivered and handed over" }
     - { value: "5 months", caption: "Brief to handover" }
@@ -32,7 +32,7 @@ specific doctor had to phone to find out when that doctor was in, and staff who
 wanted to publish anything had to ask someone technical.
 
 Two problems, two frontends: a patient portal, and a CMS for the people running
-it. I built both. The APIs behind them were owned by other people — my side of
+it. I built both. The APIs behind them were owned by other people. My side of
 the line was everything the browser touches.
 
 ## The booking flow
@@ -46,7 +46,7 @@ the edge cases are the work:
   without phoning, which means the reschedule path has to be as careful as the
   booking path.
 - When the doctor a patient wants has nothing free, the useful answer is the
-  next date they do — not an empty state.
+  next date they do, not an empty state.
 - Booking is login-gated, so the boundary between looking and committing is a
   real one the interface has to draw clearly.
 
@@ -61,7 +61,7 @@ Sessions are HttpOnly cookies set by server actions, with route protection in
 For a hospital that was not a preference. A token readable by any script on the
 page is one cross-site scripting bug away from being someone else's; a cookie
 the browser will not hand to JavaScript is not. The cost is that auth-dependent
-work happens on the server — which, with React Server Components, is where it
+work happens on the server, which, with React Server Components, is where it
 was going to happen anyway.
 
 ## The CMS interface
@@ -82,7 +82,7 @@ would inherit it rather than for myself.
 
 That mostly meant one API layer instead of fetch calls scattered through the
 tree, and one error handler that normalises API failures, validation failures
-and timeouts into a single response shape — so a developer who has never seen
+and timeouts into a single response shape, so a developer who has never seen
 the codebase handles a failure the same way everywhere.
 
 ## Outcome

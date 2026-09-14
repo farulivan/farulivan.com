@@ -19,10 +19,10 @@
 export const en = {
   // Site identity. The wordmark is decorative in every place it appears, so
   // this is the real page title and it is always in the document.
-  "site.title": "Farul Ivan — Fullstack engineer, frontend-focused",
-  "site.descriptor": "Fullstack engineer, frontend-focused",
+  "site.title": "Farul Ivan · Frontend engineer, end to end",
+  "site.descriptor": "Frontend engineer, end to end",
   "site.description":
-    "Fullstack engineer, frontend-focused. Three years as the only frontend engineer on a shariah investment platform — seventy pages, two brands.",
+    "Three years as the sole frontend engineer on a production fintech platform, and deliberately growing into the backend.",
 
   // Navigation
   "nav.home": "Home",
@@ -32,7 +32,7 @@ export const en = {
   "nav.contact": "Contact",
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Close",
-  "nav.homeLink": "Farul Ivan — home",
+  "nav.homeLink": "Farul Ivan, home",
   "nav.menuLabel": "Site",
 
   // Home
@@ -45,10 +45,10 @@ export const en = {
 
   // Home sections. Each one is a teaser that leads somewhere real.
   "home.positioning":
-    "Seventy pages, two brands, three currencies, one frontend engineer.",
+    "I own what I build, from architecture decisions to production, and I don't stop at the frontend when a feature needs more.",
   "home.stackLabel": "What I work with",
   "home.stackDescription":
-    "Grouped by what it is for. The full list is on the about page.",
+    "Grouped by how deep it actually goes. The full table is on the about page.",
   "home.workLabel": "Selected work",
   "home.workDescription":
     "Four projects, with what they were for and what changed once they shipped.",
@@ -74,24 +74,28 @@ export const en = {
 
   // About
   "about.subtitle":
-    "Nine years of building web products, most of them the kind that have to keep working after launch.",
+    "Three years of sole ownership on a production platform, and a deliberate push into everything around it.",
   "about.bio.1":
-    "I am a fullstack engineer with most of my depth on the front end. For three years I was the only frontend engineer on a shariah investment platform, which is the fastest way I know to learn what a codebase does to you when nobody else is holding it.",
+    "For three years I was the sole frontend engineer at a fintech startup, Nabitu. I built the product from an early MVP to a full production rewrite: seventy pages, real users, real stakes. There was no one else on frontend, so I ended up owning far more than the UI, working directly with backend, product and the CEO to ship things that actually worked.",
   "about.bio.2":
-    "Most of my work has been on surfaces where being wrong is expensive — money people have actually committed, appointments at a hospital. That makes you careful about failure states in a way a marketing page never will.",
+    "These days I am deliberately growing beyond the frontend. I finished a backend path in Go and TypeScript, and I build and run my own production systems, including a WhatsApp bot my family uses every day. I also work with AI tools like Claude Code daily. Not as a shortcut, but as a real part of how I think through problems.",
   "about.bio.3":
-    "The backend half is real but smaller. I have built and run a production TypeScript service with PostgreSQL behind it, and I have read enough Go and Laravel to argue usefully about an API contract rather than just consuming whatever arrives.",
-  "about.bio.4":
-    "I work in English and Indonesian, and I write things down — decision records, postmortems. A solo project forgets faster than a team does.",
+    "My path here was not a straight line. I studied architecture before moving into software, which is probably why I still care about structure and the small details most people do not notice. These days that shows up in how I write code rather than in anything I draw.",
   "about.portraitLabel": "Portrait photograph",
   "about.experienceLabel": "Experience",
   "about.experienceDescription":
     "Where the last nine years went, and what shipped in each of them.",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
-    "Grouped by what it is for rather than listed by name, because a pile of tools says nothing about what you can do with them.",
+    "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
   "about.col.domain": "Area",
   "about.col.items": "What that covers",
+  "about.col.note": "How deep it goes",
+  "about.nowLabel": "Now",
+  "about.nowDescription":
+    "What I am working on getting better at, at the moment.",
+  "about.now":
+    "System design, retrieval-augmented generation, and the workflows for directing AI agents rather than being directed by them.",
   "about.cvLabel": "Download CV",
 
   // Work index and case studies
@@ -156,14 +160,14 @@ export const en = {
   // Writing
   "writing.title": "Writing",
   "writing.subtitle":
-    "Notes on building for the web — what worked, and what did not.",
+    "Notes on building for the web. What worked, and what did not.",
   "writing.readingTime": "{minutes} min read",
   "writing.published": "Published {date}",
   "writing.updated": "Updated {date}",
   "writing.backToIndex": "Back to writing",
   "writing.empty": "Nothing published yet.",
   "writing.untranslated":
-    "This post isn't available in your language yet — showing the English version.",
+    "This post is not available in your language yet. Showing the English version.",
 
   // Pagination
   "pagination.label": "Writing pagination",
@@ -194,10 +198,10 @@ export type TranslationKey = keyof typeof en
  * misspell one, and this file fails to compile.
  */
 export const id: Record<TranslationKey, string> = {
-  "site.title": "Farul Ivan — Fullstack engineer, fokus frontend",
-  "site.descriptor": "Fullstack engineer, fokus frontend",
+  "site.title": "Farul Ivan · Frontend engineer, dari awal sampai produksi",
+  "site.descriptor": "Frontend engineer, dari awal sampai produksi",
   "site.description":
-    "Fullstack engineer, fokus frontend. Tiga tahun sebagai satu-satunya frontend engineer di platform investasi syariah — tujuh puluh halaman, dua brand.",
+    "Tiga tahun sebagai satu-satunya frontend engineer di platform fintech produksi, dan sedang menumbuhkan sisi backend dengan sengaja.",
 
   "nav.home": "Beranda",
   "nav.work": "Karya",
@@ -206,7 +210,7 @@ export const id: Record<TranslationKey, string> = {
   "nav.contact": "Kontak",
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Tutup",
-  "nav.homeLink": "Farul Ivan — beranda",
+  "nav.homeLink": "Farul Ivan, beranda",
   "nav.menuLabel": "Situs",
 
   "home.scrollCue": "Gulir",
@@ -217,10 +221,10 @@ export const id: Record<TranslationKey, string> = {
 
   // Home sections. Each one is a teaser that leads somewhere real.
   "home.positioning":
-    "Tujuh puluh halaman, dua brand, tiga mata uang, satu frontend engineer.",
+    "Saya memiliki apa yang saya bangun, dari keputusan arsitektur sampai produksi, dan saya tidak berhenti di frontend saat sebuah fitur butuh lebih.",
   "home.stackLabel": "Yang saya pakai",
   "home.stackDescription":
-    "Dikelompokkan menurut kegunaannya. Daftar lengkapnya ada di halaman tentang.",
+    "Dikelompokkan menurut seberapa dalam sebenarnya. Tabel lengkapnya ada di halaman tentang.",
   "home.workLabel": "Karya pilihan",
   "home.workDescription":
     "Empat proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
@@ -246,29 +250,33 @@ export const id: Record<TranslationKey, string> = {
 
   // About
   "about.subtitle":
-    "Sembilan tahun membangun produk web, sebagian besar jenis yang harus tetap jalan setelah rilis.",
+    "Tiga tahun memegang sendiri sebuah platform produksi, dan dorongan sengaja ke semua yang ada di sekitarnya.",
   "about.bio.1":
-    "Saya fullstack engineer dengan kedalaman terbesar di sisi depan. Selama tiga tahun saya satu-satunya frontend engineer di platform investasi syariah — cara tercepat yang saya tahu untuk belajar apa yang dilakukan sebuah basis kode kepada Anda saat tak ada orang lain yang memegangnya.",
+    "Selama tiga tahun saya satu-satunya frontend engineer di startup fintech, Nabitu. Saya membangun produknya dari MVP awal sampai penulisan ulang produksi penuh: tujuh puluh halaman, pengguna nyata, taruhan nyata. Tak ada orang lain di frontend, jadi saya memegang jauh lebih banyak daripada UI, bekerja langsung dengan backend, produk, dan CEO untuk merilis hal yang benar-benar jalan.",
   "about.bio.2":
-    "Sebagian besar pekerjaan saya ada di permukaan tempat kesalahan itu mahal — uang yang benar-benar sudah orang komitkan, janji temu di rumah sakit. Itu membuat Anda berhati-hati soal kondisi gagal dengan cara yang tak pernah dituntut halaman pemasaran.",
+    "Belakangan saya sengaja tumbuh melewati frontend. Saya menyelesaikan jalur backend dengan Go dan TypeScript, dan saya membangun serta menjalankan sistem produksi saya sendiri, termasuk bot WhatsApp yang dipakai keluarga saya setiap hari. Saya juga memakai alat AI seperti Claude Code setiap hari. Bukan sebagai jalan pintas, tapi sebagai bagian nyata dari cara saya memikirkan masalah.",
   "about.bio.3":
-    "Bagian backend-nya nyata tapi lebih kecil. Saya pernah membangun dan menjalankan layanan TypeScript produksi dengan PostgreSQL di belakangnya, dan membaca cukup banyak Go dan Laravel untuk berdebat dengan berguna soal kontrak API, bukan sekadar memakai apa pun yang datang.",
-  "about.bio.4":
-    "Saya bekerja dalam bahasa Inggris dan Indonesia, dan saya menuliskan hal-hal — catatan keputusan, postmortem. Proyek sendirian lupa lebih cepat daripada tim.",
+    "Jalan saya ke sini tidak lurus. Saya belajar arsitektur sebelum pindah ke perangkat lunak, yang mungkin alasannya saya masih peduli pada struktur dan detail kecil yang tak diperhatikan kebanyakan orang. Sekarang itu muncul di cara saya menulis kode, bukan di gambar apa pun.",
   "about.portraitLabel": "Foto potret",
   "about.experienceLabel": "Pengalaman",
   "about.experienceDescription":
     "Ke mana sembilan tahun terakhir pergi, dan apa yang dirilis di tiap tahapnya.",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
-    "Dikelompokkan menurut kegunaannya, bukan didaftar per nama, karena tumpukan perkakas tak menjelaskan apa pun soal hasilnya.",
+    "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",
   "about.col.domain": "Bidang",
   "about.col.items": "Cakupannya",
+  "about.col.note": "Seberapa dalam",
+  "about.nowLabel": "Sekarang",
+  "about.nowDescription":
+    "Yang sedang saya usahakan untuk lebih baik, saat ini.",
+  "about.now":
+    "Desain sistem, retrieval-augmented generation, dan cara mengarahkan agen AI alih-alih diarahkan olehnya.",
   "about.cvLabel": "Unduh CV",
 
   // Work index and case studies
   "work.subtitle":
-    "Proyek pilihan, lengkap dengan tujuan pengerjaannya dan apa yang berubah setelah rilis.",
+    "Proyek pilihan, dengan tujuan pengerjaannya dan apa yang berubah setelah rilis.",
   "work.allLabel": "Semua proyek",
   "work.allDescription":
     "Semua yang layak dicantumkan, dari yang terbaru. Telusuri kolom teknologi jika Anda mencari sesuatu yang spesifik.",
@@ -324,14 +332,14 @@ export const id: Record<TranslationKey, string> = {
 
   "writing.title": "Tulisan",
   "writing.subtitle":
-    "Catatan membangun untuk web — yang berhasil, dan yang tidak.",
+    "Catatan membangun untuk web. Yang berhasil, dan yang tidak.",
   "writing.readingTime": "{minutes} menit baca",
   "writing.published": "Terbit {date}",
   "writing.updated": "Diperbarui {date}",
   "writing.backToIndex": "Kembali ke tulisan",
   "writing.empty": "Belum ada tulisan.",
   "writing.untranslated":
-    "Tulisan ini belum tersedia dalam bahasa Anda — menampilkan versi Inggris.",
+    "Tulisan ini belum tersedia dalam bahasa Anda. Menampilkan versi Inggris.",
 
   "pagination.label": "Navigasi halaman tulisan",
   "pagination.previous": "Sebelumnya",

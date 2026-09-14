@@ -2,13 +2,13 @@
 lang: "en"
 translationKey: "wa-bot"
 title: "personal-wa-bot"
-summary: "A WhatsApp bot my family uses daily, and the production backend under it — hexagonal TypeScript, PostgreSQL, a scheduler that survives restarts."
+summary: "A WhatsApp bot my family uses every day, and the production backend under it. Hexagonal TypeScript, PostgreSQL, and a scheduler that survives restarts."
 year: 2026
-role: "Solo — architecture, backend, operations"
+role: "Solo. Architecture, backend, operations"
 duration: "Jan 2026 – ongoing"
 stack: ["TypeScript", "PostgreSQL", "Drizzle", "Docker", "GitHub Actions"]
 featured: true
-order: 3
+order: 2
 outcome:
   summary: "Steady-state memory fell from 0.8 GB to under 100 MB, and the same change retired the one component behind every outage the project had had."
   figures:
@@ -20,7 +20,7 @@ sourceUrl: "https://github.com/farulivan/personal-wa-bot"
 
 ## The problem
 
-I wanted to keep track of small daily things — workouts, Quran pages, prayer
+I wanted to keep track of small daily things: workouts, Quran pages, prayer
 times. Notes apps went messy fast. A dedicated tracker meant another install,
 another login, and one more thing to remember to open.
 
@@ -29,7 +29,7 @@ already were. A few `#` commands in a chat that is always open, no new app and
 no new habit.
 
 That choice set the bar for everything after it. If a reminder is going to be
-trusted, it has to actually arrive — which turned a small convenience into a
+trusted, it has to actually arrive. That turned a small convenience into a
 backend that has to stay up.
 
 ## The Chromium that did not need to be there
@@ -43,8 +43,8 @@ large, stateful thing to keep alive for months, and when it died it did not
 always die loudly.
 
 Replacing it with a plain WebSocket protocol client took steady-state memory
-under 100 MB — more than an 85% cut — and removed the component behind every
-one of those outages in the same change. It is the single best thing I have
+under 100 MB, more than an 85% cut, and removed the component behind every one
+of those outages in the same change. It is the single best thing I have
 done to this codebase, and it was mostly deleting.
 
 The longer version: [The Chromium I did not need](/writing/chromium-i-did-not-need)
@@ -78,7 +78,7 @@ them apart at a glance.
 
 Twice I wrote code that derived a user ID from a phone number. Neither time did
 anything throw. The bot simply began writing rows under a second identity for
-the same person, and the allowlist stopped recognising anyone — the kind of bug
+the same person, and the allowlist stopped recognising anyone. The kind of bug
 you find days later, wondering why the history looks empty.
 
 I had already written the warning in a comment. It did not work, because the
@@ -101,7 +101,7 @@ whatever `Date.now()` happens to return on the machine running CI.
 
 Migrations run on boot. `SIGTERM` drains the schedulers and closes the pool.
 `/ready` reports the state of the WhatsApp socket rather than merely that the
-process is alive — so an external monitor catches an outage in minutes instead
+process is alive, so an external monitor catches an outage in minutes instead
 of whenever somebody notices the reminders stopped.
 
 Expected failures come back as a typed `Result<T>`; exceptions stay reserved

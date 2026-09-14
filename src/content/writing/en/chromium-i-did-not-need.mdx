@@ -27,16 +27,16 @@ absurd. Read off a dashboard, it is just a line.
 
 ## Where it was going
 
-The bot talked to WhatsApp by driving a headless Chromium — a real browser,
+The bot talked to WhatsApp by driving a headless Chromium. A real browser,
 logged in, kept alive indefinitely. That is a legitimate way to automate
 something that has no other interface, and for a long time it was the only way
 this one had.
 
 It was also the cause of every outage the project had ever had. Not most of
 them. Every one. A browser is a large, stateful thing to keep running for
-months at a stretch, and when it failed it did not always fail loudly — it
-would sit there, process alive, doing nothing, until somebody noticed the
-reminders had stopped.
+months at a stretch, and when it failed it did not always fail loudly. It would
+sit there, process alive, doing nothing, until somebody noticed the reminders
+had stopped.
 
 So the browser was costing me eight hundred megabytes and all of my downtime,
 and delivering something I could get another way.
@@ -44,8 +44,8 @@ and delivering something I could get another way.
 ## The fix was a deletion
 
 WhatsApp's protocol is reachable over a WebSocket. Speaking it directly meant
-no browser, no page, no rendering engine — a socket, a handful of message
-types, and the same functionality.
+no browser, no page, no rendering engine. A socket, a handful of message types,
+and the same functionality.
 
 Memory went under 100 MB. That is more than an 85% cut, and it arrived in a
 change whose diff was mostly red. The single largest improvement I have made to
@@ -57,7 +57,7 @@ I do not think the lesson is "never automate through a browser". Sometimes
 there is no other door.
 
 The lesson is about where I look first. My instinct on a memory problem is to
-go inward — profile the code I wrote, find the retained object, tune the cache.
+go inward: profile the code I wrote, find the retained object, tune the cache.
 That instinct assumes the cost is mine. Often the largest single cost in a
 service is one dependency doing a job far bigger than the one you need from it,
 and no amount of tuning your own code touches it.

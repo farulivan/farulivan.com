@@ -52,7 +52,7 @@ const ink = {
  * The line's own markup, class list and all, on one line.
  *
  * Every class here is really on the sentence or on the box holding it — it is
- * the two class lists read as one element, not an invention. 141 characters,
+ * the two class lists read as one element, not an invention. 134 characters,
  * which is what decides the type size below: at the block's width there is
  * exactly one size that fits them on a single line on a wide screen. Changing
  * the string means changing that size with it.
@@ -72,7 +72,7 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
     kind: "string",
   },
   { text: ">", kind: "mark" },
-  { text: "Fullstack engineer, frontend-focused", kind: "text" },
+  { text: "Frontend engineer, end to end", kind: "text" },
   { text: "</", kind: "mark" },
   { text: "p", kind: "tag" },
   { text: ">", kind: "mark" },
@@ -107,11 +107,11 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
     /*
      * Sized so the snippet is exactly one line, derived rather than tuned.
      *
-     * It is 141 characters, and the monospace here advances 0.602em each, so
-     * the line is 84.90em wide. A font size of a hundredth of the box divided
+     * It is 134 characters, and the monospace here advances 0.602em each, so
+     * the line is 80.68em wide. A font size of a hundredth of the box divided
      * by that makes the line exactly as wide as the box, at any width.
      *
-     * Divided by 87 rather than 84.90, for two reasons. Sub-pixel rounding
+     * Divided by 83 rather than 80.68, for two reasons. Sub-pixel rounding
      * broke the line at 1440 with the exact figure, and the reader's operating
      * system may not supply the same monospace this was measured against —
      * they vary from about 0.55em to 0.6em a character. The headroom costs a
@@ -134,7 +134,7 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
      */
   }
   <code
-    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi/87),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
+    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi/83),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
     data-sf-code
     >{
       snippet.map((token) => (

@@ -428,6 +428,21 @@
   font-weight: var(--font-weight-emph);
 }
 
+/*
+ * A paragraph whose whole point is one link is a target, not prose.
+ *
+ * A link inside a sentence is exempt from the minimum target size, because
+ * padding it would push the lines around it apart. A link that *is* the
+ * paragraph has no such excuse, and the "longer version" links at the end of a
+ * case study section are exactly that. The line box grows to hold it, so
+ * nothing above or below moves.
+ */
+.prose p > a:only-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-tap);
+}
+
 /* The first heading in a run has the section's own space above it already. */
 .prose > :first-child {
   margin-top: 0;

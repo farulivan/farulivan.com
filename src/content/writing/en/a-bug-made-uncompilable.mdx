@@ -27,9 +27,9 @@ I found out days later while wondering why the numbers looked wrong.
 
 ## The comment that did not work
 
-After the first time, I wrote a comment. A good one — it named both
-identifiers, explained the difference, and warned against exactly the mistake I
-had just made.
+After the first time, I wrote a comment. A good one. It named both identifiers,
+explained the difference, and warned against exactly the mistake I had just
+made.
 
 Then I made it again.
 
@@ -54,14 +54,14 @@ export type PhoneNumber = Brand<string, "PhoneNumber">
 
 Both are still strings at runtime; the brand exists only at compile time and
 disappears entirely in the output. But they are no longer assignable to each
-other, so the line I kept writing is now a type error at the moment I write it —
+other, so the line I kept writing is now a type error at the moment I write it,
 in the editor, before the code has ever run.
 
 ## The cost, honestly
 
 Branded types are not free, and the cost lands at the boundaries. Every value
-arriving from outside — a database row, a webhook payload — is an unbranded
-`string`, so there has to be one deliberate place where it is checked and
+arriving from outside, a database row or a webhook payload, is an unbranded
+`string`. So there has to be one deliberate place where it is checked and
 converted:
 
 ```ts
@@ -75,7 +75,7 @@ That is the one `as` in the whole arrangement, and it is fine, because it sits
 in a function whose entire job is to be the place where the check happens.
 
 Two or three of those per identifier type, and everything downstream is safe
-without another thought. It is worth it when a mix-up is silent and expensive —
+without another thought. It is worth it when a mix-up is silent and expensive:
 IDs, currency amounts, anything where two values share a shape and mean
 different things. It is not worth it for a value that would blow up loudly on
 first use. Loud bugs do not need the compiler's help.
