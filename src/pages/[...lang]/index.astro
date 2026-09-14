@@ -3,6 +3,7 @@ import type { InferGetStaticPropsType } from "astro"
 
 import CtaBox from "@/components/CtaBox.astro"
 import HeroStandfirst from "@/components/HeroStandfirst.astro"
+import Icon from "@/components/ui/Icon.astro"
 import Intro from "@/components/Intro.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
@@ -138,7 +139,7 @@ const stackGroups = capabilities.map(({ entry }) => ({
         style="--enter-step: 1"
       >
         {t("home.scrollCue")}
-        <span aria-hidden="true">↓</span>
+        <Icon name="chevronDown" class="size-5" />
       </p>
     </div>
   </section>
