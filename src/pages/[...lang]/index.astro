@@ -1,7 +1,6 @@
 ---
 import type { InferGetStaticPropsType } from "astro"
 
-import CtaBox from "@/components/CtaBox.astro"
 import HeroStandfirst from "@/components/HeroStandfirst.astro"
 import Icon from "@/components/ui/Icon.astro"
 import Intro from "@/components/Intro.astro"
@@ -12,7 +11,6 @@ import TimelineRow from "@/components/TimelineRow.astro"
 import WritingTable from "@/components/WritingTable.astro"
 import Section from "@/components/ui/Section.astro"
 import Wordmark from "@/components/Wordmark.astro"
-import { siteConfig } from "@/config/site"
 import {
   getCapabilities,
   getExperience,
@@ -261,9 +259,9 @@ const stackGroups = capabilities.map(({ entry }) => ({
 
   {
     /*
-     * The one lime field on the page. It and the black one below it are the
-     * last two sections, which is where the page stops describing and starts
-     * asking — colour is a signal here rather than decoration.
+     * The one lime field on the page, and the last band before the footer's
+     * black one. That is where the page stops describing and starts asking, so
+     * the colour is a signal rather than decoration.
      */
   }
   <Section field="accent" space="md">
@@ -278,25 +276,6 @@ const stackGroups = capabilities.map(({ entry }) => ({
     >
       {t("home.writingCta")}
     </a>
-  </Section>
-
-  <Section field="invert" space="md">
-    <SectionHeader
-      label={t("home.contactLabel")}
-      description={t("home.contactDescription")}
-    />
-    <div class="gap-gutter mt-7 grid sm:grid-cols-2">
-      <CtaBox
-        href={`mailto:${siteConfig.contact.email}`}
-        label={t("home.getInTouch")}
-      />
-      <CtaBox
-        href={siteConfig.cv.href}
-        label={t("contact.cvLabel")}
-        detail={`${siteConfig.cv.format} · ${siteConfig.cv.size}`}
-        download
-      />
-    </div>
   </Section>
 </BaseLayout>
 

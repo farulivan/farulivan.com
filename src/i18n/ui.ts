@@ -60,10 +60,6 @@ export const en = {
   "home.writingDescription":
     "Notes on decisions that were harder than they looked.",
   "home.writingCta": "Read everything",
-  "home.contactLabel": "Get in touch",
-  "home.contactDescription":
-    "Open to a role where the front end is treated as engineering.",
-  "home.getInTouch": "Send an email",
 
   "writing.allLabel": "All posts",
   "writing.allDescription": "Everything published, newest first.",
@@ -236,10 +232,6 @@ export const id: Record<TranslationKey, string> = {
   "home.writingDescription":
     "Catatan tentang keputusan yang ternyata lebih sulit dari kelihatannya.",
   "home.writingCta": "Baca semuanya",
-  "home.contactLabel": "Hubungi saya",
-  "home.contactDescription":
-    "Terbuka untuk peran di mana front end diperlakukan sebagai engineering.",
-  "home.getInTouch": "Kirim email",
 
   "writing.allLabel": "Semua tulisan",
   "writing.allDescription": "Semua yang sudah terbit, dari yang terbaru.",
