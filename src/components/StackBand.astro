@@ -14,8 +14,11 @@
  * scroll handler to slide some words about would be the most expensive
  * decoration on the site.
  *
- * The rows are wider than the band and the band clips them, so a row that has
- * drifted still reaches both edges.
+ * **The drift happens inside a margin the row pays for itself.** Letting rows
+ * run past the edges is what the sketch asked for, and it cost the first word
+ * of every left-drifting row: at full drift the text started 74px outside the
+ * band and the clip ate it. Each row now carries the drift distance as padding,
+ * so the furthest it can travel is flush with the edge rather than past it.
  */
 import { cn } from "@/lib/utils"
 
@@ -34,7 +37,7 @@ const { groups, label, class: className } = Astro.props
     {
       groups.map((group, index) => (
         <li
-          class="border-section-rule border-b py-5"
+          class="border-section-rule border-b px-(--band-drift) py-5"
           data-band-row
           style={`--band-direction: ${index % 2 === 0 ? -1 : 1}`}
         >
@@ -72,19 +75,37 @@ const { groups, label, class: className } = Astro.props
    * document timeline instead — playing itself out once, immediately, on load,
    * which is the opposite of what it is for.
    */
+  /*
+   * One number, used twice: the keyframe travels this far and the row reserves
+   * exactly that much padding for it. Declared here rather than in the markup
+   * so the two cannot come apart, which is the way this was broken.
+   */
+  [data-band-row] {
+    --band-drift: 2%;
+  }
+
   @keyframes band-drift {
     from {
-      translate: calc(var(--band-direction) * -4%) 0;
+      translate: calc(var(--band-direction) * -1 * var(--band-drift)) 0;
     }
     to {
-      translate: calc(var(--band-direction) * 4%) 0;
+      translate: calc(var(--band-direction) * var(--band-drift)) 0;
     }
   }
 
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
+      /*
+       * Longhands, not the `animation` shorthand: the minifier folds a
+       * shorthand and a neighbouring `animation-timeline` into one declaration
+       * that names the timeline inside the shorthand, and browsers reject it.
+       * The rule then looks right in the source and does nothing on the page,
+       * which is how this drift shipped without ever running.
+       */
       [data-band-row] {
-        animation: band-drift linear both;
+        animation-name: band-drift;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
         animation-timeline: view();
       }
     }

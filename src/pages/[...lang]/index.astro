@@ -119,13 +119,28 @@ const stackGroups = capabilities.map(({ entry }) => ({
       style="--enter-step: 1"
     />
 
-    {/* Deliberately outside the 20% alignment, so it reads as chrome. */}
-    <p
-      class="text-micro text-ink-muted px-page-margin hero-enter absolute bottom-5 left-0 uppercase"
-      style="--enter-step: 2"
-    >
-      {t("home.scrollCue")}
-    </p>
+    {
+      /*
+       * Deliberately outside the 20% alignment, so it reads as chrome, and on
+       * the opposite side from the lettering's crop so the two corners are not
+       * both busy.
+       *
+       * Two elements because two animations want the same property. The inner
+       * one arrives with the standfirst and then stops; the outer one fades the
+       * whole thing out as you scroll, so the cue is gone by the time you are
+       * reading the sentence it was pointing at. A cue that is still telling
+       * you to scroll while you are scrolling is furniture.
+       */
+    }
+    <div class="absolute right-0 bottom-5" data-scroll-cue>
+      <p
+        class="text-h-m text-ink-muted px-page-margin hero-enter m-0 flex items-center gap-2 tracking-[0.06em] uppercase"
+        style="--enter-step: 1"
+      >
+        {t("home.scrollCue")}
+        <span aria-hidden="true">↓</span>
+      </p>
+    </div>
   </section>
 
   {
@@ -146,6 +161,7 @@ const stackGroups = capabilities.map(({ entry }) => ({
     <SectionHeader
       label={t("home.stackLabel")}
       description={t("home.stackDescription")}
+      align="end"
     />
     <StackBand groups={stackGroups} label={t("home.stackLabel")} class="mt-7" />
   </Section>

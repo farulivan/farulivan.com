@@ -97,6 +97,15 @@ whose card would clip an outset one.
 - **TypeScript stays on 6.0.x.** `@astrojs/check` and typescript-eslint both reject TS 7 today.
 - **Adding a string?** Add it to `en` in `src/i18n/ui.ts` first; typecheck will then demand the Indonesian one.
 
+- **Never use the `animation` shorthand with `animation-timeline`.** The
+  minifier folds the two into one declaration that names the timeline inside
+  the shorthand — `animation: linear both drift view()` — which browsers reject
+  outright, so the animation silently never runs while the source looks
+  correct. Write the longhands (`animation-name`, `animation-timing-function`,
+  `animation-fill-mode`) and the minifier leaves them alone. This shipped twice:
+  the stack band's drift and the hero's scroll cue both did nothing until it was
+  found. A `var()` anywhere in the shorthand also blocks the fold, which is why
+  one of the three scroll-driven animations worked by accident.
 - **Tailwind v4 registers `prose` as a utility.** Typography's
   `.prose :where(pre)` therefore lands in the utilities layer and outranks
   anything in `@layer components`, no matter how specific — `:where()`

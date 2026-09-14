@@ -19,8 +19,8 @@
 export const en = {
   // Site identity. The wordmark is decorative in every place it appears, so
   // this is the real page title and it is always in the document.
-  "site.title": "Farul Ivan · Frontend engineer, end to end",
-  "site.descriptor": "Frontend engineer, end to end",
+  "site.title": "Farul Ivan · Frontend engineer · end to end",
+  "site.descriptor": "Frontend engineer\u00a0· end to end",
   "site.description":
     "Three years as the sole frontend engineer on a production fintech platform, and deliberately growing into the backend.",
 
@@ -36,7 +36,7 @@ export const en = {
   "nav.menuLabel": "Site",
 
   // Home
-  "home.scrollCue": "Scroll",
+  "home.scrollCue": "Scroll down",
 
   // Page titles. The bodies are placeholders until the real content lands.
   "work.title": "Work",
@@ -46,9 +46,9 @@ export const en = {
   // Home sections. Each one is a teaser that leads somewhere real.
   "home.positioning":
     "I own what I build, from architecture decisions to production, and I don't stop at the frontend when a feature needs more.",
-  "home.stackLabel": "What I work with",
+  "home.stackLabel": "What I do",
   "home.stackDescription":
-    "Grouped by how deep it actually goes. The full table is on the about page.",
+    "I work end to end on web products: the interface people touch, the API contracts behind it, and the tests and pipelines that keep both honest. Three years of that as the only frontend engineer on a production platform.",
   "home.workLabel": "Selected work",
   "home.workDescription":
     "Four projects, with what they were for and what changed once they shipped.",
@@ -198,8 +198,8 @@ export type TranslationKey = keyof typeof en
  * misspell one, and this file fails to compile.
  */
 export const id: Record<TranslationKey, string> = {
-  "site.title": "Farul Ivan · Frontend engineer, dari awal sampai produksi",
-  "site.descriptor": "Frontend engineer, dari awal sampai produksi",
+  "site.title": "Farul Ivan · Frontend engineer · dari awal sampai produksi",
+  "site.descriptor": "Frontend engineer\u00a0· dari awal sampai produksi",
   "site.description":
     "Tiga tahun sebagai satu-satunya frontend engineer di platform fintech produksi, dan sedang menumbuhkan sisi backend dengan sengaja.",
 
@@ -213,7 +213,7 @@ export const id: Record<TranslationKey, string> = {
   "nav.homeLink": "Farul Ivan, beranda",
   "nav.menuLabel": "Situs",
 
-  "home.scrollCue": "Gulir",
+  "home.scrollCue": "Gulir ke bawah",
 
   "work.title": "Karya",
   "about.title": "Tentang",
@@ -222,9 +222,9 @@ export const id: Record<TranslationKey, string> = {
   // Home sections. Each one is a teaser that leads somewhere real.
   "home.positioning":
     "Saya memiliki apa yang saya bangun, dari keputusan arsitektur sampai produksi, dan saya tidak berhenti di frontend saat sebuah fitur butuh lebih.",
-  "home.stackLabel": "Yang saya pakai",
+  "home.stackLabel": "Yang saya kerjakan",
   "home.stackDescription":
-    "Dikelompokkan menurut seberapa dalam sebenarnya. Tabel lengkapnya ada di halaman tentang.",
+    "Saya mengerjakan produk web dari hulu ke hilir: antarmuka yang disentuh orang, kontrak API di belakangnya, serta pengujian dan pipeline yang menjaga keduanya tetap jujur. Tiga tahun sebagai satu-satunya frontend engineer di platform produksi.",
   "home.workLabel": "Karya pilihan",
   "home.workDescription":
     "Empat proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
