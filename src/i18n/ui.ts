@@ -19,11 +19,10 @@
 export const en = {
   // Site identity. The wordmark is decorative in every place it appears, so
   // this is the real page title and it is always in the document.
-  "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
-  "site.descriptor": "Frontend & Fullstack Engineer",
-  // TODO(content): replace with the real positioning sentence.
+  "site.title": "Farul Ivan — Fullstack engineer, frontend-focused",
+  "site.descriptor": "Fullstack engineer, frontend-focused",
   "site.description":
-    "Frontend and fullstack engineer. I build web products that stay fast and maintainable as they grow.",
+    "Fullstack engineer, frontend-focused. Three years as the only frontend engineer on a shariah investment platform — seventy pages, two brands.",
 
   // Navigation
   "nav.home": "Home",
@@ -45,26 +44,25 @@ export const en = {
   "contact.title": "Contact",
 
   // Home sections. Each one is a teaser that leads somewhere real.
-  // TODO(content): the positioning sentence. This is the right length.
   "home.positioning":
-    "I build web products that stay fast and maintainable as they grow.",
+    "Seventy pages, two brands, three currencies, one frontend engineer.",
   "home.stackLabel": "What I work with",
   "home.stackDescription":
     "Grouped by what it is for. The full list is on the about page.",
   "home.workLabel": "Selected work",
   "home.workDescription":
-    "Three projects with what they were for and what changed once they shipped.",
+    "Four projects, with what they were for and what changed once they shipped.",
   "home.workCta": "See all work",
   "home.experienceLabel": "Experience",
   "home.experienceDescription": "The three most recent roles.",
   "home.experienceCta": "Read the full history",
   "home.writingLabel": "Writing",
   "home.writingDescription":
-    "Notes on building and shipping, when I have something worth adding.",
+    "Notes on decisions that were harder than they looked.",
   "home.writingCta": "Read everything",
   "home.contactLabel": "Get in touch",
   "home.contactDescription":
-    "I am looking for a role where the front end is treated as engineering.",
+    "Open to a role where the front end is treated as engineering.",
   "home.getInTouch": "Send an email",
 
   "writing.allLabel": "All posts",
@@ -77,16 +75,14 @@ export const en = {
   // About
   "about.subtitle":
     "Nine years of building web products, most of them the kind that have to keep working after launch.",
-  // TODO(content): four real paragraphs. These are the right length, not the
-  // right words.
   "about.bio.1":
-    "I build web products, mostly the front end and enough of the back end to know why the front end is slow. Nine years of it, across a payments company, a logistics operator and a studio that shipped for other people.",
+    "I am a fullstack engineer with most of my depth on the front end. For three years I was the only frontend engineer on a shariah investment platform, which is the fastest way I know to learn what a codebase does to you when nobody else is holding it.",
   "about.bio.2":
-    "The work I am proudest of is rarely the work that looks impressive in a screenshot. It is the reporting query that stopped taking eleven seconds, the form that finally filled itself in correctly, the release that nobody noticed because nothing broke.",
+    "Most of my work has been on surfaces where being wrong is expensive — money people have actually committed, appointments at a hospital. That makes you careful about failure states in a way a marketing page never will.",
   "about.bio.3":
-    "I care about the parts of a codebase that decide how it ages: where the boundaries are, what the types promise, whether a new person can find the thing they came for. Speed matters, and so does the second year.",
+    "The backend half is real but smaller. I have built and run a production TypeScript service with PostgreSQL behind it, and I have read enough Go and Laravel to argue usefully about an API contract rather than just consuming whatever arrives.",
   "about.bio.4":
-    "I write in English and Indonesian, review code carefully, and would rather ask a question early than build the wrong thing well.",
+    "I work in English and Indonesian, and I write things down — decision records, postmortems. A solo project forgets faster than a team does.",
   "about.portraitLabel": "Portrait photograph",
   "about.experienceLabel": "Experience",
   "about.experienceDescription":
@@ -198,10 +194,10 @@ export type TranslationKey = keyof typeof en
  * misspell one, and this file fails to compile.
  */
 export const id: Record<TranslationKey, string> = {
-  "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
-  "site.descriptor": "Frontend & Fullstack Engineer",
+  "site.title": "Farul Ivan — Fullstack engineer, fokus frontend",
+  "site.descriptor": "Fullstack engineer, fokus frontend",
   "site.description":
-    "Frontend dan fullstack engineer. Saya membangun produk web yang tetap cepat dan mudah dirawat seiring pertumbuhannya.",
+    "Fullstack engineer, fokus frontend. Tiga tahun sebagai satu-satunya frontend engineer di platform investasi syariah — tujuh puluh halaman, dua brand.",
 
   "nav.home": "Beranda",
   "nav.work": "Karya",
@@ -221,24 +217,24 @@ export const id: Record<TranslationKey, string> = {
 
   // Home sections. Each one is a teaser that leads somewhere real.
   "home.positioning":
-    "Saya membangun produk web yang tetap cepat dan mudah dirawat saat ia tumbuh.",
+    "Tujuh puluh halaman, dua brand, tiga mata uang, satu frontend engineer.",
   "home.stackLabel": "Yang saya pakai",
   "home.stackDescription":
     "Dikelompokkan menurut kegunaannya. Daftar lengkapnya ada di halaman tentang.",
   "home.workLabel": "Karya pilihan",
   "home.workDescription":
-    "Tiga proyek beserta tujuannya dan apa yang berubah setelah rilis.",
+    "Empat proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
   "home.workCta": "Lihat semua karya",
   "home.experienceLabel": "Pengalaman",
   "home.experienceDescription": "Tiga peran terakhir.",
   "home.experienceCta": "Baca riwayat lengkapnya",
   "home.writingLabel": "Tulisan",
   "home.writingDescription":
-    "Catatan soal membangun dan merilis, saat ada yang layak ditambahkan.",
+    "Catatan tentang keputusan yang ternyata lebih sulit dari kelihatannya.",
   "home.writingCta": "Baca semuanya",
   "home.contactLabel": "Hubungi saya",
   "home.contactDescription":
-    "Saya mencari peran yang memperlakukan front end sebagai pekerjaan teknik.",
+    "Terbuka untuk peran di mana front end diperlakukan sebagai engineering.",
   "home.getInTouch": "Kirim email",
 
   "writing.allLabel": "Semua tulisan",
@@ -252,13 +248,13 @@ export const id: Record<TranslationKey, string> = {
   "about.subtitle":
     "Sembilan tahun membangun produk web, sebagian besar jenis yang harus tetap jalan setelah rilis.",
   "about.bio.1":
-    "Saya membangun produk web, terutama sisi depan dan cukup banyak sisi belakang untuk paham kenapa sisi depannya lambat. Sudah sembilan tahun, di sebuah perusahaan pembayaran, operator logistik, dan studio yang mengerjakan produk orang lain.",
+    "Saya fullstack engineer dengan kedalaman terbesar di sisi depan. Selama tiga tahun saya satu-satunya frontend engineer di platform investasi syariah — cara tercepat yang saya tahu untuk belajar apa yang dilakukan sebuah basis kode kepada Anda saat tak ada orang lain yang memegangnya.",
   "about.bio.2":
-    "Pekerjaan yang paling saya banggakan jarang terlihat mengesankan dalam tangkapan layar. Bentuknya kueri laporan yang tak lagi butuh sebelas detik, formulir yang akhirnya terisi dengan benar, rilis yang tak disadari siapa pun karena tak ada yang rusak.",
+    "Sebagian besar pekerjaan saya ada di permukaan tempat kesalahan itu mahal — uang yang benar-benar sudah orang komitkan, janji temu di rumah sakit. Itu membuat Anda berhati-hati soal kondisi gagal dengan cara yang tak pernah dituntut halaman pemasaran.",
   "about.bio.3":
-    "Saya peduli pada bagian basis kode yang menentukan bagaimana ia menua: di mana batasnya, apa yang dijanjikan tipenya, apakah orang baru bisa menemukan yang ia cari. Kecepatan itu penting, dan tahun kedua juga.",
+    "Bagian backend-nya nyata tapi lebih kecil. Saya pernah membangun dan menjalankan layanan TypeScript produksi dengan PostgreSQL di belakangnya, dan membaca cukup banyak Go dan Laravel untuk berdebat dengan berguna soal kontrak API, bukan sekadar memakai apa pun yang datang.",
   "about.bio.4":
-    "Saya menulis dalam bahasa Inggris dan Indonesia, mengulas kode dengan teliti, dan lebih suka bertanya lebih awal daripada membangun hal yang salah dengan rapi.",
+    "Saya bekerja dalam bahasa Inggris dan Indonesia, dan saya menuliskan hal-hal — catatan keputusan, postmortem. Proyek sendirian lupa lebih cepat daripada tim.",
   "about.portraitLabel": "Foto potret",
   "about.experienceLabel": "Pengalaman",
   "about.experienceDescription":

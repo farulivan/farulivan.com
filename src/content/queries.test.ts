@@ -130,13 +130,13 @@ describe("getPosts", () => {
 
 describe("getPost", () => {
   it("finds an article by its shared slug", async () => {
-    entries = [post({ translationKey: "preview-urls" })]
-    const found = await getPost("en", "preview-urls")
-    expect(found && postSlug(found.entry)).toBe("preview-urls")
+    entries = [post({ translationKey: "example-post" })]
+    const found = await getPost("en", "example-post")
+    expect(found && postSlug(found.entry)).toBe("example-post")
   })
 
   it("returns undefined for an unknown slug", async () => {
-    entries = [post({ translationKey: "preview-urls" })]
+    entries = [post({ translationKey: "example-post" })]
     expect(await getPost("en", "nope")).toBeUndefined()
   })
 })

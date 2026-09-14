@@ -8,9 +8,12 @@ dicermati
 didaftar
 ditelusuri
 fiturnya
+heksagonal
 Inggrisnya
 kasusnya
 kodenya
+komitkan
+mengelolanya
 migrasinya
 produknya
 situsnya

@@ -90,10 +90,10 @@ const project = projectSchema({ image })
 
 const validProject = {
   lang: "en",
-  translationKey: "merchant-dashboard",
-  title: "Merchant Dashboard",
+  translationKey: "example-project",
+  title: "Example Project",
   summary:
-    "A reporting console for a payments team, rebuilt so a shop owner could answer their own questions.",
+    "A short sentence about the project, comfortably inside the length the schema allows.",
   year: 2025,
   role: "Lead frontend engineer",
   stack: ["TypeScript", "React"],
