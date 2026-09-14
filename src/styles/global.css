@@ -404,8 +404,15 @@
      * One timeline for the whole sentence, named on the paragraph and read by
      * the words inside it. A word is forty pixels tall, so its own view
      * timeline would start and finish inside forty pixels of scrolling and the
-     * reveal would be over before it was seen. The sentence is ten times that,
-     * which is a reveal you can actually watch.
+     * reveal would be over before it was seen.
+     *
+     * `cover` rather than `entry`, and that distinction is the whole thing.
+     * `entry` ends the moment the element's bottom edge clears the bottom of
+     * the screen — so the reveal ran while the sentence was still a sliver at
+     * the very bottom, and by the time anybody looked at it, it had finished.
+     * `cover` runs from the sentence appearing to it leaving, and taking the
+     * first third of that puts the reveal where the reader is: the last word
+     * lands as the sentence reaches about a third of the way up the screen.
      */
     [data-statement] {
       view-timeline-name: --statement;
@@ -422,8 +429,8 @@
       animation-timing-function: var(--ease-reveal);
       animation-fill-mode: both;
       animation-timeline: --statement;
-      animation-range: entry calc(8% + var(--word-step, 0) * 2%) entry
-        calc(48% + var(--word-step, 0) * 2%);
+      animation-range: cover calc(7% + var(--word-step, 0) * 1%) cover
+        calc(29% + var(--word-step, 0) * 1%);
     }
   }
 }
