@@ -169,7 +169,7 @@ const stackGroups = capabilities.map(({ entry }) => ({
   }
   <Section space="xl">
     <p
-      class="text-display-m font-display text-ink m-0 mx-auto max-w-[20ch] text-center text-balance"
+      class="text-display-s font-display text-ink m-0 mx-auto max-w-[40ch] text-center text-balance"
       data-statement
     >
       {
@@ -184,7 +184,9 @@ const stackGroups = capabilities.map(({ entry }) => ({
         statement.map((word, index) => (
           <Fragment>
             <span class="inline-block" style={`--word-step: ${index}`}>
-              <span class="inline-block break-words hyphens-auto">{word}</span>
+              <span class="inline-block wrap-break-word hyphens-auto">
+                {word}
+              </span>
             </span>{" "}
           </Fragment>
         ))
@@ -192,13 +194,13 @@ const stackGroups = capabilities.map(({ entry }) => ({
     </p>
   </Section>
 
-  <Section space="md">
+  <Section space="xl">
     <SectionHeader
       label={t("home.stackLabel")}
       description={t("home.stackDescription")}
       align="end"
     />
-    <StackBand groups={stackGroups} label={t("home.stackLabel")} class="mt-7" />
+    <StackBand groups={stackGroups} label={t("home.stackLabel")} />
   </Section>
 
   <Section field="surface" space="md">

@@ -21,7 +21,15 @@
     "translationKey": "backend",
     "order": 2,
     "domain": "Backend",
-    "items": ["Node.js", "Go", "PostgreSQL", "REST API design", "SQL"],
+    "items": [
+      "Node.js",
+      "TypeScript",
+      "Go",
+      "MySQL",
+      "PostgreSQL",
+      "Laravel",
+      "REST API design"
+    ],
     "note": "Growing, deliberately. I have moved from consuming APIs to building and running my own."
   },
   {
@@ -35,9 +43,11 @@
       "Playwright",
       "Cypress",
       "Zod",
+      "Docker",
+      "AWS",
       "CI/CD",
       "Clean architecture",
-      "ADRs"
+      "ADR"
     ],
     "note": "I care about code someone else can pick up and understand."
   },
@@ -47,7 +57,7 @@
     "translationKey": "ai",
     "order": 4,
     "domain": "AI-native workflow",
-    "items": ["Claude Code, daily"],
+    "items": ["Claude Code", "Windsurf / Devin Desktop"],
     "note": "I direct it, I do not follow it. I review everything and stay responsible for what ships."
   },
 
