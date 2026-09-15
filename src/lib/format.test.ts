@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest"
 import {
   formatDate,
   formatDateShort,
+  formatMonths,
+  formatYears,
   resolvePostDate,
   toDateAttribute,
 } from "./format"
@@ -70,5 +72,53 @@ describe("date formatting", () => {
 
   it("emits a machine-readable datetime attribute", () => {
     expect(toDateAttribute(date)).toBe("2026-03-05")
+  })
+})
+
+describe("formatYears", () => {
+  it("shortens a span to one readable range", () => {
+    expect(formatYears({ start: "2023-02", end: "2026-01" })).toBe("2023–26")
+  })
+
+  it("prints a single year once, not as a range onto itself", () => {
+    expect(formatYears({ start: "2024-11", end: "2024-12" })).toBe("2024")
+    expect(formatYears({ start: "2021" })).toBe("2021")
+  })
+
+  it("leaves a current role open-ended", () => {
+    expect(formatYears({ start: "2023-02", ongoing: true })).toBe("2023–")
+  })
+})
+
+describe("formatMonths", () => {
+  it("names both ends", () => {
+    expect(
+      formatMonths({ start: "2023-02", end: "2026-01" }, "en", "Present")
+    ).toBe("Feb 2023 – Jan 2026")
+  })
+
+  it("says present rather than inventing an end", () => {
+    expect(
+      formatMonths({ start: "2024-11", ongoing: true }, "en", "Present")
+    ).toBe("Nov 2024 – Present")
+  })
+
+  it("takes the word for present from the caller, so it can be translated", () => {
+    expect(
+      formatMonths({ start: "2024-11", ongoing: true }, "id", "Sekarang")
+    ).toContain("Sekarang")
+  })
+
+  it("returns nothing when a month is not known", () => {
+    // The row then shows its years and no detail line, rather than a month
+    // somebody guessed to fill the space.
+    expect(formatMonths({ start: "2021" }, "en", "Present")).toBeUndefined()
+    expect(
+      formatMonths({ start: "2023-02", end: "2026" }, "en", "Present")
+    ).toBeUndefined()
+  })
+
+  it("is not moved onto the previous month by a timezone", () => {
+    expect(formatMonths({ start: "2026-01" }, "en", "Present")).toBe("Jan 2026")
   })
 })

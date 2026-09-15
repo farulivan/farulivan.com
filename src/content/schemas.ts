@@ -142,14 +142,37 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
   })
 
 /**
+ * A month, or a year when the month is not known: `2026-01` or `2026`.
+ *
+ * Both precisions are allowed because both are true of the real history. Two
+ * of these roles have dates down to the month and three are remembered only by
+ * the year, and inventing a month to make the column tidy would be inventing a
+ * fact on a CV.
+ */
+const period = z
+  .string()
+  .regex(/^\d{4}(-(0[1-9]|1[0-2]))?$/, "expected YYYY or YYYY-MM")
+
+/**
  * One role in the career timeline.
  *
- * `order` rather than a date range: the timeline is a staircase of years, and
- * two roles in the same year still need a fixed sequence.
+ * `order` decides the sequence, not the dates. Two roles can overlap — a
+ * freelance job runs alongside a full-time one — and sorting on a start date
+ * would leave the order of those two up to whichever the comparison saw first.
  */
 export const experienceSchema = z.object({
   ...localized,
-  year: z.number().int().min(1990).max(2100),
+  /**
+   * When the role began, and when it ended.
+   *
+   * A hirer reads a career by its spans, not by its end points: "2023 to 2026"
+   * says three years and "2026" says nothing at all. `end` is absent while the
+   * role is still going, and `ongoing` is what says so — a missing `end` on a
+   * finished role would otherwise read as current.
+   */
+  start: period,
+  end: period.optional(),
+  ongoing: z.boolean().default(false),
   role: z.string().min(1),
   company: z.string().min(1),
   /** Two lines on what shipped, which is the height the row is drawn at. */

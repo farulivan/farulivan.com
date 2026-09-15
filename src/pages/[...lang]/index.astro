@@ -241,8 +241,13 @@ const stackGroups = capabilities.map(({ entry }) => ({
       {
         roles.map(({ entry }, index) => (
           <TimelineRow
+            {lang}
             step={index}
-            year={entry.data.year}
+            period={{
+              start: entry.data.start,
+              end: entry.data.end,
+              ongoing: entry.data.ongoing,
+            }}
             role={entry.data.role}
             company={entry.data.company}
             description={entry.data.description}

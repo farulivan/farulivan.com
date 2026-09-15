@@ -87,6 +87,7 @@ export const en = {
   "about.col.domain": "Area",
   "about.col.items": "What that covers",
   "about.col.note": "How deep it goes",
+  "about.present": "Present",
   "about.nowLabel": "Now",
   "about.nowDescription":
     "What I am working on getting better at, at the moment.",
@@ -259,6 +260,7 @@ export const id: Record<TranslationKey, string> = {
   "about.col.domain": "Bidang",
   "about.col.items": "Cakupannya",
   "about.col.note": "Seberapa dalam",
+  "about.present": "Sekarang",
   "about.nowLabel": "Sekarang",
   "about.nowDescription":
     "Yang sedang saya usahakan untuk lebih baik, saat ini.",
