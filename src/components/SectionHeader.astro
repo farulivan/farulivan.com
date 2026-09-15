@@ -1,7 +1,7 @@
 ---
 /**
  * The heading that opens a major section: a short label on the left, a
- * sentence explaining the section on the right, and a hairline under both.
+ * sentence explaining the section set flush right, and a hairline under both.
  *
  * It repeats on nearly every section of every page, which is the whole reason
  * it exists — the three pieces have to line up identically each time or the
@@ -19,24 +19,11 @@ interface Props {
   /** One or two lines. Longer than that and it stops being a signpost. */
   description?: string | undefined
   level?: 2 | 3
-  /**
-   * Pushes the description to the far edge and sets it flush right. For the
-   * one section where the sentence is a statement in its own right rather
-   * than a caption on the label beside it.
-   */
-  align?: "start" | "end"
   id?: string | undefined
   class?: string | undefined
 }
 
-const {
-  label,
-  description,
-  level = 2,
-  align = "start",
-  id,
-  class: className,
-} = Astro.props
+const { label, description, level = 2, id, class: className } = Astro.props
 
 const Heading = `h${level}` as const
 ---
@@ -47,6 +34,13 @@ const Heading = `h${level}` as const
    * is what makes the two read as two things rather than as a sentence that
    * happens to start in bold — on a phone there is no room for it, so they
    * stack and the gap becomes vertical.
+   *
+   * The sentence is set flush right, not just placed in the right-hand
+   * column. Those are different things: the column already ends at the edge
+   * of the page, so a long sentence filled it and looked deliberate while a
+   * short one started in the same place, stopped early, and left the page
+   * ragged down one side. Setting it right means every section ends on the
+   * same line whatever the sentence is.
    */
 }
 <div class={cn("border-section-rule border-b pb-5", className)} data-reveal>
@@ -67,12 +61,7 @@ const Heading = `h${level}` as const
 
     {
       description && (
-        <p
-          class={cn(
-            "text-ui text-section-muted m-0 text-pretty md:col-span-4 md:col-start-9",
-            align === "end" && "md:text-right"
-          )}
-        >
+        <p class="text-ui text-section-muted m-0 text-pretty md:col-span-4 md:col-start-9 md:text-right">
           {description}
         </p>
       )
