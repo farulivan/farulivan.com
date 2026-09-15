@@ -14,6 +14,7 @@ import DataTable, {
   type DataCell,
   type DataColumn,
 } from "@/components/DataTable.astro"
+import ReadingColumns from "@/components/ReadingColumns.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
 import TimelineRow from "@/components/TimelineRow.astro"
 import Placeholder from "@/components/ui/Placeholder.astro"
@@ -76,25 +77,33 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
     >
       {t("about.title")}
     </h1>
-    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
-      {t("about.subtitle")}
-    </p>
   </Section>
 
   <Section space="sm">
     {
       /*
-       * Prose width rather than page width. Four paragraphs set edge to edge
-       * on a wide screen is the one layout guaranteed to go unread.
+       * The claim on the left, the evidence on the right. The sentence used to
+       * sit under the page title, where it was read once and scrolled past;
+       * beside the paragraphs that back it up it stays on screen for as long
+       * as they take to read, which is the whole reason to say it first.
        */
     }
-    <div class="max-w-measure flex flex-col gap-5">
-      {
-        bio.map((paragraph) => (
-          <p class="text-read text-ink m-0 text-pretty">{paragraph}</p>
-        ))
-      }
-    </div>
+    <ReadingColumns>
+      <p
+        slot="aside"
+        class="text-display-s font-display text-ink m-0 text-balance max-md:mb-2"
+      >
+        {t("about.subtitle")}
+      </p>
+
+      <div class="flex flex-col gap-5">
+        {
+          bio.map((paragraph) => (
+            <p class="text-read text-ink m-0 text-pretty">{paragraph}</p>
+          ))
+        }
+      </div>
+    </ReadingColumns>
   </Section>
 
   {

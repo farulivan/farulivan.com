@@ -114,6 +114,7 @@ export const en = {
 
   "project.backToIndex": "Back to work",
   "project.role": "Role",
+  "project.contents": "Contents",
   "project.team": "Team",
   "project.duration": "Duration",
   "project.year": "Year",
@@ -288,6 +289,7 @@ export const id: Record<TranslationKey, string> = {
 
   "project.backToIndex": "Kembali ke karya",
   "project.role": "Peran",
+  "project.contents": "Daftar isi",
   "project.team": "Tim",
   "project.duration": "Durasi",
   "project.year": "Tahun",

@@ -1,0 +1,62 @@
+---
+/**
+ * A long read, with something useful pinned beside it.
+ *
+ * Body text stops being readable past a certain line length, which is why the
+ * prose on this site is capped at a measure. On a wide screen that cap used to
+ * leave the right half of the page empty and the text floating in the left
+ * third, which reads as a page somebody forgot to finish.
+ *
+ * So the prose moves to the right edge of the page, where every other section
+ * ends, and the left column gets something worth looking at while you read:
+ * the contents of the piece, or the sentence the piece is arguing. The slack
+ * that is left sits between the two, which is the one place on the page where
+ * empty space is doing a job.
+ *
+ * Below the width where two columns stop fitting, the left column becomes the
+ * thing you read first and the prose follows it, which is the order it would
+ * be in anyway.
+ */
+import { cn } from "@/lib/utils"
+
+interface Props {
+  class?: string | undefined
+}
+
+const { class: className } = Astro.props
+---
+
+<div class={cn("md:gap-gutter grid gap-7 md:grid-cols-12", className)}>
+  {
+    /*
+     * `self-start` is what makes the pinning work, and leaving it out is the
+     * usual way this layout fails. A grid child is stretched to the height of
+     * its row unless told otherwise, and a block already as tall as the
+     * distance it could travel has nowhere to travel to: it sits there looking
+     * like it should stick and never does.
+     *
+     * The offset is the same one the prose headings use to clear the fixed
+     * navigation bar, so a pinned block and a jumped-to heading come to rest
+     * against the same line.
+     *
+     * Nothing in this component carries the scroll reveal. That animation
+     * moves an element with `translate`, and a translated ancestor becomes the
+     * box a sticky descendant sticks inside — so adding it here would switch
+     * the pinning off silently rather than break in any way you could see.
+     */
+  }
+  <div class="md:sticky md:top-10 md:col-span-4 md:self-start">
+    <slot name="aside" />
+  </div>
+
+  {
+    /*
+     * The column runs to the edge of the page but the prose inside it stops at
+     * the measure, pushed to the far side. Filling the column instead would
+     * put the line length back where this layout started.
+     */
+  }
+  <div class="max-w-measure md:col-span-7 md:col-start-6 md:ms-auto">
+    <slot />
+  </div>
+</div>
