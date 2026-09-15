@@ -177,6 +177,21 @@ describe("experienceSchema", () => {
     expect(experienceSchema.parse(yearOnly).end).toBeUndefined()
   })
 
+  it("treats a row as a job unless it says otherwise", () => {
+    // Most of the list is work, so the field is only written on the rows that
+    // are not, and a missing one must never turn a job into a degree.
+    expect(experienceSchema.parse(validRole).kind).toBe("work")
+    expect(
+      experienceSchema.parse({ ...validRole, kind: "education" }).kind
+    ).toBe("education")
+  })
+
+  it("rejects a kind that is neither of the two", () => {
+    expect(() =>
+      experienceSchema.parse({ ...validRole, kind: "volunteering" })
+    ).toThrow()
+  })
+
   it("treats a role as finished unless it says otherwise", () => {
     // A missing end date is not the same as a current role, and reading it that
     // way would put someone in a job they left.

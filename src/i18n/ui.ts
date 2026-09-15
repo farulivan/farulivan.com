@@ -78,9 +78,9 @@ export const en = {
   "about.bio.3":
     "My path here was not a straight line. I studied architecture before moving into software, which is probably why I still care about structure and the small details most people do not notice. These days that shows up in how I write code rather than in anything I draw.",
   "about.portraitLabel": "Portrait photograph",
-  "about.experienceLabel": "Experience",
-  "about.experienceDescription":
-    "Where the last nine years went, and what shipped in each of them.",
+  "about.historyLabel": "History",
+  "about.historyDescription":
+    "Fifteen years of it, from university to the last thing I shipped.",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
     "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
@@ -88,6 +88,7 @@ export const en = {
   "about.col.items": "What that covers",
   "about.col.note": "How deep it goes",
   "about.present": "Present",
+  "about.education": "Education",
   "about.nowLabel": "Now",
   "about.nowDescription":
     "What I am working on getting better at, at the moment.",
@@ -251,9 +252,9 @@ export const id: Record<TranslationKey, string> = {
   "about.bio.3":
     "Jalan saya ke sini tidak lurus. Saya belajar arsitektur sebelum pindah ke perangkat lunak, yang mungkin alasannya saya masih peduli pada struktur dan detail kecil yang tak diperhatikan kebanyakan orang. Sekarang itu muncul di cara saya menulis kode, bukan di gambar apa pun.",
   "about.portraitLabel": "Foto potret",
-  "about.experienceLabel": "Pengalaman",
-  "about.experienceDescription":
-    "Ke mana sembilan tahun terakhir pergi, dan apa yang dirilis di tiap tahapnya.",
+  "about.historyLabel": "Riwayat",
+  "about.historyDescription":
+    "Lima belas tahun, dari bangku kuliah sampai hal terakhir yang saya rilis.",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
     "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",
@@ -261,6 +262,7 @@ export const id: Record<TranslationKey, string> = {
   "about.col.items": "Cakupannya",
   "about.col.note": "Seberapa dalam",
   "about.present": "Sekarang",
+  "about.education": "Pendidikan",
   "about.nowLabel": "Sekarang",
   "about.nowDescription":
     "Yang sedang saya usahakan untuk lebih baik, saat ini.",

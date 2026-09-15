@@ -11,7 +11,7 @@
  * would leave an ordinary list; keeping it at desktop size on a phone would
  * push the last role off the edge.
  */
-import type { Locale } from "@/content/schemas"
+import type { ExperienceKind, Locale } from "@/content/schemas"
 import { useTranslations } from "@/i18n/utils"
 import { formatMonths, formatYears, type Period } from "@/lib/format"
 import { cn } from "@/lib/utils"
@@ -20,8 +20,12 @@ interface Props {
   lang: Locale
   /** Position in the staircase, from 0. Decides how far in the row starts. */
   step: number
+  /** How many rows there are in total, which sets how big one step can be. */
+  steps: number
   /** When the role ran. A hirer reads a career by its spans. */
   period: Period
+  /** A job or a degree. Both live in this one list. */
+  kind: ExperienceKind
   role: string
   company: string
   /** Two lines on what shipped. The row is drawn at that height. */
@@ -32,7 +36,9 @@ interface Props {
 const {
   lang,
   step,
+  steps,
   period,
+  kind,
   role,
   company,
   description,
@@ -43,26 +49,49 @@ const t = useTranslations(lang)
 
 /*
  * Two readings of the same dates. The years are the headline, big enough to
- * take in a whole career at a glance; the months underneath are for the reader
- * who has stopped on this row and wants to know exactly when.
+ * take in a whole career at a glance; the second line is for the reader who
+ * has stopped on this row and wants to know exactly when.
  *
- * The months are absent rather than approximated where they are not known.
+ * The months are absent rather than approximated where they are not known,
+ * which is why the second line is built from whatever parts there are instead
+ * of assuming both. A degree says so on that line: it is the one row in the
+ * list that is not a job, and the eye should not have to work that out from
+ * the name of the place.
  */
 const years = formatYears(period)
-const months = formatMonths(period, lang, t("about.present"))
+const detail = [
+  kind === "education" ? t("about.education") : undefined,
+  formatMonths(period, lang, t("about.present")),
+]
+  .filter(Boolean)
+  .join(" · ")
 
 /**
- * The indent, as a multiple of one step. Three sizes rather than a fluid
- * value, because the design names all three and the jumps are the point.
+ * How far in this row starts.
+ *
+ * The staircase has a fixed depth — how far the bottom row sits from the top
+ * one — and the step is that depth divided between the rows, up to a limit.
+ * A fixed step looks the same until the list grows: at seven rows the bottom
+ * one had walked far enough across the page to squeeze its own date out of
+ * the column. Dividing a budget instead means a new role costs the rows above
+ * it a few pixels each and costs the layout nothing.
+ *
+ * Three depths rather than a fluid value, because the design names all three
+ * and the jumps are the point.
  */
-const indent = `calc(${step} * var(--timeline-step))`
+const indent =
+  steps > 1
+    ? `calc(${step} * min(var(--timeline-step), var(--timeline-depth) / ${steps - 1}))`
+    : "0"
 ---
 
 <li
   data-reveal
   style={`--reveal-step: ${step % 6}`}
   class={cn(
-    "border-section-rule list-none border-b [--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
+    "border-section-rule list-none border-b",
+    "[--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
+    "[--timeline-depth:96px] md:[--timeline-depth:192px] lg:[--timeline-depth:288px]",
     className
   )}
 >
@@ -101,9 +130,9 @@ const indent = `calc(${step} * var(--timeline-step))`
         </span>
       </p>
       {
-        months && (
+        detail && (
           <p class="text-label text-section-muted m-0 mt-2 uppercase">
-            {months}
+            {detail}
           </p>
         )
       }

@@ -144,14 +144,20 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
 /**
  * A month, or a year when the month is not known: `2026-01` or `2026`.
  *
- * Both precisions are allowed because both are true of the real history. Two
- * of these roles have dates down to the month and three are remembered only by
- * the year, and inventing a month to make the column tidy would be inventing a
- * fact on a CV.
+ * Both precisions are allowed because both are true of the real history. The
+ * jobs are recorded down to the month; the degree is remembered by the year it
+ * started and the year it finished, and inventing a month to make the column
+ * tidy would be inventing a fact on a CV.
  */
 const period = z
   .string()
   .regex(/^\d{4}(-(0[1-9]|1[0-2]))?$/, "expected YYYY or YYYY-MM")
+
+/**
+ * A job or a degree. Anything else in a career is one of these two.
+ */
+export const EXPERIENCE_KINDS = ["work", "education"] as const
+export type ExperienceKind = (typeof EXPERIENCE_KINDS)[number]
 
 /**
  * One role in the career timeline.
@@ -173,6 +179,15 @@ export const experienceSchema = z.object({
   start: period,
   end: period.optional(),
   ongoing: z.boolean().default(false),
+  /**
+   * Whether this was a job or a degree.
+   *
+   * Study and work are one list rather than two, because the question a reader
+   * is actually asking is "what was he doing in 2016", and two lists side by
+   * side make them do the merge themselves. The kind is what keeps a degree
+   * from being read as a job once they are in the same column.
+   */
+  kind: z.enum(EXPERIENCE_KINDS).default("work"),
   role: z.string().min(1),
   company: z.string().min(1),
   /** Two lines on what shipped, which is the height the row is drawn at. */

@@ -111,8 +111,8 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
 
   <Section space="md">
     <SectionHeader
-      label={t("about.experienceLabel")}
-      description={t("about.experienceDescription")}
+      label={t("about.historyLabel")}
+      description={t("about.historyDescription")}
     />
     <ol class="m-0 mt-7 list-none p-0">
       {
@@ -120,11 +120,13 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
           <TimelineRow
             {lang}
             step={index}
+            steps={experience.length}
             period={{
               start: entry.data.start,
               end: entry.data.end,
               ongoing: entry.data.ongoing,
             }}
+            kind={entry.data.kind}
             role={entry.data.role}
             company={entry.data.company}
             description={entry.data.description}
