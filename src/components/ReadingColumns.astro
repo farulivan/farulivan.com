@@ -13,6 +13,19 @@
  * that is left sits between the two, which is the one place on the page where
  * empty space is doing a job.
  *
+ * Only up to a point. A column fixed at one end and a column fixed at the
+ * other means the space between them grows with the window and never stops:
+ * a third of the page on a laptop, half of it on a desktop, and by then the
+ * two columns have stopped looking like one piece of writing. So the pair has
+ * a width it will not exceed.
+ *
+ * Past that width the room left over goes to the right, and the pair stays
+ * against the left margin. Centring it would split the room evenly, which
+ * sounds better and looks worse: everything else on these pages — the page
+ * title, the section labels, the lettering in the bar — starts at that margin,
+ * and a block that starts anywhere else reads as a block that slipped. The cap
+ * is above the width most screens are, so on a laptop none of this happens.
+ *
  * Below the width where two columns stop fitting, the left column becomes the
  * thing you read first and the prose follows it, which is the order it would
  * be in anyway.
@@ -26,7 +39,9 @@ interface Props {
 const { class: className } = Astro.props
 ---
 
-<div class={cn("md:gap-gutter grid gap-7 md:grid-cols-12", className)}>
+<div
+  class={cn("md:gap-gutter grid max-w-read gap-7 md:grid-cols-12", className)}
+>
   {
     /*
      * `self-start` is what makes the pinning work, and leaving it out is the

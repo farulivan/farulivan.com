@@ -23,6 +23,7 @@
      --font-weight-label  →  font-label
      --ease-reveal        →  ease-reveal
      --container-measure  →  max-w-measure
+     --container-read     →  max-w-read
 
    Use the same names inside scoped <style> blocks — var(--color-ink), not a
    hex code — so there is one vocabulary rather than two.
@@ -204,6 +205,21 @@
 
   /* Longest comfortable line for prose. */
   --container-measure: 68ch;
+
+  /*
+   * How wide a pinned column and the prose beside it are allowed to get
+   * together.
+   *
+   * The prose is capped at the measure and sits at the right-hand end, the
+   * pinned column sits at the left-hand end, and without this the space
+   * between them grows with the window forever: a third of the page at 1440
+   * and half of it at 1920. Past this width the pair stops spreading and what
+   * is left over becomes a right-hand margin.
+   *
+   * The number is the width at which the gap measures what it already measures
+   * on a laptop, so nothing moves at the sizes most people are reading at.
+   */
+  --container-read: 1400px;
 
   /*
    * The smallest a target is allowed to be, and the height of the control that
