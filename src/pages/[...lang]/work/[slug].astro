@@ -49,14 +49,18 @@ const next = await getNextProject(lang, slug)
 
 /*
  * One row of facts in the hairline styling, which stacks into labelled lines
- * on a phone. Team and duration are optional in the schema — freelance work
- * often has neither — so the columns for them only appear when they do.
+ * on a phone. Team and duration are optional in the schema, since freelance
+ * work often has neither, so the columns for them only appear when they do.
+ *
+ * The year only appears when the duration does not. "Feb 2023 to Jan 2026"
+ * already says which year it was, and a column repeating the last four digits
+ * of the column beside it is a column that earns nothing.
  */
 const columns = [
   { label: t("project.role") },
   ...(data.teamSize ? [{ label: t("project.team") }] : []),
   ...(data.duration ? [{ label: t("project.duration") }] : []),
-  { label: t("project.year") },
+  ...(data.duration ? [] : [{ label: t("project.year") }]),
   { label: t("project.stack") },
 ]
 
@@ -65,7 +69,7 @@ const rows: DataCell[][] = [
     data.role,
     ...(data.teamSize ? [data.teamSize] : []),
     ...(data.duration ? [data.duration] : []),
-    data.year,
+    ...(data.duration ? [] : [data.year]),
     data.stack.join(", "),
   ],
 ]
@@ -196,7 +200,6 @@ if (data.sourceUrl) {
             href={localizePath(`/work/${projectSlug(next.entry)}`, lang)}
             index={1}
             title={next.entry.data.title}
-            year={next.entry.data.year}
             role={next.entry.data.role}
             stack={next.entry.data.stack}
             summary={next.entry.data.summary}

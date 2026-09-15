@@ -106,7 +106,6 @@ const rows: DataCell[][] = projects.map(({ entry }, index) => [
               href={localizePath(`/work/${projectSlug(entry)}`, lang)}
               index={index + 1}
               title={entry.data.title}
-              year={entry.data.year}
               role={entry.data.role}
               stack={entry.data.stack}
               summary={entry.data.summary}
