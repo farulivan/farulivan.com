@@ -60,7 +60,6 @@
     "items": ["Claude Code", "Windsurf / Devin Desktop"],
     "note": "I direct it, I do not follow it. I review everything and stay responsible for what ships."
   },
-
   {
     "id": "id-frontend",
     "lang": "id",
@@ -83,7 +82,15 @@
     "translationKey": "backend",
     "order": 2,
     "domain": "Backend",
-    "items": ["Node.js", "Go", "PostgreSQL", "Desain REST API", "SQL"],
+    "items": [
+      "Node.js",
+      "TypeScript",
+      "Go",
+      "MySQL",
+      "PostgreSQL",
+      "Laravel",
+      "Desain REST API"
+    ],
     "note": "Tumbuh, dengan sengaja. Dari memakai API, sekarang membangun dan menjalankan sendiri."
   },
   {
@@ -97,6 +104,8 @@
       "Playwright",
       "Cypress",
       "Zod",
+      "Docker",
+      "AWS",
       "CI/CD",
       "Clean architecture",
       "ADR"
@@ -109,7 +118,7 @@
     "translationKey": "ai",
     "order": 4,
     "domain": "Alur kerja AI-native",
-    "items": ["Claude Code, setiap hari"],
+    "items": ["Claude Code", "Windsurf / Devin Desktop"],
     "note": "Saya yang mengarahkan, bukan mengikuti. Semua saya tinjau dan saya yang bertanggung jawab atas yang dirilis."
   }
 ]
