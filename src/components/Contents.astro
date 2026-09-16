@@ -1,0 +1,64 @@
+---
+/**
+ * The contents of a piece of writing, taken from the piece itself.
+ *
+ * It goes in the pinned column beside a long read, which is the only place a
+ * contents list is any use: one that scrolls away with the text is one nobody
+ * gets back to.
+ *
+ * Only the top level of headings. These pieces have three to six sections, and
+ * a list that mirrors every subheading inside them is longer than the thing it
+ * is supposed to summarise.
+ */
+import type { MarkdownHeading } from "astro"
+
+interface Props {
+  /** Every heading in the piece. The top level is picked out here. */
+  headings: readonly MarkdownHeading[]
+  label: string
+  /** Ties the list to its own heading for screen readers. One per page. */
+  id?: string
+}
+
+const { headings, label, id = "contents" } = Astro.props
+
+const sections = headings.filter((heading) => heading.depth === 2)
+---
+
+{
+  sections.length > 0 && (
+    <nav aria-labelledby={id}>
+      <h2 {id} class="text-label text-section-muted m-0 uppercase">
+        {label}
+      </h2>
+
+      {/*
+       * Numbered, because the sections of a piece are a sequence and not a
+       * menu — they are meant to be read in order, and the numbers say so
+       * without anybody having to.
+       */}
+      <ol class="mt-5 flex list-none flex-col gap-1 p-0">
+        {sections.map((section, index) => (
+          <li class="m-0">
+            {/*
+             * Tall enough to be a target on a phone even though the line of
+             * type in it is not. The row is the target, so the words do not
+             * have to be big enough to be one.
+             */}
+            <a
+              href={`#${section.slug}`}
+              class="text-read text-ink min-h-tap group/section flex items-center gap-3 py-1 no-underline"
+            >
+              <span class="text-micro text-section-muted flex-none">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span class="group-hover/section:underline group-hover/section:underline-offset-4">
+                {section.text}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

@@ -16,6 +16,7 @@ import type { InferGetStaticPropsType } from "astro"
 import { Image } from "astro:assets"
 import { render } from "astro:content"
 
+import Contents from "@/components/Contents.astro"
 import CtaBox from "@/components/CtaBox.astro"
 import DataTable, { type DataCell } from "@/components/DataTable.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
@@ -47,14 +48,6 @@ const t = useTranslations(lang)
 const { Content, headings } = await render(project.entry)
 const data = project.entry.data
 const next = await getNextProject(lang, slug)
-
-/*
- * The contents of the piece, taken from the piece rather than written out
- * again beside it. Only the top level: these are five or six sections, and a
- * contents list that mirrors every subheading is longer than the thing it is
- * meant to summarise.
- */
-const sections = headings.filter((heading) => heading.depth === 2)
 
 /*
  * Whether there is a story to lay out at all. The Indonesian case studies
@@ -149,42 +142,7 @@ if (data.sourceUrl) {
     hasNarrative && (
       <Section space="md">
         <ReadingColumns>
-          <nav slot="aside" aria-labelledby="contents">
-            <h2
-              id="contents"
-              class="text-label text-section-muted m-0 uppercase"
-            >
-              {t("project.contents")}
-            </h2>
-
-            {/*
-             * Numbered, because the sections of a case study are a sequence
-             * and not a menu — they are meant to be read in order, and the
-             * numbers say so without anybody having to.
-             */}
-            <ol class="mt-5 flex list-none flex-col gap-1 p-0">
-              {sections.map((section, index) => (
-                <li class="m-0">
-                  {/*
-                   * Tall enough to be a target on a phone even though the line
-                   * of type in it is not. The row is the target, so the words
-                   * do not have to be big enough to be one.
-                   */}
-                  <a
-                    href={`#${section.slug}`}
-                    class="text-read text-ink min-h-tap group/section flex items-center gap-3 py-1 no-underline"
-                  >
-                    <span class="text-micro text-section-muted flex-none">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span class="group-hover/section:underline group-hover/section:underline-offset-4">
-                      {section.text}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
+          <Contents slot="aside" {headings} label={t("project.contents")} />
 
           <Prose>
             <Content />

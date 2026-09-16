@@ -164,6 +164,7 @@ export const en = {
   "writing.published": "Published {date}",
   "writing.updated": "Updated {date}",
   "writing.backToIndex": "Back to writing",
+  "writing.contents": "Contents",
   "writing.empty": "Nothing published yet.",
   "writing.untranslated":
     "This post is not available in your language yet. Showing the English version.",
@@ -335,6 +336,7 @@ export const id: Record<TranslationKey, string> = {
   "writing.published": "Terbit {date}",
   "writing.updated": "Diperbarui {date}",
   "writing.backToIndex": "Kembali ke tulisan",
+  "writing.contents": "Daftar isi",
   "writing.empty": "Belum ada tulisan.",
   "writing.untranslated":
     "Tulisan ini belum tersedia dalam bahasa Anda. Menampilkan versi Inggris.",

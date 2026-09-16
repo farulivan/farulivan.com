@@ -19,7 +19,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>
 
 const { lang, slug, post } = Astro.props
 
-const { Content, remarkPluginFrontmatter } = await render(post.entry)
+const { Content, headings, remarkPluginFrontmatter } = await render(post.entry)
 
 const minutesRead = remarkPluginFrontmatter.minutesRead
 const lastModified = remarkPluginFrontmatter.lastModified
@@ -35,6 +35,7 @@ const lastModified = remarkPluginFrontmatter.lastModified
   lastModified={typeof lastModified === "string" ? lastModified : undefined}
   minutesRead={typeof minutesRead === "number" ? minutesRead : undefined}
   tags={post.entry.data.tags}
+  headings={headings}
   hero={post.entry.data.hero}
   isFallback={post.isFallback}
   availableLocales={post.availableLocales}

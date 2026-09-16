@@ -51,7 +51,7 @@ const { class: className } = Astro.props
      * the pinning off silently rather than break in any way you could see.
      */
   }
-  <div class="md:sticky md:top-10 md:col-span-4 md:self-start">
+  <div class="min-w-0 md:sticky md:top-10 md:col-span-4 md:self-start">
     <slot name="aside" />
   </div>
 
@@ -60,9 +60,20 @@ const { class: className } = Astro.props
      * The column runs to the edge of the page but the prose inside it stops at
      * the measure, pushed to the far side. Filling the column instead would
      * put the line length back where this layout started.
+     *
+     * `w-full min-w-0` is what stops that measure becoming a floor. Pushing a
+     * grid child over with an automatic margin also stops it being stretched
+     * to its column, so it takes the width of whatever is inside it instead —
+     * and on a narrow screen the measure is wider than the column it is in.
+     * The result was a post with a code block in it dragging the whole page
+     * sideways. Asking for the full column and letting the cap bite only when
+     * there is room for it gives the same layout on a wide screen and a column
+     * that fits on a narrow one.
      */
   }
-  <div class="max-w-measure md:col-span-7 md:col-start-6 md:ms-auto">
+  <div
+    class="max-w-measure w-full min-w-0 md:col-span-7 md:col-start-6 md:ms-auto"
+  >
     <slot />
   </div>
 </div>
