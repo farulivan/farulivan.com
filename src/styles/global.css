@@ -213,8 +213,8 @@
    * The prose is capped at the measure and sits at the right-hand end, the
    * pinned column sits at the left-hand end, and without this the space
    * between them grows with the window forever: a third of the page at 1440
-   * and half of it at 1920. Past this width the pair stops spreading and what
-   * is left over becomes a right-hand margin.
+   * and half of it at 1920. Past this width the pair stops spreading, centres,
+   * and what is left over becomes an even margin down both sides.
    *
    * The number is the width at which the gap measures what it already measures
    * on a laptop, so nothing moves at the sizes most people are reading at.

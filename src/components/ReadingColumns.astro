@@ -19,12 +19,17 @@
  * two columns have stopped looking like one piece of writing. So the pair has
  * a width it will not exceed.
  *
- * Past that width the room left over goes to the right, and the pair stays
- * against the left margin. Centring it would split the room evenly, which
- * sounds better and looks worse: everything else on these pages — the page
- * title, the section labels, the lettering in the bar — starts at that margin,
- * and a block that starts anywhere else reads as a block that slipped. The cap
- * is above the width most screens are, so on a laptop none of this happens.
+ * Past that width the pair stops growing and centres, the way a page of a
+ * book sits in the middle of a desk rather than shoved up against one edge of
+ * it. The room left over becomes an even margin down both sides, which is the
+ * only arrangement that reads as a margin — all of it on one side reads as a
+ * page that ran out.
+ *
+ * Any title this block sits under has to be capped and centred with it, or the
+ * two start in different places and the heading looks like it slipped. That is
+ * what `max-w-read mx-auto` on a sibling is for. The cap is above the width
+ * most screens are, so on a laptop none of this happens: the pair fills the
+ * page exactly as it did before.
  *
  * Below the width where two columns stop fitting, the left column becomes the
  * thing you read first and the prose follows it, which is the order it would
@@ -40,7 +45,10 @@ const { class: className } = Astro.props
 ---
 
 <div
-  class={cn("md:gap-gutter grid max-w-read gap-7 md:grid-cols-12", className)}
+  class={cn(
+    "md:gap-gutter mx-auto grid max-w-read gap-7 md:grid-cols-12",
+    className
+  )}
 >
   {
     /*

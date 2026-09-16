@@ -72,8 +72,15 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
   description={t("about.subtitle")}
 >
   <Section space="lg">
+    {
+      /*
+       * Capped and centred to the same width as the two columns below it, so
+       * the title and the sentence under it start on the same line. On any
+       * screen narrower than that cap this does nothing at all.
+       */
+    }
     <h1
-      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-auto"
+      class="text-display-l font-display text-ink max-w-read mx-auto my-0 wrap-break-word hyphens-auto"
     >
       {t("about.title")}
     </h1>
