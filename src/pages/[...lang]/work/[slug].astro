@@ -105,42 +105,31 @@ if (data.sourceUrl) {
   availableLocales={project.availableLocales}
 >
   <Section space="lg">
+    <a
+      href={localizePath("/work", lang)}
+      class="text-label text-section-muted duration-fast ease-state min-h-tap -mt-3 inline-flex items-center uppercase no-underline hover:underline hover:underline-offset-4 motion-reduce:transition-none"
+    >
+      {t("project.backToIndex")}
+    </a>
+
+    <h1
+      class="text-display-l font-display text-ink mt-5 mb-0 wrap-break-word hyphens-auto"
+    >
+      {data.title}
+    </h1>
+    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
+      {data.summary}
+    </p>
+
     {
-      /*
-       * Capped and centred to the same width as the story further down, so the
-       * title, the facts and the contents list all start on the same line. The
-       * picture between them is the one thing here that still runs the full
-       * width of the page, which is what it is for. On any screen narrower than
-       * the cap none of this applies and the header fills the page as before.
-       */
+      project.isFallback && (
+        <p class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5">
+          {t("project.untranslated")}
+        </p>
+      )
     }
-    <div class="max-w-read mx-auto">
-      <a
-        href={localizePath("/work", lang)}
-        class="text-label text-section-muted duration-fast ease-state min-h-tap -mt-3 inline-flex items-center uppercase no-underline hover:underline hover:underline-offset-4 motion-reduce:transition-none"
-      >
-        {t("project.backToIndex")}
-      </a>
 
-      <h1
-        class="text-display-l font-display text-ink mt-5 mb-0 wrap-break-word hyphens-auto"
-      >
-        {data.title}
-      </h1>
-      <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
-        {data.summary}
-      </p>
-
-      {
-        project.isFallback && (
-          <p class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5">
-            {t("project.untranslated")}
-          </p>
-        )
-      }
-
-      <DataTable {columns} {rows} caption={data.title} class="mt-9" />
-    </div>
+    <DataTable {columns} {rows} caption={data.title} class="mt-9" />
   </Section>
 
   {

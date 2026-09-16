@@ -58,7 +58,14 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
   availableLocales={availableLocales}
 >
   <Section space="lg">
-    <div class="max-w-measure">
+    {
+      /*
+       * One column, centred. A post has nothing to put beside it the way a case
+       * study has its contents, so the measure sits in the middle of the section
+       * rather than against its left edge with the rest of the room unused.
+       */
+    }
+    <div class="max-w-measure mx-auto">
       <a
         href={localizePath("/writing", lang)}
         class="text-label text-section-muted duration-fast ease-state min-h-tap -mt-3 inline-flex items-center uppercase no-underline hover:underline hover:underline-offset-4 motion-reduce:transition-none"

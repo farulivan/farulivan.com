@@ -13,6 +13,18 @@ import { cn } from "@/lib/utils"
  * paper, paper, paper, surface, paper, accent, invert, paper — so the lime
  * band and the black band each appear exactly once, near the end, where the
  * page is asking the reader for something.
+ *
+ * The field runs the full width of the page. The content in it does not: past
+ * a certain width it stops growing and centres, because a table, a heading and
+ * a paragraph all set to the width of a very wide screen are three things that
+ * are tiring to read and none of them are better for the room. The field is
+ * what keeps the page reading as a stack of bands while that happens — the
+ * colour still goes edge to edge, so the centred content reads as a column on
+ * a band rather than as a page that shrank.
+ *
+ * Anything that genuinely has to run edge to edge goes outside a section
+ * rather than being told to escape one — which is what the case study
+ * screenshot and the portrait already do.
  */
 interface Props {
   field?: "paper" | "surface" | "accent" | "invert"
@@ -57,5 +69,7 @@ const spacing = { sm: "py-8", md: "py-9", lg: "py-10", xl: "py-11" }[space]
 ---
 
 <Container {tag} class={cn(fields, spacing, className)} {...rest}>
-  <slot />
+  <div class="max-w-read mx-auto">
+    <slot />
+  </div>
 </Container>
