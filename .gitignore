@@ -27,3 +27,6 @@ dist/
 .env
 .env.*
 !.env.example
+
+# --- one-time content handover (delete after the engineers have used it) ---
+docs/content-guide.md

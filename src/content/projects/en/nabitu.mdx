@@ -1,0 +1,95 @@
+---
+lang: "en"
+translationKey: "nabitu"
+title: "Nabitu & Zeed Sharia"
+summary: "The shariah investment platform I rewrote as its only frontend engineer. Seventy pages, two brands, three currencies, and nobody else on the front end."
+year: 2026
+role: "Sole frontend engineer"
+duration: "Feb 2023 – Jan 2026"
+stack:
+  [
+    "TypeScript",
+    "Next.js (App Router)",
+    "React",
+    "Tailwind CSS",
+    "shadcn/ui",
+    "Zod",
+    "React Hook Form",
+  ]
+featured: true
+order: 1
+outcome:
+  summary: "An early MVP became a production investment platform serving more than 3,000 investors across two brands, and the support team reported a marked improvement in usability after launch."
+  figures:
+    - { value: "70", caption: "Pages rewritten to Next.js" }
+    - { value: "~2×", caption: "Faster page performance" }
+    - { value: "3,000+", caption: "Investors the platform serves" }
+    - { value: "2", caption: "Brands from one codebase" }
+liveUrl: "https://nabitu.id"
+---
+
+## The problem
+
+Nabitu is a shariah investment platform: small businesses raise money, and
+people who do not want to earn interest invest it. By the time I arrived it
+existed as an MVP. Enough to prove the idea, not enough to run a financial
+product for years.
+
+I was the only frontend engineer, and stayed the only one for three years.
+That single fact shaped everything else. There was nobody to hand a hard
+problem to, and every convention on the front end was one I set and then had to
+live with.
+
+## Rewriting seventy pages
+
+The rewrite took the better part of two years and moved the whole product onto
+Next.js. Seventy pages, in three parts that behave nothing like each other:
+
+- **The landing site**, 12 pages, public and indexed, where the only thing that
+  matters is that it loads fast and says the right thing.
+- **The member dashboard**, 37 pages, where people look at money they have
+  actually committed. Slow is bad; wrong is unacceptable.
+- **The admin panel**, 21 pages, used by a handful of internal staff who need
+  density over polish and are unforgiving about a workflow that takes one click
+  more than it should.
+
+Treating those as one application would have been the easy mistake. They share
+a design system, an API layer and a type contract, and almost nothing else.
+
+## Two brands out of one codebase
+
+Nabitu is the Indonesian brand. Zeed Sharia is the same platform for an
+international audience: a different name, a different visual identity, a
+different language, and money in a different currency.
+
+Both ship from one codebase. What varies is more than a theme: copy,
+formatting, currency handling and the parts of the flow that only apply in one
+market. Getting that seam in the right place was the most interesting
+engineering problem in the project. Put it too shallow and you are maintaining
+two products; too deep and every component grows a brand conditional and nobody
+can read it any more.
+
+## Faster, by looking at the data first
+
+The rewrite roughly doubled page performance. Very little of that came from
+micro-optimising components. Most of it came from reading how the API actually
+behaved. What it returned, when, and how often the interface asked for things
+it already had. The fetching patterns changed to match, and the
+component work followed the data, not the other way round.
+
+## Working across the stack
+
+The backends were Go and Laravel, owned by other people. My part was defining
+the API contracts with them. When something broke across the boundary, it meant
+reading enough of their code to say precisely where it broke, rather than
+filing a ticket that said the page was wrong.
+
+That is cross-layer fluency, not backend ownership. I consumed those services;
+I did not build them.
+
+## Outcome
+
+The platform serves more than 3,000 investors across both brands. The support
+team's feedback after launch was that the experience and usability had improved
+markedly. From the people who hear every complaint first, that is the review I
+trust most.

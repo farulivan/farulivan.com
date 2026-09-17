@@ -4,19 +4,28 @@
  *
  * Each row starts a little further right than the one above it, so the list
  * descends across the page as well as down it. That stagger is the pattern —
- * the year is large enough to read as a date on its own, and the indent is what
+ * the span of years is large enough to read on its own, and the indent is what
  * turns a stack of dates into a career.
  *
  * The step shrinks on narrower screens rather than disappearing. Removing it
  * would leave an ordinary list; keeping it at desktop size on a phone would
  * push the last role off the edge.
  */
+import type { ExperienceKind, Locale } from "@/content/schemas"
+import { useTranslations } from "@/i18n/utils"
+import { formatMonths, formatYears, type Period } from "@/lib/format"
 import { cn } from "@/lib/utils"
 
 interface Props {
+  lang: Locale
   /** Position in the staircase, from 0. Decides how far in the row starts. */
   step: number
-  year: number
+  /** How many rows there are in total, which sets how big one step can be. */
+  steps: number
+  /** When the role ran. A hirer reads a career by its spans. */
+  period: Period
+  /** A job or a degree. Both live in this one list. */
+  kind: ExperienceKind
   role: string
   company: string
   /** Two lines on what shipped. The row is drawn at that height. */
@@ -24,20 +33,65 @@ interface Props {
   class?: string
 }
 
-const { step, year, role, company, description, class: className } = Astro.props
+const {
+  lang,
+  step,
+  steps,
+  period,
+  kind,
+  role,
+  company,
+  description,
+  class: className,
+} = Astro.props
+
+const t = useTranslations(lang)
+
+/*
+ * Two readings of the same dates. The years are the headline, big enough to
+ * take in a whole career at a glance; the second line is for the reader who
+ * has stopped on this row and wants to know exactly when.
+ *
+ * The months are absent rather than approximated where they are not known,
+ * which is why the second line is built from whatever parts there are instead
+ * of assuming both. A degree says so on that line: it is the one row in the
+ * list that is not a job, and the eye should not have to work that out from
+ * the name of the place.
+ */
+const years = formatYears(period)
+const detail = [
+  kind === "education" ? t("about.education") : undefined,
+  formatMonths(period, lang, t("about.present")),
+]
+  .filter(Boolean)
+  .join(" · ")
 
 /**
- * The indent, as a multiple of one step. Three sizes rather than a fluid
- * value, because the design names all three and the jumps are the point.
+ * How far in this row starts.
+ *
+ * The staircase has a fixed depth — how far the bottom row sits from the top
+ * one — and the step is that depth divided between the rows, up to a limit.
+ * A fixed step looks the same until the list grows: at seven rows the bottom
+ * one had walked far enough across the page to squeeze its own date out of
+ * the column. Dividing a budget instead means a new role costs the rows above
+ * it a few pixels each and costs the layout nothing.
+ *
+ * Three depths rather than a fluid value, because the design names all three
+ * and the jumps are the point.
  */
-const indent = `calc(${step} * var(--timeline-step))`
+const indent =
+  steps > 1
+    ? `calc(${step} * min(var(--timeline-step), var(--timeline-depth) / ${steps - 1}))`
+    : "0"
 ---
 
 <li
   data-reveal
   style={`--reveal-step: ${step % 6}`}
   class={cn(
-    "border-section-rule list-none border-b [--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
+    "border-section-rule list-none border-b",
+    "[--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
+    "[--timeline-depth:96px] md:[--timeline-depth:192px] lg:[--timeline-depth:288px]",
     className
   )}
 >
@@ -45,21 +99,44 @@ const indent = `calc(${step} * var(--timeline-step))`
     class="md:gap-gutter grid gap-4 py-7 md:grid-cols-12"
     style={`padding-inline-start: ${indent}`}
   >
-    <p class="m-0 flex items-baseline gap-2 md:col-span-5">
-      <span class="text-display-l font-display leading-none">
-        {year}
-      </span>
+    <div class="md:col-span-5">
+      <p class="m-0 flex items-baseline gap-2">
+        {
+          /*
+           * A step below the page title. A span is nearly twice as wide as the
+           * single year this used to show, and at the largest size it ran out
+           * of column somewhere around a laptop screen and broke in half.
+           *
+           * It does not break now at any width the site is checked at, but a
+           * date split over two lines is wrong in a way no size guarantees, so
+           * the span is told never to wrap.
+           */
+        }
+        <span class="text-display-m font-display whitespace-nowrap">
+          {years}
+        </span>
+        {
+          /*
+           * The counter is decoration: the dates already say the order, and a
+           * screen reader announcing "zero one" before each one would be
+           * reading out the furniture.
+           */
+        }
+        <span
+          class="text-micro text-section-muted uppercase"
+          aria-hidden="true"
+        >
+          {String(step + 1).padStart(2, "0")}
+        </span>
+      </p>
       {
-        /*
-         * The counter is decoration: the years already say the order, and a
-         * screen reader announcing "zero one" before each date would be
-         * reading out the furniture.
-         */
+        detail && (
+          <p class="text-label text-section-muted m-0 mt-2 uppercase">
+            {detail}
+          </p>
+        )
       }
-      <span class="text-micro text-section-muted uppercase" aria-hidden="true">
-        {String(step + 1).padStart(2, "0")}
-      </span>
-    </p>
+    </div>
 
     <div class="flex flex-col gap-1 md:col-span-6 md:col-start-7">
       <p class="text-h-m font-display m-0">{role}</p>

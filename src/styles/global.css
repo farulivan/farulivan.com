@@ -23,6 +23,7 @@
      --font-weight-label  →  font-label
      --ease-reveal        →  ease-reveal
      --container-measure  →  max-w-measure
+     --container-read     →  max-w-read
 
    Use the same names inside scoped <style> blocks — var(--color-ink), not a
    hex code — so there is one vocabulary rather than two.
@@ -206,6 +207,21 @@
   --container-measure: 68ch;
 
   /*
+   * How wide the content of a section is allowed to get. Every section uses
+   * it; the coloured field behind them does not, so a band still reaches both
+   * edges of the page.
+   *
+   * It was set by the hardest case. A long read puts a pinned column at one
+   * end and prose at the other, and without a cap the space between them grows
+   * with the window and never stops — a third of the page at 1440, half of it
+   * at 1920, by which point the two columns have stopped looking like one
+   * piece of writing. This is the width at which that gap measures what it
+   * already measures on a laptop, so nothing moves at the sizes most people
+   * are reading at, and past it the room becomes an even margin on both sides.
+   */
+  --container-read: 1400px;
+
+  /*
    * The smallest a target is allowed to be, and the height of the control that
    * sits around one. Named because the number carries a rule rather than a
    * taste — and because the numbered steps above cannot express it: this scale
@@ -330,6 +346,112 @@
 }
 
 /*
+ * The hero's scroll cue, on the way out.
+ *
+ * It arrives with the rest of the hero and then holds. What takes it away is
+ * the scroll itself: the fade runs against the document's own scroll position
+ * and is finished around seven tenths of a screen down, which is about halfway
+ * through the sentence the cue was pointing at. It ends while the cue is still
+ * on screen on purpose, so it reads as a fade rather than as something that
+ * merely scrolled away. A prompt to scroll that is still on screen
+ * while you are reading has stopped being a prompt.
+ *
+ * A scroll timeline rather than a listener, for the reason every other bit of
+ * motion here uses one: no JavaScript, and nothing to fail. The `@supports`
+ * guard matters as much as it does elsewhere, because without it the fade
+ * would run on the document clock and take the cue away a second after it
+ * arrived.
+ */
+@keyframes cue-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /*
+     * Longhands, not the `animation` shorthand. The minifier folds a
+     * shorthand and a neighbouring `animation-timeline` into one declaration
+     * that names the timeline inside the shorthand, which browsers reject
+     * outright — so the animation silently does not run, and the CSS looks
+     * correct in the source. Longhands are left alone.
+     */
+    [data-scroll-cue] {
+      animation-name: cue-out;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll();
+      animation-range: 0 70vh;
+    }
+  }
+}
+
+/*
+ * The statement, a word at a time.
+ *
+ * Each word sits in a box that clips it and rises out of that box as the block
+ * comes into view, a fraction behind the word before it. Words further down the
+ * sentence enter the viewport later anyway, so it assembles roughly line by
+ * line without anything needing to know where the lines fall.
+ *
+ * **The clipping only exists inside this guard, and that is the whole safety
+ * argument.** A word held below its mask is a word nobody can read, so the
+ * state that hides it may never outlive the animation that is supposed to undo
+ * it. Where scroll-driven animation is missing, and for anyone who asked for
+ * less motion, there is no mask and no movement — the sentence is just text.
+ *
+ * The mask leaks a little at the bottom on purpose: a box that clips exactly at
+ * the baseline cuts the tails off every `y` and `g`. The padding gives the
+ * descenders somewhere to live and the negative margin takes the space back.
+ */
+@keyframes word-rise {
+  from {
+    translate: 0 110%;
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /*
+     * One timeline for the whole sentence, named on the paragraph and read by
+     * the words inside it. A word is forty pixels tall, so its own view
+     * timeline would start and finish inside forty pixels of scrolling and the
+     * reveal would be over before it was seen.
+     *
+     * `cover` rather than `entry`, and that distinction is the whole thing.
+     * `entry` ends the moment the element's bottom edge clears the bottom of
+     * the screen — so the reveal ran while the sentence was still a sliver at
+     * the very bottom, and by the time anybody looked at it, it had finished.
+     * `cover` runs from the sentence appearing to it leaving, and taking the
+     * first third of that puts the reveal where the reader is: the last word
+     * lands as the sentence reaches about a third of the way up the screen.
+     */
+    [data-statement] {
+      view-timeline-name: --statement;
+    }
+
+    [data-statement] > span {
+      overflow: hidden;
+      padding-bottom: 0.16em;
+      margin-bottom: -0.16em;
+    }
+
+    [data-statement] > span > span {
+      animation-name: word-rise;
+      animation-timing-function: var(--ease-reveal);
+      animation-fill-mode: both;
+      animation-timeline: --statement;
+      animation-range: cover calc(7% + var(--word-step, 0) * 1%) cover
+        calc(29% + var(--word-step, 0) * 1%);
+    }
+  }
+}
+
+/*
  * Scroll reveals.
  *
  * Blocks rise 24px into place as they come into view, once each, never again on
@@ -370,7 +492,9 @@
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     [data-reveal] {
-      animation: reveal var(--ease-reveal) both;
+      animation-name: reveal;
+      animation-timing-function: var(--ease-reveal);
+      animation-fill-mode: both;
       animation-timeline: view();
       animation-range: entry calc(5% + var(--reveal-step, 0) * 4%) entry 90%;
     }
@@ -426,6 +550,21 @@
   line-height: var(--text-h-m--line-height);
   letter-spacing: var(--text-h-m--letter-spacing);
   font-weight: var(--font-weight-emph);
+}
+
+/*
+ * A paragraph whose whole point is one link is a target, not prose.
+ *
+ * A link inside a sentence is exempt from the minimum target size, because
+ * padding it would push the lines around it apart. A link that *is* the
+ * paragraph has no such excuse, and the "longer version" links at the end of a
+ * case study section are exactly that. The line box grows to hold it, so
+ * nothing above or below moves.
+ */
+.prose p > a:only-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--spacing-tap);
 }
 
 /* The first heading in a run has the section's own space above it already. */

@@ -38,13 +38,12 @@ const t = useTranslations(lang)
  * the writing section use, so the site only ever has one idea of what code
  * looks like.
  *
- * Measured on white: 7.39, 7.59, 12.81, 7.39 and 5.10 to one. All clear AA.
+ * Measured on white: 7.39, 7.59, 12.81 and 5.10 to one. All clear AA.
  */
 const ink = {
   tag: "text-[#116329]",
   attr: "text-[#0550ae]",
   string: "text-[#0a3069]",
-  entity: "text-[#953800]",
   mark: "text-ink-muted",
   text: "text-ink",
 } as const
@@ -53,7 +52,7 @@ const ink = {
  * The line's own markup, class list and all, on one line.
  *
  * Every class here is really on the sentence or on the box holding it — it is
- * the two class lists read as one element, not an invention. 138 characters,
+ * the two class lists read as one element, not an invention. 136 characters,
  * which is what decides the type size below: at the block's width there is
  * exactly one size that fits them on a single line on a wide screen. Changing
  * the string means changing that size with it.
@@ -69,13 +68,11 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
   { text: "class", kind: "attr" },
   { text: "=", kind: "mark" },
   {
-    text: '"text-display-s font-display text-ink text-pretty hero-enter absolute top-[77%] left-[20%]"',
+    text: '"text-h-l font-display uppercase tracking-[0.08em] hero-enter absolute top-[77%] left-[20%]"',
     kind: "string",
   },
   { text: ">", kind: "mark" },
-  { text: "Frontend ", kind: "text" },
-  { text: "&amp;", kind: "entity" },
-  { text: " Fullstack Engineer", kind: "text" },
+  { text: "Frontend engineer · end to end", kind: "text" },
   { text: "</", kind: "mark" },
   { text: "p", kind: "tag" },
   { text: ">", kind: "mark" },
@@ -110,11 +107,11 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
     /*
      * Sized so the snippet is exactly one line, derived rather than tuned.
      *
-     * It is 138 characters, and the monospace here advances 0.602em each, so
-     * the line is 83.09em wide. A font size of a hundredth of the box divided
+     * It is 136 characters, and the monospace here advances 0.602em each, so
+     * the line is 81.89em wide. A font size of a hundredth of the box divided
      * by that makes the line exactly as wide as the box, at any width.
      *
-     * Divided by 85 rather than 83.09, for two reasons. Sub-pixel rounding
+     * Divided by 84 rather than 81.89, for two reasons. Sub-pixel rounding
      * broke the line at 1440 with the exact figure, and the reader's operating
      * system may not supply the same monospace this was measured against —
      * they vary from about 0.55em to 0.6em a character. The headroom costs a
@@ -137,7 +134,7 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
      */
   }
   <code
-    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi/85),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
+    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi/84),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
     data-sf-code
     >{
       snippet.map((token) => (
@@ -160,10 +157,16 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
      *
      * Balancing the lines helps a two-line sentence on a wide screen and
      * actively costs a line on a narrow one, where every line is already full.
+     *
+     * Set in capitals, which is why it is a step down from the display size
+     * the sentence-case version used: caps carry more weight per pixel, so the
+     * same presence costs less size. The tracking is opened for the same
+     * reason — letterforms that sit comfortably in a sentence close up when
+     * every one of them is a capital.
      */
   }
   <p
-    class="ease-state text-display-s font-display text-ink duration-mid max-w-[22ch] text-pretty opacity-0 transition-opacity group-not-data-sf-state:opacity-100 group-data-[sf-state=showing-text]:opacity-100 motion-reduce:opacity-100 motion-reduce:transition-none md:text-balance"
+    class="ease-state text-h-l font-display text-ink duration-mid max-w-[40ch] tracking-[0.08em] uppercase opacity-0 transition-opacity group-not-data-sf-state:opacity-100 group-data-[sf-state=showing-text]:opacity-100 motion-reduce:opacity-100 motion-reduce:transition-none md:text-balance"
     data-sf-text
   >
     {t("site.descriptor")}

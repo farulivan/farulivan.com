@@ -1,0 +1,81 @@
+---
+lang: "en"
+translationKey: "a-bug-made-uncompilable"
+title: "A bug I kept making, made uncompilable"
+description: "Two strings of digits that meant different things, one recurring data bug, and the branded types that turned it into a compile error."
+pubDate: 2026-07-22
+tags: ["typescript"]
+draft: false
+---
+
+I wrote the same bug twice, months apart, and both times the code ran without
+complaining.
+
+## Two numbers that look identical
+
+WhatsApp identifies a person in one of two ways: their phone number, or a LID,
+which is a separate identifier with no relationship to it. Both are strings of
+digits. Nothing in either one tells you which it is.
+
+In TypeScript they were both `string`, which means the compiler considered them
+interchangeable, because as far as it knew they were.
+
+Twice I wrote code that derived a user's ID from their phone number. Nothing
+threw. The bot simply started writing rows under a second identity for the same
+person. Their history looked empty, the allowlist stopped recognising them, and
+I found out days later while wondering why the numbers looked wrong.
+
+## The comment that did not work
+
+After the first time, I wrote a comment. A good one. It named both identifiers,
+explained the difference, and warned against exactly the mistake I had just
+made.
+
+Then I made it again.
+
+The comment failed for a reason I now think is general: **a comment is not
+present at the moment you make the mistake.** It lives where the types are
+declared. The bug happens somewhere else, in a function whose author is
+thinking about something entirely different and has no reason to go and read it.
+Documentation that relies on you remembering to consult it only works on the
+problems you already know you have.
+
+## Giving the compiler the distinction
+
+The fix was to stop holding the difference in my head and hand it to the type
+system:
+
+```ts
+type Brand<T, B> = T & { readonly __brand: B }
+
+export type WaUserId = Brand<string, "WaUserId">
+export type PhoneNumber = Brand<string, "PhoneNumber">
+```
+
+Both are still strings at runtime; the brand exists only at compile time and
+disappears entirely in the output. But they are no longer assignable to each
+other, so the line I kept writing is now a type error at the moment I write it,
+in the editor, before the code has ever run.
+
+## The cost, honestly
+
+Branded types are not free, and the cost lands at the boundaries. Every value
+arriving from outside, a database row or a webhook payload, is an unbranded
+`string`. So there has to be one deliberate place where it is checked and
+converted:
+
+```ts
+export function toWaUserId(value: string): WaUserId {
+  if (!/^\d+$/.test(value)) throw new Error(`not a WhatsApp user id: ${value}`)
+  return value as WaUserId
+}
+```
+
+That is the one `as` in the whole arrangement, and it is fine, because it sits
+in a function whose entire job is to be the place where the check happens.
+
+Two or three of those per identifier type, and everything downstream is safe
+without another thought. It is worth it when a mix-up is silent and expensive:
+IDs, currency amounts, anything where two values share a shape and mean
+different things. It is not worth it for a value that would blow up loudly on
+first use. Loud bugs do not need the compiler's help.

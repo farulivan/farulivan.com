@@ -39,9 +39,6 @@ const experience = defineCollection({
  * One file rather than one per row. These are a handful of short lists that
  * are read and edited together, and splitting them across a folder would be
  * filing for its own sake.
- *
- * TODO(content): the lists in capabilities.json are placeholders. JSON has no
- * comments, so the marker for them lives here.
  */
 const capabilities = defineCollection({
   loader: file("./src/content/capabilities.json"),

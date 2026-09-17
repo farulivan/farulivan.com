@@ -1,118 +1,124 @@
 [
   {
-    "id": "en-craft",
+    "id": "en-frontend",
     "lang": "en",
-    "translationKey": "craft",
-    "domain": "Interface",
+    "translationKey": "frontend",
+    "order": 1,
+    "domain": "Frontend",
     "items": [
-      "TypeScript",
       "React",
-      "Astro",
-      "Vue",
-      "CSS architecture",
-      "Design systems"
-    ],
-    "order": 1
-  },
-  {
-    "id": "id-craft",
-    "lang": "id",
-    "translationKey": "craft",
-    "domain": "Antarmuka",
-    "items": [
+      "Next.js (App Router)",
       "TypeScript",
-      "React",
-      "Astro",
-      "Vue",
-      "Arsitektur CSS",
-      "Design system"
+      "Tailwind CSS",
+      "shadcn/ui",
+      "MUI"
     ],
-    "order": 1
+    "note": "Where I live. Three years of it as the only person holding the front end of a production platform."
   },
   {
     "id": "en-backend",
     "lang": "en",
     "translationKey": "backend",
-    "domain": "Services and data",
+    "order": 2,
+    "domain": "Backend",
     "items": [
-      "Node",
+      "Node.js",
+      "TypeScript",
       "Go",
+      "MySQL",
       "PostgreSQL",
-      "Redis",
-      "REST and GraphQL",
-      "Schema design"
+      "Laravel",
+      "REST API design"
     ],
-    "order": 2
+    "note": "Growing, deliberately. I have moved from consuming APIs to building and running my own."
+  },
+  {
+    "id": "en-craft",
+    "lang": "en",
+    "translationKey": "craft",
+    "order": 3,
+    "domain": "Craft and practices",
+    "items": [
+      "Jest",
+      "Playwright",
+      "Cypress",
+      "Zod",
+      "Docker",
+      "AWS",
+      "CI/CD",
+      "Clean architecture",
+      "ADR"
+    ],
+    "note": "I care about code someone else can pick up and understand."
+  },
+  {
+    "id": "en-ai",
+    "lang": "en",
+    "translationKey": "ai",
+    "order": 4,
+    "domain": "AI-native workflow",
+    "items": ["Claude Code", "Windsurf / Devin Desktop"],
+    "note": "I direct it, I do not follow it. I review everything and stay responsible for what ships."
+  },
+  {
+    "id": "id-frontend",
+    "lang": "id",
+    "translationKey": "frontend",
+    "order": 1,
+    "domain": "Frontend",
+    "items": [
+      "React",
+      "Next.js (App Router)",
+      "TypeScript",
+      "Tailwind CSS",
+      "shadcn/ui",
+      "MUI"
+    ],
+    "note": "Tempat saya tinggal. Tiga tahun sebagai satu-satunya orang yang memegang sisi depan platform produksi."
   },
   {
     "id": "id-backend",
     "lang": "id",
     "translationKey": "backend",
-    "domain": "Layanan dan data",
+    "order": 2,
+    "domain": "Backend",
     "items": [
-      "Node",
+      "Node.js",
+      "TypeScript",
       "Go",
+      "MySQL",
       "PostgreSQL",
-      "Redis",
-      "REST dan GraphQL",
-      "Desain skema"
+      "Laravel",
+      "Desain REST API"
     ],
-    "order": 2
+    "note": "Tumbuh, dengan sengaja. Dari memakai API, sekarang membangun dan menjalankan sendiri."
   },
   {
-    "id": "en-delivery",
-    "lang": "en",
-    "translationKey": "delivery",
-    "domain": "Delivery",
-    "items": [
-      "CI pipelines",
-      "Preview environments",
-      "Playwright",
-      "Observability",
-      "Incident response"
-    ],
-    "order": 3
-  },
-  {
-    "id": "id-delivery",
+    "id": "id-craft",
     "lang": "id",
-    "translationKey": "delivery",
-    "domain": "Pengiriman",
+    "translationKey": "craft",
+    "order": 3,
+    "domain": "Kualitas dan praktik",
     "items": [
-      "Pipeline CI",
-      "Lingkungan pratinjau",
+      "Jest",
       "Playwright",
-      "Observability",
-      "Penanganan insiden"
+      "Cypress",
+      "Zod",
+      "Docker",
+      "AWS",
+      "CI/CD",
+      "Clean architecture",
+      "ADR"
     ],
-    "order": 3
+    "note": "Saya peduli pada kode yang bisa diambil alih dan dipahami orang lain."
   },
   {
-    "id": "en-working",
-    "lang": "en",
-    "translationKey": "working",
-    "domain": "Working with people",
-    "items": [
-      "Technical writing",
-      "Code review",
-      "Mentoring",
-      "Scoping with designers",
-      "English and Indonesian"
-    ],
-    "order": 4
-  },
-  {
-    "id": "id-working",
+    "id": "id-ai",
     "lang": "id",
-    "translationKey": "working",
-    "domain": "Bekerja dengan orang",
-    "items": [
-      "Penulisan teknis",
-      "Code review",
-      "Mentoring",
-      "Penentuan cakupan bersama desainer",
-      "Inggris dan Indonesia"
-    ],
-    "order": 4
+    "translationKey": "ai",
+    "order": 4,
+    "domain": "Alur kerja AI-native",
+    "items": ["Claude Code", "Windsurf / Devin Desktop"],
+    "note": "Saya yang mengarahkan, bukan mengikuti. Semua saya tinjau dan saya yang bertanggung jawab atas yang dirilis."
   }
 ]

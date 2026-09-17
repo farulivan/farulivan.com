@@ -70,7 +70,7 @@ const rows: DataCell[][] = projects.map(({ entry }, index) => [
 >
   <Section space="lg">
     <h1
-      class="text-display-l font-display text-ink m-0 break-words hyphens-auto"
+      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-auto"
     >
       {t("work.title")}
     </h1>
@@ -106,7 +106,6 @@ const rows: DataCell[][] = projects.map(({ entry }, index) => [
               href={localizePath(`/work/${projectSlug(entry)}`, lang)}
               index={index + 1}
               title={entry.data.title}
-              year={entry.data.year}
               role={entry.data.role}
               stack={entry.data.stack}
               summary={entry.data.summary}

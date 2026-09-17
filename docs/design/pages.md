@@ -32,12 +32,18 @@ A long index. Every section is a teaser that leads somewhere.
 | 4 | Selected work | `--surface` | C4 + C5 ×3 | Three projects only. Leads to `/work`. |
 | 5 | Experience | `--paper` | C4 + C8 (compressed) | Three most recent roles. Leads to `/about`. |
 | 6 | Writing | `--accent-field` | C4 + C6 | Latest three posts as a hairline table. **Lime field, `--ink` text.** |
-| 7 | Contact | `--surface-invert` | C4 + C7 | Black field. `GET IN TOUCH` + `DOWNLOAD CV`. |
-| 8 | Footer | `--paper` | C10 | Static full-bleed wordmark. |
+| 7 | Footer | `--surface-invert` | C10 | Static full-bleed wordmark. Carries the email and the CV. |
 
-**Field rhythm:** paper → paper → paper → surface → paper → **lime** → **black** →
-paper. Lime appears exactly once, and black exactly once, both near the end where
-the page is asking for something. Colour is a signal here, not decoration.
+**Field rhythm:** paper → paper → paper → surface → paper → **lime** → **black**.
+Lime appears exactly once, and black exactly once, both at the end where the page
+is asking for something. Colour is a signal here, not decoration.
+
+**Changed during build.** A separate contact band sat between the lime one and
+the footer, on its own black field. The footer became a black field after these
+specs were written and already carries the email and the CV, so that band put two
+black fields back to back and asked twice for the same thing. It is gone, and the
+footer is the black one. Every route to contact the page had, it still has: the
+menu, the email, the download.
 
 ### Hero detail
 

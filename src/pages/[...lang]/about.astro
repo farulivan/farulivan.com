@@ -14,6 +14,7 @@ import DataTable, {
   type DataCell,
   type DataColumn,
 } from "@/components/DataTable.astro"
+import ReadingColumns from "@/components/ReadingColumns.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
 import TimelineRow from "@/components/TimelineRow.astro"
 import Placeholder from "@/components/ui/Placeholder.astro"
@@ -39,21 +40,28 @@ const t = useTranslations(lang)
 const experience = await getExperience(lang)
 const capabilities = await getCapabilities(lang)
 
-const bio = [
-  t("about.bio.1"),
-  t("about.bio.2"),
-  t("about.bio.3"),
-  t("about.bio.4"),
-]
+/*
+ * Three paragraphs, not four, and most visitors skim: who I am and how I work,
+ * where I am going, then one line of background. The third is context, not the
+ * pitch, and it stays short on purpose.
+ */
+const bio = [t("about.bio.1"), t("about.bio.2"), t("about.bio.3")]
 
+/*
+ * Three columns rather than two. A list of tools says what somebody has
+ * touched; the third column is the one that says how deep it goes, which is
+ * the only part of a skills table an interviewer actually tests.
+ */
 const columns: DataColumn[] = [
   { label: t("about.col.domain"), title: true },
   { label: t("about.col.items") },
+  { label: t("about.col.note") },
 ]
 
 const rows: DataCell[][] = capabilities.map(({ entry }) => [
   entry.data.domain,
   entry.data.items.join(" · "),
+  entry.data.note ?? "",
 ])
 ---
 
@@ -65,29 +73,37 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
 >
   <Section space="lg">
     <h1
-      class="text-display-l font-display text-ink m-0 break-words hyphens-auto"
+      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-auto"
     >
       {t("about.title")}
     </h1>
-    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
-      {t("about.subtitle")}
-    </p>
   </Section>
 
   <Section space="sm">
     {
       /*
-       * Prose width rather than page width. Four paragraphs set edge to edge
-       * on a wide screen is the one layout guaranteed to go unread.
+       * The claim on the left, the evidence on the right. The sentence used to
+       * sit under the page title, where it was read once and scrolled past;
+       * beside the paragraphs that back it up it stays on screen for as long
+       * as they take to read, which is the whole reason to say it first.
        */
     }
-    <div class="max-w-measure flex flex-col gap-5">
-      {
-        bio.map((paragraph) => (
-          <p class="text-read text-ink m-0 text-pretty">{paragraph}</p>
-        ))
-      }
-    </div>
+    <ReadingColumns>
+      <p
+        slot="aside"
+        class="text-display-s font-display text-ink m-0 text-balance max-md:mb-2"
+      >
+        {t("about.subtitle")}
+      </p>
+
+      <div class="flex flex-col gap-5">
+        {
+          bio.map((paragraph) => (
+            <p class="text-read text-ink m-0 text-pretty">{paragraph}</p>
+          ))
+        }
+      </div>
+    </ReadingColumns>
   </Section>
 
   {
@@ -104,15 +120,22 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
 
   <Section space="md">
     <SectionHeader
-      label={t("about.experienceLabel")}
-      description={t("about.experienceDescription")}
+      label={t("about.historyLabel")}
+      description={t("about.historyDescription")}
     />
     <ol class="m-0 mt-7 list-none p-0">
       {
         experience.map(({ entry }, index) => (
           <TimelineRow
+            {lang}
             step={index}
-            year={entry.data.year}
+            steps={experience.length}
+            period={{
+              start: entry.data.start,
+              end: entry.data.end,
+              ongoing: entry.data.ongoing,
+            }}
+            kind={entry.data.kind}
             role={entry.data.role}
             company={entry.data.company}
             description={entry.data.description}
@@ -128,6 +151,23 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
       description={t("about.capabilitiesDescription")}
     />
     <DataTable {columns} {rows} class="mt-7" />
+  </Section>
+
+  {
+    /*
+     * What is being learned right now, kept to one line. It is the section
+     * that says the trajectory is deliberate rather than claimed, and the
+     * moment it becomes a paragraph it stops being believable.
+     */
+  }
+  <Section space="sm">
+    <SectionHeader
+      label={t("about.nowLabel")}
+      description={t("about.nowDescription")}
+    />
+    <p class="text-h-m font-display max-w-measure mt-7 text-pretty">
+      {t("about.now")}
+    </p>
   </Section>
 
   <Section field="accent" space="md">

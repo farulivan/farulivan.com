@@ -19,11 +19,10 @@
 export const en = {
   // Site identity. The wordmark is decorative in every place it appears, so
   // this is the real page title and it is always in the document.
-  "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
-  "site.descriptor": "Frontend & Fullstack Engineer",
-  // TODO(content): replace with the real positioning sentence.
+  "site.title": "Farul Ivan · Frontend engineer · end to end",
+  "site.descriptor": "Frontend engineer\u00a0· end to end",
   "site.description":
-    "Frontend and fullstack engineer. I build web products that stay fast and maintainable as they grow.",
+    "Three years as the sole frontend engineer on a production fintech platform, and deliberately growing into the backend.",
 
   // Navigation
   "nav.home": "Home",
@@ -33,11 +32,11 @@ export const en = {
   "nav.contact": "Contact",
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Close",
-  "nav.homeLink": "Farul Ivan — home",
+  "nav.homeLink": "Farul Ivan, home",
   "nav.menuLabel": "Site",
 
   // Home
-  "home.scrollCue": "Scroll",
+  "home.scrollCue": "Scroll down",
 
   // Page titles. The bodies are placeholders until the real content lands.
   "work.title": "Work",
@@ -45,27 +44,22 @@ export const en = {
   "contact.title": "Contact",
 
   // Home sections. Each one is a teaser that leads somewhere real.
-  // TODO(content): the positioning sentence. This is the right length.
   "home.positioning":
-    "I build web products that stay fast and maintainable as they grow.",
-  "home.stackLabel": "What I work with",
+    "I own what I build, from architecture decisions to production, and I don't stop at the frontend when a feature needs more.",
+  "home.stackLabel": "What I do",
   "home.stackDescription":
-    "Grouped by what it is for. The full list is on the about page.",
+    "I work end to end on web products: the interface people touch, the API contracts behind it, and the tests and pipelines that keep both honest. Three years of that as the only frontend engineer on a production platform.",
   "home.workLabel": "Selected work",
   "home.workDescription":
-    "Three projects with what they were for and what changed once they shipped.",
+    "Four projects, with what they were for and what changed once they shipped.",
   "home.workCta": "See all work",
   "home.experienceLabel": "Experience",
   "home.experienceDescription": "The three most recent roles.",
   "home.experienceCta": "Read the full history",
   "home.writingLabel": "Writing",
   "home.writingDescription":
-    "Notes on building and shipping, when I have something worth adding.",
+    "Notes on decisions that were harder than they looked.",
   "home.writingCta": "Read everything",
-  "home.contactLabel": "Get in touch",
-  "home.contactDescription":
-    "I am looking for a role where the front end is treated as engineering.",
-  "home.getInTouch": "Send an email",
 
   "writing.allLabel": "All posts",
   "writing.allDescription": "Everything published, newest first.",
@@ -76,26 +70,30 @@ export const en = {
 
   // About
   "about.subtitle":
-    "Nine years of building web products, most of them the kind that have to keep working after launch.",
-  // TODO(content): four real paragraphs. These are the right length, not the
-  // right words.
+    "Three years of sole ownership on a production platform, and a deliberate push into everything around it.",
   "about.bio.1":
-    "I build web products, mostly the front end and enough of the back end to know why the front end is slow. Nine years of it, across a payments company, a logistics operator and a studio that shipped for other people.",
+    "For three years I was the sole frontend engineer at a fintech startup, Nabitu. I built the product from an early MVP to a full production rewrite: seventy pages, real users, real stakes. There was no one else on frontend, so I ended up owning far more than the UI, working directly with backend, product and the CEO to ship things that actually worked.",
   "about.bio.2":
-    "The work I am proudest of is rarely the work that looks impressive in a screenshot. It is the reporting query that stopped taking eleven seconds, the form that finally filled itself in correctly, the release that nobody noticed because nothing broke.",
+    "These days I am deliberately growing beyond the frontend. I finished a backend path in Go and TypeScript, and I build and run my own production systems, including a WhatsApp bot my family uses every day. I also work with AI tools like Claude Code daily. Not as a shortcut, but as a real part of how I think through problems.",
   "about.bio.3":
-    "I care about the parts of a codebase that decide how it ages: where the boundaries are, what the types promise, whether a new person can find the thing they came for. Speed matters, and so does the second year.",
-  "about.bio.4":
-    "I write in English and Indonesian, review code carefully, and would rather ask a question early than build the wrong thing well.",
+    "My path here was not a straight line. I studied architecture before moving into software, which is probably why I still care about structure and the small details most people do not notice. These days that shows up in how I write code rather than in anything I draw.",
   "about.portraitLabel": "Portrait photograph",
-  "about.experienceLabel": "Experience",
-  "about.experienceDescription":
-    "Where the last nine years went, and what shipped in each of them.",
+  "about.historyLabel": "History",
+  "about.historyDescription":
+    "Fifteen years of it, from university to the last thing I shipped.",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
-    "Grouped by what it is for rather than listed by name, because a pile of tools says nothing about what you can do with them.",
+    "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
   "about.col.domain": "Area",
   "about.col.items": "What that covers",
+  "about.col.note": "How deep it goes",
+  "about.present": "Present",
+  "about.education": "Education",
+  "about.nowLabel": "Now",
+  "about.nowDescription":
+    "What I am working on getting better at, at the moment.",
+  "about.now":
+    "System design, retrieval-augmented generation, and the workflows for directing AI agents rather than being directed by them.",
   "about.cvLabel": "Download CV",
 
   // Work index and case studies
@@ -116,6 +114,7 @@ export const en = {
 
   "project.backToIndex": "Back to work",
   "project.role": "Role",
+  "project.contents": "Contents",
   "project.team": "Team",
   "project.duration": "Duration",
   "project.year": "Year",
@@ -160,14 +159,15 @@ export const en = {
   // Writing
   "writing.title": "Writing",
   "writing.subtitle":
-    "Notes on building for the web — what worked, and what did not.",
+    "Notes on building for the web. What worked, and what did not.",
   "writing.readingTime": "{minutes} min read",
   "writing.published": "Published {date}",
   "writing.updated": "Updated {date}",
   "writing.backToIndex": "Back to writing",
+  "writing.contents": "Contents",
   "writing.empty": "Nothing published yet.",
   "writing.untranslated":
-    "This post isn't available in your language yet — showing the English version.",
+    "This post is not available in your language yet. Showing the English version.",
 
   // Pagination
   "pagination.label": "Writing pagination",
@@ -198,10 +198,10 @@ export type TranslationKey = keyof typeof en
  * misspell one, and this file fails to compile.
  */
 export const id: Record<TranslationKey, string> = {
-  "site.title": "Farul Ivan — Frontend & Fullstack Engineer",
-  "site.descriptor": "Frontend & Fullstack Engineer",
+  "site.title": "Farul Ivan · Frontend engineer · dari awal sampai produksi",
+  "site.descriptor": "Frontend engineer\u00a0· dari awal sampai produksi",
   "site.description":
-    "Frontend dan fullstack engineer. Saya membangun produk web yang tetap cepat dan mudah dirawat seiring pertumbuhannya.",
+    "Tiga tahun sebagai satu-satunya frontend engineer di platform fintech produksi, dan sedang menumbuhkan sisi backend dengan sengaja.",
 
   "nav.home": "Beranda",
   "nav.work": "Karya",
@@ -210,10 +210,10 @@ export const id: Record<TranslationKey, string> = {
   "nav.contact": "Kontak",
   "nav.openMenu": "Menu",
   "nav.closeMenu": "Tutup",
-  "nav.homeLink": "Farul Ivan — beranda",
+  "nav.homeLink": "Farul Ivan, beranda",
   "nav.menuLabel": "Situs",
 
-  "home.scrollCue": "Gulir",
+  "home.scrollCue": "Gulir ke bawah",
 
   "work.title": "Karya",
   "about.title": "Tentang",
@@ -221,25 +221,21 @@ export const id: Record<TranslationKey, string> = {
 
   // Home sections. Each one is a teaser that leads somewhere real.
   "home.positioning":
-    "Saya membangun produk web yang tetap cepat dan mudah dirawat saat ia tumbuh.",
-  "home.stackLabel": "Yang saya pakai",
+    "Saya memiliki apa yang saya bangun, dari keputusan arsitektur sampai produksi, dan saya tidak berhenti di frontend saat sebuah fitur butuh lebih.",
+  "home.stackLabel": "Yang saya kerjakan",
   "home.stackDescription":
-    "Dikelompokkan menurut kegunaannya. Daftar lengkapnya ada di halaman tentang.",
+    "Saya mengerjakan produk web dari hulu ke hilir: antarmuka yang disentuh orang, kontrak API di belakangnya, serta pengujian dan pipeline yang menjaga keduanya tetap jujur. Tiga tahun sebagai satu-satunya frontend engineer di platform produksi.",
   "home.workLabel": "Karya pilihan",
   "home.workDescription":
-    "Tiga proyek beserta tujuannya dan apa yang berubah setelah rilis.",
+    "Empat proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
   "home.workCta": "Lihat semua karya",
   "home.experienceLabel": "Pengalaman",
   "home.experienceDescription": "Tiga peran terakhir.",
   "home.experienceCta": "Baca riwayat lengkapnya",
   "home.writingLabel": "Tulisan",
   "home.writingDescription":
-    "Catatan soal membangun dan merilis, saat ada yang layak ditambahkan.",
+    "Catatan tentang keputusan yang ternyata lebih sulit dari kelihatannya.",
   "home.writingCta": "Baca semuanya",
-  "home.contactLabel": "Hubungi saya",
-  "home.contactDescription":
-    "Saya mencari peran yang memperlakukan front end sebagai pekerjaan teknik.",
-  "home.getInTouch": "Kirim email",
 
   "writing.allLabel": "Semua tulisan",
   "writing.allDescription": "Semua yang sudah terbit, dari yang terbaru.",
@@ -250,29 +246,35 @@ export const id: Record<TranslationKey, string> = {
 
   // About
   "about.subtitle":
-    "Sembilan tahun membangun produk web, sebagian besar jenis yang harus tetap jalan setelah rilis.",
+    "Tiga tahun memegang sendiri sebuah platform produksi, dan dorongan sengaja ke semua yang ada di sekitarnya.",
   "about.bio.1":
-    "Saya membangun produk web, terutama sisi depan dan cukup banyak sisi belakang untuk paham kenapa sisi depannya lambat. Sudah sembilan tahun, di sebuah perusahaan pembayaran, operator logistik, dan studio yang mengerjakan produk orang lain.",
+    "Selama tiga tahun saya satu-satunya frontend engineer di startup fintech, Nabitu. Saya membangun produknya dari MVP awal sampai penulisan ulang produksi penuh: tujuh puluh halaman, pengguna nyata, taruhan nyata. Tak ada orang lain di frontend, jadi saya memegang jauh lebih banyak daripada UI, bekerja langsung dengan backend, produk, dan CEO untuk merilis hal yang benar-benar jalan.",
   "about.bio.2":
-    "Pekerjaan yang paling saya banggakan jarang terlihat mengesankan dalam tangkapan layar. Bentuknya kueri laporan yang tak lagi butuh sebelas detik, formulir yang akhirnya terisi dengan benar, rilis yang tak disadari siapa pun karena tak ada yang rusak.",
+    "Belakangan saya sengaja tumbuh melewati frontend. Saya menyelesaikan jalur backend dengan Go dan TypeScript, dan saya membangun serta menjalankan sistem produksi saya sendiri, termasuk bot WhatsApp yang dipakai keluarga saya setiap hari. Saya juga memakai alat AI seperti Claude Code setiap hari. Bukan sebagai jalan pintas, tapi sebagai bagian nyata dari cara saya memikirkan masalah.",
   "about.bio.3":
-    "Saya peduli pada bagian basis kode yang menentukan bagaimana ia menua: di mana batasnya, apa yang dijanjikan tipenya, apakah orang baru bisa menemukan yang ia cari. Kecepatan itu penting, dan tahun kedua juga.",
-  "about.bio.4":
-    "Saya menulis dalam bahasa Inggris dan Indonesia, mengulas kode dengan teliti, dan lebih suka bertanya lebih awal daripada membangun hal yang salah dengan rapi.",
+    "Jalan saya ke sini tidak lurus. Saya belajar arsitektur sebelum pindah ke perangkat lunak, yang mungkin alasannya saya masih peduli pada struktur dan detail kecil yang tak diperhatikan kebanyakan orang. Sekarang itu muncul di cara saya menulis kode, bukan di gambar apa pun.",
   "about.portraitLabel": "Foto potret",
-  "about.experienceLabel": "Pengalaman",
-  "about.experienceDescription":
-    "Ke mana sembilan tahun terakhir pergi, dan apa yang dirilis di tiap tahapnya.",
+  "about.historyLabel": "Riwayat",
+  "about.historyDescription":
+    "Lima belas tahun, dari bangku kuliah sampai hal terakhir yang saya rilis.",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
-    "Dikelompokkan menurut kegunaannya, bukan didaftar per nama, karena tumpukan perkakas tak menjelaskan apa pun soal hasilnya.",
+    "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",
   "about.col.domain": "Bidang",
   "about.col.items": "Cakupannya",
+  "about.col.note": "Seberapa dalam",
+  "about.present": "Sekarang",
+  "about.education": "Pendidikan",
+  "about.nowLabel": "Sekarang",
+  "about.nowDescription":
+    "Yang sedang saya usahakan untuk lebih baik, saat ini.",
+  "about.now":
+    "Desain sistem, retrieval-augmented generation, dan cara mengarahkan agen AI alih-alih diarahkan olehnya.",
   "about.cvLabel": "Unduh CV",
 
   // Work index and case studies
   "work.subtitle":
-    "Proyek pilihan, lengkap dengan tujuan pengerjaannya dan apa yang berubah setelah rilis.",
+    "Proyek pilihan, dengan tujuan pengerjaannya dan apa yang berubah setelah rilis.",
   "work.allLabel": "Semua proyek",
   "work.allDescription":
     "Semua yang layak dicantumkan, dari yang terbaru. Telusuri kolom teknologi jika Anda mencari sesuatu yang spesifik.",
@@ -288,6 +290,7 @@ export const id: Record<TranslationKey, string> = {
 
   "project.backToIndex": "Kembali ke karya",
   "project.role": "Peran",
+  "project.contents": "Daftar isi",
   "project.team": "Tim",
   "project.duration": "Durasi",
   "project.year": "Tahun",
@@ -328,14 +331,15 @@ export const id: Record<TranslationKey, string> = {
 
   "writing.title": "Tulisan",
   "writing.subtitle":
-    "Catatan membangun untuk web — yang berhasil, dan yang tidak.",
+    "Catatan membangun untuk web. Yang berhasil, dan yang tidak.",
   "writing.readingTime": "{minutes} menit baca",
   "writing.published": "Terbit {date}",
   "writing.updated": "Diperbarui {date}",
   "writing.backToIndex": "Kembali ke tulisan",
+  "writing.contents": "Daftar isi",
   "writing.empty": "Belum ada tulisan.",
   "writing.untranslated":
-    "Tulisan ini belum tersedia dalam bahasa Anda — menampilkan versi Inggris.",
+    "Tulisan ini belum tersedia dalam bahasa Anda. Menampilkan versi Inggris.",
 
   "pagination.label": "Navigasi halaman tulisan",
   "pagination.previous": "Sebelumnya",

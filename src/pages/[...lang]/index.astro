@@ -1,8 +1,8 @@
 ---
 import type { InferGetStaticPropsType } from "astro"
 
-import CtaBox from "@/components/CtaBox.astro"
 import HeroStandfirst from "@/components/HeroStandfirst.astro"
+import Icon from "@/components/ui/Icon.astro"
 import Intro from "@/components/Intro.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
@@ -11,7 +11,6 @@ import TimelineRow from "@/components/TimelineRow.astro"
 import WritingTable from "@/components/WritingTable.astro"
 import Section from "@/components/ui/Section.astro"
 import Wordmark from "@/components/Wordmark.astro"
-import { siteConfig } from "@/config/site"
 import {
   getCapabilities,
   getExperience,
@@ -47,6 +46,13 @@ const featured = await getFeaturedProjects(lang)
  */
 const roles = (await getExperience(lang)).slice(0, 3)
 const posts = (await getPostListItems(lang)).slice(0, 3)
+
+/*
+ * The statement is set one word per element so each can be moved on its own.
+ * Splitting it here rather than in the browser keeps it a string in the
+ * dictionary, which is what the translators and the typecheck both want.
+ */
+const statement = t("home.positioning").split(" ")
 
 const stackGroups = capabilities.map(({ entry }) => ({
   domain: entry.data.domain,
@@ -119,35 +125,81 @@ const stackGroups = capabilities.map(({ entry }) => ({
       style="--enter-step: 1"
     />
 
-    {/* Deliberately outside the 20% alignment, so it reads as chrome. */}
-    <p
-      class="text-micro text-ink-muted px-page-margin hero-enter absolute bottom-5 left-0 uppercase"
-      style="--enter-step: 2"
-    >
-      {t("home.scrollCue")}
-    </p>
+    {
+      /*
+       * Deliberately outside the 20% alignment, so it reads as chrome, and on
+       * the opposite side from the lettering's crop so the two corners are not
+       * both busy.
+       *
+       * Two elements because two animations want the same property. The inner
+       * one arrives with the standfirst and then stops; the outer one fades the
+       * whole thing out as you scroll, so the cue is gone by the time you are
+       * reading the sentence it was pointing at. A cue that is still telling
+       * you to scroll while you are scrolling is furniture.
+       */
+    }
+    <div class="absolute right-0 bottom-5" data-scroll-cue>
+      <p
+        class="text-h-m text-ink-invert-muted/60 px-page-margin hero-enter m-0 flex items-center gap-2 tracking-[0.06em] uppercase"
+        style="--enter-step: 10"
+      >
+        {t("home.scrollCue")}
+        <Icon name="chevronDown" class="size-5" />
+      </p>
+    </div>
   </section>
 
   {
     /*
-     * One sentence at display size, and nothing else in the section. It is the
-     * first thing after the name and the only claim the page makes directly.
+     * One sentence at display size, centred, and nothing else in the section.
+     * It is the first thing after the name and the only claim the page makes
+     * directly, so it gets the largest vertical margins on the site: the space
+     * either side is what stops it reading as a paragraph between two others.
+     *
+     * Each word rises out of its own mask as the block comes into view, a
+     * fraction behind the one before it. Lines lower down enter later, so the
+     * sentence assembles roughly line by line without anything having to know
+     * where the lines fall.
+     *
+     * Both the mask and the movement live inside the guarded rule in
+     * global.css. Where scroll-driven animation is missing, or where less
+     * motion has been asked for, the words are neither clipped nor moved and
+     * the sentence is simply there.
      */
   }
-  <Section space="lg">
+  <Section space="xl">
     <p
-      class="text-display-m font-display text-ink m-0 max-w-[16ch] text-balance break-words hyphens-auto"
+      class="text-display-s font-display text-ink m-0 mx-auto max-w-[40ch] text-center text-balance"
+      data-statement
     >
-      {t("home.positioning")}
+      {
+        /*
+         * A real space between the words rather than a margin, so the sentence
+         * centres, wraps and copies as a sentence. Spacing inline blocks by
+         * margin puts the words on somebody's clipboard with nothing between
+         * them.
+         */
+      }
+      {
+        statement.map((word, index) => (
+          <Fragment>
+            <span class="inline-block" style={`--word-step: ${index}`}>
+              <span class="inline-block wrap-break-word hyphens-auto">
+                {word}
+              </span>
+            </span>{" "}
+          </Fragment>
+        ))
+      }
     </p>
   </Section>
 
-  <Section space="md">
+  <Section space="xl">
     <SectionHeader
       label={t("home.stackLabel")}
       description={t("home.stackDescription")}
     />
-    <StackBand groups={stackGroups} label={t("home.stackLabel")} class="mt-7" />
+    <StackBand groups={stackGroups} label={t("home.stackLabel")} />
   </Section>
 
   <Section field="surface" space="md">
@@ -162,7 +214,6 @@ const stackGroups = capabilities.map(({ entry }) => ({
             href={localizePath(`/work/${projectSlug(entry)}`, lang)}
             index={index + 1}
             title={entry.data.title}
-            year={entry.data.year}
             role={entry.data.role}
             stack={entry.data.stack}
             summary={entry.data.summary}
@@ -189,8 +240,15 @@ const stackGroups = capabilities.map(({ entry }) => ({
       {
         roles.map(({ entry }, index) => (
           <TimelineRow
+            {lang}
             step={index}
-            year={entry.data.year}
+            steps={roles.length}
+            period={{
+              start: entry.data.start,
+              end: entry.data.end,
+              ongoing: entry.data.ongoing,
+            }}
+            kind={entry.data.kind}
             role={entry.data.role}
             company={entry.data.company}
             description={entry.data.description}
@@ -208,9 +266,9 @@ const stackGroups = capabilities.map(({ entry }) => ({
 
   {
     /*
-     * The one lime field on the page. It and the black one below it are the
-     * last two sections, which is where the page stops describing and starts
-     * asking — colour is a signal here rather than decoration.
+     * The one lime field on the page, and the last band before the footer's
+     * black one. That is where the page stops describing and starts asking, so
+     * the colour is a signal rather than decoration.
      */
   }
   <Section field="accent" space="md">
@@ -225,25 +283,6 @@ const stackGroups = capabilities.map(({ entry }) => ({
     >
       {t("home.writingCta")}
     </a>
-  </Section>
-
-  <Section field="invert" space="md">
-    <SectionHeader
-      label={t("home.contactLabel")}
-      description={t("home.contactDescription")}
-    />
-    <div class="gap-gutter mt-7 grid sm:grid-cols-2">
-      <CtaBox
-        href={`mailto:${siteConfig.contact.email}`}
-        label={t("home.getInTouch")}
-      />
-      <CtaBox
-        href={siteConfig.cv.href}
-        label={t("contact.cvLabel")}
-        detail={`${siteConfig.cv.format} · ${siteConfig.cv.size}`}
-        download
-      />
-    </div>
   </Section>
 </BaseLayout>
 

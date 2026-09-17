@@ -90,10 +90,10 @@ const project = projectSchema({ image })
 
 const validProject = {
   lang: "en",
-  translationKey: "merchant-dashboard",
-  title: "Merchant Dashboard",
+  translationKey: "example-project",
+  title: "Example Project",
   summary:
-    "A reporting console for a payments team, rebuilt so a shop owner could answer their own questions.",
+    "A short sentence about the project, comfortably inside the length the schema allows.",
   year: 2025,
   role: "Lead frontend engineer",
   stack: ["TypeScript", "React"],
@@ -157,7 +157,8 @@ describe("experienceSchema", () => {
   const validRole = {
     lang: "en",
     translationKey: "current",
-    year: 2024,
+    start: "2023-02",
+    end: "2026-01",
     role: "Senior Frontend Engineer",
     company: "A payments company",
     description: "Led the rebuild of the merchant console.",
@@ -165,7 +166,42 @@ describe("experienceSchema", () => {
   }
 
   it("accepts a well-formed role", () => {
-    expect(experienceSchema.parse(validRole).year).toBe(2024)
+    const parsed = experienceSchema.parse(validRole)
+    expect(parsed.start).toBe("2023-02")
+    expect(parsed.end).toBe("2026-01")
+  })
+
+  it("takes a year on its own, for a role remembered at that precision", () => {
+    const yearOnly: Record<string, unknown> = { ...validRole, start: "2021" }
+    delete yearOnly.end
+    expect(experienceSchema.parse(yearOnly).end).toBeUndefined()
+  })
+
+  it("treats a row as a job unless it says otherwise", () => {
+    // Most of the list is work, so the field is only written on the rows that
+    // are not, and a missing one must never turn a job into a degree.
+    expect(experienceSchema.parse(validRole).kind).toBe("work")
+    expect(
+      experienceSchema.parse({ ...validRole, kind: "education" }).kind
+    ).toBe("education")
+  })
+
+  it("rejects a kind that is neither of the two", () => {
+    expect(() =>
+      experienceSchema.parse({ ...validRole, kind: "volunteering" })
+    ).toThrow()
+  })
+
+  it("treats a role as finished unless it says otherwise", () => {
+    // A missing end date is not the same as a current role, and reading it that
+    // way would put someone in a job they left.
+    expect(experienceSchema.parse(validRole).ongoing).toBe(false)
+  })
+
+  it("rejects a date that is not a year or a month", () => {
+    for (const start of ["2023-1", "2023-13", "23-01", "2023-02-15", "soon"]) {
+      expect(() => experienceSchema.parse({ ...validRole, start })).toThrow()
+    }
   })
 
   it("rejects a description longer than the two lines the row is drawn at", () => {

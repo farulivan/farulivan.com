@@ -142,14 +142,52 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
   })
 
 /**
+ * A month, or a year when the month is not known: `2026-01` or `2026`.
+ *
+ * Both precisions are allowed because both are true of the real history. The
+ * jobs are recorded down to the month; the degree is remembered by the year it
+ * started and the year it finished, and inventing a month to make the column
+ * tidy would be inventing a fact on a CV.
+ */
+const period = z
+  .string()
+  .regex(/^\d{4}(-(0[1-9]|1[0-2]))?$/, "expected YYYY or YYYY-MM")
+
+/**
+ * A job or a degree. Anything else in a career is one of these two.
+ */
+export const EXPERIENCE_KINDS = ["work", "education"] as const
+export type ExperienceKind = (typeof EXPERIENCE_KINDS)[number]
+
+/**
  * One role in the career timeline.
  *
- * `order` rather than a date range: the timeline is a staircase of years, and
- * two roles in the same year still need a fixed sequence.
+ * `order` decides the sequence, not the dates. Two roles can overlap — a
+ * freelance job runs alongside a full-time one — and sorting on a start date
+ * would leave the order of those two up to whichever the comparison saw first.
  */
 export const experienceSchema = z.object({
   ...localized,
-  year: z.number().int().min(1990).max(2100),
+  /**
+   * When the role began, and when it ended.
+   *
+   * A hirer reads a career by its spans, not by its end points: "2023 to 2026"
+   * says three years and "2026" says nothing at all. `end` is absent while the
+   * role is still going, and `ongoing` is what says so — a missing `end` on a
+   * finished role would otherwise read as current.
+   */
+  start: period,
+  end: period.optional(),
+  ongoing: z.boolean().default(false),
+  /**
+   * Whether this was a job or a degree.
+   *
+   * Study and work are one list rather than two, because the question a reader
+   * is actually asking is "what was he doing in 2016", and two lists side by
+   * side make them do the merge themselves. The kind is what keeps a degree
+   * from being read as a job once they are in the same column.
+   */
+  kind: z.enum(EXPERIENCE_KINDS).default("work"),
   role: z.string().min(1),
   company: z.string().min(1),
   /** Two lines on what shipped, which is the height the row is drawn at. */
@@ -168,5 +206,15 @@ export const capabilitySchema = z.object({
   ...localized,
   domain: z.string().min(1),
   items: z.array(z.string().min(1)).min(1),
+  /**
+   * One honest line about how deep this actually goes.
+   *
+   * A list of tools says what you have touched; it does not say which of them
+   * you would want to be woken up about. Saying "growing, deliberately" of a
+   * group is worth more than letting it sit at the same weight as the one you
+   * have spent three years in, and it is the sentence that survives contact
+   * with an interview.
+   */
+  note: z.string().min(1).max(160).optional(),
   order: z.number().int(),
 })

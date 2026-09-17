@@ -2,6 +2,7 @@ import { experimental_AstroContainer as AstroContainer } from "astro/container"
 import { describe, expect, it } from "vitest"
 
 import Icon from "./Icon.astro"
+import { ICON_NAMES } from "./icons"
 
 const render = async (props: Record<string, unknown>) => {
   const container = await AstroContainer.create()
@@ -9,10 +10,12 @@ const render = async (props: Record<string, unknown>) => {
 }
 
 describe("Icon", () => {
-  it("draws the requested icon", async () => {
-    const html = await render({ name: "arrowRight" })
+  // Walks the registry rather than naming one icon, so an entry added later
+  // with a typo in its path data fails here instead of rendering an empty box.
+  it.each(ICON_NAMES)("draws %s", async (name) => {
+    const html = await render({ name })
     expect(html).toContain("<svg")
-    expect(html).toContain("<path")
+    expect(html).toMatch(/<(path|circle)/)
   })
 
   it("is hidden from assistive tech unless given a label", async () => {

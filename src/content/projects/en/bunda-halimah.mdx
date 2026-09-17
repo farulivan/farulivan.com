@@ -1,0 +1,92 @@
+---
+lang: "en"
+translationKey: "bunda-halimah"
+title: "RS Hj. Bunda Halimah"
+summary: "Two frontends for a Batam hospital. A patient portal with doctor search and booking, and the CMS the staff run it with."
+year: 2025
+role: "Frontend engineer, freelance"
+duration: "Nov 2024 – Mar 2025"
+stack:
+  [
+    "TypeScript",
+    "Next.js 15",
+    "React Server Components",
+    "Server Actions",
+    "Zod",
+    "React Hook Form",
+  ]
+featured: true
+order: 3
+outcome:
+  summary: "Both frontends shipped, the contract closed, and the hospital has run them ever since. The handover held, which is the part of freelance work that usually does not."
+  figures:
+    - { value: "2", caption: "Frontends delivered and handed over" }
+    - { value: "5 months", caption: "Brief to handover" }
+liveUrl: "https://rsbundahalimah.com"
+---
+
+## The problem
+
+RS Hj. Bunda Halimah is a hospital in Batam. Patients who wanted to see a
+specific doctor had to phone to find out when that doctor was in, and staff who
+wanted to publish anything had to ask someone technical.
+
+Two problems, two frontends: a patient portal, and a CMS for the people running
+it. I built both. The APIs behind them were owned by other people. My side of
+the line was everything the browser touches.
+
+## The booking flow
+
+Finding a doctor is the easy half. Booking is where the edge cases live, and
+the edge cases are the work:
+
+- Schedules group by doctor and by day, which is not the shape the interface
+  wants to show them in.
+- A patient who cannot make an appointment needs to move it or cancel it
+  without phoning, which means the reschedule path has to be as careful as the
+  booking path.
+- When the doctor a patient wants has nothing free, the useful answer is the
+  next date they do, not an empty state.
+- Booking is login-gated, so the boundary between looking and committing is a
+  real one the interface has to draw clearly.
+
+All of it is wired through typed server actions, so an invalid booking fails at
+the boundary rather than somewhere inside a handler.
+
+## Authentication on the server
+
+Sessions are HttpOnly cookies set by server actions, with route protection in
+`middleware.ts`. No token in `localStorage`.
+
+For a hospital that was not a preference. A token readable by any script on the
+page is one cross-site scripting bug away from being someone else's; a cookie
+the browser will not hand to JavaScript is not. The cost is that auth-dependent
+work happens on the server, which, with React Server Components, is where it
+was going to happen anyway.
+
+## The CMS interface
+
+The other app is the one staff use: doctor profiles and schedules, and full
+article authoring. A sanitised rich-text editor, a draft / published /
+scheduled workflow so an article can be written on Tuesday and appear on
+Friday, and SEO fields on every piece.
+
+Every form in both apps is typed end to end with React Hook Form and Zod, so
+the shape the form collects and the shape the action accepts cannot drift apart
+without the compiler noticing.
+
+## Building something to hand over
+
+The contract had an end date from the start, so I built for the person who
+would inherit it rather than for myself.
+
+That mostly meant one API layer instead of fetch calls scattered through the
+tree, and one error handler that normalises API failures, validation failures
+and timeouts into a single response shape, so a developer who has never seen
+the codebase handles a failure the same way everywhere.
+
+## Outcome
+
+Both frontends shipped, the contract closed, and the hospital has been running
+them ever since without me. That is the whole outcome: the handover held, which
+is the part of freelance work that usually does not.

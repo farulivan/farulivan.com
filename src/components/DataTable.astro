@@ -74,6 +74,10 @@ const href = (cell: DataCell) =>
               // `font-body`, not `font-normal`: Tailwind's own weight scale is off here,
               // and a `th` is bold until something says otherwise.
               "text-micro text-section-muted font-body py-3 uppercase",
+              // The same gutter the page uses, on the end of every column but
+              // the last, so the columns stay clear of each other and the
+              // table still starts and finishes on the page's own edges.
+              "pe-gutter last:pe-0",
               column.align === "end" && "text-right"
             )}
           >
@@ -97,12 +101,17 @@ const href = (cell: DataCell) =>
               <td
                 data-label={column?.label}
                 class={cn(
-                  "text-ui py-5 align-top",
+                  // Middle rather than top. A row is as tall as its longest
+                  // cell, and with everything pinned to the top a one-line
+                  // cell beside a three-line one reads as two different rows.
+                  "text-ui py-5 align-middle",
+                  "pe-gutter last:pe-0",
                   column?.align === "end" && "text-right",
                   column?.title && "text-h-m",
                   // Stacked, every cell is a full-width line with its column
-                  // name above it, and the padding moves to the row.
-                  "max-md:block max-md:py-1 max-md:text-left",
+                  // name above it, and the padding moves to the row. The
+                  // column gutter goes with the columns.
+                  "max-md:block max-md:py-1 max-md:pe-0 max-md:text-left",
                   column?.omitOnStack && "max-md:hidden",
                   column?.label &&
                     !column.omitOnStack &&
