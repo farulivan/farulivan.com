@@ -6,6 +6,16 @@
  * find it, and its size is what does the work rather than a fill or an arrow.
  * It keeps that size on a phone — letting these collapse into ordinary buttons
  * on a narrow screen would throw away the only thing they are.
+ *
+ * Reaching for it fills it, from the bottom edge upward, and the words reverse
+ * out of the fill as it arrives. The fill is the field's own ink and the words
+ * become the field's own ground, so the same box works on white, on grey, on
+ * lime and on black without being told which one it landed on.
+ *
+ * The fill is a pseudo-element rather than a background colour because a
+ * background cannot be swept: it can only cross-fade, which at this size reads
+ * as a light going on rather than as something answering you. It is clipped by
+ * the box, so it never paints over the border that defines it.
  */
 import { cn } from "@/lib/utils"
 
@@ -17,8 +27,11 @@ interface Props {
    * Nobody should have to click to find out what it will cost them.
    */
   detail?: string | undefined
-  /** Serves the file rather than navigating to it. */
-  download?: boolean | undefined
+  /**
+   * Serves the file rather than navigating to it. A string names the file on
+   * the reader's machine; `true` keeps whatever the URL ends in.
+   */
+  download?: boolean | string | undefined
   /** Opens in a new tab, with the warning a screen reader needs. */
   external?: boolean | undefined
   externalLabel?: string | undefined
@@ -42,19 +55,37 @@ const {
   target={external ? "_blank" : undefined}
   rel={external ? "noopener noreferrer" : undefined}
   class={cn(
-    "border-section-rule flex min-h-[120px] flex-col items-center justify-center gap-2 border px-5 py-7 text-center no-underline",
-    "hover:border-section-rule-strong hover:bg-[color-mix(in_srgb,currentColor_6%,transparent)] transition-colors duration-fast ease-state",
-    "active:scale-[0.995] motion-reduce:transition-none motion-reduce:active:scale-100",
+    "group/cta border-section-rule relative isolate flex min-h-[120px] flex-col items-center justify-center gap-2 overflow-clip border px-5 py-7 text-center no-underline",
+    "hover:border-section-rule-strong duration-fast ease-state transition-colors",
+    // The fill. Anchored to the bottom edge and flattened to nothing until it
+    // is wanted, so it grows upward rather than fading in on the spot.
+    "after:bg-current after:absolute after:inset-0 after:-z-10 after:origin-bottom after:scale-y-0",
+    "after:duration-slow after:ease-state after:transition-transform hover:after:scale-y-100",
+    // Less motion means the finished state, not a quicker version of the
+    // journey: the fill is simply there the moment it is reached for.
+    "motion-reduce:transition-none motion-reduce:after:transition-none",
+    "active:scale-[0.995] motion-reduce:active:scale-100",
     className
   )}
 >
-  <span class="text-label font-label uppercase">
+  {
+    /*
+     * The words reverse into the field's own colour as the fill reaches them.
+     * They keep pace with the fill rather than the border, so the change lands
+     * with the thing that causes it.
+     */
+  }
+  <span
+    class="text-label font-label group-hover/cta:text-section-field duration-slow ease-state uppercase transition-colors motion-reduce:transition-none"
+  >
     {label}
     {external && externalLabel && <span class="sr-only"> {externalLabel}</span>}
   </span>
   {
     detail && (
-      <span class="text-micro text-section-muted uppercase">{detail}</span>
+      <span class="text-micro text-section-muted group-hover/cta:text-section-field duration-slow ease-state uppercase transition-colors motion-reduce:transition-none">
+        {detail}
+      </span>
     )
   }
 </a>

@@ -173,9 +173,9 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
   <Section field="accent" space="md">
     <CtaBox
       href={siteConfig.cv.href}
-      label={t("about.cvLabel")}
+      label={t("cv.download")}
       detail={`${siteConfig.cv.format} · ${siteConfig.cv.size}`}
-      download
+      download={siteConfig.cv.filename}
     />
   </Section>
 </BaseLayout>

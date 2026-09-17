@@ -52,10 +52,15 @@ export const siteConfig = {
    * whenever the file is replaced — a stale number is worse than none.
    */
   cv: {
-    // TODO(asset): the real CV. public/cv.pdf is a marked placeholder.
     href: "/cv.pdf",
     format: "PDF",
-    size: "1 KB",
+    size: "108 KB",
+    /*
+     * What the file is called once it is on somebody's machine. Without this
+     * it lands in their downloads folder as `cv.pdf`, next to everybody
+     * else's, and the one thing a CV has to do there is say whose it is.
+     */
+    filename: "farul-ivan-cv.pdf",
   },
 } as const satisfies {
   name: string
@@ -65,5 +70,5 @@ export const siteConfig = {
   menu: readonly { key: TranslationKey; href: string }[]
   social: Readonly<Record<string, string>>
   contact: { email: string }
-  cv: { href: string; format: string; size: string }
+  cv: { href: string; format: string; size: string; filename: string }
 }

@@ -116,9 +116,9 @@ const rows: DataCell[][] = [
   <Section field="accent" space="md">
     <CtaBox
       href={siteConfig.cv.href}
-      label={t("contact.cvLabel")}
+      label={t("cv.download")}
       detail={`${siteConfig.cv.format} · ${siteConfig.cv.size}`}
-      download
+      download={siteConfig.cv.filename}
     />
   </Section>
 </BaseLayout>

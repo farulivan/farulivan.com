@@ -58,10 +58,11 @@ const {
  */
 const fields = {
   paper: "bg-paper text-ink",
-  surface: "bg-surface text-ink",
-  accent: "bg-accent-field text-ink [--color-section-muted:var(--color-ink)]",
+  surface: "bg-surface text-ink [--color-section-field:var(--color-surface)]",
+  accent:
+    "bg-accent-field text-ink [--color-section-muted:var(--color-ink)] [--color-section-field:var(--color-accent-field)]",
   invert:
-    "bg-surface-invert text-ink-invert [--color-section-muted:var(--color-ink-invert-muted)] [--color-section-rule:color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] [--color-section-rule-strong:var(--color-ink-invert)]",
+    "bg-surface-invert text-ink-invert [--color-section-muted:var(--color-ink-invert-muted)] [--color-section-rule:color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] [--color-section-rule-strong:var(--color-ink-invert)] [--color-section-field:var(--color-surface-invert)]",
 }[field]
 
 /* `xl` exists for the one section that is a single sentence and needs the
