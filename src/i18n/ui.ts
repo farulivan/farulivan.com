@@ -152,6 +152,7 @@ export const en = {
   // The CV download states its format and size, so nobody has to guess what
   // the link will do before clicking it.
   "cv.download": "Download my CV",
+  "cv.short": "My CV",
   "cv.detail": "{format}, {size}",
 
   // Writing
@@ -323,6 +324,7 @@ export const id: Record<TranslationKey, string> = {
   "footer.rights": "© Farul Ivan {year} • Seluruh hak cipta dilindungi.",
 
   "cv.download": "Unduh CV saya",
+  "cv.short": "CV saya",
   "cv.detail": "{format}, {size}",
 
   "writing.title": "Tulisan",
