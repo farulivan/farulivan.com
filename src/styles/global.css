@@ -83,6 +83,11 @@
   --color-section-rule: var(--color-rule);
   --color-section-rule-strong: var(--color-rule-strong);
 
+  /* The field's own colour, for anything that has to draw on top of a fill in
+     the field's ink and stay readable — a control that fills on hover reverses
+     into this. Ink on the light fields, so the reverse of it is the ground. */
+  --color-section-field: var(--color-paper);
+
   /* --- Lime --------------------------------------------------------------
      Lime is a surface, not a text colour. On white it measures 2.06:1 at
      step 500 and still fails at 600 (2.50) and 700 (3.96). Only step 800

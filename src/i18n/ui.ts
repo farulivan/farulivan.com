@@ -94,7 +94,6 @@ export const en = {
     "What I am working on getting better at, at the moment.",
   "about.now":
     "System design, retrieval-augmented generation, and the workflows for directing AI agents rather than being directed by them.",
-  "about.cvLabel": "Download CV",
 
   // Work index and case studies
   "work.subtitle":
@@ -143,7 +142,6 @@ export const en = {
   "contact.col.link": "Link",
   "contact.github": "GitHub",
   "contact.linkedin": "LinkedIn",
-  "contact.cvLabel": "Download CV",
 
   // Footer
   "footer.menu": "Menu",
@@ -153,7 +151,7 @@ export const en = {
 
   // The CV download states its format and size, so nobody has to guess what
   // the link will do before clicking it.
-  "cv.see": "See my resume",
+  "cv.download": "Download my CV",
   "cv.detail": "{format}, {size}",
 
   // Writing
@@ -270,7 +268,6 @@ export const id: Record<TranslationKey, string> = {
     "Yang sedang saya usahakan untuk lebih baik, saat ini.",
   "about.now":
     "Desain sistem, retrieval-augmented generation, dan cara mengarahkan agen AI alih-alih diarahkan olehnya.",
-  "about.cvLabel": "Unduh CV",
 
   // Work index and case studies
   "work.subtitle":
@@ -319,14 +316,13 @@ export const id: Record<TranslationKey, string> = {
   "contact.col.link": "Tautan",
   "contact.github": "GitHub",
   "contact.linkedin": "LinkedIn",
-  "contact.cvLabel": "Unduh CV",
 
   "footer.menu": "Menu",
   "footer.social": "Sosial",
   "footer.contact": "Kontak",
   "footer.rights": "© Farul Ivan {year} • Seluruh hak cipta dilindungi.",
 
-  "cv.see": "Lihat resume saya",
+  "cv.download": "Unduh CV saya",
   "cv.detail": "{format}, {size}",
 
   "writing.title": "Tulisan",

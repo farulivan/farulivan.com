@@ -46,8 +46,16 @@ const social = [
    * rather than ink, since an ink ring would be invisible.
    */
 }
+{
+  /*
+   * The footer paints the near-black field itself rather than going through a
+   * section, because it runs edge to edge and a section caps its content. It
+   * therefore has to name the field colour itself as well, so a control inside
+   * it knows what to reverse into when it fills.
+   */
+}
 <footer
-  class="bg-surface-invert text-ink-invert px-page-margin pb-page-margin pt-8 md:pt-9"
+  class="bg-surface-invert text-ink-invert px-page-margin pb-page-margin pt-8 [--color-section-field:var(--color-surface-invert)] md:pt-9"
 >
   {
     /*
@@ -180,18 +188,35 @@ const social = [
              * with a mark stuck to it.
              */
           }
+          {
+            /*
+             * The same fill as the larger boxes on the other pages, at this
+             * size: reaching for it sweeps the field's ink up from the bottom
+             * edge and the words reverse out of it. One behaviour for every
+             * control that offers this file, wherever it appears.
+             */
+          }
           <a
-            class="group/cv text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper flex items-center justify-between gap-3 border border-[color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] px-4 py-3 leading-[1.4] whitespace-nowrap no-underline transition-colors hover:border-(--color-ink-invert) hover:bg-[color-mix(in_srgb,var(--color-ink-invert)_10%,transparent)] motion-reduce:transition-none"
+            class="group/cv text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper after:duration-slow after:ease-state relative isolate flex items-center justify-between gap-3 overflow-clip border border-[color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] px-4 py-3 leading-[1.4] whitespace-nowrap no-underline transition-colors after:absolute after:inset-0 after:-z-10 after:origin-bottom after:scale-y-0 after:bg-current after:transition-transform hover:border-(--color-ink-invert) hover:after:scale-y-100 motion-reduce:transition-none motion-reduce:after:transition-none"
             href={siteConfig.cv.href}
-            download
+            download={siteConfig.cv.filename}
           >
-            <span>{t("cv.see")}</span>
+            <span
+              class="group-hover/cv:text-section-field duration-slow ease-state transition-colors motion-reduce:transition-none"
+            >
+              {t("cv.download")}
+            </span>
             {
-              /* Points up and out, and leans further that way when you reach for it. */
+              /*
+               * Points down, because this is a download. It used to point up
+               * and out, which is the mark for a link that leaves the site and
+               * says the opposite of what the button next to it says. It leans
+               * further down when you reach for it.
+               */
             }
             <Icon
               name="arrowRight"
-              class="duration-fast ease-state size-4 -rotate-45 transition-[translate] group-hover/cv:translate-x-[2px] group-hover/cv:translate-y-[-2px] motion-reduce:transition-none"
+              class="duration-fast ease-state group-hover/cv:text-section-field duration-slow size-4 rotate-90 transition-[translate,color] group-hover/cv:translate-y-[2px] motion-reduce:transition-none"
             />
           </a>
           {
