@@ -116,6 +116,22 @@ whose card would clip an outset one.
   audits every page the build produces, in both locales. One token color in
   one code block is enough to fail it: `github-light`'s comment is #6A737D on
   white, which is 4.4:1. Use the `-high-contrast` Shiki themes.
+- **A sticky element stretched to its row can never stick.** A grid or flex
+  child is stretched to the height of its row unless told otherwise, and a
+  block already as tall as the distance it could travel has nowhere to travel
+  to — it sits there looking like it should pin and never does. `self-start`
+  on the sticky child is not optional. `ReadingColumns.astro` records it.
+- **A transformed ancestor captures a sticky descendant.** `translate` on any
+  element above a `position: sticky` block makes that element the box the
+  sticky one sticks inside, which turns the pinning off with nothing visibly
+  broken. The scroll reveal moves elements with `translate`, so nothing on the
+  path to a pinned column may carry `data-reveal`.
+- **An auto margin on a grid child stops it being stretched to its track.**
+  It is then sized to its own contents, so a `max-width` becomes a floor rather
+  than a ceiling and the child overflows a track narrower than that width. A
+  post with a code block in it dragged the whole page sideways at 768 and 1024
+  this way. Pair `ms-auto` with `w-full min-w-0` so the cap only bites where
+  there is room for it.
 - **Preload every font that sets real text.** Leaving a face that sets visible
   text out of the preload cost 0.137 CLS on post pages, as the fallback metrics
   gave way. Lexend is the only webfont here and it is preloaded; code blocks use
@@ -130,13 +146,14 @@ whose card would clip an outset one.
 
 ## Where things live
 
-| Want to change                 | Edit                     |
-| ------------------------------ | ------------------------ |
-| Name, URL, nav, links, CV      | `src/config/site.ts`     |
-| Any user-facing string         | `src/i18n/ui.ts`         |
-| Case studies and posts         | `src/content/`           |
-| Colours, type, spacing, motion | `src/styles/global.css`  |
-| What counts as valid content   | `src/content/schemas.ts` |
+| Want to change                 | Edit                              |
+| ------------------------------ | --------------------------------- |
+| Name, URL, nav, links, CV      | `src/config/site.ts`              |
+| Any user-facing string         | `src/i18n/ui.ts`                  |
+| Case studies and posts         | `src/content/`                    |
+| Colours, type, spacing, motion | `src/styles/global.css`           |
+| What counts as valid content   | `src/content/schemas.ts`          |
+| How wide a page's content runs | `src/components/ui/Section.astro` |
 
 ## Commits and pull requests
 

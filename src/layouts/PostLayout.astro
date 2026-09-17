@@ -65,112 +65,108 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
   availableLocales={availableLocales}
 >
   <Section space="lg">
-    <div>
-      <a
-        href={localizePath("/writing", lang)}
-        class="text-label text-section-muted duration-fast ease-state min-h-tap -mt-3 inline-flex items-center uppercase no-underline hover:underline hover:underline-offset-4 motion-reduce:transition-none"
+    <a
+      href={localizePath("/writing", lang)}
+      class="text-label text-section-muted duration-fast ease-state min-h-tap -mt-3 inline-flex items-center uppercase no-underline hover:underline hover:underline-offset-4 motion-reduce:transition-none"
+    >
+      {t("writing.backToIndex")}
+    </a>
+
+    {
+      isFallback && (
+        <p
+          role="status"
+          class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5"
+        >
+          {t("writing.untranslated")}
+        </p>
+      )
+    }
+
+    <header class="mt-5 mb-9">
+      <h1
+        class="text-display-m font-display m-0 text-balance wrap-break-word hyphens-auto"
       >
-        {t("writing.backToIndex")}
-      </a>
-
-      {
-        isFallback && (
-          <p
-            role="status"
-            class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5"
-          >
-            {t("writing.untranslated")}
-          </p>
-        )
-      }
-
-      <header class="mt-5 mb-9">
-        <h1
-          class="text-display-m font-display m-0 text-balance wrap-break-word hyphens-auto"
-        >
-          {title}
-        </h1>
-
-        {
-          /*
-           * Lexend at the label size, not a monospace. The starter set every
-           * date and tag in mono; this design has one family and small
-           * uppercase type with open tracking is what it uses for metadata.
-           */
-        }
-        <div
-          class="text-label text-section-muted mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 uppercase"
-        >
-          <time datetime={toDateAttribute(displayed.date)}>
-            {
-              t(
-                displayed.kind === "updated"
-                  ? "writing.updated"
-                  : "writing.published",
-                {
-                  date: formatDate(displayed.date, lang),
-                }
-              )
-            }
-          </time>
-          {
-            minutesRead !== undefined && (
-              <>
-                <span aria-hidden="true">·</span>
-                <span>
-                  {t("writing.readingTime", { minutes: minutesRead })}
-                </span>
-              </>
-            )
-          }
-        </div>
-
-        {
-          /*
-           * Text rather than links. Tag pages were dropped for this version —
-           * the writing index shows the topic as a column instead — and a link
-           * to a route that does not exist is worse than no link at all.
-           */
-        }
-        {
-          tags.length > 0 && (
-            <ul class="text-label text-section-muted m-0 mt-3 flex list-none flex-wrap gap-x-3 p-0 uppercase">
-              {tags.map((tag) => (
-                <li>{tag}</li>
-              ))}
-            </ul>
-          )
-        }
-      </header>
-
-      {
-        hero && (
-          <Image
-            src={hero.src}
-            alt={hero.alt}
-            widths={[640, 960, 1280, 1600]}
-            sizes="(min-width: 1400px) 1400px, 100vw"
-            class="border-section-rule mb-9 w-full border"
-            loading="eager"
-          />
-        )
-      }
+        {title}
+      </h1>
 
       {
         /*
-         * The contents beside the article rather than the article alone in the
-         * middle of the page. One column at the measure leaves most of a wide
-         * screen empty, and an article is a piece somebody reads in order, so
-         * the list of what is coming is worth having open while they do.
+         * Lexend at the label size, not a monospace. The starter set every
+         * date and tag in mono; this design has one family and small
+         * uppercase type with open tracking is what it uses for metadata.
          */
       }
-      <ReadingColumns>
-        <Contents slot="aside" {headings} label={t("writing.contents")} />
+      <div
+        class="text-label text-section-muted mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 uppercase"
+      >
+        <time datetime={toDateAttribute(displayed.date)}>
+          {
+            t(
+              displayed.kind === "updated"
+                ? "writing.updated"
+                : "writing.published",
+              {
+                date: formatDate(displayed.date, lang),
+              }
+            )
+          }
+        </time>
+        {
+          minutesRead !== undefined && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{t("writing.readingTime", { minutes: minutesRead })}</span>
+            </>
+          )
+        }
+      </div>
 
-        <Prose>
-          <slot />
-        </Prose>
-      </ReadingColumns>
-    </div>
+      {
+        /*
+         * Text rather than links. Tag pages were dropped for this version —
+         * the writing index shows the topic as a column instead — and a link
+         * to a route that does not exist is worse than no link at all.
+         */
+      }
+      {
+        tags.length > 0 && (
+          <ul class="text-label text-section-muted m-0 mt-3 flex list-none flex-wrap gap-x-3 p-0 uppercase">
+            {tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    {
+      hero && (
+        <Image
+          src={hero.src}
+          alt={hero.alt}
+          widths={[640, 960, 1280, 1600]}
+          sizes="(min-width: 1400px) 1400px, 100vw"
+          class="border-section-rule mb-9 w-full border"
+          loading="eager"
+        />
+      )
+    }
+
+    {
+      /*
+       * The contents beside the article rather than the article alone in the
+       * middle of the page. One column at the measure leaves most of a wide
+       * screen empty, and an article is a piece somebody reads in order, so
+       * the list of what is coming is worth having open while they do.
+       */
+    }
+    <ReadingColumns>
+      <Contents slot="aside" {headings} label={t("writing.contents")} />
+
+      <Prose>
+        <slot />
+      </Prose>
+    </ReadingColumns>
   </Section>
 </BaseLayout>

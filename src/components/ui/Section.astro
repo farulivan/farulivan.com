@@ -5,26 +5,27 @@ import { cn } from "@/lib/utils"
 /**
  * A page section, and the colour field it sits on.
  *
- * Sections are full-bleed: the field runs edge to edge and only the content
- * inside it is inset by the page margin. That is what lets the homepage read
- * as a stack of bands rather than a column of boxes.
+ * The field runs edge to edge; the content in it does not. Past a certain
+ * width the content stops growing and centres, because a table, a heading and
+ * a paragraph all stretched to the width of a very wide screen are three
+ * things that are tiring to read and none of them are better for the room.
  *
- * Fields are used sparingly and on purpose. On the homepage the order runs
- * paper, paper, paper, surface, paper, accent, invert, paper — so the lime
- * band and the black band each appear exactly once, near the end, where the
- * page is asking the reader for something.
- *
- * The field runs the full width of the page. The content in it does not: past
- * a certain width it stops growing and centres, because a table, a heading and
- * a paragraph all set to the width of a very wide screen are three things that
- * are tiring to read and none of them are better for the room. The field is
- * what keeps the page reading as a stack of bands while that happens — the
- * colour still goes edge to edge, so the centred content reads as a column on
- * a band rather than as a page that shrank.
+ * The full-bleed field is what lets that happen without the page looking like
+ * it shrank: the colour still reaches both edges, so what is centred on it
+ * reads as a column on a band. It is also what makes a page a stack of bands
+ * rather than a column of boxes.
  *
  * Anything that genuinely has to run edge to edge goes outside a section
- * rather than being told to escape one — which is what the case study
- * screenshot and the portrait already do.
+ * rather than being given a way to escape one — which is what the case study
+ * screenshot and the portrait on the about page already do.
+ *
+ * Fields are used sparingly and on purpose: the home page runs paper, paper,
+ * surface, paper, lime, so the one coloured band arrives at the end, where the
+ * page is asking the reader for something. `invert` is the design's fourth
+ * field and no section uses it: the only near-black band on the site is the
+ * footer, which runs edge to edge and so paints itself. It is kept because the
+ * contrast on that ground is worked out here, and a second black band would
+ * otherwise have to work it out again.
  */
 interface Props {
   field?: "paper" | "surface" | "accent" | "invert"

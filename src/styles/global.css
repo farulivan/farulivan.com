@@ -207,17 +207,17 @@
   --container-measure: 68ch;
 
   /*
-   * How wide a pinned column and the prose beside it are allowed to get
-   * together.
+   * How wide the content of a section is allowed to get. Every section uses
+   * it; the coloured field behind them does not, so a band still reaches both
+   * edges of the page.
    *
-   * The prose is capped at the measure and sits at the right-hand end, the
-   * pinned column sits at the left-hand end, and without this the space
-   * between them grows with the window forever: a third of the page at 1440
-   * and half of it at 1920. Past this width the pair stops spreading, centres,
-   * and what is left over becomes an even margin down both sides.
-   *
-   * The number is the width at which the gap measures what it already measures
-   * on a laptop, so nothing moves at the sizes most people are reading at.
+   * It was set by the hardest case. A long read puts a pinned column at one
+   * end and prose at the other, and without a cap the space between them grows
+   * with the window and never stops — a third of the page at 1440, half of it
+   * at 1920, by which point the two columns have stopped looking like one
+   * piece of writing. This is the width at which that gap measures what it
+   * already measures on a laptop, so nothing moves at the sizes most people
+   * are reading at, and past it the room becomes an even margin on both sides.
    */
   --container-read: 1400px;
 
