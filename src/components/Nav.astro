@@ -7,9 +7,10 @@
  * top again. Two copies of the same word arriving at the same place is the
  * thing worth avoiding, and past that point the name has been said.
  */
+import signature from "@/assets/logo/signature.svg?raw"
+
 import LanguagePicker from "@/components/LanguagePicker.astro"
 import MenuCard from "@/components/MenuCard.astro"
-import Wordmark from "@/components/Wordmark.astro"
 import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 
@@ -41,11 +42,12 @@ const t = useTranslations(lang)
      * Straight up and out once you scroll past the marker, rather than fading
      * in place — it is leaving the screen, so it should look like it went
      * somewhere. Movement only, no fade on the way: a thing that fades while
-     * it travels reads as two effects rather than one departure. Its own height plus 64px is what takes its lower edge past
-     * the top: the lettering is 22px tall but rests 49px down, because it is
-     * centred against the taller control beside it. Measured, a plain -150%
-     * parks it halfway out and its own height plus 48px still left a pixel
-     * showing.
+     * it travels reads as two effects rather than one departure. Its own
+     * height plus 64px is what takes its lower edge past the top: the mark
+     * rests a little way down, because it is centred against the taller
+     * control beside it. Measured against the lettering this replaced, a plain
+     * -150% parked it halfway out and its own height plus 48px still left a
+     * pixel showing, so the 64px has room to spare now the mark is taller.
      *
      * Except when focused. Tabbing to a link that sits off the screen is how a
      * keyboard user loses track of where they are, so reaching it brings it
@@ -61,13 +63,53 @@ const t = useTranslations(lang)
   >
     {
       /*
-       * Always the complete word, and it never drops on a narrow screen. That
-       * is a requirement rather than a preference: the lettering in the hero
-       * is cut off mid-letter, and it only reads as deliberate because this
-       * has already told the reader what the word is.
+       * The signature, not the lettering the rest of the site uses. It is 40px
+       * tall because that is the smallest it stays a word: the mark is 1.7:1
+       * where the lettering is 5.3:1, so at the lettering's 22px the letters
+       * are a third the size and run together.
+       *
+       * It is the version with the hairline outlines taken out. They are a
+       * tenth of a pixel at this size and only ever aliased into a grey haze
+       * around the strokes; the full-detail artwork belongs where there is
+       * room for it.
+       *
+       * Drawn from the outline rather than from a picture of it, so it is
+       * exact at any size and on any screen. The pictures it replaces had to
+       * be cut to the height below, three times over, and were soft the moment
+       * that height changed — and still soft on a screen with a fractional
+       * pixel ratio, which no number of copies could fix.
+       *
+       * Its box is trimmed to the ink. As exported it carried 8% of empty
+       * margin across and 16% down, which would have drawn the mark at 50px
+       * inside the 60 asked for and left it sitting off-centre in its own
+       * space.
+       *
+       * It takes its colour from whatever it sits in, so the bar can change
+       * ground without the mark needing a second copy.
+       *
+       * The size reaches it through the wrapper rather than a scoped style
+       * block. Astro scopes styles by marking the elements in a component's
+       * own template, and this drawing is injected as raw markup, so a scoped
+       * rule matches nothing at all and it collapses to no size — which is
+       * exactly what it did before this was measured.
+       *
+       * The height is written out rather than taken from the spacing scale.
+       * That scale is the design's, not Tailwind's, so `h-10` is 128px here —
+       * which is what it rendered at before this was measured.
+       *
+       * Decorative, and the link around it is already named, so it is hidden
+       * from assistive tech rather than described twice.
+       *
+       * It never drops on a narrow screen. That is a requirement rather than a
+       * preference: the lettering in the hero is cut off mid-letter and only
+       * reads as deliberate because this has already told the reader what the
+       * word is.
        */
     }
-    <Wordmark variant="nav" />
+    <span
+      class="block h-[60px] w-auto pl-2 [&>svg]:block [&>svg]:h-full [&>svg]:w-auto"
+      set:html={signature}
+    />
   </a>
 
   {
