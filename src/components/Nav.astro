@@ -9,7 +9,6 @@
  */
 import LanguagePicker from "@/components/LanguagePicker.astro"
 import MenuCard from "@/components/MenuCard.astro"
-import Wordmark from "@/components/Wordmark.astro"
 import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 
@@ -41,11 +40,12 @@ const t = useTranslations(lang)
      * Straight up and out once you scroll past the marker, rather than fading
      * in place — it is leaving the screen, so it should look like it went
      * somewhere. Movement only, no fade on the way: a thing that fades while
-     * it travels reads as two effects rather than one departure. Its own height plus 64px is what takes its lower edge past
-     * the top: the lettering is 22px tall but rests 49px down, because it is
-     * centred against the taller control beside it. Measured, a plain -150%
-     * parks it halfway out and its own height plus 48px still left a pixel
-     * showing.
+     * it travels reads as two effects rather than one departure. Its own
+     * height plus 64px is what takes its lower edge past the top: the mark
+     * rests a little way down, because it is centred against the taller
+     * control beside it. Measured against the lettering this replaced, a plain
+     * -150% parked it halfway out and its own height plus 48px still left a
+     * pixel showing, so the 64px has room to spare now the mark is taller.
      *
      * Except when focused. Tabbing to a link that sits off the screen is how a
      * keyboard user loses track of where they are, so reaching it brings it
@@ -61,13 +61,44 @@ const t = useTranslations(lang)
   >
     {
       /*
-       * Always the complete word, and it never drops on a narrow screen. That
-       * is a requirement rather than a preference: the lettering in the hero
-       * is cut off mid-letter, and it only reads as deliberate because this
-       * has already told the reader what the word is.
+       * The signature, not the lettering the rest of the site uses. It is 40px
+       * tall because that is the smallest it stays a word: the mark is 1.7:1
+       * where the lettering is 5.3:1, so at the lettering's 22px the letters
+       * are a third the size and run together.
+       *
+       * It is the version with the hairline outlines taken out. They are a
+       * tenth of a pixel at this size and only ever aliased into a grey haze
+       * around the strokes; the full-detail artwork belongs where there is
+       * room for it.
+       *
+       * Three files at the three densities, and the browser picks one. Not the
+       * build's image pipeline: this is line art reduced to a fifth of its
+       * size, and a generic resample softens the stroke edges at that
+       * reduction. Each of these was reduced once and sharpened, so whatever
+       * the screen asks for arrives at exactly the size it will be drawn and
+       * is never resampled again.
+       *
+       * The height is written out rather than taken from the spacing scale.
+       * That scale is the design's, not Tailwind's, so `h-10` is 128px here —
+       * which is what it rendered at before this was measured.
+       *
+       * Decorative, so the alt is empty — the link around it is already named.
+       *
+       * It never drops on a narrow screen. That is a requirement rather than a
+       * preference: the lettering in the hero is cut off mid-letter and only
+       * reads as deliberate because this has already told the reader what the
+       * word is.
        */
     }
-    <Wordmark variant="nav" />
+    <img
+      src="/logo/signature-1x.png"
+      srcset="/logo/signature-1x.png 1x, /logo/signature-2x.png 2x, /logo/signature-3x.png 3x"
+      alt=""
+      width="68"
+      height="40"
+      decoding="async"
+      class="h-[40px] w-auto"
+    />
   </a>
 
   {
