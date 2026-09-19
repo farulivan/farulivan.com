@@ -72,11 +72,22 @@ const t = useTranslations(lang)
        * room for it.
        *
        * Three files at the three densities, and the browser picks one. Not the
-       * build's image pipeline: this is line art reduced to a fifth of its
-       * size, and a generic resample softens the stroke edges at that
-       * reduction. Each of these was reduced once and sharpened, so whatever
-       * the screen asks for arrives at exactly the size it will be drawn and
-       * is never resampled again.
+       * build's image pipeline: this is line art reduced from artwork several
+       * times its size, and a generic resample softens the stroke edges at
+       * that reduction. Each of these was reduced once and sharpened, so
+       * whatever the screen asks for arrives at exactly the size it will be
+       * drawn and is never resampled again.
+       *
+       * Which means the files and the drawn size are one number, not two. Ask
+       * for a height these were not cut for and every density is scaled up
+       * again, which is the one thing they exist to avoid: at 60px against
+       * files cut for 40px, all three were being stretched by half as much
+       * again. Change the height here and the files have to be recut.
+       *
+       * `width` and `height` are the file's real proportions and reserve the
+       * right shape before it loads. They are not free-hand: a ratio that
+       * disagrees with the artwork reserves the wrong box and the bar shifts
+       * the moment the picture arrives.
        *
        * The height is written out rather than taken from the spacing scale.
        * That scale is the design's, not Tailwind's, so `h-10` is 128px here —
@@ -94,10 +105,10 @@ const t = useTranslations(lang)
       src="/logo/signature-1x.png"
       srcset="/logo/signature-1x.png 1x, /logo/signature-2x.png 2x, /logo/signature-3x.png 3x"
       alt=""
-      width="68"
-      height="40"
+      width="101"
+      height="60"
       decoding="async"
-      class="h-[40px] w-auto"
+      class="h-[60px] w-auto pl-2"
     />
   </a>
 
