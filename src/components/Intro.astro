@@ -22,14 +22,19 @@
  * has already seen it this visit, and anyone without JavaScript — the markup
  * stays inert until a script in the document head opts into it.
  */
-import mark from "@/assets/wordmark/mark.svg?raw"
-
-/* Its own mask id, so it cannot collide with the lettering elsewhere. */
-const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
+/*
+ * The signature, and only here. The hero and the footer keep the lettering, so
+ * this screen no longer reads from the same file as they do — swapping the one
+ * used here used to swap all three.
+ */
+import signature from "@/assets/logo/signature.svg?raw"
 ---
 
 <div class="intro" aria-hidden="true">
-  <div class="intro__mark" set:html={svg} />
+  <div class="intro__mark">
+    <span class="intro__ghost" set:html={signature} />
+    <span class="intro__ink" set:html={signature} />
+  </div>
 </div>
 
 <style is:global>
@@ -40,12 +45,19 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
    *
    * The timing, in one place:
    *
-   *   writing   180ms wait, then 700ms per letter, 80ms apart   → 1600ms
+   *   writing   180ms wait, then one sweep of 1420ms            → 1600ms
    *   hold      450ms                                           → 2050ms
    *   slide     750ms                                           → 2800ms
    *
    * The hero lettering starts rising at 2050ms, so the reveal and the arrival
-   * overlap instead of queueing.
+   * overlap instead of queueing. The sweep is timed to finish exactly where
+   * the letters used to, so the hand-off is unchanged.
+   *
+   * One sweep rather than a letter at a time. The lettering could be cut into
+   * ten pieces because it is ten separate letters; a signature is one
+   * unbroken stroke, and cutting it into columns would show slices arriving
+   * rather than a hand moving. Left to right in one pass is also simply what
+   * writing looks like.
    *
    * Deliberately unhurried. It is the one moment on the site that exists to be
    * watched rather than read, and at the earlier speed it was over before the
@@ -75,8 +87,34 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
     animation: intro-lift 2800ms linear forwards;
   }
 
+  /*
+   * Bound by the height as well as the width. This mark is 1.73:1 where the
+   * lettering was 5.3:1, so a width that suited the lettering makes this one
+   * three times as tall — on a short laptop screen it would have run off the
+   * top and bottom. The third term is 70% of the height expressed as a width,
+   * so whichever runs out first is the one that decides.
+   */
   :root[data-intro] .intro__mark {
-    width: min(64vw, 900px);
+    width: min(60vw, 760px, 121vh);
+    position: relative;
+  }
+
+  .intro__mark span {
+    display: block;
+  }
+
+  /*
+   * The pale copy is structural rather than decoration: it holds the finished
+   * shape from the first frame, so the ink arrives into a line that is already
+   * there instead of appearing out of nothing.
+   */
+  .intro__ghost {
+    color: color-mix(in srgb, currentColor 12%, transparent);
+  }
+
+  .intro__ink {
+    position: absolute;
+    inset: 0;
   }
 
   .intro__mark svg {
@@ -84,46 +122,42 @@ const svg = mark.replaceAll("wordmark-wipe", "intro-wipe")
     width: 100%;
     height: auto;
     /*
-     * The lettering's box is drawn tight to its ink, and the full stop is the
-     * lowest thing in it — its base lands exactly on the bottom edge. An SVG
-     * clips to that edge by default, so the last row of the dot was being
-     * shaved off by rounding. The same rule is on the lettering everywhere
-     * else; this copy was the one that missed it.
+     * The box is drawn tight to the ink, so rounding can shave the outermost
+     * row of pixels off an edge that lands exactly on it.
      */
     overflow: visible;
   }
 
-  .intro__mark .mark__ghost path {
-    fill: color-mix(in srgb, currentColor 12%, transparent);
-  }
-
-  .intro__mark .mark__draw path {
-    fill: currentColor;
+  /*
+   * What moves is the edge the ink is clipped to, never the drawing. Stroking
+   * an outline and animating the dash offset traces its perimeter — up one
+   * side and back down the other — which on a brush stroke draws two thin
+   * lines converging rather than a stroke being laid down. Uncovering the
+   * finished drawing avoids that, and the last frame is identical to the
+   * drawing standing still.
+   */
+  :root[data-intro] .intro__ink {
+    clip-path: inset(0 100% 0 0);
+    animation-name: mark-write;
+    animation-duration: 1420ms;
+    animation-timing-function: var(--ease-draw);
+    animation-fill-mode: forwards;
+    animation-delay: 180ms;
   }
 
   /*
-   * What animates is a mask, never the letter. Stroking a letter's outline and
-   * animating the dash offset traces its perimeter — up one side and back down
-   * the other — and draws the enclosed shapes in a, u and o as separate loops.
-   * Rendered, that gives hollow colouring-book letters rather than writing.
-   * Uncovering the real filled letter avoids it, and the finished state is
-   * identical to static lettering.
-   *
-   * The pale copy underneath is structural rather than decoration: it holds
-   * the final width from the first frame, so the word does not jump as the
-   * letters land.
+   * Both ends of the sweep are written out, in the same unit. Leaving the
+   * start to be read off the element works, but it means the animation only
+   * makes sense read together with the rule above it, and a later edit to that
+   * rule changes where this begins without touching these lines.
    */
-  :root[data-intro] .intro__mark mask rect {
-    transform-box: fill-box;
-    transform-origin: left center;
-    transform: scaleX(0);
-    animation: mark-write 700ms var(--ease-draw) forwards;
-    animation-delay: calc(var(--i) * 80ms + 180ms);
-  }
-
   @keyframes mark-write {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+
     to {
-      transform: scaleX(1);
+      clip-path: inset(0 0% 0 0);
     }
   }
 
