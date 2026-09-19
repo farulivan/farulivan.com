@@ -86,7 +86,20 @@ const t = useTranslations(lang)
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {
+      /*
+       * No SVG icon. Browsers prefer one over the `.ico` where it exists, and
+       * the one that was here was the starter's artwork in a palette this site
+       * does not use. The mark it should carry only exists as a picture, and a
+       * picture wrapped in an SVG is a picture — so the `.ico` serves every
+       * browser instead until there is a drawing to put here.
+       *
+       * What that costs: an SVG icon can carry its own dark-mode colours, and
+       * the `.ico` cannot. The mark is set on white rather than left
+       * transparent for exactly that reason — a black disc with clear corners
+       * disappears against a dark tab.
+       */
+    }
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
