@@ -88,14 +88,24 @@ import signature from "@/assets/logo/signature.svg?raw"
   }
 
   /*
-   * Bound by the height as well as the width. This mark is 1.73:1 where the
-   * lettering was 5.3:1, so a width that suited the lettering makes this one
-   * three times as tall — on a short laptop screen it would have run off the
-   * top and bottom. The third term is 70% of the height expressed as a width,
-   * so whichever runs out first is the one that decides.
+   * A fifth of the width, with a floor and two ceilings.
+   *
+   * The floor is what keeps it a greeting on a phone. A share of the width
+   * alone reads well on a desktop and collapses on a small screen: at 375px it
+   * came out 75px across, which is narrower than the same mark in the bar —
+   * an opening screen showing the name smaller than the page behind it does.
+   *
+   * The height matters as well as the width because this mark is 1.73:1 where
+   * the lettering was 5.3:1, so the same width makes it three times as tall.
+   * `95vh` as a width holds it to roughly half the window's height, for a
+   * window that is short and wide.
+   *
+   * The last term is the only one that is a taste decision rather than a
+   * guard: past that size it stops reading as a signature and starts reading
+   * as a banner.
    */
   :root[data-intro] .intro__mark {
-    width: min(60vw, 760px, 121vh);
+    width: clamp(180px, min(20vw, 95vh), 760px);
     position: relative;
   }
 
