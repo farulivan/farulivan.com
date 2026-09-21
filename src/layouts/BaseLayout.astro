@@ -86,6 +86,25 @@ const t = useTranslations(lang)
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {
+      /*
+       * The SVG comes first because browsers prefer it, and here that is the
+       * point rather than a detail: it is the only one of these that can
+       * change with the reader's colour scheme.
+       *
+       * It has to, because of how the mark is built. The letter and the
+       * corners are cut out of the disc rather than painted, so a black disc
+       * on a dark tab leaves nothing to see and a white one on a light tab
+       * leaves nothing either. Neither colour works everywhere on its own.
+       * This file carries both and shows whichever matches.
+       *
+       * It holds two small pictures rather than a drawing, which is normally
+       * the wrong way round — but the sizes a favicon is drawn at are all
+       * smaller than the pictures in it, so nothing is ever scaled up. A
+       * drawing would still be better: smaller, and sharp at the larger sizes
+       * a browser uses for a bookmark.
+       */
+    }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
