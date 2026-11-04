@@ -122,10 +122,15 @@ jobs:
 
       # Without this a failed budget prints a score and discards the report,
       # which is not enough to diagnose it from a pull request.
+      #
+      # upload-artifact skips dot-directories unless told otherwise, and the
+      # report lives in one, so without `include-hidden-files` every run —
+      # failed budgets included — uploaded nothing.
       - name: Upload Lighthouse report
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: lighthouse-report
           path: .lighthouseci
+          include-hidden-files: true
           retention-days: 7
