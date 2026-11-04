@@ -163,6 +163,24 @@ finds it in the table; someone browsing gets the visual rows.
 > capture lifts its own cap with no code change, up to the 1,120 ceiling, which
 > keeps a 2× capture a plate rather than a banner.
 
+> **Changed during build: results first.** The outcome figures and the links
+> moved to the top of the page:
+>
+> ```
+> header:   title, summary, then the facts table with the live and source
+>           links beside it as light pills (under it on a phone)
+> results:  every outcome figure at --t-display-s over a --t-label caption,
+>           one row of up to four columns, two to a row on a phone
+> ...       lead image, the story
+> outcome:  the sentence only, at the end
+> next:     the next project's row
+> ```
+>
+> The figures sat after about 2,500px of prose at 32px, and four of them
+> wrapped three and one. The links were a half-width empty box at the very
+> bottom. The links block is gone. The pills open in a new tab and say so to
+> a screen reader, as every external link on the site does.
+
 ---
 
 ## About

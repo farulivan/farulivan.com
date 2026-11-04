@@ -31,6 +31,12 @@ type Props = {
    * words.
    */
   keepLabel?: boolean
+  /**
+   * For a link that leaves the site: opens it in a new tab and adds this
+   * note, "(opens in a new tab)", to the name a screen reader hears. The
+   * visible words stay as they are.
+   */
+  externalLabel?: string
   class?: string
 } & Omit<HTMLAttributes<"button">, "class"> &
   Pick<HTMLAttributes<"a">, "hreflang" | "download">
@@ -41,6 +47,7 @@ const {
   href,
   label,
   keepLabel = false,
+  externalLabel,
   class: className,
   ...rest
 } = Astro.props
@@ -76,7 +83,9 @@ const circles = {
   )}
   href={href}
   type={href ? undefined : "button"}
-  aria-label={label}
+  target={externalLabel ? "_blank" : undefined}
+  rel={externalLabel ? "noopener noreferrer" : undefined}
+  aria-label={externalLabel ? `${label} ${externalLabel}` : label}
   {...rest}
 >
   {

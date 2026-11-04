@@ -3,9 +3,10 @@
  * One case study.
  *
  * The order is deliberate and it is not the order the work happened in: the
- * facts first so the page can be skimmed, then the story, then what changed.
- * Someone reading this is deciding whether to keep reading, and the outcome is
- * the part they came for.
+ * facts and the results first so the page can be skimmed, then the story,
+ * then what changed in a sentence. Someone reading this is deciding whether to
+ * keep reading, and the results are the part they came for, so they come
+ * before two thousand pixels of prose rather than after them.
  *
  * The spec had the facts in a bar at the top and the stack again in a table at
  * the bottom. They are one table here — printing the same list twice on one
@@ -17,11 +18,12 @@ import { Image } from "astro:assets"
 import { render } from "astro:content"
 
 import Contents from "@/components/Contents.astro"
-import CtaBox from "@/components/CtaBox.astro"
 import DataTable, { type DataCell } from "@/components/DataTable.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
 import ReadingColumns from "@/components/ReadingColumns.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
+import Icon from "@/components/ui/Icon.astro"
+import Pill from "@/components/ui/Pill.astro"
 import Prose from "@/components/ui/Prose.astro"
 import Section from "@/components/ui/Section.astro"
 import {
@@ -89,6 +91,20 @@ if (data.liveUrl) links.push({ href: data.liveUrl, label: t("project.live") })
 if (data.sourceUrl) {
   links.push({ href: data.sourceUrl, label: t("project.source") })
 }
+
+/*
+ * One column per figure, up to four, so the strip is a single row on a wide
+ * screen whatever the project has to show. Written out rather than built from
+ * the count, because Tailwind only generates a class it can read in the source.
+ */
+const figures = data.outcome.figures
+const stripColumns = [
+  "",
+  "md:grid-cols-1",
+  "md:grid-cols-2",
+  "md:grid-cols-3",
+  "md:grid-cols-4",
+][Math.min(figures.length, 4)]
 ---
 
 <BaseLayout
@@ -123,7 +139,71 @@ if (data.sourceUrl) {
       )
     }
 
-    <DataTable {columns} {rows} caption={data.title} class="mt-9" />
+    {
+      /*
+       * The facts, and where to see the thing itself, side by side. The links
+       * used to be a pair of empty boxes at the very bottom of the page, where
+       * only someone who had read everything found them.
+       */
+    }
+    <div
+      class="lg:gap-gutter mt-9 grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"
+    >
+      <DataTable {columns} {rows} caption={data.title} />
+      {
+        links.length > 0 && (
+          <div class="flex flex-wrap gap-3 lg:flex-col">
+            {links.map((link) => (
+              <Pill
+                href={link.href}
+                label={link.label}
+                externalLabel={t("a11y.externalLink")}
+                keepLabel
+                class="lg:justify-between"
+              >
+                {/* Up and out, because it leaves the site. */}
+                <Icon
+                  slot="circle"
+                  name="arrowRight"
+                  class="size-4 -rotate-45"
+                />
+              </Pill>
+            ))}
+          </div>
+        )
+      }
+    </div>
+
+    {
+      /*
+       * The results, under the facts and before the story. Every figure at
+       * the size the original spec asked for, one row of them on a wide
+       * screen and two to a row on a phone. No rule of its own: the table's
+       * bottom rule already separates the two, and a second one a step below
+       * it read as two lines that had drifted apart.
+       */
+    }
+    {
+      figures.length > 0 && (
+        <dl
+          class:list={[
+            "gap-x-gutter m-0 mt-8 grid grid-cols-2 gap-y-7",
+            stripColumns,
+          ]}
+        >
+          {figures.map((figure) => (
+            <div class="flex flex-col gap-2">
+              <dt class="text-display-s font-display text-ink leading-none">
+                {figure.value}
+              </dt>
+              <dd class="text-label text-section-muted m-0 uppercase">
+                {figure.caption}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
   </Section>
 
   {
@@ -205,58 +285,20 @@ if (data.sourceUrl) {
     )
   }
 
+  {
+    /*
+     * What changed, in a sentence, once the story has been told. The figures
+     * are at the top of the page; this is the part that says what they added
+     * up to, and the part a project with nothing counted still has.
+     */
+  }
   <Section field="surface" space="md">
-    <SectionHeader
-      label={t("project.outcomeLabel")}
-      description={t("project.outcomeDescription")}
-    />
-
-    {
-      /*
-       * Figures where they exist, and the sentence either way. Plenty of good
-       * work moved something nobody counted, and the sentence is what stops
-       * that project reading as a project that did nothing.
-       */
-    }
-    {
-      data.outcome.figures.length > 0 && (
-        <dl class="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {data.outcome.figures.map((figure) => (
-            <div class="flex flex-col gap-2">
-              <dt class="text-display-s font-display text-ink order-1 leading-none">
-                {figure.value}
-              </dt>
-              <dd class="text-label text-section-muted order-2 m-0 uppercase">
-                {figure.caption}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      )
-    }
+    <SectionHeader label={t("project.outcomeLabel")} />
 
     <p class="text-read text-ink max-w-measure mt-7 text-pretty">
       {data.outcome.summary}
     </p>
   </Section>
-
-  {
-    links.length > 0 && (
-      <Section space="md">
-        <SectionHeader label={t("project.linksLabel")} />
-        <div class="gap-gutter mt-7 grid sm:grid-cols-2">
-          {links.map((link) => (
-            <CtaBox
-              href={link.href}
-              label={link.label}
-              external
-              externalLabel={t("a11y.externalLink")}
-            />
-          ))}
-        </div>
-      </Section>
-    )
-  }
 
   {
     next && (

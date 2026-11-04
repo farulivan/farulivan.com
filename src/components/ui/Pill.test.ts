@@ -57,4 +57,18 @@ describe("Pill", () => {
     })
     expect(html).toContain('download="farul-ivan-cv.pdf"')
   })
+
+  it("opens a link that leaves the site in a new tab, and says so to a screen reader only", async () => {
+    const html = await render({
+      label: "Visit the live site",
+      href: "https://example.com",
+      externalLabel: "(opens in a new tab)",
+    })
+    expect(html).toContain('target="_blank"')
+    expect(html).toContain('rel="noopener noreferrer"')
+    expect(html).toContain(
+      'aria-label="Visit the live site (opens in a new tab)"'
+    )
+    expect(html).toContain('data-text="Visit the live site"')
+  })
 })

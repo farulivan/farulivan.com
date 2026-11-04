@@ -123,9 +123,6 @@ export const en = {
   "project.year": "Year",
   "project.stack": "Stack",
   "project.outcomeLabel": "Outcome",
-  "project.outcomeDescription":
-    "What changed once it was in use. Numbers where they exist, and a plain sentence where they do not.",
-  "project.linksLabel": "Links",
   "project.live": "Visit the live site",
   "project.source": "Read the source",
   "project.nextLabel": "Next project",
@@ -302,9 +299,6 @@ export const id: Record<TranslationKey, string> = {
   "project.year": "Tahun",
   "project.stack": "Teknologi",
   "project.outcomeLabel": "Hasil",
-  "project.outcomeDescription":
-    "Apa yang berubah setelah dipakai. Ada angkanya bila memang terukur, dan satu kalimat jelas bila tidak.",
-  "project.linksLabel": "Tautan",
   "project.live": "Kunjungi situsnya",
   "project.source": "Baca kodenya",
   "project.nextLabel": "Proyek berikutnya",
