@@ -76,6 +76,12 @@ jobs:
       - name: Build
         run: pnpm build:fast
 
+      # The last step of `pnpm verify`, which promises to be the same gate as
+      # CI. A class with no rule behind it fails silently in the browser, so
+      # this is the only place it fails at all.
+      - name: Check every class has a rule
+        run: pnpm check:classes
+
   # Not on pull requests while the site is still being built.
   #
   # It runs three times over every page in both languages, which takes about
