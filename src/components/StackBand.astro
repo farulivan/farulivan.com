@@ -23,8 +23,16 @@
 import { cn } from "@/lib/utils"
 
 interface Props {
-  /** One row each. Three or four; more turns a band into a page. */
-  groups: readonly { domain: string; items: readonly string[] }[]
+  /**
+   * One row each. Three or four; more turns a band into a page. `depth` is a
+   * few words on how far the group goes, "Where I live" or "Growing,
+   * deliberately", set in front of the list.
+   */
+  groups: readonly {
+    domain: string
+    items: readonly string[]
+    depth?: string | undefined
+  }[]
   label: string
   class?: string
 }
@@ -42,17 +50,31 @@ const { groups, label, class: className } = Astro.props
           style={`--band-direction: ${index % 2 === 0 ? -1 : 1}`}
         >
           {/*
-           * The domain is the claim and the items are the evidence, so the
-           * domain leads at display size and the tools follow it small. Both
-           * on one line: this is a band to be glanced at, not read.
+           * The domain is the claim and the items are the evidence. The word
+           * stays large, because it is the poster, but the tools are what
+           * somebody hiring is scanning for, so they are set to be read:
+           * body size, in ink, as they are spelled. They used to be small
+           * muted capitals that ran on after the word on some rows and
+           * wrapped under it on others, which looked like an accident.
+           *
+           * Now always under the word, on its left edge, led by how deep the
+           * group goes, so "where I live" and "growing" do not sit at the
+           * same weight.
+           *
+           * The word wraps on a phone rather than running off the edge. Held
+           * to one line, it was cut to "CRAFT AND PRA", which is a crop that
+           * loses the word rather than one that frames it.
            */}
-          <p class="m-0 flex flex-wrap items-baseline gap-x-5 gap-y-2 whitespace-nowrap">
-            <span class="text-display-m font-display uppercase">
-              {group.domain}
-            </span>
-            <span class="text-label text-section-muted uppercase">
-              {group.items.join(" · ")}
-            </span>
+          <p class="text-display-m font-display m-0 uppercase">
+            {group.domain}
+          </p>
+          <p class="m-0 mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            {group.depth && (
+              <span class="text-label text-section-muted uppercase">
+                {group.depth}
+              </span>
+            )}
+            <span class="text-body text-ink">{group.items.join(" · ")}</span>
           </p>
         </li>
       ))
