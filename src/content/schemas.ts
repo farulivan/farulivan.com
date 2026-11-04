@@ -128,6 +128,12 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
           alt: z.string().min(1),
           /** Printed under the picture when a project has more than one. */
           caption: z.string().min(1).optional(),
+          /**
+           * A tighter crop of the same capture for phones, framed around its
+           * headline. At phone width the whole page is a thumbnail nobody can
+           * read; this is the part of it worth reading.
+           */
+          phone: image().optional(),
         })
       )
       .default([]),

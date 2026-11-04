@@ -1,0 +1,78 @@
+---
+/**
+ * A screenshot of the work, with a tighter crop of it for phones.
+ *
+ * A desktop capture shown 350 pixels wide is a thumbnail: the whole page is
+ * there and none of it can be read. Where a project supplies a phone crop, a
+ * piece of the same capture framed around its headline, a phone gets that
+ * instead, through a `<picture>` source the browser picks before it downloads
+ * anything. Everywhere else, and wherever there is no crop, it is the whole
+ * capture as before.
+ *
+ * Astro's `<Picture>` component chooses between formats, not between
+ * pictures, so the phone source is built by hand from `getImage`, with the
+ * crop's own width and height so the box is the right shape before it loads.
+ */
+import type { HTMLAttributes } from "astro/types"
+
+import { getImage, Image } from "astro:assets"
+
+/** Where a phone ends. Matches the `md` breakpoint the layouts switch at. */
+const PHONE = "(max-width: 767px)"
+
+interface Props {
+  src: ImageMetadata
+  alt: string
+  /** The crop for phones. Optional: without one, a phone gets the whole. */
+  phone?: ImageMetadata | undefined
+  widths: number[]
+  sizes: string
+  class?: string | undefined
+  style?: HTMLAttributes<"img">["style"]
+  /** The picture element's own class, for when it has to fill its box. */
+  pictureClass?: string | undefined
+}
+
+const {
+  src,
+  alt,
+  phone,
+  widths,
+  sizes,
+  class: className,
+  style,
+  pictureClass,
+} = Astro.props
+
+/*
+ * Up to 1,200 wide, which covers a 3× phone, and never past the crop's own
+ * width: upscaling a capture only makes it softer. A crop narrower than the
+ * largest step gets its own width as the top one instead.
+ */
+const phoneImage = phone
+  ? await getImage({
+      src: phone,
+      widths: [
+        ...[480, 800].filter((width) => width < phone.width),
+        Math.min(phone.width, 1200),
+      ],
+      format: "webp",
+    })
+  : undefined
+---
+
+<picture class={pictureClass}>
+  {
+    phone && phoneImage && (
+      <source
+        media={PHONE}
+        srcset={phoneImage.srcSet.attribute}
+        sizes="100vw"
+        type="image/webp"
+        width={phone.width}
+        height={phone.height}
+      />
+    )
+  }
+  <Image {src} {alt} {widths} {sizes} class={className} {style} />
+</picture>
