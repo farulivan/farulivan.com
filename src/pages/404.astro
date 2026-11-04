@@ -3,9 +3,14 @@
  * A single 404 for the whole site, at the root rather than per locale: a
  * static host serves one not-found page and cannot know the visitor's
  * language, so this one links to both.
+ *
+ * Built from the same three things every other page opens with: a title at
+ * display size on the left margin, one line under it, and the pill controls.
+ * A page somebody reaches by mistake is still a page of this site, and the
+ * starter's centred card with its own buttons said otherwise.
  */
-import Button from "@/components/ui/Button.astro"
-import Container from "@/components/ui/Container.astro"
+import Pill from "@/components/ui/Pill.astro"
+import Section from "@/components/ui/Section.astro"
 import { DEFAULT_LOCALE, LOCALES } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
@@ -19,30 +24,45 @@ const t = useTranslations(DEFAULT_LOCALE)
   title={t("notFound.title")}
   description={t("notFound.description")}
 >
-  <Container class="py-10 text-center">
-    <p class="text-ink-muted text-ui font-mono">404</p>
-    <h1 class="text-h-l font-emph mt-3">
+  <Section space="lg">
+    <h1
+      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-auto"
+    >
       {t("notFound.title")}
     </h1>
-    <p class="text-ink-muted mx-auto mt-4 max-w-md text-pretty">
+    {
+      /*
+       * Further down than the line under the other page titles. "Page" has a
+       * descender, and at display size with the tight leading it hangs about a
+       * fifth of the type size below its line, close enough to touch the line
+       * under it at the usual gap.
+       */
+    }
+    <p class="text-read text-section-muted max-w-measure mt-7 text-pretty">
       {t("notFound.description")}
     </p>
 
-    <div class="mt-8 flex flex-wrap justify-center gap-3">
+    {
+      /*
+       * One way home per language, dark for the default and light for the
+       * other. Each is marked with its own language, so a screen reader on
+       * this English page reads the Indonesian name as Indonesian.
+       */
+    }
+    <div class="mt-7 flex flex-wrap gap-3">
       {
-        LOCALES.map((locale) => {
-          const localeT = useTranslations(locale)
-          return (
-            <Button
-              href={localizePath("/", locale)}
-              variant={locale === DEFAULT_LOCALE ? "primary" : "outline"}
-              hreflang={locale}
-            >
-              {localeT("notFound.home")}
-            </Button>
-          )
-        })
+        LOCALES.map((locale) => (
+          <Pill
+            href={localizePath("/", locale)}
+            label={useTranslations(locale)("notFound.home")}
+            tone={locale === DEFAULT_LOCALE ? "dark" : "light"}
+            icon="arrowRight"
+            keepLabel
+            lang={locale}
+            hreflang={locale}
+          />
+        ))
       }
     </div>
-  </Container>
+  </Section>
 </BaseLayout>
