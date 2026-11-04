@@ -23,6 +23,7 @@ Read in this order.
 | **[components.md](components.md)** | C1–C10: anatomy, all five states, responsive, a11y. |
 | **[pages.md](pages.md)** | Section order and layout per page, plus the content Farul still owes. |
 | **[handover.md](handover.md)** | Build order, Astro structure, screenshot recipe, definition of done, watch list. |
+| **[review-2026-11.md](review-2026-11.md)** | Design review of the built site, November 2026: what to change next, in priority order, and which specs it overrides. Read before starting new UI work. |
 
 ---
 
