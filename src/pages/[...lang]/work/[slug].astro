@@ -86,11 +86,23 @@ const rows: DataCell[][] = [
   ],
 ]
 
-const links: { href: string; label: string }[] = []
-if (data.liveUrl) links.push({ href: data.liveUrl, label: t("project.live") })
-if (data.sourceUrl) {
-  links.push({ href: data.sourceUrl, label: t("project.source") })
-}
+/*
+ * Where to see the work: the live sites, then the source. A site goes by its
+ * own name when there is more than one, so the two brands of the investment
+ * platform get a button each that says which is which.
+ */
+const links: { href: string; label: string }[] = [
+  ...data.liveSites.map((site) => ({
+    href: site.url,
+    label:
+      data.liveSites.length > 1 && site.name
+        ? t("project.visit", { name: site.name })
+        : t("project.live"),
+  })),
+  ...(data.sourceUrl
+    ? [{ href: data.sourceUrl, label: t("project.source") }]
+    : []),
+]
 
 /*
  * One column per figure, up to four, so the strip is a single row on a wide
@@ -132,6 +144,35 @@ const stripColumns = [
     </p>
 
     {
+      /*
+       * Where to see the work, straight under the sentence that says what it
+       * is: the same place, the same pills and the same step the home page
+       * puts the CV and the email under the name. One dark pill and the rest
+       * light, so there is one obvious first thing to do. Stacked and full
+       * width on a phone, where a row of two would not fit.
+       */
+    }
+    {
+      links.length > 0 && (
+        <div class="mt-6 flex flex-col gap-3 md:flex-row md:flex-wrap">
+          {links.map((link, index) => (
+            <Pill
+              tone={index === 0 ? "dark" : "light"}
+              href={link.href}
+              label={link.label}
+              externalLabel={t("a11y.externalLink")}
+              keepLabel
+              class="max-md:w-full max-md:justify-between"
+            >
+              {/* Up and out, because it leaves the site. */}
+              <Icon slot="circle" name="arrowRight" class="size-4 -rotate-45" />
+            </Pill>
+          ))}
+        </div>
+      )
+    }
+
+    {
       project.isFallback && (
         <p class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5">
           {t("project.untranslated")}
@@ -139,40 +180,7 @@ const stripColumns = [
       )
     }
 
-    {
-      /*
-       * The facts, and where to see the thing itself, side by side. The links
-       * used to be a pair of empty boxes at the very bottom of the page, where
-       * only someone who had read everything found them.
-       */
-    }
-    <div
-      class="lg:gap-gutter mt-9 grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"
-    >
-      <DataTable {columns} {rows} caption={data.title} />
-      {
-        links.length > 0 && (
-          <div class="flex flex-wrap gap-3 lg:flex-col">
-            {links.map((link) => (
-              <Pill
-                href={link.href}
-                label={link.label}
-                externalLabel={t("a11y.externalLink")}
-                keepLabel
-                class="lg:justify-between"
-              >
-                {/* Up and out, because it leaves the site. */}
-                <Icon
-                  slot="circle"
-                  name="arrowRight"
-                  class="size-4 -rotate-45"
-                />
-              </Pill>
-            ))}
-          </div>
-        )
-      }
-    </div>
+    <DataTable {columns} {rows} caption={data.title} class="mt-9" />
 
     {
       /*

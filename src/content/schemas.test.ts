@@ -172,8 +172,32 @@ describe("projectSchema", () => {
 
   it("rejects a live URL that is not a URL", () => {
     expect(() =>
-      project.parse({ ...validProject, liveUrl: "example.com" })
+      project.parse({ ...validProject, liveSites: [{ url: "example.com" }] })
     ).toThrow()
+  })
+
+  it("lets a single live site go unnamed", () => {
+    const result = project.parse({
+      ...validProject,
+      liveSites: [{ url: "https://example.com" }],
+    })
+    expect(result.liveSites).toEqual([{ url: "https://example.com" }])
+  })
+
+  it("requires a name on each live site once there are two", () => {
+    expect(() =>
+      project.parse({
+        ...validProject,
+        liveSites: [
+          { url: "https://one.example", name: "One" },
+          { url: "https://two.example" },
+        ],
+      })
+    ).toThrow()
+  })
+
+  it("defaults to no live sites", () => {
+    expect(project.parse(validProject).liveSites).toEqual([])
   })
 })
 
