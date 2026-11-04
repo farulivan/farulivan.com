@@ -101,7 +101,16 @@ export async function getPostListItems(lang: Locale): Promise<PostListItem[]> {
    The work index and the case studies. */
 
 export type ProjectEntry = CollectionEntry<"projects">
-export type LocalizedProject = Localized<ProjectEntry>
+
+/**
+ * A project and its number: its place in the full list, counted from one.
+ *
+ * The number belongs to the project, not to whichever list is printing it. The
+ * work table, the selected rows and the next-project link all show it, and a
+ * project listed as 04 in the table cannot be 03 in the rows under it. Counting
+ * each list on its own did exactly that once the selection became a subset.
+ */
+export type LocalizedProject = Localized<ProjectEntry> & { number: number }
 
 /**
  * URL slug, shared across locales so the language picker stays on the page —
@@ -119,9 +128,9 @@ export function projectSlug(entry: ProjectEntry): string {
  */
 export async function getProjects(lang: Locale): Promise<LocalizedProject[]> {
   const all = await getCollection("projects")
-  return localize(all, lang).sort(
-    (a, b) => a.entry.data.order - b.entry.data.order
-  )
+  return localize(all, lang)
+    .sort((a, b) => a.entry.data.order - b.entry.data.order)
+    .map((project, index) => ({ ...project, number: index + 1 }))
 }
 
 /** The three or so that get a full row rather than a table line. */

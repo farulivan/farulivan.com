@@ -51,7 +51,7 @@ export const en = {
     "I work end to end on web products: the interface people touch, the API contracts behind it, and the tests and pipelines that keep both honest. Three years of that as the only frontend engineer on a production platform.",
   "home.workLabel": "Selected work",
   "home.workDescription":
-    "Four projects, with what they were for and what changed once they shipped.",
+    "Three projects, with what they were for and what changed once they shipped.",
   "home.workCta": "See all work",
   "home.experienceLabel": "Experience",
   "home.experienceDescription": "The three most recent roles.",
@@ -80,7 +80,7 @@ export const en = {
   "about.portraitAlt": "A portrait of Farul Ivan.",
   "about.historyLabel": "History",
   "about.historyDescription":
-    "Fifteen years of it, from university to the last thing I shipped.",
+    "From architecture school in 2011 to the last thing I shipped.",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
     "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
@@ -226,7 +226,7 @@ export const id: Record<TranslationKey, string> = {
     "Saya mengerjakan produk web dari hulu ke hilir: antarmuka yang disentuh orang, kontrak API di belakangnya, serta pengujian dan pipeline yang menjaga keduanya tetap jujur. Tiga tahun sebagai satu-satunya frontend engineer di platform produksi.",
   "home.workLabel": "Karya pilihan",
   "home.workDescription":
-    "Empat proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
+    "Tiga proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
   "home.workCta": "Lihat semua karya",
   "home.experienceLabel": "Pengalaman",
   "home.experienceDescription": "Tiga peran terakhir.",
@@ -255,7 +255,7 @@ export const id: Record<TranslationKey, string> = {
   "about.portraitAlt": "Potret Farul Ivan.",
   "about.historyLabel": "Riwayat",
   "about.historyDescription":
-    "Lima belas tahun, dari bangku kuliah sampai hal terakhir yang saya rilis.",
+    "Dari kuliah arsitektur pada 2011 sampai hal terakhir yang saya rilis.",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
     "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",

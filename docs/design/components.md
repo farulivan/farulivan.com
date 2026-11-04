@@ -203,6 +203,17 @@ scales 1.02. Focus-visible: ring around the whole row, not the image.
 > picture zooming 1.02 inside its frame, plus an underline on the title.
 > Focus-visible is unchanged: a ring around the whole row.
 
+> **Changed during build: the index is the project's number, not the row's.**
+> It is the project's place in the full list, the same number the work table
+> prints in its NN column, so a project keeps one number everywhere it appears.
+> Three of the four projects are selected, which makes the selected rows read
+> 01, 02, 04, and the next-project row at the foot of a case study prints the
+> number of the project it leads to.
+>
+> Counting each list on its own put the same project under two numbers on one
+> page: Norven was 04 in the table and 03 in the rows under it. The
+> next-project row had the opposite fault and printed 01 on every case study.
+
 ---
 
 ## C6 · Hairline data table

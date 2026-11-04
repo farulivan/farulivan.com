@@ -21,7 +21,8 @@ import { cn } from "@/lib/utils"
 
 interface Props {
   href: string
-  index: number
+  /** The project's place in the full work list, which is what the table prints. */
+  number: number
   title: string
   role: string
   stack: readonly string[]
@@ -34,7 +35,7 @@ interface Props {
 
 const {
   href,
-  index,
+  number,
   title,
   role,
   stack,
@@ -45,7 +46,7 @@ const {
 } = Astro.props
 
 /** "01", not "1" — a counter that keeps its width down the page. */
-const counter = String(index).padStart(2, "0")
+const counter = String(number).padStart(2, "0")
 
 /*
  * Role and stack on one line, in the order somebody scanning for a technology
@@ -58,7 +59,7 @@ const meta = [role, ...stack.slice(0, 3)].join(" · ")
 <a
   {href}
   data-reveal
-  style={`--reveal-step: ${index % 6}`}
+  style={`--reveal-step: ${number % 6}`}
   class={cn("group border-section-rule block border-b no-underline", className)}
 >
   <div class="gap-gutter grid items-center py-7 lg:grid-cols-2">
