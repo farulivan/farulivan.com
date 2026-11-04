@@ -372,6 +372,35 @@
   }
 }
 
+/*
+ * Page transitions.
+ *
+ * Cross-document view transitions, declared in CSS and nothing else: the
+ * browser keeps the old page on screen until the new one is ready and blends
+ * the two, with no client router and no script, so the site still ships no
+ * runtime. A browser without them navigates the way it always has.
+ *
+ * Only for anyone who has not asked for less motion. The blend is short and
+ * eases out, the same curve everything that arrives on this site uses.
+ *
+ * A project's picture is named after its project number, the same on every
+ * page, so the screenshot in a row grows into the plate at the top of its
+ * case study instead of vanishing and reappearing. The bar is named too, so
+ * it holds still while the page under it changes.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: var(--duration-mid);
+    animation-timing-function: var(--ease-reveal);
+  }
+}
+
 @layer components {
   /*
    * Links leaving the site get a visible marker to match the screen-reader

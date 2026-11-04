@@ -100,7 +100,10 @@ const lead = figures.slice(0, 2)
     >
       {
         screenshot ? (
-          <div class="border-section-rule h-full w-full overflow-hidden border">
+          <div
+            class="border-section-rule h-full w-full overflow-hidden border"
+            style={`view-transition-name: project-shot-${number}`}
+          >
             <Image
               src={screenshot.src}
               alt={screenshot.alt}

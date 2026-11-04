@@ -254,6 +254,9 @@ const stripColumns = [
      *
      * The picture keeps its own proportions here rather than being cropped to
      * 16:10. This is the one place it is shown whole.
+     *
+     * The first one shares a transition name with the project's row, so on
+     * the way in from a list the row's picture grows into this plate.
      */
   }
   {
@@ -265,7 +268,7 @@ const stripColumns = [
             data.screenshots.length > 1 && "md:grid-cols-2",
           ]}
         >
-          {data.screenshots.map((shot) => {
+          {data.screenshots.map((shot, index) => {
             const cap = screenshotMaxWidth(shot.src.width)
             return (
               <figure class="m-0 w-full" style={`max-width: ${cap}px`}>
@@ -279,6 +282,11 @@ const stripColumns = [
                       : `(min-width: ${cap}px) ${cap}px, 100vw`
                   }
                   class="border-section-rule block h-auto w-full border"
+                  style={
+                    index === 0
+                      ? `view-transition-name: project-shot-${project.number}`
+                      : undefined
+                  }
                 />
                 {shot.caption && (
                   <figcaption class="text-label text-section-muted mt-3 uppercase">
