@@ -93,13 +93,15 @@ finds it in the table; someone browsing gets the visual rows.
 > picture.** A grey stage band runs edge to edge, and each capture is mounted on
 > it at its own proportions, edged with a 1px hairline. Each is capped at two
 > thirds of its width in pixels (`screenshotMaxWidth` in `src/lib/screenshot.ts`).
-> Two or more share the row.
+> No plate is wider than 1,120px, however sharp the capture. Two or more share
+> the row.
 >
-> Full bleed assumed captures that do not exist. The screenshots are 1×, so at
-> the full width of a 1440 window on a 2× screen each pixel was stretched to
-> nearly three and the type in them went soft. The band needs no pixels, so it
-> keeps the edge-to-edge moment the picture can no longer carry. A sharper
-> capture lifts its own cap with no code change.
+> Full bleed assumed captures that did not exist. The first screenshots were 1×,
+> so at the full width of a 1440 window on a 2× screen each pixel was stretched
+> to nearly three and the type in them went soft. The band needs no pixels, so
+> it keeps the edge-to-edge moment the picture can no longer carry. A sharper
+> capture lifts its own cap with no code change, up to the 1,120 ceiling, which
+> keeps a 2× capture a plate rather than a banner.
 
 ---
 

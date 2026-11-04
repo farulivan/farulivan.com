@@ -115,9 +115,30 @@ naming:       {project-slug}.png → src/content/projects/_images/
 > This is still no mockup and no shadow. A flat field and a hairline are the
 > same structure the rest of the site is built from. The 2× recipe above still
 > stands for future captures, and a sharper capture lifts its own cap
-> automatically. Crop at the end of the section you are showing, not at a fixed
-> ratio, so the next section's background does not show as a strip along the
-> bottom edge.
+> automatically, up to 1,120px. Past that a plate starts to read as a banner.
+> Crop at the end of the section you are showing, not at a fixed ratio, so the
+> next section's background does not show as a strip along the bottom edge.
+
+> **How the 2× captures were taken.** Nabitu, Zeed and Norven were recaptured
+> on 2026-11-04 at 1440 × 900 with a device pixel ratio of 2, giving 2880 ×
+> 1800. Norven is cut at its hero's edge, 2880 × 1714. A normal desktop browser
+> on a 1× monitor cannot produce these, since its screenshots match the screen.
+> Use headless Chrome:
+>
+> ```
+> "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+>   --hide-scrollbars --force-device-scale-factor=2 --window-size=1440,900 \
+>   --virtual-time-budget=4000 --screenshot=out.png https://norven.farulivan.com/
+> ```
+>
+> Alternatively, use Chrome DevTools' device mode at 1440 × 900 with a pixel
+> ratio of 2, then "Capture screenshot". **Nabitu defaults to Indonesian.** It
+> keeps its language in `localStorage` under `nabitu-lang`, so set it to `en`
+> and reload before capturing, or the picture will not match its alt text.
+>
+> The hospital site and the WhatsApp bot are still 1×. The hospital's live site
+> now shows a different design from the one in its capture, so it was not
+> recaptured until it is settled which design belongs on the case study.
 
 For anything NDA-covered, do not blur or redact — use the **C5b no-image
 variant**. A blurred screenshot looks like a mistake; a type block looks
