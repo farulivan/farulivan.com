@@ -38,6 +38,14 @@ not decoration.
 **Responsive.** Below `768px`, zones 2 and 3 drop; mark + menu pill only. The
 mark **never** drops — the hero crop depends on it ([wordmark.md §3](wordmark.md)).
 
+> **Changed during build: the controls hide while you read.** "Always visible"
+> put the language and menu pills on top of headings and prose on every long
+> page, and on a phone nearly all the time. Past the point where the mark
+> leaves, they leave too on the way down and come back on the first scroll
+> up, after 8px of travel either way. They stay while the menu is open or
+> while one of them has keyboard focus, and move without a transition under
+> reduced motion. The CV is in the menu, so it is one upward flick away.
+
 **A11y.** `<header>` + `<nav aria-label="Primary">`. Skip link is the first
 focusable element on the page.
 
@@ -340,6 +348,14 @@ overflow:  hidden on the band; rows may extend past both edges
 
 This keeps the family resemblance to C8's staircase (horizontal rules, offset per
 row) without borrowing the fret grid.
+
+> **Changed during build: the tools are read, not glanced at.** The domain
+> stays at display size. Under it, on its left edge, the tools are set at
+> `--text-body` in `--ink` and sentence case, led by a `--t-label` tag: the
+> first sentence of the group's depth note, as the about page prints it in
+> full ("Where I live", "Growing, deliberately"). They used to be 13px muted
+> capitals that ran on after the word on some rows and wrapped under it on
+> others. The word wraps on a phone instead of being cut to "CRAFT AND PRA".
 
 **Reduced motion.** Rows sit at their mid position, static.
 

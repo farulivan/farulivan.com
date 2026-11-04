@@ -146,3 +146,16 @@ export function formatMonths(
   if (!to) return undefined
   return `${fromLabel} – ${to} ${end.slice(0, 4)}`
 }
+
+/**
+ * The opening sentence of a passage, without its full stop: "Where I live.
+ * Three years of it…" becomes "Where I live", short enough to stand as a tag.
+ *
+ * A stop only ends the sentence when a space or the end of the text follows
+ * it, so "Next.js" and "3.5" stay whole. Text with no stop comes back as it
+ * was.
+ */
+export function firstSentence(text: string): string {
+  const end = /[.!?](?=\s|$)/.exec(text)
+  return (end ? text.slice(0, end.index) : text).trim()
+}

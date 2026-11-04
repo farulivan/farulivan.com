@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import {
+  firstSentence,
   formatDate,
   formatDateShort,
   formatMonths,
@@ -120,5 +121,29 @@ describe("formatMonths", () => {
 
   it("is not moved onto the previous month by a timezone", () => {
     expect(formatMonths({ start: "2026-01" }, "en", "Present")).toBe("Jan 2026")
+  })
+})
+
+describe("firstSentence", () => {
+  it("keeps the opening sentence and drops its full stop", () => {
+    expect(
+      firstSentence("Where I live. Three years of it as the only person.")
+    ).toBe("Where I live")
+  })
+
+  it("does not end a sentence at a stop inside a word or a number", () => {
+    expect(firstSentence("Mostly Next.js, about 3.5 years. Then Go.")).toBe(
+      "Mostly Next.js, about 3.5 years"
+    )
+  })
+
+  it("returns a single sentence without its stop", () => {
+    expect(firstSentence("Growing, deliberately.")).toBe(
+      "Growing, deliberately"
+    )
+  })
+
+  it("returns text with no stop as it was", () => {
+    expect(firstSentence("I direct it")).toBe("I direct it")
   })
 })

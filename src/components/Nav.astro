@@ -6,6 +6,12 @@
  * version of it sits in the hero, and does not come back until you are at the
  * top again. Two copies of the same word arriving at the same place is the
  * thing worth avoiding, and past that point the name has been said.
+ *
+ * The controls leave at the same point, but only while you are reading on:
+ * they go on the way down and come back on the first scroll up. Left in
+ * place they sat on top of headings and prose on every long page, and on a
+ * phone nearly all the time. The CV is in the menu, so it is still one
+ * upward flick and one click away.
  */
 import signature from "@/assets/logo/signature.svg?raw"
 
@@ -122,7 +128,22 @@ const t = useTranslations(lang)
      * order.
      */
   }
-  <div class="ms-auto flex items-center gap-4">
+  {
+    /*
+     * The same departure as the lettering, for the same distance, and back
+     * the moment a control inside has keyboard focus or the menu is open.
+     * Focus-visible rather than focus, so a control clicked with a mouse does
+     * not pin the pair to the screen for the rest of the page.
+     *
+     * The move is only applied while hidden. A moved element becomes the box
+     * its fixed children are placed against, and the menu card is one: while
+     * hidden the card is closed and parked off the right edge either way, and
+     * the moment it opens the move is gone and it hangs from the window again.
+     */
+  }
+  <div
+    class="duration-mid ease-reveal ms-auto flex items-center gap-4 transition-transform motion-reduce:transition-none [:root[data-controls-hidden]:not([data-menu-open])_&:not(:has(:focus-visible))]:-translate-y-[calc(100%+var(--spacing-8))]"
+  >
     <LanguagePicker
       lang={lang}
       path={switchPath}
@@ -136,7 +157,8 @@ const t = useTranslations(lang)
 <script>
   /**
    * Hides the lettering in the bar once you have scrolled past the point the
-   * page marks as its own.
+   * page marks as its own, and past it, the controls whenever you are
+   * scrolling down.
    *
    * On the homepage that point is the large lettering in the hero: the small
    * copy leaves exactly as the large one arrives, so the same word is never in
@@ -159,12 +181,30 @@ const t = useTranslations(lang)
     const root = document.documentElement
     let queued = false
 
+    /*
+     * Where the page was the last time the controls changed their mind. A
+     * scroll has to travel a little way before it counts as a direction, so
+     * a trackpad's tremor or a phone's bounce at the end of the page does not
+     * flick them in and out; small moves add up until one of them does.
+     */
+    const threshold = 8
+    let anchor = scrollY
+
     const update = () => {
       queued = false
       const passed = marker
         ? marker.getBoundingClientRect().top <= bar.offsetHeight
         : scrollY > bar.offsetHeight
       root.toggleAttribute("data-mark-hidden", passed)
+
+      const travelled = scrollY - anchor
+      if (!passed || root.hasAttribute("data-menu-open")) {
+        root.removeAttribute("data-controls-hidden")
+        anchor = scrollY
+      } else if (Math.abs(travelled) >= threshold) {
+        root.toggleAttribute("data-controls-hidden", travelled > 0)
+        anchor = scrollY
+      }
     }
 
     addEventListener(

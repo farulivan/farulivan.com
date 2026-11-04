@@ -45,6 +45,19 @@ black fields back to back and asked twice for the same thing. It is gone, and th
 footer is the black one. Every route to contact the page had, it still has: the
 menu, the email, the download.
 
+> **Changed during build: the statement and the pacing.** The statement starts
+> on the hero's 20% line instead of centring, at line-height 1.05 instead of
+> 0.95. It was the only centred block on the site. The shared line ties it to
+> the name above, and at 0.95 its three lines nearly touched. Its section
+> drops from 192px of padding each side to 128, and the stack's from 192 to 96.
+>
+> The review's target was the first project's image within two screens at
+> 1440×900. These changes move it from 3.2 screens to 2.9, and the stack band
+> grew when its lists moved under the words. Moving the work above the stack
+> would have met the target. I kept the stack first because the band is the
+> more interesting thing to meet second, so the target was dropped rather than
+> missed.
+
 ### Hero detail
 
 ```
