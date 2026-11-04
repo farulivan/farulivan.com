@@ -43,6 +43,20 @@ const experience = await getExperience(lang)
 const capabilities = await getCapabilities(lang)
 
 /*
+ * The career in two chapters: the software work, then what came before it,
+ * under a small heading of its own. Each row keeps its place in the whole
+ * list, so the staircase and the counters run on across the turn.
+ */
+const roles = experience.map((item, step) => ({ ...item, step }))
+const turn = roles.findIndex(({ entry }) => entry.data.beforeSoftware)
+const chapters = [
+  { label: undefined, rows: turn === -1 ? roles : roles.slice(0, turn) },
+  ...(turn === -1
+    ? []
+    : [{ label: t("about.beforeSoftware"), rows: roles.slice(turn) }]),
+]
+
+/*
  * Three paragraphs, not four, and most visitors skim: who I am and how I work,
  * where I am going, then one line of background. The third is context, not the
  * pitch, and it stays short on purpose.
@@ -143,26 +157,37 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
       label={t("about.historyLabel")}
       description={t("about.historyDescription")}
     />
-    <ol class="m-0 mt-7 list-none p-0">
-      {
-        experience.map(({ entry }, index) => (
-          <TimelineRow
-            {lang}
-            step={index}
-            steps={experience.length}
-            period={{
-              start: entry.data.start,
-              end: entry.data.end,
-              ongoing: entry.data.ongoing,
-            }}
-            kind={entry.data.kind}
-            role={entry.data.role}
-            company={entry.data.company}
-            description={entry.data.description}
-          />
-        ))
-      }
-    </ol>
+    {
+      chapters.map((chapter) => (
+        <>
+          {chapter.label && (
+            <h3 class="text-label text-section-muted m-0 mt-8 uppercase">
+              {chapter.label}
+            </h3>
+          )}
+          <ol
+            class:list={["m-0 list-none p-0", chapter.label ? "mt-4" : "mt-7"]}
+          >
+            {chapter.rows.map(({ entry, step }) => (
+              <TimelineRow
+                {lang}
+                {step}
+                steps={experience.length}
+                period={{
+                  start: entry.data.start,
+                  end: entry.data.end,
+                  ongoing: entry.data.ongoing,
+                }}
+                kind={entry.data.kind}
+                role={entry.data.role}
+                company={entry.data.company}
+                description={entry.data.description}
+              />
+            ))}
+          </ol>
+        </>
+      ))
+    }
   </Section>
 
   <Section field="surface" space="md">

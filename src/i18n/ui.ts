@@ -84,6 +84,7 @@ export const en = {
   "about.historyLabel": "History",
   "about.historyDescription":
     "From architecture school in 2011 to the last thing I shipped.",
+  "about.beforeSoftware": "Before software",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
     "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
@@ -261,6 +262,7 @@ export const id: Record<TranslationKey, string> = {
   "about.historyLabel": "Riwayat",
   "about.historyDescription":
     "Dari kuliah arsitektur pada 2011 sampai hal terakhir yang saya rilis.",
+  "about.beforeSoftware": "Sebelum beralih ke software",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
     "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",

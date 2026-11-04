@@ -8,4 +8,5 @@ role: "Sarjana Arsitektur"
 company: "Universitas Indonesia"
 description: "Lima tahun sekolah arsitektur, dari sanalah kebiasaannya datang. Struktur sebelum hiasan, dan gambar yang harus tetap terbaca oleh orang lain."
 order: 7
+beforeSoftware: true
 ---

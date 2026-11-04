@@ -2,14 +2,15 @@
 /**
  * One role in the career timeline, drawn as a step in a staircase.
  *
- * Each row starts a little further right than the one above it, so the list
- * descends across the page as well as down it. That stagger is the pattern —
- * the span of years is large enough to read on its own, and the indent is what
- * turns a stack of dates into a career.
+ * Each row's years start a little further right than the ones above, so the
+ * dates descend across the page as well as down it. That stagger is the
+ * pattern — the span of years is large enough to read on its own, and the
+ * indent is what turns a stack of dates into a career.
  *
- * The step shrinks on narrower screens rather than disappearing. Removing it
- * would leave an ordinary list; keeping it at desktop size on a phone would
- * push the last role off the edge.
+ * Only the years step. The details hang from one line, column 7, on every
+ * row. The whole row used to step, which on the about page's seven rows
+ * narrowed the details row by row and slid the last of them under the menu
+ * control.
  */
 import type { ExperienceKind, Locale } from "@/content/schemas"
 import { useTranslations } from "@/i18n/utils"
@@ -67,7 +68,7 @@ const detail = [
   .join(" · ")
 
 /**
- * How far in this row starts.
+ * How far in this row's years start.
  *
  * The staircase has a fixed depth — how far the bottom row sits from the top
  * one — and the step is that depth divided between the rows, up to a limit.
@@ -76,8 +77,13 @@ const detail = [
  * the column. Dividing a budget instead means a new role costs the rows above
  * it a few pixels each and costs the layout nothing.
  *
- * Three depths rather than a fluid value, because the design names all three
- * and the jumps are the point.
+ * The depth is a share of the years' own column, not a length. The years
+ * and the column both grow with the window, the years at 6.7vw and the
+ * column at half the page, so the room beside the widest span is about half
+ * the column at every width. 35% leaves at least a gutter and a half between
+ * the bottom row's dates and its details, measured from 768 to 1920. A
+ * length was right at one width and ran the dates into the details at
+ * another.
  */
 const indent =
   steps > 1
@@ -91,15 +97,12 @@ const indent =
   class={cn(
     "border-section-rule list-none border-b",
     "[--timeline-step:24px] md:[--timeline-step:48px] lg:[--timeline-step:72px]",
-    "[--timeline-depth:96px] md:[--timeline-depth:192px] lg:[--timeline-depth:288px]",
+    "[--timeline-depth:35%]",
     className
   )}
 >
-  <div
-    class="md:gap-gutter grid gap-4 py-7 md:grid-cols-12"
-    style={`padding-inline-start: ${indent}`}
-  >
-    <div class="md:col-span-5">
+  <div class="md:gap-gutter grid gap-4 py-7 md:grid-cols-12">
+    <div class="md:col-span-6" style={`padding-inline-start: ${indent}`}>
       <p class="m-0 flex items-baseline gap-2">
         {
           /*
