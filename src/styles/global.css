@@ -322,6 +322,16 @@
   }
 
   /*
+   * Selected text sits on the lime field with ink on it. Lime is never a
+   * text colour, but a field with ink on it is the one way it is used, and
+   * the pair reads on every ground on the site, the black footer included.
+   */
+  ::selection {
+    background-color: var(--color-accent-field);
+    color: var(--color-ink);
+  }
+
+  /*
    * Deliberately no `scroll-behavior: smooth`. Native scrolling is already
    * smooth, hijacking it breaks scroll anchoring and find-in-page, and a
    * smooth scroll is cancelled by anything that interrupts it — a font
