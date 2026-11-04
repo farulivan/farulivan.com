@@ -1,15 +1,28 @@
 # Monthly, not weekly. The site is still being built, and a dependency bump
 # landing in the middle of that is a distraction rather than a safeguard.
 # Worth moving back to weekly once the build settles.
+#
+# Security fixes ignore the schedule and the cooldown: Dependabot opens them as
+# soon as an advisory names a version in the lockfile.
 version: 2
 updates:
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: monthly
-    # One pull request a week rather than fifteen.
+    # A hijacked release is usually found and pulled from the registry within
+    # days. Waiting a week before proposing one means the monthly bump almost
+    # never carries it. pnpm's own one-day release age is the floor; this is
+    # the margin on top.
+    cooldown:
+      default-days: 7
     groups:
+      # One pull request a month rather than fifteen.
       all-dependencies:
+        patterns: ["*"]
+      # A burst of advisories against one tree becomes one pull request.
+      security-fixes:
+        applies-to: security-updates
         patterns: ["*"]
     ignore:
       # TypeScript is pinned to 6.0.x deliberately: @astrojs/check supports
@@ -18,7 +31,13 @@ updates:
       - dependency-name: typescript
         update-types: ["version-update:semver-major"]
 
+  # The workflow pins each action to a commit; this keeps those pins current.
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
+    cooldown:
+      default-days: 7
+    groups:
+      all-actions:
+        patterns: ["*"]

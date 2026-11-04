@@ -95,6 +95,12 @@ whose card would clip an outset one.
   problem, not the position.
 - **Import Zod from `astro/zod`,** never a separate `zod` install — two copies break `defineCollection`.
 - **TypeScript stays on 6.0.x.** `@astrojs/check` and typescript-eslint both reject TS 7 today.
+- **`ERR_PNPM_TRUST_DOWNGRADE` is a finding, not a config bug.** pnpm refused a
+  release because it was published with weaker provenance than the one before,
+  which is what a hijacked package looks like. Look at the package's release
+  notes and repository before anything else. If the release is genuine, list
+  that one package under `trustPolicyExclude` in `pnpm-workspace.yaml` with a
+  comment saying why. Do not remove `trustPolicy`.
 - **Adding a string?** Add it to `en` in `src/i18n/ui.ts` first; typecheck will then demand the Indonesian one.
 
 - **Never use the `animation` shorthand with `animation-timeline`.** The
