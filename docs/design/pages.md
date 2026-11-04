@@ -176,6 +176,13 @@ finds it in the table; someone browsing gets the visual rows.
 > capture lifts its own cap with no code change, up to the 1,120 ceiling, which
 > keeps a 2× capture a plate rather than a banner.
 
+> **Changed during build: phones get a crop.** Below 768px a desktop capture
+> is a thumbnail, so each screenshot carries a `phone` crop, cut at 16:10 from
+> the same 2× file around its headline. The `Capture` component serves it
+> through a `<picture>` source, in rows and plates alike. Wider screens still
+> get the whole capture. The first plate shares a view-transition name with
+> its project's row, so the row's picture grows into it on the way in.
+
 > **Changed during build: results first.** The outcome figures and the links
 > moved to the top of the page:
 >
@@ -264,6 +271,13 @@ images:     full --measure width, --r-none, caption at --t-micro --ink-muted
 Prose is a single column. No sidebars, no floating TOC — at this length it is
 noise.
 
+> **Changed during build: contents only on a long piece.** The contents column
+> came back for posts, and showed three entries beside a two-minute read. It
+> now appears at four or more h2s, or six or more minutes; a shorter piece is
+> one column at the measure under its title. The meta line gives the published
+> date first and "Updated" second, and the topics are `--t-micro` uppercase
+> tags.
+
 ---
 
 ## Contact
@@ -282,6 +296,15 @@ footer became a full black field after these specs were written, so a black band
 here would sit directly on top of another one — and the footer already carries
 the same download. It is on lime instead, which keeps this the moment the page
 asks for something without repeating the field below it.
+
+> **Changed during build: practicalities and a copy button.** After Direct, a
+> one-row C6 table answers what a recruiter asks first: roles, location and
+> time zone, earliest start ("Immediately") and reply time ("Within one
+> working day"). Relocation is left off on purpose; it depends on the offer.
+> Beside the address, a "Copy email" pill, because a mail link opens nothing
+> on a machine without a mail app. It only appears where the clipboard can be
+> written to. The address stays the Gmail one; a domain address was
+> considered and declined.
 
 **No contact form.** An email link is more likely to be used, needs no backend,
 no spam handling and no privacy policy. If a form is added later it needs a

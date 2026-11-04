@@ -38,6 +38,11 @@ not decoration.
 **Responsive.** Below `768px`, zones 2 and 3 drop; mark + menu pill only. The
 mark **never** drops — the hero crop depends on it ([wordmark.md §3](wordmark.md)).
 
+> **Changed during build: the language switch shows both.** It showed only
+> the current language, "EN", while linking to the other, so it said one
+> thing and did another. It reads "EN · ID" in the same 44px pill, the current
+> one in `--ink` and the other muted, which turns ink on hover.
+
 > **Changed during build: the controls hide while you read.** "Always visible"
 > put the language and menu pills on top of headings and prose on every long
 > page, and on a phone nearly all the time. Past the point where the mark
@@ -149,6 +154,13 @@ rule:   1px --rule below, full bleed, margin-top var(--s-5)
 
 On a lime field the description is `--ink`, **not** `--ink-muted` — see the
 foundations lime rule (3.65:1 fails).
+
+> **Changed during build: the description starts at column 7, set left.** It
+> was flush right in the last four columns, so the long ones ran to five lines
+> with a ragged left edge. It now spans columns 7 to 12 at `--text-body`, set
+> left like every other paragraph, which fits the long ones in two or three
+> lines. Every description starts on the same line, the one the timeline's
+> details hang from.
 
 ---
 
@@ -325,6 +337,19 @@ detail:  right column — role, company, 2-line description at --t-ui
 survives but does not push content off screen. Do not remove it entirely; the
 stagger is the pattern.
 
+> **Changed during build: only the years step.** The whole row used to
+> indent, so on About's seven rows the detail column narrowed row by row and
+> the last slid under the menu control. The years now step and the detail
+> column stays on column 7. The depth is 35% of the years' own column rather
+> than a length, because the years and the column both scale with the window.
+> That leaves at least 58px between the bottom row's dates and its details
+> from 375 to 1920.
+>
+> On About, the rows from before the move into software (the visualisation
+> studio, fire protection and the architecture degree) sit under a quiet
+> `--t-label` heading, "Before software". Experience entries carry a
+> `beforeSoftware` flag for it.
+
 ---
 
 ## C9 · Tech stack band
@@ -409,6 +434,11 @@ rights:   below the wordmark, --t-micro, --ink-invert-muted
 
 **Employer-facing addition:** the CV download lives here and in Contact. Label
 it with format and size — `CV — PDF, 240KB`.
+
+> **Changed during build: the CV control is the light pill.** It was a square
+> outlined box, the only one on the site, so it read as a different kind of
+> thing. It is now the same pill the hero's CV uses, light on the black field,
+> with a paper focus ring and its format and size under it.
 
 **Responsive.** Below `768px`, columns stack full-width; the wordmark stays
 full-bleed and bottom-flush.
