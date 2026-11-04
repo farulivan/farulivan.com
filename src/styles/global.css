@@ -171,6 +171,14 @@
   --text-read--line-height: 1.6;
   --text-read--letter-spacing: 0em;
 
+  /* Short persuasive copy outside prose: project summaries, timeline entries,
+     section descriptions. It sat at the 14px of a table cell, which next to
+     300-weight display type read as small print. Prose keeps --text-read;
+     tables, navigation and metadata keep --text-ui. */
+  --text-body: 16px;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: 0em;
+
   --text-ui: 14px;
   --text-ui--line-height: 1.4;
   --text-ui--letter-spacing: 0em;

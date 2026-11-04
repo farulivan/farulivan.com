@@ -298,6 +298,8 @@ const stackGroups = capabilities.map(({ entry }) => ({
             role={entry.data.role}
             stack={entry.data.stack}
             summary={entry.data.summary}
+            figures={entry.data.outcome.figures}
+            cta={t("project.readCaseStudy")}
             screenshot={entry.data.screenshots[0]}
             flip={index % 2 === 1}
           />

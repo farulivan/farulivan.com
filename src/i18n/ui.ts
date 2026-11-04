@@ -75,7 +75,7 @@ export const en = {
   "about.subtitle":
     "Three years of sole ownership on a production platform, and a deliberate push into everything around it.",
   "about.bio.1":
-    "For three years I was the sole frontend engineer at a fintech startup, Nabitu. I built the product from an early MVP to a full production rewrite: seventy pages, real users, real stakes. There was no one else on frontend, so I ended up owning far more than the UI, working directly with backend, product and the CEO to ship things that actually worked.",
+    "For three years I was the sole frontend engineer at a fintech startup, Nabitu. I built the product from an early MVP to a full production rewrite: over a hundred pages, real users, real stakes. There was no one else on frontend, so I ended up owning far more than the UI, working directly with backend, product and the CEO to ship things that actually worked.",
   "about.bio.2":
     "These days I am deliberately growing beyond the frontend. I finished a backend path in Go and TypeScript, and I build and run my own production systems, including a WhatsApp bot my family uses every day. I also work with AI tools like Claude Code daily. Not as a shortcut, but as a real part of how I think through problems.",
   "about.bio.3":
@@ -115,6 +115,7 @@ export const en = {
   "work.empty": "No projects published yet.",
 
   "project.backToIndex": "Back to work",
+  "project.readCaseStudy": "Read the case study",
   "project.role": "Role",
   "project.contents": "Contents",
   "project.team": "Team",
@@ -253,7 +254,7 @@ export const id: Record<TranslationKey, string> = {
   "about.subtitle":
     "Tiga tahun memegang sendiri sebuah platform produksi, dan dorongan sengaja ke semua yang ada di sekitarnya.",
   "about.bio.1":
-    "Selama tiga tahun saya satu-satunya frontend engineer di startup fintech, Nabitu. Saya membangun produknya dari MVP awal sampai penulisan ulang produksi penuh: tujuh puluh halaman, pengguna nyata, taruhan nyata. Tak ada orang lain di frontend, jadi saya memegang jauh lebih banyak daripada UI, bekerja langsung dengan backend, produk, dan CEO untuk merilis hal yang benar-benar jalan.",
+    "Selama tiga tahun saya satu-satunya frontend engineer di startup fintech, Nabitu. Saya membangun produknya dari MVP awal sampai penulisan ulang produksi penuh: lebih dari seratus halaman, pengguna nyata, taruhan nyata. Tak ada orang lain di frontend, jadi saya memegang jauh lebih banyak daripada UI, bekerja langsung dengan backend, produk, dan CEO untuk merilis hal yang benar-benar jalan.",
   "about.bio.2":
     "Belakangan saya sengaja tumbuh melewati frontend. Saya menyelesaikan jalur backend dengan Go dan TypeScript, dan saya membangun serta menjalankan sistem produksi saya sendiri, termasuk bot WhatsApp yang dipakai keluarga saya setiap hari. Saya juga memakai alat AI seperti Claude Code setiap hari. Bukan sebagai jalan pintas, tapi sebagai bagian nyata dari cara saya memikirkan masalah.",
   "about.bio.3":
@@ -293,6 +294,7 @@ export const id: Record<TranslationKey, string> = {
   "work.empty": "Belum ada proyek yang diterbitkan.",
 
   "project.backToIndex": "Kembali ke karya",
+  "project.readCaseStudy": "Baca studi kasusnya",
   "project.role": "Peran",
   "project.contents": "Daftar isi",
   "project.team": "Tim",

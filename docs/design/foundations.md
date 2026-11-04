@@ -157,6 +157,14 @@ Nine steps, each with a job. Display sizes are fluid; text sizes are fixed.
 > Writing section. Prose gets 17px at 1.6 and weight 400. Do not use `--t-ui`
 > for paragraphs.
 
+> **Changed during build: a tenth step, `--text-body`, 16px at 1.5.** It is for
+> the short persuasive copy outside prose: project summaries, timeline entries
+> and section descriptions, the contact page's included. All of it sat at
+> `--t-ui`, and 14px next to 300-weight display type at 96 to 150px read as
+> small print. `--t-ui` stays for table cells, navigation, footer links and
+> metadata, which keeps the About page's capability notes at 14px, since they
+> are table cells. `--t-read` stays for long prose.
+
 **Rule:** tracking tightens as size grows and loosens as it shrinks. Uppercase
 always gets positive tracking; display never does.
 

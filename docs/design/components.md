@@ -170,6 +170,25 @@ separator:   1px --rule between rows, full bleed
 
 **Rows alternate image side** (odd left, even right) to stop the list marching.
 
+> **Changed during build: the row leads with proof.** Under the title:
+>
+> ```
+> role:        var(--text-ui), --ink, on its own line
+> stack:       var(--t-micro), uppercase, muted, five items at most
+> summary:     var(--text-body)
+> figures:     the first two outcome figures, value at var(--t-h-l) weight
+>              300 over a var(--t-micro) muted caption. Two equal columns
+>              on a phone, a row from 640.
+> affordance:  var(--t-label) "Read the case study", with an arrow that moves
+>              4px towards it on hover and focus
+> ```
+>
+> Role and stack shared one uppercase line that wrapped to two and read as one
+> block of tools. The outcome figures were only ever at the bottom of the case
+> study, so nobody skimming the list saw a number. The content now puts each
+> project's strongest figures first, since the row shows two. The whole row is
+> still the one link; the affordance only says so.
+
 ### C5b · No-image variant
 
 Required — some work is NDA-private, and screenshots are being captured (see

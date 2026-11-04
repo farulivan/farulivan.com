@@ -24,7 +24,7 @@ import { extendTailwindMerge } from "tailwind-merge"
 const twMerge = extendTailwindMerge({
   extend: {
     theme: {
-      /** The nine type sizes. Everything else beginning `text-` is a colour. */
+      /** The ten type sizes. Everything else beginning `text-` is a colour. */
       text: [
         "display-l",
         "display-m",
@@ -32,6 +32,7 @@ const twMerge = extendTailwindMerge({
         "h-l",
         "h-m",
         "read",
+        "body",
         "ui",
         "label",
         "micro",
