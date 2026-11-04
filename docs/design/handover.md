@@ -136,9 +136,28 @@ naming:       {project-slug}.png → src/content/projects/_images/
 > keeps its language in `localStorage` under `nabitu-lang`, so set it to `en`
 > and reload before capturing, or the picture will not match its alt text.
 >
-> The hospital site and the WhatsApp bot are still 1×. The hospital's live site
-> now shows a different design from the one in its capture, so it was not
-> recaptured until it is settled which design belongs on the case study.
+> **The hospital is captured from my local build, not the live site.** The
+> live site now runs a different design from the one I built, so the
+> capture comes from the project running at `localhost:3000`. It was taken at
+> 1600 × 1000, the width where that layout is centred, giving 3200 × 2000.
+>
+> Two things have to be done before capturing:
+>
+> - Hide the Next.js dev badge (`nextjs-portal`).
+> - Pin the hero image at its 1× size:
+>   `img.dokter { width: 800px; max-width: 100%; height: auto }`.
+>
+> The second is needed because the image is a `next/image` with
+> `width: auto; height: auto` and a `1x, 2x` srcset whose 2× file is the same
+> 800 pixels. On any 2× screen the browser divides that by two, and the hero
+> image shows at 400px instead of filling its 696px column. That is a bug in
+> the hospital project, not something to reproduce in its portfolio picture.
+>
+> **The WhatsApp bot stays 1×.** It is an app window and there is no sharper
+> capture. It is cut from the raw capture to the whole conversation, 1033 × 700:
+> both replies complete, without the message bar and the scrollbar. Nothing is
+> upscaled. Its plate stops at 689px, two thirds of its width, which is as large
+> as its pixels allow.
 
 For anything NDA-covered, do not blur or redact — use the **C5b no-image
 variant**. A blurred screenshot looks like a mistake; a type block looks
