@@ -144,6 +144,18 @@ the `n` standing.
 > right-hand stem, and what remains — a stem and an arch — is an `r`. Rendered,
 > the name reads as a different name. Verified by building it.
 
+> **Changed during build: the hero wordmark is in normal flow.** It is
+> `width: 81.36%; margin-left: 20%` instead of absolutely positioned at
+> `right: −1.36%; bottom: 26%`. The horizontal arithmetic is the same, so the
+> crop is the same. Measured at 360, 768, 1024, 1440 and 1920: left edge at
+> 20.00%, 1.36% of the page width past the right edge, 98.33% of the lettering
+> showing, and no sideways scroll at any of them. (The table above is from an
+> earlier cut at 95.47%.)
+>
+> Where it sits vertically is now the hero's business. The availability line,
+> the descriptor and two calls to action share the hero with it, and pinned at
+> a share of the hero's height the lettering could not make room for them.
+
 ---
 
 ## 5. Structure for the animation

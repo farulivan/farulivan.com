@@ -33,7 +33,7 @@ type Props = {
   keepLabel?: boolean
   class?: string
 } & Omit<HTMLAttributes<"button">, "class"> &
-  Pick<HTMLAttributes<"a">, "hreflang">
+  Pick<HTMLAttributes<"a">, "hreflang" | "download">
 
 const {
   tone = "light",

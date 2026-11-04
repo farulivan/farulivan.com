@@ -7,12 +7,13 @@
  * holds that, and starts again. The joke only lands because the last thing
  * typed is the sentence itself, so the swap reads as the code running.
  *
- * **This loops, and the motion spec says nothing on this site should.** The
- * reasoning there is that a portfolio which keeps moving while you read it is
- * harder to read, and that objection is answered rather than ignored: it stops
- * the moment it scrolls out of view, it never runs for anyone who has asked
- * for less motion, and it lives above the fold where there is nothing to read
- * yet.
+ * **This loops, and the motion spec says nothing on this site should.** It is
+ * kept on purpose: it is the one thing in the hero with a sense of humour, and
+ * the hero says everything it has to without it. The objection is answered
+ * rather than ignored. The descriptor is in its finished state half of every
+ * cycle, the loop stops the moment it scrolls out of view, it never runs for
+ * anyone who has asked for less motion, and it moves nothing around it: the
+ * calls to action underneath stay where they are as it swaps.
  *
  * The whole thing is hidden from assistive tech. The page heading already
  * carries this sentence, so announcing a string that rewrites itself every few
@@ -52,7 +53,7 @@ const ink = {
  * The line's own markup, class list and all, on one line.
  *
  * Every class here is really on the sentence or on the box holding it — it is
- * the two class lists read as one element, not an invention. 136 characters,
+ * the two class lists read as one element, not an invention. 120 characters,
  * which is what decides the type size below: at the block's width there is
  * exactly one size that fits them on a single line on a wide screen. Changing
  * the string means changing that size with it.
@@ -68,7 +69,7 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
   { text: "class", kind: "attr" },
   { text: "=", kind: "mark" },
   {
-    text: '"text-h-l font-display uppercase tracking-[0.08em] hero-enter absolute top-[77%] left-[20%]"',
+    text: '"text-h-l font-display uppercase tracking-[0.08em] hero-enter ms-[20%] mt-5"',
     kind: "string",
   },
   { text: ">", kind: "mark" },
@@ -107,21 +108,21 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
     /*
      * Sized so the snippet is exactly one line, derived rather than tuned.
      *
-     * It is 136 characters, and the monospace here advances 0.602em each, so
-     * the line is 81.89em wide. A font size of a hundredth of the box divided
+     * It is 120 characters, and the monospace here advances 0.602em each, so
+     * the line is 72.24em wide. A font size of a hundredth of the box divided
      * by that makes the line exactly as wide as the box, at any width.
      *
-     * Divided by 84 rather than 81.89, for two reasons. Sub-pixel rounding
+     * Divided by 74 rather than 72.24, for two reasons. Sub-pixel rounding
      * broke the line at 1440 with the exact figure, and the reader's operating
      * system may not supply the same monospace this was measured against —
      * they vary from about 0.55em to 0.6em a character. The headroom costs a
      * couple of per cent of size and buys a line that does not wrap on a
      * machine nobody here has.
      *
-     * The floor is where one line stops being readable. Measured, one line
-     * survives down to a 795px box — a 1024px page — and below that it would
-     * need type under 9.5px, so it wraps instead. 138 characters do not cross
-     * a phone at any size worth reading. The ceiling stops it growing into the
+     * The floor is where one line stops being readable. One line survives
+     * down to a box of about 700px — a page of about 900 — and below that it
+     * would need type under 9.5px, so it wraps instead. 120 characters do not
+     * cross a phone at any size worth reading. The ceiling stops it growing into the
      * sentence it sits under.
      *
      * `wrap-anywhere` is what makes wrapping safe: a long attribute value is
@@ -134,7 +135,7 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
      */
   }
   <code
-    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi/84),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
+    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi/74),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
     data-sf-code
     >{
       snippet.map((token) => (

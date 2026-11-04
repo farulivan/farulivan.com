@@ -9,8 +9,10 @@ import SectionHeader from "@/components/SectionHeader.astro"
 import StackBand from "@/components/StackBand.astro"
 import TimelineRow from "@/components/TimelineRow.astro"
 import WritingTable from "@/components/WritingTable.astro"
+import Pill from "@/components/ui/Pill.astro"
 import Section from "@/components/ui/Section.astro"
 import Wordmark from "@/components/Wordmark.astro"
+import { siteConfig } from "@/config/site"
 import {
   getCapabilities,
   getExperience,
@@ -72,21 +74,22 @@ const stackGroups = capabilities.map(({ entry }) => ({
 
   {
     /*
-     * The hero.
+     * The hero. In five seconds it has to give the name, the role, that I am
+     * looking, and where the CV is.
      *
-     * Short enough on a phone that the section below it is reachable on the
-     * first scroll, and full height on a desktop where there is room for it.
+     * Everything in it is in normal flow, one block under another on the 20%
+     * axis, and the hero grows to hold them. It used to place each piece at a
+     * share of its own height, which held for a name and one line and could
+     * not hold for four blocks: on a phone they would have landed on each
+     * other rather than pushed the hero taller.
      *
-     * The 560px floor is not arbitrary. Everything under the lettering — the
-     * gap, two lines of standfirst, another gap and the scroll cue — needs
-     * about 142px, and only 26% of the hero is below the lettering. Under
-     * about 546px tall that stops fitting and the standfirst lands on the cue;
-     * measured, a 360×640 screen overlapped by two pixels.
+     * The floor keeps the composition on screens with room to spare. On a
+     * desktop the hero is the full screen and the availability line sits a
+     * third of the way down. The lettering and everything under it are pushed
+     * to the bottom, and the space between the two is what gives way first on
+     * a short screen. Below that it holds a gap and the hero gets taller
+     * instead.
      *
-     */
-  }
-  {
-    /*
      * `overflow-x: clip` is what lets the lettering run past the right edge
      * without the page gaining a sideways scrollbar. Clip rather than hidden,
      * because hidden would make this a scroll container and quietly break
@@ -94,36 +97,105 @@ const stackGroups = capabilities.map(({ entry }) => ({
      */
   }
   <section
-    class="intro-follows relative min-h-[max(min(72vh,640px),560px)] overflow-x-clip lg:min-h-svh"
+    class="intro-follows relative flex min-h-[max(min(72vh,640px),560px)] flex-col overflow-x-clip pt-10 pb-8 lg:min-h-svh lg:pt-[33svh] lg:pb-9"
   >
     {/* The lettering is decorative, so the real heading is text. */}
     <h1 class="sr-only">{t("site.title")}</h1>
 
-    <Wordmark variant="hero" data-mark-hide-trigger />
+    {
+      /*
+       * A badge rather than a bare line, so it reads as a status: the words in
+       * an outlined pill that gives off a pulse of lime light, the way a live
+       * indicator does. Hovering fills the inner field with lime. The pulse
+       * alone is enough at rest; a lime field on top of it was too heavy.
+       * Lime as a field under ink, 12:1, which is how lime is allowed near
+       * text at all.
+       *
+       * The corners are concentric: the field takes the panel radius and the
+       * outline that plus the gap between them, so on one line both read as
+       * pills and, where a phone wraps the words, both soften into the same
+       * rounded box rather than a stretched capsule.
+       *
+       * The entrance sits on a wrapper because the pulse is an animation too,
+       * and two on one element would replace each other. It is not a link,
+       * so the fill is all hovering does.
+       */
+    }
+    <div
+      class="hero-enter pe-page-margin ms-[20%] mb-8 flex"
+      style="--enter-step: 1"
+    >
+      <p
+        class="availability-glow group/availability border-rule bg-paper m-0 rounded-[calc(var(--radius-panel)+var(--spacing-1))] border p-1"
+      >
+        <span
+          class="text-label font-label text-ink rounded-panel duration-mid ease-state group-hover/availability:bg-accent-field block px-4 py-2 uppercase transition-colors motion-reduce:transition-none"
+        >
+          {t("home.availability")}
+        </span>
+      </p>
+    </div>
+
+    <Wordmark variant="hero" class="mt-auto" data-mark-hide-trigger />
 
     {
       /*
-       * Sits under the lettering and shares its left edge at 20%. That shared
-       * alignment is what stops the two reading as unrelated objects.
-       *
-       * The gap is measured down from the lettering's own bottom edge rather
-       * than up from the floor of the hero, so the two keep their spacing
-       * whatever the screen is doing. Anchoring it to the bottom instead lets
-       * it drift into the lettering on a short screen and away from it on a
-       * tall one.
-       *
-       * The lettering sits 26% up from the bottom, so its lower edge is at 74%
-       * from the top and this goes one gap past that — a share of the hero
-       * rather than a fixed number, so it opens up on a tall screen and
-       * tightens on a short one instead of crowding the cue. The width runs to
-       * the page margin, the same edge the lettering is cut on.
+       * The line under the lettering, which types out its own markup and then
+       * becomes the sentence. Both states share one box sized to the taller,
+       * so the calls to action under it never move as it swaps.
        */
     }
     <HeroStandfirst
       lang={lang}
-      class="hero-enter absolute top-[77%] left-[20%] w-[calc(80%-var(--spacing-page-margin))]"
-      style="--enter-step: 1"
+      class="hero-enter pe-page-margin ms-[20%] mt-5"
+      style="--enter-step: 2"
     />
+
+    {
+      /*
+       * The two things somebody hiring wants to do next, on the same axis.
+       * Stacked and full width on a phone, where a row of two would not fit.
+       *
+       * The CV says what it is and how big under the pill rather than inside
+       * it: in one pill the two do not fit a phone's axis, and the footer
+       * already says it this way. The line starts where the pill's words do.
+       */
+    }
+    <div
+      class="pe-page-margin ms-[20%] mt-6 flex flex-col gap-3 md:flex-row md:items-start"
+    >
+      <div class="hero-enter flex flex-col gap-2" style="--enter-step: 3">
+        <Pill
+          tone="dark"
+          href={siteConfig.cv.href}
+          download={siteConfig.cv.filename}
+          label={t("cv.download")}
+          keepLabel
+          class="max-md:w-full max-md:justify-between"
+        >
+          {/* Points down, because this is a download. */}
+          <Icon slot="circle" name="arrowRight" class="size-4 rotate-90" />
+        </Pill>
+        <span class="text-micro text-ink-muted ps-7 uppercase">
+          {
+            t("cv.detail", {
+              format: siteConfig.cv.format,
+              size: siteConfig.cv.size,
+            })
+          }
+        </span>
+      </div>
+
+      <div class="hero-enter" style="--enter-step: 4">
+        <Pill
+          href={`mailto:${siteConfig.contact.email}`}
+          label={t("home.emailCta")}
+          icon="arrowRight"
+          keepLabel
+          class="max-md:w-full max-md:justify-between"
+        />
+      </div>
+    </div>
 
     {
       /*
@@ -301,8 +373,9 @@ const stackGroups = capabilities.map(({ entry }) => ({
    * it on. The class using it stays here too, because a delay built from two
    * custom properties is not something a utility can express.
    *
-   * The standfirst and the scroll cue follow the lettering in, one after the
-   * other, so the hero assembles rather than appearing all at once.
+   * The availability line, the descriptor and the two calls to action follow
+   * the lettering in, one after the other, so the hero assembles rather than
+   * appearing all at once.
    */
   .hero-enter {
     animation: hero-enter 800ms var(--ease-reveal) both;
@@ -322,8 +395,36 @@ const stackGroups = capabilities.map(({ entry }) => ({
     }
   }
 
+  /*
+   * The availability badge's pulse: lime light that leaves the pill's edge
+   * and fades, every two and a half seconds. A ring for the edge and a blur
+   * for the light, both fading to nothing. Under less motion there is no
+   * pulse, and the badge is simply there.
+   */
+  .availability-glow {
+    animation: availability-glow 2.5s var(--ease-reveal) infinite;
+  }
+
+  @keyframes availability-glow {
+    from {
+      box-shadow:
+        0 0 0 0 color-mix(in srgb, var(--color-accent) 55%, transparent),
+        0 0 8px 0 color-mix(in srgb, var(--color-accent) 45%, transparent);
+    }
+    70%,
+    to {
+      box-shadow:
+        0 0 0 10px color-mix(in srgb, var(--color-accent) 0%, transparent),
+        0 0 24px 8px color-mix(in srgb, var(--color-accent) 0%, transparent);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero-enter {
+      animation: none;
+    }
+
+    .availability-glow {
       animation: none;
     }
   }

@@ -63,8 +63,59 @@ section 2 is visible on first scroll.
 > to invisible.
 >
 > It is hidden below 768. There the descriptor wraps to three lines or more and
-> runs into that corner, and a phone hero is scrolled by habit anyway. Once the
-> hero carries its own calls to action the cue goes everywhere.
+> runs into that corner, and a phone hero is scrolled by habit anyway.
+
+> **Changed during build: the hero says who, what, availability and where the
+> CV is.** From the top, all on the 20% axis:
+>
+> ```
+> availability:  a badge: 1px --rule outline on --paper around the words at
+>                --t-label, uppercase, --ink, with lime light pulsing out
+>                from the pill's edge every 2.5s. Hover fills the inner
+>                field with --accent-field.
+>                A third of the way down on a desktop.
+> wordmark:      81.36% wide, left edge at 20%, as before
+> descriptor:    the line under the lettering, still typing its own markup
+>                and swapping to the sentence
+> calls to act:  dark pill "Download my CV" with "PDF, 108 KB" under it,
+>                light pill "Email me". Side by side from 768, stacked
+>                and full width below it.
+> ```
+>
+> **The descriptor keeps its loop,** against the review's call to retire it
+> and the rule that nothing loops. It is the one thing in the hero with a
+> sense of humour, and with the availability line and the calls to action
+> beside it the hero no longer depends on it to say what I do. Both states
+> share one box, so the buttons under it never move as it swaps. It stops off
+> screen and never runs under reduced motion. The markup it types is the
+> line's real class list, so it changed with the layout.
+>
+> **The availability line is a badge** that glows, so it reads as a status.
+> The whole pill gives off a pulse of lime light: a ring and a blur that leave
+> its edge and fade. The lime field under the words (ink on lime, 12:1) only
+> comes in on hover; at rest, glow and field together were too heavy.
+> The pulse is the second exception to "nothing loops", and it is gone under
+> reduced motion too. Its corners are concentric, the inner field at the
+> panel radius and the outline that plus 4px, so where a phone wraps the
+> words both soften into the same rounded box.
+>
+> **Everything is in normal flow and the hero grows to hold it.** The wordmark
+> was pinned at `bottom: 26%` and the descriptor at 77% of the hero's height.
+> That holds for a name and one line, not for four blocks: on a phone they
+> landed on each other instead of pushing the hero taller. The lettering and
+> everything under it now sit at the bottom of the hero, and the space above
+> them is what gives way first on a short screen. The crop is untouched (see
+> [wordmark.md](wordmark.md)). The heights above are now floors: the full
+> screen from 1024, `max(min(72vh, 640px), 560px)` below it.
+>
+> **The scroll cue stays,** against the review's call to remove it once the
+> hero had calls to action. It is as described in the note above: bottom
+> right, hidden below 768, fading out as the page scrolls.
+>
+> The CV's format and size sit under the pill rather than inside it. In one
+> pill the two do not fit a phone's axis, and the footer already says it this
+> way. The label is "Download my CV", the same words the CV has everywhere
+> else on the site.
 
 ---
 

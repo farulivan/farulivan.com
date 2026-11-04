@@ -20,7 +20,7 @@ export const en = {
   // Site identity. The wordmark is decorative in every place it appears, so
   // this is the real page title and it is always in the document.
   "site.title": "Farul Ivan · Frontend engineer · end to end",
-  "site.descriptor": "Frontend engineer\u00a0· end to end",
+  "site.descriptor": "Frontend engineer\u00a0· end\u00a0to\u00a0end",
   "site.description":
     "Three years as the sole frontend engineer on a production fintech platform, and deliberately growing into the backend.",
 
@@ -35,7 +35,10 @@ export const en = {
   "nav.homeLink": "Farul Ivan, home",
   "nav.menuLabel": "Site",
 
-  // Home
+  // Home. The hero says who, what, that I am looking, and how to reach me.
+  "home.availability":
+    "Open to frontend and full-stack roles\u00a0· Remote or Indonesia\u00a0· UTC+7",
+  "home.emailCta": "Email me",
   "home.scrollCue": "Scroll down",
 
   // Page titles. The bodies are placeholders until the real content lands.
@@ -212,6 +215,9 @@ export const id: Record<TranslationKey, string> = {
   "nav.homeLink": "Farul Ivan, beranda",
   "nav.menuLabel": "Situs",
 
+  "home.availability":
+    "Terbuka untuk peran frontend dan full-stack\u00a0· Remote atau di Indonesia\u00a0· UTC+7",
+  "home.emailCta": "Kirim email",
   "home.scrollCue": "Gulir ke bawah",
 
   "work.title": "Karya",
