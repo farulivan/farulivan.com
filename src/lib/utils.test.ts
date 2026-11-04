@@ -41,6 +41,7 @@ describe("cn", () => {
     expect(cn("p-5", "p-page-margin")).toBe("p-page-margin")
     expect(cn("rounded-panel", "rounded-control")).toBe("rounded-control")
     expect(cn("font-body", "font-label")).toBe("font-label")
+    expect(cn("font-emph", "font-heading")).toBe("font-heading")
     expect(cn("ease-state", "ease-reveal")).toBe("ease-reveal")
     expect(cn("size-tap", "size-9")).toBe("size-9")
   })

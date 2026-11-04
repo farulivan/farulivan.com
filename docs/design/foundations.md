@@ -135,6 +135,11 @@ static cuts in `raw-assets/fonts/Lexend/static/` are a fallback only.
 | `--w-label` | 500 | labels, nav, table headers, metadata |
 | `--w-emph` | 600 | inline emphasis, active states |
 
+> **Changed during build: headings in prose have a weight of their own,
+> `--font-weight-heading` at 500.** They borrowed `--w-emph`, which made the
+> h2s and h3s in case studies and posts the heaviest type on the site. At 500
+> they still stand clear of 400 text and stay inside the light system.
+
 ### The ramp
 
 Nine steps, each with a job. Display sizes are fluid; text sizes are fixed.
