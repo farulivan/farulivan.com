@@ -17,6 +17,7 @@
  */
 import { Image } from "astro:assets"
 
+import Icon from "@/components/ui/Icon.astro"
 import { cn } from "@/lib/utils"
 
 interface Props {
@@ -27,6 +28,10 @@ interface Props {
   role: string
   stack: readonly string[]
   summary: string
+  /** The project's outcome figures. The row shows the first two. */
+  figures?: readonly { value: string; caption: string }[] | undefined
+  /** "Read the case study", passed in so it is translated. */
+  cta: string
   screenshot?: { src: ImageMetadata; alt: string } | undefined
   /** Puts the image on the right. Callers alternate it down the list. */
   flip?: boolean | undefined
@@ -40,6 +45,8 @@ const {
   role,
   stack,
   summary,
+  figures = [],
+  cta,
   screenshot,
   flip,
   class: className,
@@ -49,11 +56,16 @@ const {
 const counter = String(number).padStart(2, "0")
 
 /*
- * Role and stack on one line, in the order somebody scanning for a technology
- * reads them. Three of the stack rather than all of it: the full list is on
- * the case study, and a row that prints nine tools is a row nobody finishes.
+ * Five of the stack rather than all of it: the full list is on the case study,
+ * and a row that prints nine tools is a row nobody finishes.
  */
-const meta = [role, ...stack.slice(0, 3)].join(" · ")
+const tools = stack.slice(0, 5).join(" · ")
+
+/*
+ * Two figures, and the content puts the strongest first. A row is a teaser,
+ * and two numbers are what a skim takes in; the case study has the rest.
+ */
+const lead = figures.slice(0, 2)
 ---
 
 <a
@@ -134,9 +146,64 @@ const meta = [role, ...stack.slice(0, 3)].join(" · ")
         {title}
       </h3>
 
-      <p class="text-label text-section-muted m-0 uppercase">{meta}</p>
+      {
+        /*
+         * Role and stack on separate lines. Run together in one uppercase line
+         * they wrapped to two and read as one block of tools; apart, the role
+         * reads as who I was on it and the stack as a quiet footnote.
+         */
+      }
+      <div class="flex flex-col gap-1">
+        <p class="text-ui text-ink m-0">{role}</p>
+        <p class="text-micro text-section-muted m-0 uppercase">{tools}</p>
+      </div>
 
-      <p class="text-ui m-0 text-pretty">{summary}</p>
+      <p class="text-body m-0 text-pretty">{summary}</p>
+
+      {
+        /*
+         * The proof, under the claim it backs up. These were only ever at the
+         * bottom of the case study, so nobody skimming the list saw a single
+         * number.
+         *
+         * Two equal columns on a phone, so the pair always sits side by side
+         * and a long caption wraps instead of pushing its neighbour onto a
+         * line of its own. Wider than that, they run in a row.
+         */
+      }
+      {
+        lead.length > 0 && (
+          <dl class="m-0 mt-2 grid grid-cols-2 gap-x-5 gap-y-4 sm:flex sm:flex-wrap sm:gap-x-7">
+            {lead.map((figure) => (
+              <div class="flex flex-col gap-1">
+                <dt class="text-h-l font-display text-ink order-1">
+                  {figure.value}
+                </dt>
+                <dd class="text-micro text-section-muted order-2 m-0 uppercase">
+                  {figure.caption}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
+
+      {
+        /*
+         * The whole row is already the link. This says so, for anyone who
+         * would not think to click a picture, and the arrow leans towards the
+         * case study when the row is reached for.
+         */
+      }
+      <span
+        class="text-label font-label text-ink mt-2 inline-flex items-center gap-2 uppercase"
+      >
+        {cta}
+        <Icon
+          name="arrowRight"
+          class="duration-fast ease-state size-4 transition-transform group-hover:translate-x-1 group-focus-visible:translate-x-1 motion-reduce:transition-none"
+        />
+      </span>
     </div>
   </div>
 </a>
