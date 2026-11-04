@@ -1,7 +1,8 @@
 ---
 /**
  * The heading that opens a major section: a short label on the left, a
- * sentence explaining the section set flush right, and a hairline under both.
+ * sentence explaining the section in the right half, and a hairline under
+ * both.
  *
  * It repeats on nearly every section of every page, which is the whole reason
  * it exists — the three pieces have to line up identically each time or the
@@ -30,17 +31,18 @@ const Heading = `h${level}` as const
 
 {
   /*
-   * Label left, description right, with an empty column between them. The gap
+   * Label left, description right, with empty columns between them. The gap
    * is what makes the two read as two things rather than as a sentence that
    * happens to start in bold — on a phone there is no room for it, so they
    * stack and the gap becomes vertical.
    *
-   * The sentence is set flush right, not just placed in the right-hand
-   * column. Those are different things: the column already ends at the edge
-   * of the page, so a long sentence filled it and looked deliberate while a
-   * short one started in the same place, stopped early, and left the page
-   * ragged down one side. Setting it right means every section ends on the
-   * same line whatever the sentence is.
+   * The sentence starts on the page's middle line, column 7, and is set left
+   * like every other paragraph on the site. It used to be set flush right in
+   * the last four columns, which made a five-line sentence with a ragged
+   * left edge: hard to read, because every line started somewhere new. Six
+   * columns wide, the long ones fit in two or three lines, and every
+   * description on the site starts on the same line, the one the timeline's
+   * details hang from too.
    */
 }
 <div class={cn("border-section-rule border-b pb-5", className)} data-reveal>
@@ -61,7 +63,7 @@ const Heading = `h${level}` as const
 
     {
       description && (
-        <p class="text-body text-section-muted m-0 text-pretty md:col-span-4 md:col-start-9 md:text-right">
+        <p class="text-body text-section-muted m-0 text-pretty md:col-span-6 md:col-start-7">
           {description}
         </p>
       )
