@@ -31,6 +31,7 @@ import {
 } from "@/content/queries"
 import { langParam, localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { screenshotMaxWidth } from "@/lib/screenshot"
 
 export async function getStaticPaths() {
   const routes = await getProjectRoutes()
@@ -127,43 +128,60 @@ if (data.sourceUrl) {
 
   {
     /*
-     * One picture runs the full width. Two or more share the row, which is
-     * both the honest arrangement and the sharper one: a pair of brands read
-     * as a pair when they sit side by side, and at half the width each they
-     * need half as many pixels to stay crisp.
+     * The pictures are plates on a stage: a grey band that runs edge to edge,
+     * with each capture mounted on it at a size its pixels can carry and
+     * edged with a hairline so a white website keeps its edge.
      *
-     * They sit outside a section on purpose. A picture is the one thing on
-     * these pages that is allowed to reach both edges.
+     * They used to run the full width of the window, and a capture of a
+     * website does not have the pixels for that. Most are taken at 1×, so on
+     * a 1440 laptop with a 2× screen every pixel was stretched to nearly
+     * three and the type in the picture went soft. Each is now capped at two
+     * thirds of its own width — see `screenshotMaxWidth` — and the band, which
+     * needs no pixels at all, is what still reaches both edges.
+     *
+     * Two or more share the row. A pair of brands reads as a pair side by
+     * side, and at half the width each is well inside its cap. A pair fills
+     * the row rather than stopping at a cap, so from tablet up the band keeps
+     * the same margin at its sides as above and below, and the pair still
+     * sits on the stage instead of running into the window's edges.
+     *
+     * The picture keeps its own proportions here rather than being cropped to
+     * 16:10. This is the one place it is shown whole.
      */
   }
   {
     data.screenshots.length > 0 && (
-      <div
-        class:list={[
-          "gap-gutter grid",
-          data.screenshots.length > 1 && "px-page-margin md:grid-cols-2",
-        ]}
-      >
-        {data.screenshots.map((shot) => (
-          <figure class="m-0">
-            <Image
-              src={shot.src}
-              alt={shot.alt}
-              widths={[640, 1024, 1600, 2000]}
-              sizes={
-                data.screenshots.length > 1
-                  ? "(min-width: 768px) 50vw, 100vw"
-                  : "100vw"
-              }
-              class="aspect-[16/10] w-full object-cover object-top"
-            />
-            {shot.caption && (
-              <figcaption class="text-label text-section-muted mt-3 uppercase">
-                {shot.caption}
-              </figcaption>
-            )}
-          </figure>
-        ))}
+      <div class="bg-section-stage px-page-margin py-8 md:px-8 lg:px-9 lg:py-9">
+        <div
+          class:list={[
+            "max-w-read gap-gutter mx-auto grid justify-items-center",
+            data.screenshots.length > 1 && "md:grid-cols-2",
+          ]}
+        >
+          {data.screenshots.map((shot) => {
+            const cap = screenshotMaxWidth(shot.src.width)
+            return (
+              <figure class="m-0 w-full" style={`max-width: ${cap}px`}>
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  widths={[640, 1024, 1600]}
+                  sizes={
+                    data.screenshots.length > 1
+                      ? `(min-width: 768px) min(50vw, ${cap}px), 100vw`
+                      : `(min-width: ${cap}px) ${cap}px, 100vw`
+                  }
+                  class="border-section-rule block h-auto w-full border"
+                />
+                {shot.caption && (
+                  <figcaption class="text-label text-section-muted mt-3 uppercase">
+                    {shot.caption}
+                  </figcaption>
+                )}
+              </figure>
+            )
+          })}
+        </div>
       </div>
     )
   }

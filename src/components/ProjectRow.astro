@@ -9,6 +9,11 @@
  *
  * Rows alternate which side the image sits on, which is the only thing
  * stopping a list of them from marching.
+ *
+ * Hovering zooms the picture inside its frame and underlines the title. The
+ * row used to fill grey instead, which did nothing on the grey band the home
+ * page sets these on, and on white it washed out the grey stage the picture
+ * is mounted on — the one thing the hover was meant to draw the eye to.
  */
 import { Image } from "astro:assets"
 
@@ -54,10 +59,7 @@ const meta = [role, ...stack.slice(0, 3)].join(" · ")
   {href}
   data-reveal
   style={`--reveal-step: ${index % 6}`}
-  class={cn(
-    "group hover:bg-surface border-section-rule block border-b transition-colors duration-fast ease-state no-underline motion-reduce:transition-none",
-    className
-  )}
+  class={cn("group border-section-rule block border-b no-underline", className)}
 >
   <div class="gap-gutter grid items-center py-7 lg:grid-cols-2">
     {
@@ -65,26 +67,44 @@ const meta = [role, ...stack.slice(0, 3)].join(" · ")
        * 16:10, the same shape a screenshot is captured at, so the cell is the
        * same size whether there is an image in it or not and the list keeps
        * its rhythm while the pictures are still being taken.
+       *
+       * The cell is a stage and the picture is mounted on it, inset by an even
+       * margin and edged with a hairline. Run to the edges, a capture of a
+       * white website had no edge on a white page, and every picture was
+       * shown at the full width of the cell, a size most captures do not have
+       * the pixels for. Inset, it is shown a tenth smaller and reads as a
+       * plate rather than as a hole in the page.
+       *
+       * The margin is a percentage, and padding percentages are taken from
+       * the width on all four sides, so it is the same distance all round.
+       * That leaves the frame a little wider than 16:10, and the picture is
+       * cropped from the top to fill it: what goes is the bottom fifteenth of
+       * the capture, the part of a page furthest from its opening.
        */
     }
-    <div class={cn("aspect-[16/10] overflow-hidden", flip && "lg:order-2")}>
+    <div
+      class={cn("bg-section-stage aspect-[16/10] p-[5%]", flip && "lg:order-2")}
+    >
       {
         screenshot ? (
-          <Image
-            src={screenshot.src}
-            alt={screenshot.alt}
-            widths={[640, 1024, 1600]}
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            class="duration-mid ease-state h-full w-full object-cover object-top transition-transform group-hover:scale-[1.02] motion-reduce:transition-none"
-          />
+          <div class="border-section-rule h-full w-full overflow-hidden border">
+            <Image
+              src={screenshot.src}
+              alt={screenshot.alt}
+              widths={[640, 1024, 1600]}
+              sizes="(min-width: 1440px) 620px, (min-width: 1024px) 44vw, 90vw"
+              class="duration-mid ease-state h-full w-full object-cover object-top transition-transform group-hover:scale-[1.02] motion-reduce:transition-none"
+            />
+          </div>
         ) : (
           /*
            * Not a placeholder — a designed state. Some of this work is covered
            * by an agreement and will never have a picture, and a blurred
            * screenshot reads as a mistake where a type block reads as a
-           * decision.
+           * decision. Set straight on the stage, so it holds the same place a
+           * picture would.
            */
-          <div class="bg-surface flex h-full w-full flex-col justify-end gap-3 p-6">
+          <div class="flex h-full w-full flex-col justify-end gap-3">
             <span class="text-display-s font-display leading-none tracking-[-0.03em] wrap-break-word hyphens-auto">
               {title}
             </span>
@@ -107,7 +127,9 @@ const meta = [role, ...stack.slice(0, 3)].join(" · ")
       }
       <p class="text-micro text-section-muted m-0 uppercase">{counter}</p>
 
-      <h3 class="text-h-l font-display m-0 wrap-break-word hyphens-auto">
+      <h3
+        class="text-h-l font-display m-0 wrap-break-word hyphens-auto decoration-1 underline-offset-4 group-hover:underline"
+      >
         {title}
       </h3>
 

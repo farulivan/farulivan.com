@@ -55,14 +55,19 @@ const {
  * there and fails. On the near-black field the muted tone is a lighter grey
  * that still clears AAA, and the hairlines have to be light rather than ink or
  * they disappear.
+ *
+ * The stage a screenshot is mounted on is always one step off the field: grey
+ * on white, white on grey and on lime, and a lifted near-black on the dark
+ * ground, where the muted grey still measures 7.0:1.
  */
 const fields = {
   paper: "bg-paper text-ink",
-  surface: "bg-surface text-ink [--color-section-field:var(--color-surface)]",
+  surface:
+    "bg-surface text-ink [--color-section-field:var(--color-surface)] [--color-section-stage:var(--color-paper)]",
   accent:
-    "bg-accent-field text-ink [--color-section-muted:var(--color-ink)] [--color-section-field:var(--color-accent-field)]",
+    "bg-accent-field text-ink [--color-section-muted:var(--color-ink)] [--color-section-field:var(--color-accent-field)] [--color-section-stage:var(--color-paper)]",
   invert:
-    "bg-surface-invert text-ink-invert [--color-section-muted:var(--color-ink-invert-muted)] [--color-section-rule:color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] [--color-section-rule-strong:var(--color-ink-invert)] [--color-section-field:var(--color-surface-invert)]",
+    "bg-surface-invert text-ink-invert [--color-section-muted:var(--color-ink-invert-muted)] [--color-section-rule:color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] [--color-section-rule-strong:var(--color-ink-invert)] [--color-section-field:var(--color-surface-invert)] [--color-section-stage:color-mix(in_srgb,var(--color-ink-invert)_8%,var(--color-surface-invert))]",
 }[field]
 
 /* `xl` exists for the one section that is a single sentence and needs the
