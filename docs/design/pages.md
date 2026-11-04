@@ -70,19 +70,32 @@ section 2 is visible on first scroll.
 > CV is.** From the top, all on the 20% axis:
 >
 > ```
-> availability:  --t-label, uppercase, --ink, led by an 8px lime-500 dot that
->                hangs in the margin so the words sit on the axis.
+> availability:  a badge: 1px --rule outline on --paper, an 8px lime-500 dot
+>                with a halo that pulses every 2s, and the words at
+>                --t-label, uppercase, --ink on a --surface inner field.
+>                Hover clears the field and grows the dot.
 >                A third of the way down on a desktop.
 > wordmark:      81.36% wide, left edge at 20%, as before
-> descriptor:    the line under the lettering, static, in the style it had
+> descriptor:    the line under the lettering, still typing its own markup
+>                and swapping to the sentence
 > calls to act:  dark pill "Download my CV" with "PDF, 108 KB" under it,
 >                light pill "Email me". Side by side from 768, stacked
 >                and full width below it.
 > ```
 >
-> **The descriptor no longer loops.** It typed out its own markup and swapped
-> to the sentence every few seconds, which cost the hero its clarity for half
-> of every cycle and broke the rule that nothing loops.
+> **The descriptor keeps its loop,** against the review's call to retire it
+> and the rule that nothing loops. It is the one thing in the hero with a
+> sense of humour, and with the availability line and the calls to action
+> beside it the hero no longer depends on it to say what I do. Both states
+> share one box, so the buttons under it never move as it swaps. It stops off
+> screen and never runs under reduced motion. The markup it types is the
+> line's real class list, so it changed with the layout.
+>
+> **The availability line is a badge** with a pulsing dot, so it reads as a
+> status. The dot's halo is the second exception to "nothing loops", and it
+> is gone under reduced motion too. Its corners are concentric, the inner
+> field at the panel radius and the outline that plus 4px, so where a phone
+> wraps the words both soften into the same rounded box.
 >
 > **Everything is in normal flow and the hero grows to hold it.** The wordmark
 > was pinned at `bottom: 26%` and the descriptor at 77% of the hero's height.

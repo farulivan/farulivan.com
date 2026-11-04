@@ -1,6 +1,7 @@
 ---
 import type { InferGetStaticPropsType } from "astro"
 
+import HeroStandfirst from "@/components/HeroStandfirst.astro"
 import Icon from "@/components/ui/Icon.astro"
 import Intro from "@/components/Intro.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
@@ -103,38 +104,53 @@ const stackGroups = capabilities.map(({ entry }) => ({
 
     {
       /*
-       * The dot hangs in the margin so the words, not the dot, sit on the
-       * axis. Lime as a fill, which is the only way lime is allowed on white;
-       * the words carry the meaning and the dot only marks the line.
+       * A badge rather than a bare line, so it reads as a status. The dot
+       * pulses the way a live indicator does, in lime as a fill, which is the
+       * only way lime is allowed on white; the words carry the meaning and the
+       * dot only marks it.
+       *
+       * The corners are concentric: the inner field takes the panel radius
+       * and the outer edge that plus the gap between them, so on one line
+       * both read as pills and, where a phone wraps the words, both soften
+       * into the same rounded box rather than a stretched capsule.
+       *
+       * Hovering it clears the inner field and grows the dot. It is not a
+       * link, so nothing else changes.
        */
     }
     <p
-      class="hero-enter text-label font-label text-ink pe-page-margin relative m-0 ms-[20%] mb-8 uppercase"
+      class="hero-enter group/availability border-rule bg-paper relative m-0 ms-[20%] mb-8 flex max-w-[calc(80%-var(--spacing-page-margin))] items-center self-start rounded-[calc(var(--radius-panel)+var(--spacing-1))] border p-1"
       style="--enter-step: 1"
     >
+      <span class="grid size-6 flex-none place-items-center" aria-hidden="true">
+        <span
+          class="availability-shine col-start-1 row-start-1 size-2 rounded-full bg-lime-500"
+        ></span>
+        <span
+          class="duration-mid ease-state col-start-1 row-start-1 size-2 rounded-full bg-lime-500 transition-transform group-hover/availability:scale-150 motion-reduce:transition-none"
+        ></span>
+      </span>
       <span
-        class="absolute inset-s-[-20px] top-[calc((1lh-8px)/2)] size-2 rounded-full bg-lime-500"
-        aria-hidden="true"></span>
-      {t("home.availability")}
+        class="text-label font-label text-ink rounded-panel bg-surface duration-mid ease-state px-4 py-2 uppercase transition-colors group-hover/availability:bg-transparent motion-reduce:transition-none"
+      >
+        {t("home.availability")}
+      </span>
     </p>
 
     <Wordmark variant="hero" class="mt-auto" data-mark-hide-trigger />
 
     {
       /*
-       * Static. It used to type out its own markup and swap to the sentence
-       * every few seconds, which cost the hero its clarity for half of every
-       * cycle. Hidden from assistive tech because the heading above already
-       * says it.
+       * The line under the lettering, which types out its own markup and then
+       * becomes the sentence. Both states share one box sized to the taller,
+       * so the calls to action under it never move as it swaps.
        */
     }
-    <p
-      class="hero-enter text-h-l font-display text-ink pe-page-margin m-0 ms-[20%] mt-5 max-w-[40ch] tracking-[0.08em] uppercase md:text-balance"
+    <HeroStandfirst
+      lang={lang}
+      class="hero-enter pe-page-margin ms-[20%] mt-5"
       style="--enter-step: 2"
-      aria-hidden="true"
-    >
-      {t("site.descriptor")}
-    </p>
+    />
 
     {
       /*
@@ -348,9 +364,34 @@ const stackGroups = capabilities.map(({ entry }) => ({
     }
   }
 
+  /*
+   * The availability dot's shine: a halo that leaves the dot and fades, every
+   * two seconds, the way a live indicator does. Under less motion there is
+   * no halo, and the dot is simply there.
+   */
+  .availability-shine {
+    animation: availability-shine 2s var(--ease-reveal) infinite;
+  }
+
+  @keyframes availability-shine {
+    from {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    70%,
+    to {
+      opacity: 0;
+      transform: scale(2.75);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .hero-enter {
       animation: none;
+    }
+
+    .availability-shine {
+      display: none;
     }
   }
 </style>

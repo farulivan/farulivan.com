@@ -1,0 +1,304 @@
+---
+/**
+ * The line under the hero lettering, which alternates between the markup that
+ * produces it and the line itself.
+ *
+ * It types the source out, holds it, then dissolves into the rendered result,
+ * holds that, and starts again. The joke only lands because the last thing
+ * typed is the sentence itself, so the swap reads as the code running.
+ *
+ * **This loops, and the motion spec says nothing on this site should.** It is
+ * kept on purpose: it is the one thing in the hero with a sense of humour, and
+ * the hero says everything it has to without it. The objection is answered
+ * rather than ignored. The descriptor is in its finished state half of every
+ * cycle, the loop stops the moment it scrolls out of view, it never runs for
+ * anyone who has asked for less motion, and it moves nothing around it: the
+ * calls to action underneath stay where they are as it swaps.
+ *
+ * The whole thing is hidden from assistive tech. The page heading already
+ * carries this sentence, so announcing a string that rewrites itself every few
+ * seconds would be noise on top of something already said properly.
+ */
+import type { HTMLAttributes } from "astro/types"
+
+import type { Locale } from "@/content/schemas"
+import { useTranslations } from "@/i18n/utils"
+
+type Props = {
+  lang: Locale
+  class?: string
+} & Omit<HTMLAttributes<"div">, "class">
+
+const { lang, class: className, ...rest } = Astro.props
+const t = useTranslations(lang)
+
+/**
+ * The one place on the site with colours outside the palette, and deliberately
+ * so: it is depicting an editor, and an editor that renders everything in one
+ * ink is not depicting anything. They are the same family the code blocks in
+ * the writing section use, so the site only ever has one idea of what code
+ * looks like.
+ *
+ * Measured on white: 7.39, 7.59, 12.81 and 5.10 to one. All clear AA.
+ */
+const ink = {
+  tag: "text-[#116329]",
+  attr: "text-[#0550ae]",
+  string: "text-[#0a3069]",
+  mark: "text-ink-muted",
+  text: "text-ink",
+} as const
+
+/**
+ * The line's own markup, class list and all, on one line.
+ *
+ * Every class here is really on the sentence or on the box holding it — it is
+ * the two class lists read as one element, not an invention. 120 characters,
+ * which is what decides the type size below: at the block's width there is
+ * exactly one size that fits them on a single line on a wide screen. Changing
+ * the string means changing that size with it.
+ *
+ * The `style` attribute the box also carries is left out. It holds an
+ * animation offset rather than a class, so it adds 28 characters of build
+ * detail and costs the one-line fit on every screen narrower than about 1700.
+ */
+const snippet: { text: string; kind: keyof typeof ink }[] = [
+  { text: "<", kind: "mark" },
+  { text: "p", kind: "tag" },
+  { text: " ", kind: "mark" },
+  { text: "class", kind: "attr" },
+  { text: "=", kind: "mark" },
+  {
+    text: '"text-h-l font-display uppercase tracking-[0.08em] hero-enter ms-[20%] mt-5"',
+    kind: "string",
+  },
+  { text: ">", kind: "mark" },
+  { text: "Frontend engineer · end to end", kind: "text" },
+  { text: "</", kind: "mark" },
+  { text: "p", kind: "tag" },
+  { text: ">", kind: "mark" },
+]
+---
+
+{
+  /*
+   * Both states share one grid cell, so the box is as tall as the taller of
+   * the two and nothing below it moves as they swap. They are centred in that
+   * cell rather than top-aligned: the code is the taller of the two, and a
+   * one-line sentence pinned to the top of a three-line box reads as though it
+   * slipped upwards when the two swap.
+   *
+   * `@container` lets the snippet size itself against this box rather than the
+   * window, which is what makes the one-line fit exact rather than tuned.
+   *
+   * Both halves start at zero opacity, and each is turned on by the state the
+   * script writes here — so one fades out as the other fades in.
+   */
+}
+<div
+  class:list={[
+    "group @container grid *:col-start-1 *:row-start-1 *:m-0 *:self-center *:text-left",
+    className,
+  ]}
+  aria-hidden="true"
+  data-standfirst
+  {...rest}
+>
+  {
+    /*
+     * Sized so the snippet is exactly one line, derived rather than tuned.
+     *
+     * It is 120 characters, and the monospace here advances 0.602em each, so
+     * the line is 72.24em wide. A font size of a hundredth of the box divided
+     * by that makes the line exactly as wide as the box, at any width.
+     *
+     * Divided by 74 rather than 72.24, for two reasons. Sub-pixel rounding
+     * broke the line at 1440 with the exact figure, and the reader's operating
+     * system may not supply the same monospace this was measured against —
+     * they vary from about 0.55em to 0.6em a character. The headroom costs a
+     * couple of per cent of size and buys a line that does not wrap on a
+     * machine nobody here has.
+     *
+     * The floor is where one line stops being readable. One line survives
+     * down to a box of about 700px — a page of about 900 — and below that it
+     * would need type under 9.5px, so it wraps instead. 120 characters do not
+     * cross a phone at any size worth reading. The ceiling stops it growing into the
+     * sentence it sits under.
+     *
+     * `wrap-anywhere` is what makes wrapping safe: a long attribute value is
+     * one unbreakable word, and without it the line pushes past the edge
+     * instead of falling to the next.
+     *
+     * With no script, and for anyone who asked for less motion, this half is
+     * removed outright rather than hidden, so it cannot be read out or found
+     * by a page search.
+     */
+  }
+  <code
+    class="ease-state duration-mid font-mono text-[clamp(9.5px,calc(100cqi/74),14px)] leading-[1.7] wrap-anywhere whitespace-pre-wrap opacity-0 transition-opacity group-not-data-sf-state:hidden group-data-[sf-state=holding-code]:opacity-100 group-data-[sf-state=typing]:opacity-100 motion-reduce:hidden"
+    data-sf-code
+    >{
+      snippet.map((token) => (
+        <span class={ink[token.kind]} data-t>
+          {token.text}
+        </span>
+      ))
+    }<span
+      class="bg-ink inline-block h-[1.1em] w-[0.55em] translate-y-[0.2em] group-data-[sf-state=holding-code]:animate-[caret-blink_1s_steps(1,end)_infinite]"
+      data-sf-caret></span></code
+  >
+
+  {
+    /*
+     * The measure is set on the sentence rather than on the box around it:
+     * `ch` is relative to the element's own font size, and the box inherits
+     * the page's 16px while this is set at the display size. Measured from the
+     * box it came out about a third of the intended width and broke one line
+     * into three.
+     *
+     * Balancing the lines helps a two-line sentence on a wide screen and
+     * actively costs a line on a narrow one, where every line is already full.
+     *
+     * Set in capitals, which is why it is a step down from the display size
+     * the sentence-case version used: caps carry more weight per pixel, so the
+     * same presence costs less size. The tracking is opened for the same
+     * reason — letterforms that sit comfortably in a sentence close up when
+     * every one of them is a capital.
+     */
+  }
+  <p
+    class="ease-state text-h-l font-display text-ink duration-mid max-w-[40ch] tracking-[0.08em] uppercase opacity-0 transition-opacity group-not-data-sf-state:opacity-100 group-data-[sf-state=showing-text]:opacity-100 motion-reduce:opacity-100 motion-reduce:transition-none md:text-balance"
+    data-sf-text
+  >
+    {t("site.descriptor")}
+  </p>
+</div>
+
+<style is:global>
+  /*
+   * A keyframe list has to be declared somewhere — there is no element to hang
+   * it on.
+   *
+   * Solid while the line is being typed, blinking once it stops, which is what
+   * a cursor in an editor does. It was the other way round at first, so the
+   * caret flickered through the whole of the writing and read as though it
+   * kept disappearing.
+   */
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * Types the snippet, holds it, swaps to the sentence, holds that, repeats.
+   *
+   * Every wait is a promise that resolves early if the loop has been asked to
+   * stop, so scrolling away or arriving at a reduced-motion setting takes
+   * effect immediately rather than at the end of the current phase.
+   */
+  const TYPE_MS = 24
+  const HOLD_MS = 2000
+  const FADE_MS = 320
+
+  const lessMotion = matchMedia("(prefers-reduced-motion: reduce)")
+
+  for (const root of document.querySelectorAll<HTMLElement>(
+    "[data-standfirst]"
+  )) {
+    const code = root.querySelector<HTMLElement>("[data-sf-code]")
+    if (!code) continue
+
+    const tokens = [...code.querySelectorAll<HTMLElement>("[data-t]")].map(
+      (node) => ({ node, full: node.textContent ?? "" })
+    )
+
+    let running = false
+    let stop = () => {}
+
+    /** Resolves after `ms`, or at once if the loop is stopped meanwhile. */
+    const wait = (ms: number) =>
+      new Promise<void>((resolve) => {
+        const timer = setTimeout(finish, ms)
+        function finish() {
+          clearTimeout(timer)
+          stop = () => {}
+          resolve()
+        }
+        stop = finish
+      })
+
+    const clear = () => {
+      for (const { node } of tokens) node.textContent = ""
+    }
+
+    const fill = () => {
+      for (const { node, full } of tokens) node.textContent = full
+    }
+
+    const type = async () => {
+      clear()
+      for (const { node, full } of tokens) {
+        for (let i = 1; i <= full.length; i += 1) {
+          if (!running) return
+          node.textContent = full.slice(0, i)
+          // Whitespace and line breaks arrive instantly; pausing on them
+          // reads as hesitation rather than typing.
+          if (full[i - 1]?.trim()) await wait(TYPE_MS)
+        }
+      }
+    }
+
+    const loop = async () => {
+      while (running) {
+        root.dataset.sfState = "typing"
+        await type()
+        if (!running) break
+
+        root.dataset.sfState = "holding-code"
+        await wait(HOLD_MS)
+        if (!running) break
+
+        root.dataset.sfState = "swapping"
+        await wait(FADE_MS)
+        if (!running) break
+
+        root.dataset.sfState = "showing-text"
+        await wait(HOLD_MS)
+        if (!running) break
+
+        root.dataset.sfState = "swapping"
+        await wait(FADE_MS)
+      }
+    }
+
+    const start = () => {
+      if (running || lessMotion.matches) return
+      running = true
+      void loop()
+    }
+
+    const halt = () => {
+      running = false
+      stop()
+      delete root.dataset.sfState
+      fill()
+    }
+
+    /*
+     * Off screen, it stops. A loop nobody is looking at is just a drain on a
+     * battery, and this one sits at the very top of a page people scroll.
+     */
+    new IntersectionObserver(
+      ([entry]) => (entry?.isIntersecting ? start() : halt()),
+      { threshold: 0.2 }
+    ).observe(root)
+
+    lessMotion.addEventListener("change", () => {
+      if (lessMotion.matches) halt()
+      else start()
+    })
+  }
+</script>
