@@ -4,3 +4,16 @@
 allowBuilds:
   esbuild: true
   sharp: true
+
+# pnpm 11 already waits a day before installing a new release and refuses git
+# or tarball dependencies below the top level. This adds the third check: a
+# release published with weaker provenance than the ones before it is refused,
+# because a stolen publish token cannot reproduce a signed CI build. That is
+# what a takeover looks like from the outside.
+#
+# Only for releases under 30 days old. Past that, a malicious one has
+# almost always been found and pulled, and older packages lost provenance for
+# dull reasons: chokidar 4.0.3, under @astrojs/check, fails the check from
+# 2024 and is fine.
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 43200 # minutes
