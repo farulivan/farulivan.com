@@ -36,7 +36,7 @@ export const siteConfig = {
     { key: "nav.contact", href: "/contact" },
   ],
   /**
-   * Where to reach him. Two links rather than three: an employer follows a
+   * Where to reach me. Two links rather than three: an employer follows a
    * GitHub profile and a LinkedIn profile, and a third account nobody checks
    * is worse than no link at all.
    */

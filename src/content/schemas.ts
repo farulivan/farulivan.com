@@ -183,7 +183,7 @@ export const experienceSchema = z.object({
    * Whether this was a job or a degree.
    *
    * Study and work are one list rather than two, because the question a reader
-   * is actually asking is "what was he doing in 2016", and two lists side by
+   * is actually asking is "what was going on in 2016", and two lists side by
    * side make them do the merge themselves. The kind is what keeps a degree
    * from being read as a job once they are in the same column.
    */

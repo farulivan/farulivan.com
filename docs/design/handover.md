@@ -194,7 +194,7 @@ Things most likely to go wrong:
 
 ## 7. Open items
 
-**Blocked on content from Farul** — the full list is in
+**Blocked on content I still owe** — the full list is in
 [pages.md](pages.md#content-farul-needs-to-supply). The critical path is the
 positioning sentence, three featured projects with outcomes, and the CV.
 
