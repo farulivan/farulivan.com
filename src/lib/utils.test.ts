@@ -16,11 +16,13 @@ describe("cn", () => {
     expect(cn("text-label", "text-ink")).toBe("text-label text-ink")
     expect(cn("text-ink-muted", "text-micro")).toBe("text-ink-muted text-micro")
     expect(cn("text-h-l", "text-ink-invert")).toBe("text-h-l text-ink-invert")
+    expect(cn("text-body", "text-ink")).toBe("text-body text-ink")
   })
 
   it("still lets a later size replace an earlier one", () => {
     expect(cn("text-display-s", "text-display-l")).toBe("text-display-l")
     expect(cn("text-ui", "text-read")).toBe("text-read")
+    expect(cn("text-ui", "text-body")).toBe("text-body")
   })
 
   it("still lets a later colour replace an earlier one", () => {
