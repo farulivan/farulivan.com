@@ -1,9 +1,9 @@
 # Design — farulivan.com
 
-Design notes for the personal site of **Farul Ivan** (fullstack / frontend web
-engineer).
+Design notes for my personal site. I am **Farul Ivan**, a fullstack and
+frontend web engineer.
 
-**Purpose:** employer-facing portfolio. Farul is looking for a role, so every
+**Purpose:** employer-facing portfolio. I am looking for a role, so every
 page carries a seniority signal and the CV is never more than one click away.
 
 **Stack:** Astro. **Typeface:** Lexend. **Ink:** `#1D1D1D` on `#FFFFFF`.
@@ -21,7 +21,7 @@ Read in this order.
 | **[wordmark.md](wordmark.md)** | How `farul.ivan` is generated from Lexend, the crop rule, the three variants. Unblocks the hero and footer. |
 | **[motion.md](motion.md)** | The five animations with real durations, stagger and easing, each with a reduced-motion path. |
 | **[components.md](components.md)** | C1–C10: anatomy, all five states, responsive, a11y. |
-| **[pages.md](pages.md)** | Section order and layout per page, plus the content Farul still owes. |
+| **[pages.md](pages.md)** | Section order and layout per page, plus the content I still owe. |
 | **[handover.md](handover.md)** | Build order, Astro structure, screenshot recipe, definition of done, watch list. |
 | **[review-2026-11.md](review-2026-11.md)** | Design review of the built site, November 2026: what to change next, in priority order, and which specs it overrides. Read before starting new UI work. |
 

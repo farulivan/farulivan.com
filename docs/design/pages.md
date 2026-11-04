@@ -3,7 +3,7 @@
 > Section order, layout and content slots per page. Components are `C1`–`C10`
 > from [components.md](components.md).
 >
-> **Purpose: employer-facing.** Farul is looking for a role. Every page carries a
+> **Purpose: employer-facing.** I am looking for a role. Every page carries a
 > clear seniority signal, and the CV is never more than one click away. Copy is
 > framed as *what was built and what it did*, not *technologies I have touched*.
 
@@ -27,7 +27,7 @@ A long index. Every section is a teaser that leads somewhere.
 | # | Section | Field | Components | Notes |
 |---|---|---|---|---|
 | 1 | Hero | `--paper` | wordmark `mark-hero` + standfirst | M1 stroke-draw. Standfirst aligns to the wordmark's left edge (20%). |
-| 2 | Positioning | `--paper` | `--t-display-m` statement | One sentence on what he builds and for whom. Seniority signal lives here. |
+| 2 | Positioning | `--paper` | `--t-display-m` statement | One sentence on what I build and for whom. Seniority signal lives here. |
 | 3 | Stack | `--paper` | C9 | Row-band parallax. |
 | 4 | Selected work | `--surface` | C4 + C5 ×3 | Three projects only. Leads to `/work`. |
 | 5 | Experience | `--paper` | C4 + C8 (compressed) | Three most recent roles. Leads to `/about`. |
@@ -155,7 +155,7 @@ Short page, one job.
 
 | # | Block | Field |
 |---|---|---|
-| 1 | Statement | `--paper` — `--t-display-m`, one line on what he's looking for |
+| 1 | Statement | `--paper` — `--t-display-m`, one line on what I'm looking for |
 | 2 | Direct | `--paper` — email as a large link at `--t-display-s` |
 | 3 | Elsewhere | `--paper` — C6 table: GitHub · LinkedIn · X |
 | 4 | CV | `--accent-field` — C7, `DOWNLOAD CV — PDF, 240KB` |
@@ -190,7 +190,7 @@ breakpoint. That is what keeps the poster feeling on a phone.
 
 ---
 
-## Content Farul needs to supply
+## Content I need to supply
 
 Blocking the build. Tracked in [handover.md](handover.md).
 
