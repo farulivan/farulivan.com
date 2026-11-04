@@ -39,6 +39,7 @@ export const en = {
   "home.availability":
     "Open to frontend and full-stack roles\u00a0· Remote or Indonesia\u00a0· UTC+7",
   "home.emailCta": "Email me",
+  "home.scrollCue": "Scroll down",
 
   // Page titles. The bodies are placeholders until the real content lands.
   "work.title": "Work",
@@ -217,6 +218,7 @@ export const id: Record<TranslationKey, string> = {
   "home.availability":
     "Terbuka untuk peran frontend dan full-stack\u00a0· Remote atau di Indonesia\u00a0· UTC+7",
   "home.emailCta": "Kirim email",
+  "home.scrollCue": "Gulir ke bawah",
 
   "work.title": "Karya",
   "about.title": "Tentang",
