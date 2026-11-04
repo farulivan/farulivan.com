@@ -105,6 +105,20 @@ treatment:    none. No mockup frames, no perspective, no drop shadows.
 naming:       {project-slug}.png → src/content/projects/_images/
 ```
 
+> **Changed during build: the treatment is a stage, and the size follows the
+> pixels.** The captures that exist were taken at 1×, about 1,000 to 1,700
+> pixels across, not at the 2× above. So every screenshot is shown mounted on a
+> flat stage, one step off its section's field, with a 1px `--rule` hairline,
+> and never wider than two thirds of its own width in pixels. That is a stretch
+> of at most a third on a 2× screen.
+>
+> This is still no mockup and no shadow. A flat field and a hairline are the
+> same structure the rest of the site is built from. The 2× recipe above still
+> stands for future captures, and a sharper capture lifts its own cap
+> automatically. Crop at the end of the section you are showing, not at a fixed
+> ratio, so the next section's background does not show as a strip along the
+> bottom edge.
+
 For anything NDA-covered, do not blur or redact — use the **C5b no-image
 variant**. A blurred screenshot looks like a mistake; a type block looks
 deliberate.
