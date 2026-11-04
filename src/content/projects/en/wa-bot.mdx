@@ -15,7 +15,7 @@ screenshots:
 outcome:
   summary: "Steady-state memory fell from 0.8 GB to under 100 MB, and the same change retired the one component behind every outage the project had had."
   figures:
-    - { value: "614", caption: "Deterministic tests" }
+    - { value: "600+", caption: "Deterministic tests" }
     - { value: "-85%", caption: "Steady-state memory" }
     - { value: "<100 MB", caption: "Memory after the transport swap" }
 sourceUrl: "https://github.com/farulivan/personal-wa-bot"
@@ -95,7 +95,7 @@ The longer version: [A bug I kept making, made uncompilable](/writing/a-bug-made
 
 ## Tests that do not depend on when you run them
 
-614 tests, and the reason there are that many is that streaks and timezone
+Over 600 tests, and the reason there are that many is that streaks and timezone
 boundaries are exactly the logic that breaks quietly. Time is injected as
 `now: () => Date`, so every one of them runs against a frozen clock instead of
 whatever `Date.now()` happens to return on the machine running CI.
