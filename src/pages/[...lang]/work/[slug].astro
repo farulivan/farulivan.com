@@ -4,7 +4,7 @@
  *
  * The order is deliberate and it is not the order the work happened in: the
  * facts and the results first so the page can be skimmed, then the story,
- * then what changed in a sentence. Someone reading this is deciding whether to
+ * which ends on what changed. Someone reading this is deciding whether to
  * keep reading, and the results are the part they came for, so they come
  * before two thousand pixels of prose rather than after them.
  *
@@ -58,6 +58,21 @@ const next = await getNextProject(lang, slug)
  * nothing in it is a band of empty page rather than a section.
  */
 const hasNarrative = (project.entry.body ?? "").trim().length > 0
+
+/*
+ * The story ends with what changed, as its last section and the last entry in
+ * its contents, set like every section before it. A story that already ends
+ * on its own "Outcome" keeps it. One that does not gets the outcome sentence
+ * from the frontmatter under the same heading, so every case study ends the
+ * same way however it was written, and the sentence is never said twice.
+ */
+const outcomeLabel = t("project.outcomeLabel")
+const writesOwnOutcome = headings.some(
+  (heading) => heading.depth === 2 && heading.text === outcomeLabel
+)
+const contents = writesOwnOutcome
+  ? headings
+  : [...headings, { depth: 2, slug: "outcome", text: outcomeLabel }]
 
 /*
  * One row of facts in the hairline styling, which stacks into labelled lines
@@ -283,10 +298,20 @@ const stripColumns = [
     hasNarrative && (
       <Section space="md">
         <ReadingColumns>
-          <Contents slot="aside" {headings} label={t("project.contents")} />
+          <Contents
+            slot="aside"
+            headings={contents}
+            label={t("project.contents")}
+          />
 
           <Prose>
             <Content />
+            {!writesOwnOutcome && (
+              <>
+                <h2 id="outcome">{outcomeLabel}</h2>
+                <p>{data.outcome.summary}</p>
+              </>
+            )}
           </Prose>
         </ReadingColumns>
       </Section>
@@ -295,18 +320,23 @@ const stripColumns = [
 
   {
     /*
-     * What changed, in a sentence, once the story has been told. The figures
-     * are at the top of the page; this is the part that says what they added
-     * up to, and the part a project with nothing counted still has.
+     * Without a story there is no last section to put the outcome in, so it
+     * stands on its own: the case studies that are not translated yet still
+     * say what changed. It stays on paper, so the grey band below belongs to
+     * the next project alone.
      */
   }
-  <Section field="surface" space="md">
-    <SectionHeader label={t("project.outcomeLabel")} />
+  {
+    !hasNarrative && (
+      <Section space="md">
+        <SectionHeader label={outcomeLabel} />
 
-    <p class="text-read text-ink max-w-measure mt-7 text-pretty">
-      {data.outcome.summary}
-    </p>
-  </Section>
+        <p class="text-read text-ink max-w-measure mt-7 text-pretty">
+          {data.outcome.summary}
+        </p>
+      </Section>
+    )
+  }
 
   {
     next && (
