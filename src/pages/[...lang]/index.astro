@@ -23,6 +23,7 @@ import {
 import { LOCALES } from "@/content/schemas"
 import { langParam, localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { firstSentence } from "@/lib/format"
 
 export function getStaticPaths() {
   // `langParam` yields undefined for the default locale, which is what makes
@@ -56,9 +57,15 @@ const posts = (await getPostListItems(lang)).slice(0, 3)
  */
 const statement = t("home.positioning").split(" ")
 
+/*
+ * The tag in front of each row of the stack is the first sentence of the
+ * group's note, the one the about page prints in full, so the two can never
+ * say different things.
+ */
 const stackGroups = capabilities.map(({ entry }) => ({
   domain: entry.data.domain,
   items: entry.data.items,
+  depth: entry.data.note ? firstSentence(entry.data.note) : undefined,
 }))
 ---
 
@@ -232,10 +239,22 @@ const stackGroups = capabilities.map(({ entry }) => ({
 
   {
     /*
-     * One sentence at display size, centred, and nothing else in the section.
-     * It is the first thing after the name and the only claim the page makes
-     * directly, so it gets the largest vertical margins on the site: the space
-     * either side is what stops it reading as a paragraph between two others.
+     * One sentence at display size, and nothing else in the section. It is
+     * the first thing after the name and the only claim the page makes
+     * directly, so the space either side is generous: it is what stops it
+     * reading as a paragraph between two others. It used to have the most on
+     * the site, 192px each side, and with the next section's the first
+     * project sat nearly three screens down.
+     *
+     * It starts on the hero's 20% line rather than centred. It was the only
+     * centred block on the site, and sharing the line ties it to the name
+     * above it. That line is a fifth of the window, not of the reading
+     * column, so the section is a plain one rather than a `Section`, whose
+     * centred column would put the line somewhere else on every width.
+     *
+     * Line-height 1.05 rather than the display size's 0.95: over three lines
+     * that nearly touched the ascenders of one line to the descenders of the
+     * line above.
      *
      * Each word rises out of its own mask as the block comes into view, a
      * fraction behind the one before it. Lines lower down enter later, so the
@@ -248,17 +267,16 @@ const stackGroups = capabilities.map(({ entry }) => ({
      * the sentence is simply there.
      */
   }
-  <Section space="xl">
+  <section class="bg-paper text-ink py-10">
     <p
-      class="text-display-s font-display text-ink m-0 mx-auto max-w-[40ch] text-center text-balance"
+      class="text-display-s font-display text-ink pe-page-margin m-0 ms-[20%] max-w-[40ch] leading-[1.05] text-balance"
       data-statement
     >
       {
         /*
          * A real space between the words rather than a margin, so the sentence
-         * centres, wraps and copies as a sentence. Spacing inline blocks by
-         * margin puts the words on somebody's clipboard with nothing between
-         * them.
+         * wraps and copies as a sentence. Spacing inline blocks by margin puts
+         * the words on somebody's clipboard with nothing between them.
          */
       }
       {
@@ -273,9 +291,9 @@ const stackGroups = capabilities.map(({ entry }) => ({
         ))
       }
     </p>
-  </Section>
+  </section>
 
-  <Section space="xl">
+  <Section space="md">
     <SectionHeader
       label={t("home.stackLabel")}
       description={t("home.stackDescription")}
