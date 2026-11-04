@@ -287,6 +287,8 @@
   --duration-mid: 320ms;
   --duration-slow: 500ms;
   --duration-draw: 900ms;
+  /* The blend between pages, and the picture's move into its case study. */
+  --duration-page: 640ms;
 
   color-scheme: light;
 }
@@ -380,8 +382,11 @@
  * the two, with no client router and no script, so the site still ships no
  * runtime. A browser without them navigates the way it always has.
  *
- * Only for anyone who has not asked for less motion. The blend is short and
- * eases out, the same curve everything that arrives on this site uses.
+ * Only for anyone who has not asked for less motion. It eases out, the same
+ * curve everything that arrives on this site uses, over 640ms, its own
+ * duration. At 320ms the change was over before the picture's move could be
+ * followed; at twice that the eye can follow it from the row into the case
+ * study without the wait being felt.
  *
  * A project's picture is named after its project number, the same on every
  * page, so the screenshot in a row grows into the plate at the top of its
@@ -396,7 +401,7 @@
   ::view-transition-group(*),
   ::view-transition-old(*),
   ::view-transition-new(*) {
-    animation-duration: var(--duration-mid);
+    animation-duration: var(--duration-page);
     animation-timing-function: var(--ease-reveal);
   }
 }
