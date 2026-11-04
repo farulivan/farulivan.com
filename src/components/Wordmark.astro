@@ -115,21 +115,25 @@ const svg = mark.replaceAll("wordmark-wipe", `wordmark-wipe-${variant}`)
    * width in `vw` while offsetting in `%` mixes two different widths, because
    * viewport units count the scrollbar and a percentage does not — measured,
    * that pushed the left edge to 19.2% instead of 20%. Percentages throughout
-   * make the arithmetic exact: right edge at 103.8%, minus 83.8% of width,
-   * puts the left edge at 20%, and the cut at 95.47% of the lettering.
+   * make the arithmetic exact: starting 20% in and 81.36% wide, the lettering
+   * ends at 101.36% and the hero clips the last 1.36% of the page width off it.
+   *
+   * It is in normal flow rather than pinned to a share of the hero's height,
+   * so the lines under it can push the hero taller instead of landing on it.
+   * Only the horizontal arithmetic is the crop; where it sits vertically is
+   * the hero's business.
    *
    * This does mean the element it sits in has to run the full width of the
    * page. Putting the hero inside a centred container would quietly move both
    * edges.
    *
    * If the lettering ever changes, re-derive rather than nudging these:
-   * width = 0.80 / cutFraction, and right = width − 0.80.
+   * width = 0.80 / cutFraction, and the overhang is width − 0.80.
    */
   .mark--hero {
-    position: absolute;
+    flex: none;
     width: 81.36%;
-    right: -1.36%;
-    bottom: 26%;
+    margin-left: 20%;
   }
 
   /*

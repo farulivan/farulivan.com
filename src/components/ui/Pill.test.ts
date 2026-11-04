@@ -48,4 +48,13 @@ describe("Pill", () => {
     expect(html).toContain('lang="id"')
     expect(html).toContain('hreflang="id"')
   })
+
+  it("passes a download filename through, so the CV saves under a real name", async () => {
+    const html = await render({
+      label: "Download my CV",
+      href: "/cv.pdf",
+      download: "farul-ivan-cv.pdf",
+    })
+    expect(html).toContain('download="farul-ivan-cv.pdf"')
+  })
 })

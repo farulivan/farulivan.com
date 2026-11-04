@@ -366,48 +366,6 @@
 }
 
 /*
- * The hero's scroll cue, on the way out.
- *
- * It arrives with the rest of the hero and then holds. What takes it away is
- * the scroll itself: the fade runs against the document's own scroll position
- * and is finished around seven tenths of a screen down, which is about halfway
- * through the sentence the cue was pointing at. It ends while the cue is still
- * on screen on purpose, so it reads as a fade rather than as something that
- * merely scrolled away. A prompt to scroll that is still on screen
- * while you are reading has stopped being a prompt.
- *
- * A scroll timeline rather than a listener, for the reason every other bit of
- * motion here uses one: no JavaScript, and nothing to fail. The `@supports`
- * guard matters as much as it does elsewhere, because without it the fade
- * would run on the document clock and take the cue away a second after it
- * arrived.
- */
-@keyframes cue-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@supports (animation-timeline: scroll()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /*
-     * Longhands, not the `animation` shorthand. The minifier folds a
-     * shorthand and a neighbouring `animation-timeline` into one declaration
-     * that names the timeline inside the shorthand, which browsers reject
-     * outright — so the animation silently does not run, and the CSS looks
-     * correct in the source. Longhands are left alone.
-     */
-    [data-scroll-cue] {
-      animation-name: cue-out;
-      animation-timing-function: linear;
-      animation-fill-mode: both;
-      animation-timeline: scroll();
-      animation-range: 0 70vh;
-    }
-  }
-}
-
-/*
  * The statement, a word at a time.
  *
  * Each word sits in a box that clips it and rises out of that box as the block

@@ -66,6 +66,41 @@ section 2 is visible on first scroll.
 > runs into that corner, and a phone hero is scrolled by habit anyway. Once the
 > hero carries its own calls to action the cue goes everywhere.
 
+> **Changed during build: the hero says who, what, availability and where the
+> CV is.** From the top, all on the 20% axis:
+>
+> ```
+> availability:  --t-label, uppercase, --ink, led by an 8px lime-500 dot that
+>                hangs in the margin so the words sit on the axis.
+>                A third of the way down on a desktop.
+> wordmark:      81.36% wide, left edge at 20%, as before
+> descriptor:    the line under the lettering, static, in the style it had
+> calls to act:  dark pill "Download my CV" with "PDF, 108 KB" under it,
+>                light pill "Email me". Side by side from 768, stacked
+>                and full width below it.
+> ```
+>
+> **The descriptor no longer loops.** It typed out its own markup and swapped
+> to the sentence every few seconds, which cost the hero its clarity for half
+> of every cycle and broke the rule that nothing loops.
+>
+> **Everything is in normal flow and the hero grows to hold it.** The wordmark
+> was pinned at `bottom: 26%` and the descriptor at 77% of the hero's height.
+> That holds for a name and one line, not for four blocks: on a phone they
+> landed on each other instead of pushing the hero taller. The lettering and
+> everything under it now sit at the bottom of the hero, and the space above
+> them is what gives way first on a short screen. The crop is untouched (see
+> [wordmark.md](wordmark.md)). The heights above are now floors: the full
+> screen from 1024, `max(min(72vh, 640px), 560px)` below it.
+>
+> **The scroll cue is gone.** A hero that asks for something does not need to
+> ask for a scroll as well.
+>
+> The CV's format and size sit under the pill rather than inside it. In one
+> pill the two do not fit a phone's axis, and the footer already says it this
+> way. The label is "Download my CV", the same words the CV has everywhere
+> else on the site.
+
 ---
 
 ## Work
