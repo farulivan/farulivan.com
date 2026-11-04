@@ -11,6 +11,7 @@ import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { formatDate, resolvePostDate, toDateAttribute } from "@/lib/format"
+import { ogImagePath } from "@/lib/og-path"
 
 interface Props {
   lang: Locale
@@ -68,6 +69,7 @@ const showContents = sectionCount >= 4 || (minutesRead ?? 0) >= 6
   title={title}
   description={description}
   type="article"
+  image={ogImagePath(lang, { section: "writing", slug })}
   publishedTime={pubDate}
   modifiedTime={displayed.kind === "updated" ? displayed.date : undefined}
   tags={tags}

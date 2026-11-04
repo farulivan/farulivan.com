@@ -60,6 +60,7 @@ export const en = {
   "home.experienceDescription": "The three most recent roles.",
   "home.experienceCta": "Read the full history",
   "home.writingLabel": "Writing",
+  "og.caseStudy": "Case study",
   "home.writingDescription":
     "Notes on decisions that were harder than they looked.",
   "home.writingCta": "Read everything",
@@ -250,6 +251,7 @@ export const id: Record<TranslationKey, string> = {
   "home.experienceDescription": "Tiga peran terakhir.",
   "home.experienceCta": "Baca riwayat lengkapnya",
   "home.writingLabel": "Tulisan",
+  "og.caseStudy": "Studi kasus",
   "home.writingDescription":
     "Catatan tentang keputusan yang ternyata lebih sulit dari kelihatannya.",
   "home.writingCta": "Baca semuanya",

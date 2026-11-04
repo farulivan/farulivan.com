@@ -33,6 +33,7 @@ import {
 } from "@/content/queries"
 import { langParam, localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { ogImagePath } from "@/lib/og-path"
 import { screenshotMaxWidth } from "@/lib/screenshot"
 
 export async function getStaticPaths() {
@@ -139,6 +140,7 @@ const stripColumns = [
   path={`/work/${slug}`}
   title={data.title}
   description={data.summary}
+  image={ogImagePath(lang, { section: "work", slug })}
   availableLocales={project.availableLocales}
 >
   <Section space="lg">

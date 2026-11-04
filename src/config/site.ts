@@ -15,8 +15,6 @@ export const siteConfig = {
    * and robots.txt absolute.
    */
   url: "https://farulivan.com",
-  /** Fallback link-preview image, served from public/. */
-  ogImage: "/og-default.png",
   /** Posts per page on the writing index. */
   postsPerPage: 10,
   /**
@@ -65,7 +63,6 @@ export const siteConfig = {
 } as const satisfies {
   name: string
   url: string
-  ogImage: string
   postsPerPage: number
   menu: readonly { key: TranslationKey; href: string }[]
   social: Readonly<Record<string, string>>

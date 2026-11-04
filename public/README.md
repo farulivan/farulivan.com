@@ -25,9 +25,11 @@ the wrong way round. The sizes a favicon is drawn at are all smaller than the
 pictures in it, so nothing is ever scaled up — but a drawing would still be
 better: smaller, and sharp at the larger sizes a browser uses for a bookmark.
 
-`og-default.png` is the monogram above the lettering, on paper. It is a card
-rather than an icon, so it keeps its background: link previews are composited on
-to whatever colour the platform uses, and several of them use black.
+The link-preview cards are not here. They are drawn when the site builds, one
+for each page that has something of its own to show, by `src/lib/og.ts` and
+`src/pages/og/[...card].png.ts`. Like the old single card they replace, each
+keeps its own background, because platforms composite previews onto whatever
+colour they use, and several use black.
 
 ## Still missing
 
