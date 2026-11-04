@@ -62,4 +62,7 @@ Not gaps — decisions taken to leave for later.
   it stays reachable, but a full dark palette needs the lime scale re-checked
   against dark grounds. Lime-400 and 500 both pass as text on `#0A0A0A` (11.48
   and 9.60), so the foundation exists when we want it.
-- Analytics, OG image generation, RSS for Writing.
+- Analytics, RSS for Writing.
+
+OG images left this list in the November 2026 review. Each page now gets a
+1200×630 card drawn at build time; see `src/lib/og.ts`.

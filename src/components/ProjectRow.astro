@@ -15,8 +15,7 @@
  * page sets these on, and on white it washed out the grey stage the picture
  * is mounted on — the one thing the hover was meant to draw the eye to.
  */
-import { Image } from "astro:assets"
-
+import Capture from "@/components/Capture.astro"
 import Icon from "@/components/ui/Icon.astro"
 import { cn } from "@/lib/utils"
 
@@ -32,7 +31,9 @@ interface Props {
   figures?: readonly { value: string; caption: string }[] | undefined
   /** "Read the case study", passed in so it is translated. */
   cta: string
-  screenshot?: { src: ImageMetadata; alt: string } | undefined
+  screenshot?:
+    | { src: ImageMetadata; alt: string; phone?: ImageMetadata | undefined }
+    | undefined
   /** Puts the image on the right. Callers alternate it down the list. */
   flip?: boolean | undefined
   class?: string | undefined
@@ -100,12 +101,17 @@ const lead = figures.slice(0, 2)
     >
       {
         screenshot ? (
-          <div class="border-section-rule h-full w-full overflow-hidden border">
-            <Image
+          <div
+            class="border-section-rule h-full w-full overflow-hidden border"
+            style={`view-transition-name: project-shot-${number}`}
+          >
+            <Capture
               src={screenshot.src}
+              phone={screenshot.phone}
               alt={screenshot.alt}
               widths={[640, 1024, 1600]}
               sizes="(min-width: 1440px) 620px, (min-width: 1024px) 44vw, 90vw"
+              pictureClass="block h-full w-full"
               class="duration-mid ease-state h-full w-full object-cover object-top transition-transform group-hover:scale-[1.02] motion-reduce:transition-none"
             />
           </div>

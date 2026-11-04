@@ -23,6 +23,8 @@ export const ICONS = {
   dots: '<circle cx="6.6" cy="12" r="2.6" fill="currentColor" stroke="none"/><circle cx="17.4" cy="12" r="2.6" fill="currentColor" stroke="none"/>',
   close: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
   check: '<path d="M20 6 9 17l-5-5"/>',
+  /* Two sheets, one over the other: the address, and the copy of it. */
+  copy: '<rect width="13" height="13" x="8" y="8" rx="2"/><path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2"/>',
   chevronLeft: '<path d="m15 18-6-6 6-6"/>',
   chevronRight: '<path d="m9 18 6-6-6-6"/>',
   chevronDown: '<path d="m6 9 6 6 6-6"/>',

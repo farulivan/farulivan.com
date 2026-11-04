@@ -287,6 +287,8 @@
   --duration-mid: 320ms;
   --duration-slow: 500ms;
   --duration-draw: 900ms;
+  /* The blend between pages, and the picture's move into its case study. */
+  --duration-page: 640ms;
 
   color-scheme: light;
 }
@@ -319,6 +321,16 @@
     background-color: var(--color-paper);
     color: var(--color-ink);
     font-weight: var(--font-weight-body);
+  }
+
+  /*
+   * Selected text sits on the lime field with ink on it. Lime is never a
+   * text colour, but a field with ink on it is the one way it is used, and
+   * the pair reads on every ground on the site, the black footer included.
+   */
+  ::selection {
+    background-color: var(--color-accent-field);
+    color: var(--color-ink);
   }
 
   /*
@@ -359,6 +371,38 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+/*
+ * Page transitions.
+ *
+ * Cross-document view transitions, declared in CSS and nothing else: the
+ * browser keeps the old page on screen until the new one is ready and blends
+ * the two, with no client router and no script, so the site still ships no
+ * runtime. A browser without them navigates the way it always has.
+ *
+ * Only for anyone who has not asked for less motion. It eases out, the same
+ * curve everything that arrives on this site uses, over 640ms, its own
+ * duration. At 320ms the change was over before the picture's move could be
+ * followed; at twice that the eye can follow it from the row into the case
+ * study without the wait being felt.
+ *
+ * A project's picture is named after its project number, the same on every
+ * page, so the screenshot in a row grows into the plate at the top of its
+ * case study instead of vanishing and reappearing. The bar is named too, so
+ * it holds still while the page under it changes.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: var(--duration-page);
+    animation-timing-function: var(--ease-reveal);
   }
 }
 

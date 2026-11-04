@@ -11,6 +11,7 @@ import type { Locale } from "@/content/schemas"
 import { localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
 import { formatDate, resolvePostDate, toDateAttribute } from "@/lib/format"
+import { ogImagePath } from "@/lib/og-path"
 
 interface Props {
   lang: Locale
@@ -51,6 +52,15 @@ const t = useTranslations(lang)
 
 // One helper decides which date wins; see the shallow-clone caveat there.
 const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
+
+/*
+ * A contents list earns its column on a long piece: four sections or more,
+ * or six minutes or more. Below that it listed two or three headings beside
+ * a two-minute read, which is the noise the page spec warns about, and the
+ * piece reads better as one column under its title.
+ */
+const sectionCount = headings.filter((heading) => heading.depth === 2).length
+const showContents = sectionCount >= 4 || (minutesRead ?? 0) >= 6
 ---
 
 <BaseLayout
@@ -59,6 +69,7 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
   title={title}
   description={description}
   type="article"
+  image={ogImagePath(lang, { section: "writing", slug })}
   publishedTime={pubDate}
   modifiedTime={displayed.kind === "updated" ? displayed.date : undefined}
   tags={tags}
@@ -100,18 +111,28 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
       <div
         class="text-label text-section-muted mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 uppercase"
       >
-        <time datetime={toDateAttribute(displayed.date)}>
-          {
-            t(
-              displayed.kind === "updated"
-                ? "writing.updated"
-                : "writing.published",
-              {
-                date: formatDate(displayed.date, lang),
-              }
-            )
-          }
+        {
+          /*
+           * When it was written, then when it last changed. Showing only the
+           * newer date hid the first, and a reader judging how current a
+           * piece is wants both.
+           */
+        }
+        <time datetime={toDateAttribute(pubDate)}>
+          {t("writing.published", { date: formatDate(pubDate, lang) })}
         </time>
+        {
+          displayed.kind === "updated" && (
+            <>
+              <span aria-hidden="true">·</span>
+              <time datetime={toDateAttribute(displayed.date)}>
+                {t("writing.updated", {
+                  date: formatDate(displayed.date, lang),
+                })}
+              </time>
+            </>
+          )
+        }
         {
           minutesRead !== undefined && (
             <>
@@ -127,11 +148,15 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
          * Text rather than links. Tag pages were dropped for this version —
          * the writing index shows the topic as a column instead — and a link
          * to a route that does not exist is worse than no link at all.
+         *
+         * A step smaller than the dates, at the size every other tag-like
+         * label on the site uses, so the topics read as tags rather than as
+         * a second line of metadata.
          */
       }
       {
         tags.length > 0 && (
-          <ul class="text-label text-section-muted m-0 mt-3 flex list-none flex-wrap gap-x-3 p-0 uppercase">
+          <ul class="text-micro text-section-muted m-0 mt-3 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 uppercase">
             {tags.map((tag) => (
               <li>{tag}</li>
             ))}
@@ -155,18 +180,28 @@ const displayed = resolvePostDate({ pubDate, updatedDate, lastModified })
 
     {
       /*
-       * The contents beside the article rather than the article alone in the
-       * middle of the page. One column at the measure leaves most of a wide
-       * screen empty, and an article is a piece somebody reads in order, so
-       * the list of what is coming is worth having open while they do.
+       * On a long piece, the contents beside the article rather than the
+       * article alone. It is read in order, so the list of what is coming is
+       * worth having open while it is. A short one is one column at the
+       * measure, on the same edge as its title.
        */
     }
-    <ReadingColumns>
-      <Contents slot="aside" {headings} label={t("writing.contents")} />
+    {
+      showContents ? (
+        <ReadingColumns>
+          <Contents slot="aside" {headings} label={t("writing.contents")} />
 
-      <Prose>
-        <slot />
-      </Prose>
-    </ReadingColumns>
+          <Prose>
+            <slot />
+          </Prose>
+        </ReadingColumns>
+      ) : (
+        <div class="max-w-measure">
+          <Prose>
+            <slot />
+          </Prose>
+        </div>
+      )
+    }
   </Section>
 </BaseLayout>

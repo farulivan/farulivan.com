@@ -238,6 +238,13 @@ Full choreography is in [motion.md](motion.md). Primitives only here:
 **Every motion needs a `prefers-reduced-motion` path** that renders the final
 state immediately. This is a build requirement, not a nicety.
 
+> **Changed during build: pages blend.** Navigation uses cross-document view
+> transitions, declared in CSS only (`@view-transition { navigation: auto; }`),
+> over 640ms (`--duration-page`) on `--e-out`, and only when no reduction in motion is asked
+> for. There is no client router. The bar holds still, and a project's picture
+> moves from its row to its case-study plate. Selected text sits on
+> lime-300 with `--ink` on it, the lime-as-field rule applied to `::selection`.
+
 ---
 
 ## 7. Paste-ready token block

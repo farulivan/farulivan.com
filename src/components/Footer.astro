@@ -10,6 +10,7 @@
  * as calm and started reading as a hole.
  */
 import Icon from "@/components/ui/Icon.astro"
+import Pill from "@/components/ui/Pill.astro"
 import Wordmark from "@/components/Wordmark.astro"
 import { siteConfig } from "@/config/site"
 import type { Locale } from "@/content/schemas"
@@ -178,52 +179,33 @@ const social = [
           {
             /*
              * The one thing in this footer worth pressing, so the one thing
-             * here that looks like a control. Bordered rather than underlined,
-             * which is the site's shape for something you press, and square
-             * because it is structure rather than a floating panel.
+             * here that looks like a control: the light pill, the same shape
+             * the CV takes at the top of the home page. It used to be a
+             * square outlined box, the only one of its kind on the site, and
+             * so it read as a different kind of thing rather than the same
+             * file offered again.
              *
-             * The label is kept on one line — two lines inside a bordered
-             * control reads as an accident — and the arrow sits at the far
-             * edge, so the whole thing reads as one shape rather than a phrase
-             * with a mark stuck to it.
+             * The focus ring is paper here: the site's ink ring is invisible
+             * on the black field.
              */
           }
-          {
-            /*
-             * The same fill as the larger boxes on the other pages, at this
-             * size: reaching for it sweeps the field's ink up from the bottom
-             * edge and the words reverse out of it. One behaviour for every
-             * control that offers this file, wherever it appears.
-             */
-          }
-          <a
-            class="group/cv text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper after:duration-slow after:ease-state relative isolate flex items-center justify-between gap-3 overflow-clip border border-[color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] px-4 py-3 leading-[1.4] whitespace-nowrap no-underline transition-colors after:absolute after:inset-0 after:-z-10 after:origin-bottom after:scale-y-0 after:bg-current after:transition-transform hover:border-(--color-ink-invert) hover:after:scale-y-100 motion-reduce:transition-none motion-reduce:after:transition-none"
+          <Pill
             href={siteConfig.cv.href}
             download={siteConfig.cv.filename}
+            label={t("cv.download")}
+            keepLabel
+            class="focus-visible:outline-paper"
           >
-            <span
-              class="group-hover/cv:text-section-field duration-slow ease-state transition-colors motion-reduce:transition-none"
-            >
-              {t("cv.download")}
-            </span>
-            {
-              /*
-               * Points down, because this is a download. It used to point up
-               * and out, which is the mark for a link that leaves the site and
-               * says the opposite of what the button next to it says. It leans
-               * further down when you reach for it.
-               */
-            }
-            <Icon
-              name="arrowRight"
-              class="duration-fast ease-state group-hover/cv:text-section-field duration-slow size-4 rotate-90 transition-[translate,color] group-hover/cv:translate-y-[2px] motion-reduce:transition-none"
-            />
-          </a>
+            {/* Points down, because this is a download. */}
+            <Icon slot="circle" name="arrowRight" class="size-4 rotate-90" />
+          </Pill>
           {
             /* It still says what it is and how big: nobody should have to
                click a download to find out what it will cost them. */
           }
-          <span class="text-ink-invert-muted text-micro mt-2 block uppercase">
+          <span
+            class="text-ink-invert-muted text-micro mt-2 block ps-7 uppercase"
+          >
             {
               t("cv.detail", {
                 format: siteConfig.cv.format,

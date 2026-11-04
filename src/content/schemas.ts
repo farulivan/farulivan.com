@@ -128,6 +128,12 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
           alt: z.string().min(1),
           /** Printed under the picture when a project has more than one. */
           caption: z.string().min(1).optional(),
+          /**
+           * A tighter crop of the same capture for phones, framed around its
+           * headline. At phone width the whole page is a thumbnail nobody can
+           * read; this is the part of it worth reading.
+           */
+          phone: image().optional(),
         })
       )
       .default([]),
@@ -223,6 +229,13 @@ export const experienceSchema = z.object({
   /** Two lines on what shipped, which is the height the row is drawn at. */
   description: z.string().min(1).max(240),
   order: z.number().int(),
+  /**
+   * Whether this came before the move into software: the architecture
+   * degree, the fire-protection years and the visualisation work. The about
+   * page sets these under their own small heading, so the change of career
+   * reads as a story with a turn in it rather than as one list.
+   */
+  beforeSoftware: z.boolean().default(false),
 })
 
 /**

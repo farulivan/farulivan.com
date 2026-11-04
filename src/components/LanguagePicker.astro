@@ -1,14 +1,17 @@
 ---
 /**
- * One control showing the language you are reading in. Pressing it switches.
+ * One control showing both languages, the one you are reading in ink and the
+ * other muted. Pressing it switches.
  *
  * It is a link rather than a button because that is what it does: it goes to
  * the same page in the other language. `switchLocalePath` keeps you on the
  * page you are on rather than sending you home, which is the usual bug in a
  * hand-rolled switcher.
  *
- * The label says what will happen — the visible text alone names the current
- * language, which does not tell anyone what pressing it is for.
+ * It used to show only the current language, "EN", while linking to the
+ * other one, so what it said and what it did disagreed. Showing both says
+ * there is a choice and which side of it you are on. The label still says
+ * what pressing it will do, which the letters alone cannot.
  *
  * This shape only works while there are exactly two languages. A third would
  * need a real menu, not a toggle.
@@ -34,13 +37,17 @@ const other = LOCALES.find((locale) => locale !== lang) ?? lang
 
 {
   /*
-   * A filled circle rather than bare text. The bar has no background of its
-   * own and sits over whatever the page happens to be showing, so two grey
+   * A filled pill rather than bare text. The bar has no background of its
+   * own and sits over whatever the page happens to be showing, so grey
    * letters alone would be legible on some pages and not on others. The fill
    * gives it the same contrast everywhere.
    *
-   * Sized to the smallest a target is allowed to be, not to the two letters
-   * inside it.
+   * As tall as the smallest a target is allowed to be, and as wide as the
+   * two codes need.
+   *
+   * The muted code turns ink when the pill is reached for. It is where the
+   * link goes, and on the darker hover fill the muted grey would drop below
+   * a readable contrast anyway.
    */
 }
 <a
@@ -48,7 +55,7 @@ const other = LOCALES.find((locale) => locale !== lang) ?? lang
   hreflang={LOCALE_TAGS[other]}
   aria-label={t("lang.switch", { language: t(`lang.${other}`) })}
   class={cn(
-    "grid size-tap cursor-pointer place-items-center rounded-control",
+    "group inline-flex h-tap cursor-pointer items-center gap-2 rounded-control px-4",
     "bg-surface text-ink text-label font-label uppercase no-underline",
     "transition-colors duration-fast ease-state active:scale-[0.98]",
     "hover:bg-[color-mix(in_srgb,var(--color-ink)_12%,var(--color-surface))]",
@@ -57,5 +64,23 @@ const other = LOCALES.find((locale) => locale !== lang) ?? lang
   )}
   {...rest}
 >
-  {lang}
+  {
+    LOCALES.map((locale, index) => (
+      <>
+        {index > 0 && (
+          <span class="text-ink-muted" aria-hidden="true">
+            ·
+          </span>
+        )}
+        <span
+          class:list={[
+            locale !== lang &&
+              "text-ink-muted duration-fast ease-state group-hover:text-ink group-focus-visible:text-ink transition-colors motion-reduce:transition-none",
+          ]}
+        >
+          {locale}
+        </span>
+      </>
+    ))
+  }
 </a>

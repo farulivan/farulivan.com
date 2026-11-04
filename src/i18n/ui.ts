@@ -60,6 +60,7 @@ export const en = {
   "home.experienceDescription": "The three most recent roles.",
   "home.experienceCta": "Read the full history",
   "home.writingLabel": "Writing",
+  "og.caseStudy": "Case study",
   "home.writingDescription":
     "Notes on decisions that were harder than they looked.",
   "home.writingCta": "Read everything",
@@ -84,6 +85,7 @@ export const en = {
   "about.historyLabel": "History",
   "about.historyDescription":
     "From architecture school in 2011 to the last thing I shipped.",
+  "about.beforeSoftware": "Before software",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
     "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
@@ -140,6 +142,18 @@ export const en = {
   "contact.elsewhereLabel": "Elsewhere",
   "contact.elsewhereDescription":
     "The same person, in the places you would expect.",
+  "contact.copyEmail": "Copy email",
+  "contact.copied": "Copied",
+  "contact.copyFailed": "Couldn't copy it",
+  "contact.practicalLabel": "Practicalities",
+  "contact.col.roles": "Roles",
+  "contact.col.location": "Location",
+  "contact.col.start": "Earliest start",
+  "contact.col.replies": "Replies",
+  "contact.roles": "Frontend and full-stack",
+  "contact.location": "Remote or Indonesia, UTC+7",
+  "contact.start": "Immediately",
+  "contact.replies": "Within one working day",
   "contact.col.channel": "Channel",
   "contact.col.link": "Link",
   "contact.github": "GitHub",
@@ -237,6 +251,7 @@ export const id: Record<TranslationKey, string> = {
   "home.experienceDescription": "Tiga peran terakhir.",
   "home.experienceCta": "Baca riwayat lengkapnya",
   "home.writingLabel": "Tulisan",
+  "og.caseStudy": "Studi kasus",
   "home.writingDescription":
     "Catatan tentang keputusan yang ternyata lebih sulit dari kelihatannya.",
   "home.writingCta": "Baca semuanya",
@@ -261,6 +276,7 @@ export const id: Record<TranslationKey, string> = {
   "about.historyLabel": "Riwayat",
   "about.historyDescription":
     "Dari kuliah arsitektur pada 2011 sampai hal terakhir yang saya rilis.",
+  "about.beforeSoftware": "Sebelum beralih ke software",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
     "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",
@@ -317,6 +333,18 @@ export const id: Record<TranslationKey, string> = {
   "contact.elsewhereLabel": "Di tempat lain",
   "contact.elsewhereDescription":
     "Orang yang sama, di tempat-tempat yang biasa.",
+  "contact.copyEmail": "Salin email",
+  "contact.copied": "Sudah disalin",
+  "contact.copyFailed": "Gagal menyalin",
+  "contact.practicalLabel": "Hal praktis",
+  "contact.col.roles": "Peran",
+  "contact.col.location": "Lokasi",
+  "contact.col.start": "Mulai paling cepat",
+  "contact.col.replies": "Balasan",
+  "contact.roles": "Frontend dan full-stack",
+  "contact.location": "Remote atau di Indonesia, UTC+7",
+  "contact.start": "Segera",
+  "contact.replies": "Dalam satu hari kerja",
   "contact.col.channel": "Kanal",
   "contact.col.link": "Tautan",
   "contact.github": "GitHub",

@@ -14,9 +14,9 @@
  */
 import type { InferGetStaticPropsType } from "astro"
 
-import { Image } from "astro:assets"
 import { render } from "astro:content"
 
+import Capture from "@/components/Capture.astro"
 import Contents from "@/components/Contents.astro"
 import DataTable, { type DataCell } from "@/components/DataTable.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
@@ -33,6 +33,7 @@ import {
 } from "@/content/queries"
 import { langParam, localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { ogImagePath } from "@/lib/og-path"
 import { screenshotMaxWidth } from "@/lib/screenshot"
 
 export async function getStaticPaths() {
@@ -139,6 +140,7 @@ const stripColumns = [
   path={`/work/${slug}`}
   title={data.title}
   description={data.summary}
+  image={ogImagePath(lang, { section: "work", slug })}
   availableLocales={project.availableLocales}
 >
   <Section space="lg">
@@ -253,7 +255,12 @@ const stripColumns = [
      * sits on the stage instead of running into the window's edges.
      *
      * The picture keeps its own proportions here rather than being cropped to
-     * 16:10. This is the one place it is shown whole.
+     * 16:10. This is the one place it is shown whole, except on a phone,
+     * where the whole is a thumbnail and the project's phone crop, framed
+     * on the headline, stands in for it.
+     *
+     * The first one shares a transition name with the project's row, so on
+     * the way in from a list the row's picture grows into this plate.
      */
   }
   {
@@ -265,12 +272,13 @@ const stripColumns = [
             data.screenshots.length > 1 && "md:grid-cols-2",
           ]}
         >
-          {data.screenshots.map((shot) => {
+          {data.screenshots.map((shot, index) => {
             const cap = screenshotMaxWidth(shot.src.width)
             return (
               <figure class="m-0 w-full" style={`max-width: ${cap}px`}>
-                <Image
+                <Capture
                   src={shot.src}
+                  phone={shot.phone}
                   alt={shot.alt}
                   widths={[640, 1024, 1600, 2240]}
                   sizes={
@@ -279,6 +287,11 @@ const stripColumns = [
                       : `(min-width: ${cap}px) ${cap}px, 100vw`
                   }
                   class="border-section-rule block h-auto w-full border"
+                  style={
+                    index === 0
+                      ? `view-transition-name: project-shot-${project.number}`
+                      : undefined
+                  }
                 />
                 {shot.caption && (
                   <figcaption class="text-label text-section-muted mt-3 uppercase">

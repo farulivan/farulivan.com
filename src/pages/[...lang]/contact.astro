@@ -14,6 +14,8 @@ import DataTable, {
   type DataColumn,
 } from "@/components/DataTable.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
+import Icon from "@/components/ui/Icon.astro"
+import Pill from "@/components/ui/Pill.astro"
 import Section from "@/components/ui/Section.astro"
 import { siteConfig } from "@/config/site"
 import { LOCALES } from "@/content/schemas"
@@ -38,6 +40,26 @@ const columns: DataColumn[] = [
 ]
 
 /* The handle rather than the URL: nobody reads a domain as a name. */
+/*
+ * The questions a recruiter asks before anything else, answered before they
+ * have to ask: what, where, when, and how soon a reply comes. One row, in the
+ * same hairline table as the facts of a case study.
+ */
+const practicalColumns: DataColumn[] = [
+  { label: t("contact.col.roles") },
+  { label: t("contact.col.location") },
+  { label: t("contact.col.start") },
+  { label: t("contact.col.replies") },
+]
+const practicalRows: DataCell[][] = [
+  [
+    t("contact.roles"),
+    t("contact.location"),
+    t("contact.start"),
+    t("contact.replies"),
+  ],
+]
+
 const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?/, "")
 
 const rows: DataCell[][] = [
@@ -86,14 +108,59 @@ const rows: DataCell[][] = [
       /*
        * The email set large enough to read across a room, because it is the
        * one thing on this page anyone is looking for.
+       *
+       * And a way to copy it beside it. A mail link opens nothing on a
+       * machine with no mail app set up, which is most work laptops, and
+       * then the address has to be selected by hand. The pill only appears
+       * where the clipboard can be written to, so without script, or
+       * without permission, there is no button that does nothing.
        */
     }
-    <a
-      href={`mailto:${siteConfig.contact.email}`}
-      class="text-display-s font-display text-ink duration-fast ease-state min-h-tap mt-7 inline-flex items-center break-all no-underline underline-offset-[6px] hover:underline motion-reduce:transition-none"
-    >
-      {siteConfig.contact.email}
-    </a>
+    <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <a
+        href={`mailto:${siteConfig.contact.email}`}
+        class="text-display-s font-display text-ink duration-fast ease-state min-h-tap inline-flex items-center break-all no-underline underline-offset-[6px] hover:underline motion-reduce:transition-none"
+      >
+        {siteConfig.contact.email}
+      </a>
+      <div class="flex items-center gap-4" data-copy hidden>
+        <Pill
+          label={t("contact.copyEmail")}
+          keepLabel
+          data-copy-value={siteConfig.contact.email}
+        >
+          <Icon slot="circle" name="copy" class="size-4" data-copy-icon />
+          <Icon
+            slot="circle"
+            name="check"
+            class="hidden size-4"
+            data-copy-icon
+          />
+        </Pill>
+        {
+          /*
+           * Says what happened, out loud as well as on screen, and clears
+           * itself so a second copy says so again.
+           */
+        }
+        <span
+          class="text-label text-section-muted uppercase"
+          role="status"
+          data-copy-status
+          data-done={t("contact.copied")}
+          data-failed={t("contact.copyFailed")}></span>
+      </div>
+    </div>
+  </Section>
+
+  <Section space="md">
+    <SectionHeader label={t("contact.practicalLabel")} />
+    <DataTable
+      columns={practicalColumns}
+      rows={practicalRows}
+      caption={t("contact.practicalLabel")}
+      class="mt-7"
+    />
   </Section>
 
   <Section space="md">
@@ -122,3 +189,40 @@ const rows: DataCell[][] = [
     />
   </Section>
 </BaseLayout>
+
+<script>
+  /**
+   * Copies the address and says so. A few lines rather than a component: it
+   * is the one thing on the page that needs script, and without script the
+   * pill stays hidden and the address is still there to select.
+   */
+  for (const root of document.querySelectorAll<HTMLElement>("[data-copy]")) {
+    const button = root.querySelector<HTMLButtonElement>("button")
+    const status = root.querySelector<HTMLElement>("[data-copy-status]")
+    const [idle, done] = root.querySelectorAll<SVGElement>("[data-copy-icon]")
+    if (!navigator.clipboard || !button || !status || !idle || !done) continue
+
+    root.hidden = false
+    let reset: number | undefined
+
+    const show = (copied: boolean) => {
+      idle.classList.toggle("hidden", copied)
+      done.classList.toggle("hidden", !copied)
+    }
+
+    button.addEventListener("click", async () => {
+      window.clearTimeout(reset)
+      try {
+        await navigator.clipboard.writeText(button.dataset.copyValue ?? "")
+        status.textContent = status.dataset.done ?? ""
+        show(true)
+      } catch {
+        status.textContent = status.dataset.failed ?? ""
+      }
+      reset = window.setTimeout(() => {
+        status.textContent = ""
+        show(false)
+      }, 3000)
+    })
+  }
+</script>
