@@ -70,9 +70,9 @@ section 2 is visible on first scroll.
 >
 > ```
 > availability:  a badge: 1px --rule outline on --paper around the words at
->                --t-label, uppercase, --ink on an --accent-field inner
->                field, with lime light pulsing out from the pill's edge
->                every 2.5s. Hover clears the field.
+>                --t-label, uppercase, --ink, with lime light pulsing out
+>                from the pill's edge every 2.5s. Hover fills the inner
+>                field with --accent-field.
 >                A third of the way down on a desktop.
 > wordmark:      81.36% wide, left edge at 20%, as before
 > descriptor:    the line under the lettering, still typing its own markup
@@ -91,8 +91,9 @@ section 2 is visible on first scroll.
 > line's real class list, so it changed with the layout.
 >
 > **The availability line is a badge** that glows, so it reads as a status.
-> The words sit on lime as a field under ink (12:1), and the whole pill gives
-> off a pulse of lime light: a ring and a blur that leave its edge and fade.
+> The whole pill gives off a pulse of lime light: a ring and a blur that leave
+> its edge and fade. The lime field under the words (ink on lime, 12:1) only
+> comes in on hover; at rest, glow and field together were too heavy.
 > The pulse is the second exception to "nothing loops", and it is gone under
 > reduced motion too. Its corners are concentric, the inner field at the
 > panel radius and the outline that plus 4px, so where a phone wraps the

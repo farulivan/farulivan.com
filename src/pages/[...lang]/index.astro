@@ -104,10 +104,12 @@ const stackGroups = capabilities.map(({ entry }) => ({
 
     {
       /*
-       * A badge rather than a bare line, so it reads as a status: the words on
-       * a lime field inside an outlined pill, with the whole pill giving off a
-       * pulse of lime light the way a live indicator does. Lime as a field
-       * under ink, 12:1, which is how lime is allowed near text at all.
+       * A badge rather than a bare line, so it reads as a status: the words in
+       * an outlined pill that gives off a pulse of lime light, the way a live
+       * indicator does. Hovering fills the inner field with lime. The pulse
+       * alone is enough at rest; a lime field on top of it was too heavy.
+       * Lime as a field under ink, 12:1, which is how lime is allowed near
+       * text at all.
        *
        * The corners are concentric: the field takes the panel radius and the
        * outline that plus the gap between them, so on one line both read as
@@ -115,8 +117,8 @@ const stackGroups = capabilities.map(({ entry }) => ({
        * rounded box rather than a stretched capsule.
        *
        * The entrance sits on a wrapper because the pulse is an animation too,
-       * and two on one element would replace each other. Hovering clears the
-       * field. It is not a link, so nothing else changes.
+       * and two on one element would replace each other. It is not a link,
+       * so the fill is all hovering does.
        */
     }
     <div
@@ -127,7 +129,7 @@ const stackGroups = capabilities.map(({ entry }) => ({
         class="availability-glow group/availability border-rule bg-paper m-0 rounded-[calc(var(--radius-panel)+var(--spacing-1))] border p-1"
       >
         <span
-          class="text-label font-label text-ink rounded-panel bg-accent-field duration-mid ease-state block px-4 py-2 uppercase transition-colors group-hover/availability:bg-transparent motion-reduce:transition-none"
+          class="text-label font-label text-ink rounded-panel duration-mid ease-state group-hover/availability:bg-accent-field block px-4 py-2 uppercase transition-colors motion-reduce:transition-none"
         >
           {t("home.availability")}
         </span>
