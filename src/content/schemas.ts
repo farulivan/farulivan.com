@@ -109,12 +109,28 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
     featured: z.boolean().default(false),
     order: z.number().int(),
     /**
-     * Optional by design. Screenshots are still being captured, and anything
-     * covered by an agreement never gets one — the work list has a variant
-     * that sets the project as type instead, which is a designed state rather
-     * than a gap.
+     * Pictures of the work, in the order they should be read.
+     *
+     * A list rather than one, because a project is not always one screen: the
+     * investment platform runs two brands off a single codebase, and showing
+     * only one of them makes the case study's own argument harder to believe.
+     * The first is the one that stands for the project wherever there is only
+     * room for a single image.
+     *
+     * Empty by design is a valid state. Anything covered by an agreement never
+     * gets a picture, and the work list has a variant that sets the project as
+     * type instead — a designed state rather than a gap.
      */
-    screenshot: z.object({ src: image(), alt: z.string().min(1) }).optional(),
+    screenshots: z
+      .array(
+        z.object({
+          src: image(),
+          alt: z.string().min(1),
+          /** Printed under the picture when a project has more than one. */
+          caption: z.string().min(1).optional(),
+        })
+      )
+      .default([]),
     /**
      * The block that matters when someone is deciding whether to hire you, so
      * the schema will not let a case study ship without it.

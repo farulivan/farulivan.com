@@ -31,6 +31,7 @@ import {
 } from "@/content/queries"
 import { langParam, localizePath, useTranslations } from "@/i18n/utils"
 import BaseLayout from "@/layouts/BaseLayout.astro"
+import { screenshotMaxWidth } from "@/lib/screenshot"
 
 export async function getStaticPaths() {
   const routes = await getProjectRoutes()
@@ -126,14 +127,66 @@ if (data.sourceUrl) {
   </Section>
 
   {
-    data.screenshot && (
-      <Image
-        src={data.screenshot.src}
-        alt={data.screenshot.alt}
-        widths={[640, 1024, 1600, 2000]}
-        sizes="100vw"
-        class="aspect-[16/10] w-full object-cover object-top"
-      />
+    /*
+     * The pictures are plates on a stage: a grey band that runs edge to edge,
+     * with each capture mounted on it at a size its pixels can carry and
+     * edged with a hairline so a white website keeps its edge.
+     *
+     * They used to run the full width of the window, and a capture of a
+     * website does not have the pixels for that. Most are taken at 1×, so on
+     * a 1440 laptop with a 2× screen every pixel was stretched to nearly
+     * three and the type in the picture went soft. Each is now capped at two
+     * thirds of its own width, and never past 1,120 however sharp the capture
+     * — see `screenshotMaxWidth` — and the band, which needs no pixels at all,
+     * is what still reaches both edges.
+     *
+     * The largest size generated is 2,240, twice that ceiling, so a 2× screen
+     * showing the widest plate gets a pixel for every one it draws.
+     *
+     * Two or more share the row. A pair of brands reads as a pair side by
+     * side, and at half the width each is well inside its cap. A pair fills
+     * the row rather than stopping at a cap, so from tablet up the band keeps
+     * the same margin at its sides as above and below, and the pair still
+     * sits on the stage instead of running into the window's edges.
+     *
+     * The picture keeps its own proportions here rather than being cropped to
+     * 16:10. This is the one place it is shown whole.
+     */
+  }
+  {
+    data.screenshots.length > 0 && (
+      <div class="bg-section-stage px-page-margin py-8 md:px-8 lg:px-9 lg:py-9">
+        <div
+          class:list={[
+            "max-w-read gap-gutter mx-auto grid justify-items-center",
+            data.screenshots.length > 1 && "md:grid-cols-2",
+          ]}
+        >
+          {data.screenshots.map((shot) => {
+            const cap = screenshotMaxWidth(shot.src.width)
+            return (
+              <figure class="m-0 w-full" style={`max-width: ${cap}px`}>
+                <Image
+                  src={shot.src}
+                  alt={shot.alt}
+                  widths={[640, 1024, 1600, 2240]}
+                  sizes={
+                    data.screenshots.length > 1
+                      ? `(min-width: 768px) min(50vw, ${cap}px), 100vw`
+                      : `(min-width: ${cap}px) ${cap}px, 100vw`
+                  }
+                  class="border-section-rule block h-auto w-full border"
+                />
+                {shot.caption && (
+                  <figcaption class="text-label text-section-muted mt-3 uppercase">
+                    {shot.caption}
+                  </figcaption>
+                )}
+              </figure>
+            )
+          })}
+        </div>
+      </div>
     )
   }
 
@@ -220,7 +273,7 @@ if (data.sourceUrl) {
             role={next.entry.data.role}
             stack={next.entry.data.stack}
             summary={next.entry.data.summary}
-            screenshot={next.entry.data.screenshot}
+            screenshot={next.entry.data.screenshots[0]}
           />
         </div>
       </Section>

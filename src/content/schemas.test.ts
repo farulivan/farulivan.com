@@ -102,9 +102,33 @@ const validProject = {
 }
 
 describe("projectSchema", () => {
-  it("accepts a project with no screenshot, since some work never gets one", () => {
+  it("accepts a project with no pictures, since some work never gets any", () => {
     const result = project.parse(validProject)
-    expect(result.screenshot).toBeUndefined()
+    expect(result.screenshots).toEqual([])
+  })
+
+  it("keeps the pictures in the order they were written", () => {
+    // The first one stands for the project wherever there is room for only
+    // one, so the order is meaning rather than housekeeping.
+    const withShots = {
+      ...validProject,
+      screenshots: [
+        { src: "one.png", alt: "The first brand." },
+        { src: "two.png", alt: "The second brand.", caption: "Second" },
+      ],
+    }
+    const result = project.parse(withShots)
+    expect(result.screenshots.map((shot) => shot.alt)).toEqual([
+      "The first brand.",
+      "The second brand.",
+    ])
+    expect(result.screenshots[0]?.caption).toBeUndefined()
+  })
+
+  it("rejects a picture with no description", () => {
+    expect(() =>
+      project.parse({ ...validProject, screenshots: [{ src: "one.png" }] })
+    ).toThrow()
   })
 
   it("defaults featured to false and the outcome figures to an empty list", () => {

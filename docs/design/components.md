@@ -184,6 +184,25 @@ placeholder icon.
 **States.** Whole row is a link. Hover: row background → `--surface`, image
 scales 1.02. Focus-visible: ring around the whole row, not the image.
 
+> **Changed during build: the screenshot sits on a stage.** The image cell is
+> now a flat field one step off the section (`--color-section-stage`: grey on
+> white, white on grey and lime). The capture is mounted on it, inset by an even
+> 5% margin and edged with a 1px `--rule` hairline. The cell keeps its 16:10
+> outline, so the list's rhythm does not change. The inset frame is a little
+> wider than 16:10, so the capture is cropped from the top and loses only its
+> bottom fifteenth. The no-image variant sits on the same stage instead of on
+> `--surface`, which vanished on the grey band.
+>
+> Two problems drove it. A capture of a white website, run to the cell's edges
+> on a white page, had no edge at all. And the captures available are 1×
+> screenshots, about 1,000 to 1,700 pixels across, which do not have the
+> pixels to fill a cell edge to edge on a 2× screen.
+>
+> **Hover changed with it.** The row's grey fill did nothing on the home page's
+> grey band, and on white it washed the grey stage into the row. Hover is now the
+> picture zooming 1.02 inside its frame, plus an underline on the title.
+> Focus-visible is unchanged: a ring around the whole row.
+
 ---
 
 ## C6 · Hairline data table

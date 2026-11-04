@@ -105,6 +105,60 @@ treatment:    none. No mockup frames, no perspective, no drop shadows.
 naming:       {project-slug}.png → src/content/projects/_images/
 ```
 
+> **Changed during build: the treatment is a stage, and the size follows the
+> pixels.** The captures that exist were taken at 1×, about 1,000 to 1,700
+> pixels across, not at the 2× above. So every screenshot is shown mounted on a
+> flat stage, one step off its section's field, with a 1px `--rule` hairline,
+> and never wider than two thirds of its own width in pixels. That is a stretch
+> of at most a third on a 2× screen.
+>
+> This is still no mockup and no shadow. A flat field and a hairline are the
+> same structure the rest of the site is built from. The 2× recipe above still
+> stands for future captures, and a sharper capture lifts its own cap
+> automatically, up to 1,120px. Past that a plate starts to read as a banner.
+> Crop at the end of the section you are showing, not at a fixed ratio, so the
+> next section's background does not show as a strip along the bottom edge.
+
+> **How the 2× captures were taken.** Nabitu, Zeed and Norven were recaptured
+> on 2026-11-04 at 1440 × 900 with a device pixel ratio of 2, giving 2880 ×
+> 1800. Norven is cut at its hero's edge, 2880 × 1714. A normal desktop browser
+> on a 1× monitor cannot produce these, since its screenshots match the screen.
+> Use headless Chrome:
+>
+> ```
+> "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+>   --hide-scrollbars --force-device-scale-factor=2 --window-size=1440,900 \
+>   --virtual-time-budget=4000 --screenshot=out.png https://norven.farulivan.com/
+> ```
+>
+> Alternatively, use Chrome DevTools' device mode at 1440 × 900 with a pixel
+> ratio of 2, then "Capture screenshot". **Nabitu defaults to Indonesian.** It
+> keeps its language in `localStorage` under `nabitu-lang`, so set it to `en`
+> and reload before capturing, or the picture will not match its alt text.
+>
+> **The hospital is captured from my local build, not the live site.** The
+> live site now runs a different design from the one I built, so the
+> capture comes from the project running at `localhost:3000`. It was taken at
+> 1600 × 1000, the width where that layout is centred, giving 3200 × 2000.
+>
+> Two things have to be done before capturing:
+>
+> - Hide the Next.js dev badge (`nextjs-portal`).
+> - Pin the hero image at its 1× size:
+>   `img.dokter { width: 800px; max-width: 100%; height: auto }`.
+>
+> The second is needed because the image is a `next/image` with
+> `width: auto; height: auto` and a `1x, 2x` srcset whose 2× file is the same
+> 800 pixels. On any 2× screen the browser divides that by two, and the hero
+> image shows at 400px instead of filling its 696px column. That is a bug in
+> the hospital project, not something to reproduce in its portfolio picture.
+>
+> **The WhatsApp bot stays 1×.** It is an app window and there is no sharper
+> capture. It is cut from the raw capture to the whole conversation, 1033 × 700:
+> both replies complete, without the message bar and the scrollbar. Nothing is
+> upscaled. Its plate stops at 689px, two thirds of its width, which is as large
+> as its pixels allow.
+
 For anything NDA-covered, do not blur or redact — use the **C5b no-image
 variant**. A blurred screenshot looks like a mistake; a type block looks
 deliberate.

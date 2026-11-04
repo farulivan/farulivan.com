@@ -88,6 +88,21 @@
      into this. Ink on the light fields, so the reverse of it is the ground. */
   --color-section-field: var(--color-paper);
 
+  /* The ground a screenshot is mounted on: one step off the field, never the
+     field itself. A capture of a white website laid straight onto a white page
+     has no edge, and one laid onto grey reads as a hole cut in it. Set on its
+     own step, it reads as a plate — the same move the pill button makes when
+     its circle is a step from its fill rather than the same colour.
+
+     Grey on white here, and `Section` flips it to white on grey. It is a
+     re-pointed token rather than a colour mixed from `--color-section-field`
+     on purpose: a custom property that refers to another is resolved where it
+     is declared, so a mix written here would see this root's paper on every
+     field and never the one it is actually on.
+
+     Captions sit on it in the muted ink: 4.68:1 on the grey, 5.10:1 on white. */
+  --color-section-stage: var(--color-surface);
+
   /* --- Lime --------------------------------------------------------------
      Lime is a surface, not a text colour. On white it measures 2.06:1 at
      step 500 and still fails at 600 (2.50) and 700 (3.96). Only step 800
