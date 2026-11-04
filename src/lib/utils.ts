@@ -41,7 +41,7 @@ const twMerge = extendTailwindMerge({
       spacing: ["page-margin", "gutter", "tap", "control"],
       container: ["measure"],
       radius: ["control", "panel"],
-      "font-weight": ["mark", "display", "body", "label", "emph"],
+      "font-weight": ["mark", "display", "body", "label", "heading", "emph"],
       ease: ["reveal", "state", "draw"],
     },
     classGroups: {

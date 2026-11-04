@@ -3,9 +3,10 @@
  * One case study.
  *
  * The order is deliberate and it is not the order the work happened in: the
- * facts first so the page can be skimmed, then the story, then what changed.
- * Someone reading this is deciding whether to keep reading, and the outcome is
- * the part they came for.
+ * facts and the results first so the page can be skimmed, then the story,
+ * which ends on what changed. Someone reading this is deciding whether to
+ * keep reading, and the results are the part they came for, so they come
+ * before two thousand pixels of prose rather than after them.
  *
  * The spec had the facts in a bar at the top and the stack again in a table at
  * the bottom. They are one table here — printing the same list twice on one
@@ -17,11 +18,12 @@ import { Image } from "astro:assets"
 import { render } from "astro:content"
 
 import Contents from "@/components/Contents.astro"
-import CtaBox from "@/components/CtaBox.astro"
 import DataTable, { type DataCell } from "@/components/DataTable.astro"
 import ProjectRow from "@/components/ProjectRow.astro"
 import ReadingColumns from "@/components/ReadingColumns.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
+import Icon from "@/components/ui/Icon.astro"
+import Pill from "@/components/ui/Pill.astro"
 import Prose from "@/components/ui/Prose.astro"
 import Section from "@/components/ui/Section.astro"
 import {
@@ -58,6 +60,21 @@ const next = await getNextProject(lang, slug)
 const hasNarrative = (project.entry.body ?? "").trim().length > 0
 
 /*
+ * The story ends with what changed, as its last section and the last entry in
+ * its contents, set like every section before it. A story that already ends
+ * on its own "Outcome" keeps it. One that does not gets the outcome sentence
+ * from the frontmatter under the same heading, so every case study ends the
+ * same way however it was written, and the sentence is never said twice.
+ */
+const outcomeLabel = t("project.outcomeLabel")
+const writesOwnOutcome = headings.some(
+  (heading) => heading.depth === 2 && heading.text === outcomeLabel
+)
+const contents = writesOwnOutcome
+  ? headings
+  : [...headings, { depth: 2, slug: "outcome", text: outcomeLabel }]
+
+/*
  * One row of facts in the hairline styling, which stacks into labelled lines
  * on a phone. Team and duration are optional in the schema, since freelance
  * work often has neither, so the columns for them only appear when they do.
@@ -84,11 +101,37 @@ const rows: DataCell[][] = [
   ],
 ]
 
-const links: { href: string; label: string }[] = []
-if (data.liveUrl) links.push({ href: data.liveUrl, label: t("project.live") })
-if (data.sourceUrl) {
-  links.push({ href: data.sourceUrl, label: t("project.source") })
-}
+/*
+ * Where to see the work: the live sites, then the source. A site goes by its
+ * own name when there is more than one, so the two brands of the investment
+ * platform get a button each that says which is which.
+ */
+const links: { href: string; label: string }[] = [
+  ...data.liveSites.map((site) => ({
+    href: site.url,
+    label:
+      data.liveSites.length > 1 && site.name
+        ? t("project.visit", { name: site.name })
+        : t("project.live"),
+  })),
+  ...(data.sourceUrl
+    ? [{ href: data.sourceUrl, label: t("project.source") }]
+    : []),
+]
+
+/*
+ * One column per figure, up to four, so the strip is a single row on a wide
+ * screen whatever the project has to show. Written out rather than built from
+ * the count, because Tailwind only generates a class it can read in the source.
+ */
+const figures = data.outcome.figures
+const stripColumns = [
+  "",
+  "md:grid-cols-1",
+  "md:grid-cols-2",
+  "md:grid-cols-3",
+  "md:grid-cols-4",
+][Math.min(figures.length, 4)]
 ---
 
 <BaseLayout
@@ -116,6 +159,35 @@ if (data.sourceUrl) {
     </p>
 
     {
+      /*
+       * Where to see the work, straight under the sentence that says what it
+       * is: the same place, the same pills and the same step the home page
+       * puts the CV and the email under the name. One dark pill and the rest
+       * light, so there is one obvious first thing to do. Stacked and full
+       * width on a phone, where a row of two would not fit.
+       */
+    }
+    {
+      links.length > 0 && (
+        <div class="mt-6 flex flex-col gap-3 md:flex-row md:flex-wrap">
+          {links.map((link, index) => (
+            <Pill
+              tone={index === 0 ? "dark" : "light"}
+              href={link.href}
+              label={link.label}
+              externalLabel={t("a11y.externalLink")}
+              keepLabel
+              class="max-md:w-full max-md:justify-between"
+            >
+              {/* Up and out, because it leaves the site. */}
+              <Icon slot="circle" name="arrowRight" class="size-4 -rotate-45" />
+            </Pill>
+          ))}
+        </div>
+      )
+    }
+
+    {
       project.isFallback && (
         <p class="border-section-rule text-ui text-section-muted mt-7 border-l-[3px] py-2 ps-5">
           {t("project.untranslated")}
@@ -124,6 +196,37 @@ if (data.sourceUrl) {
     }
 
     <DataTable {columns} {rows} caption={data.title} class="mt-9" />
+
+    {
+      /*
+       * The results, under the facts and before the story. Every figure at
+       * the size the original spec asked for, one row of them on a wide
+       * screen and two to a row on a phone. No rule of its own: the table's
+       * bottom rule already separates the two, and a second one a step below
+       * it read as two lines that had drifted apart.
+       */
+    }
+    {
+      figures.length > 0 && (
+        <dl
+          class:list={[
+            "gap-x-gutter m-0 mt-8 grid grid-cols-2 gap-y-7",
+            stripColumns,
+          ]}
+        >
+          {figures.map((figure) => (
+            <div class="flex flex-col gap-2">
+              <dt class="text-display-s font-display text-ink leading-none">
+                {figure.value}
+              </dt>
+              <dd class="text-label text-section-muted m-0 uppercase">
+                {figure.caption}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
   </Section>
 
   {
@@ -195,65 +298,42 @@ if (data.sourceUrl) {
     hasNarrative && (
       <Section space="md">
         <ReadingColumns>
-          <Contents slot="aside" {headings} label={t("project.contents")} />
+          <Contents
+            slot="aside"
+            headings={contents}
+            label={t("project.contents")}
+          />
 
           <Prose>
             <Content />
+            {!writesOwnOutcome && (
+              <>
+                <h2 id="outcome">{outcomeLabel}</h2>
+                <p>{data.outcome.summary}</p>
+              </>
+            )}
           </Prose>
         </ReadingColumns>
       </Section>
     )
   }
 
-  <Section field="surface" space="md">
-    <SectionHeader
-      label={t("project.outcomeLabel")}
-      description={t("project.outcomeDescription")}
-    />
-
-    {
-      /*
-       * Figures where they exist, and the sentence either way. Plenty of good
-       * work moved something nobody counted, and the sentence is what stops
-       * that project reading as a project that did nothing.
-       */
-    }
-    {
-      data.outcome.figures.length > 0 && (
-        <dl class="mt-7 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-          {data.outcome.figures.map((figure) => (
-            <div class="flex flex-col gap-2">
-              <dt class="text-display-s font-display text-ink order-1 leading-none">
-                {figure.value}
-              </dt>
-              <dd class="text-label text-section-muted order-2 m-0 uppercase">
-                {figure.caption}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      )
-    }
-
-    <p class="text-read text-ink max-w-measure mt-7 text-pretty">
-      {data.outcome.summary}
-    </p>
-  </Section>
-
   {
-    links.length > 0 && (
+    /*
+     * Without a story there is no last section to put the outcome in, so it
+     * stands on its own: the case studies that are not translated yet still
+     * say what changed. It stays on paper, so the grey band below belongs to
+     * the next project alone.
+     */
+  }
+  {
+    !hasNarrative && (
       <Section space="md">
-        <SectionHeader label={t("project.linksLabel")} />
-        <div class="gap-gutter mt-7 grid sm:grid-cols-2">
-          {links.map((link) => (
-            <CtaBox
-              href={link.href}
-              label={link.label}
-              external
-              externalLabel={t("a11y.externalLink")}
-            />
-          ))}
-        </div>
+        <SectionHeader label={outcomeLabel} />
+
+        <p class="text-read text-ink max-w-measure mt-7 text-pretty">
+          {data.outcome.summary}
+        </p>
       </Section>
     )
   }

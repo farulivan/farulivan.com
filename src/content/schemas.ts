@@ -152,8 +152,22 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
         )
         .default([]),
     }),
-    /* `z.url()` rather than `z.string().url()`, which Zod now deprecates. */
-    liveUrl: z.url().optional(),
+    /**
+     * Where to see the work running. Usually one site, and then the button
+     * just says so. The investment platform is one codebase behind two brands
+     * on two domains, and a button to only one of them shows half the work,
+     * so this is a list. Once there is more than one, each needs a name: two
+     * buttons that both say "Visit the live site" cannot be told apart.
+     *
+     * `z.url()` rather than `z.string().url()`, which Zod now deprecates.
+     */
+    liveSites: z
+      .array(z.object({ url: z.url(), name: z.string().min(1).optional() }))
+      .default([])
+      .refine(
+        (sites) => sites.length < 2 || sites.every((site) => site.name),
+        "name each live site when there is more than one"
+      ),
     sourceUrl: z.url().optional(),
   })
 

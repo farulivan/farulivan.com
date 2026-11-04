@@ -200,6 +200,10 @@
   --font-weight-display: 300;
   --font-weight-body: 400;
   --font-weight-label: 500;
+  /* Headings inside prose. They borrowed the emphasis weight and were the
+     heaviest type on the site; at 500 they still stand out from 400 text and
+     stay inside the light system. */
+  --font-weight-heading: 500;
   --font-weight-emph: 600;
 
   /* --- Space -------------------------------------------------------------
@@ -568,7 +572,7 @@
   font-size: var(--text-h-l);
   line-height: var(--text-h-l--line-height);
   letter-spacing: var(--text-h-l--letter-spacing);
-  font-weight: var(--font-weight-emph);
+  font-weight: var(--font-weight-heading);
 }
 
 .prose h3 {
@@ -577,7 +581,7 @@
   font-size: var(--text-h-m);
   line-height: var(--text-h-m--line-height);
   letter-spacing: var(--text-h-m--letter-spacing);
-  font-weight: var(--font-weight-emph);
+  font-weight: var(--font-weight-heading);
 }
 
 /*

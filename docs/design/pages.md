@@ -163,6 +163,38 @@ finds it in the table; someone browsing gets the visual rows.
 > capture lifts its own cap with no code change, up to the 1,120 ceiling, which
 > keeps a 2× capture a plate rather than a banner.
 
+> **Changed during build: results first.** The outcome figures and the links
+> moved to the top of the page:
+>
+> ```
+> header:   title, summary, then the live and source links as pills, then
+>           the facts table
+> results:  every outcome figure at --t-display-s over a --t-label caption,
+>           one row of up to four columns, two to a row on a phone
+> ...       lead image, the story, whose last section is the outcome
+> next:     the next project's row, on --surface
+> ```
+>
+> The figures sat after about 2,500px of prose at 32px, and four of them
+> wrapped three and one. The links were a half-width empty box at the very
+> bottom. The links block is gone. The pills open in a new tab and say so to
+> a screen reader, as every external link on the site does.
+>
+> The links sit under the summary the way the CV and email pills sit under
+> the name on the home page: one step down, one dark pill and the rest light,
+> stacked full width on a phone. A project can have more than one live site
+> (`liveSites` in the schema, which replaced `liveUrl`). The investment
+> platform has two, Nabitu and Zeed Sharia, and once there is more than one
+> each button carries its site's name.
+>
+> The outcome is no longer a band of its own. It is the story's last
+> section, set like the others and listed last in the contents. Two of the
+> stories already ended on an "Outcome" of their own, so the band said the
+> same thing twice, back to back. A story that does not write one gets the
+> frontmatter's outcome sentence under that heading. A page with no story
+> yet, which is every Indonesian case study for now, keeps the outcome as a
+> section on `--paper`. The grey band at the end is the next project's alone.
+
 ---
 
 ## About
