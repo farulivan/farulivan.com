@@ -136,15 +136,24 @@ const stackGroups = capabilities.map(({ entry }) => ({
        * whole thing out as you scroll, so the cue is gone by the time you are
        * reading the sentence it was pointing at. A cue that is still telling
        * you to scroll while you are scrolling is furniture.
+       *
+       * Muted ink, which is 5.1:1 on the white hero. It was the black footer's
+       * muted grey at 60%, about 1.6:1 here, and so faint it was easier to miss
+       * than to read.
+       *
+       * Not on a phone. Below 768 the descriptor wraps to three lines or more
+       * and runs into this corner, which nobody could see while the cue was
+       * nearly invisible. A phone hero is short and a phone is scrolled by
+       * habit anyway, so the cue has nothing to add there.
        */
     }
-    <div class="absolute right-0 bottom-5" data-scroll-cue>
+    <div class="absolute right-0 bottom-5 max-md:hidden" data-scroll-cue>
       <p
-        class="text-h-m text-ink-invert-muted/60 px-page-margin hero-enter m-0 flex items-center gap-2 tracking-[0.06em] uppercase"
+        class="text-label font-label text-ink-muted px-page-margin hero-enter m-0 flex items-center gap-2 uppercase"
         style="--enter-step: 10"
       >
         {t("home.scrollCue")}
-        <Icon name="chevronDown" class="size-5" />
+        <Icon name="chevronDown" class="size-4" />
       </p>
     </div>
   </section>

@@ -57,6 +57,15 @@ scroll cue:  bottom-left at var(--page-margin), --t-micro, --ink-muted
 The hero is `100vh` on desktop, `min(72vh, 640px)` on mobile — short enough that
 section 2 is visible on first scroll.
 
+> **Changed during build: the scroll cue.** It sits at the bottom right, where it
+> was first built, at `--t-label` in `--ink-muted` (5.10:1) with the chevron. It
+> shipped in the footer's muted grey at 60%, about 1.6:1 on white, and was close
+> to invisible.
+>
+> It is hidden below 768. There the descriptor wraps to three lines or more and
+> runs into that corner, and a phone hero is scrolled by habit anyway. Once the
+> hero carries its own calls to action the cue goes everywhere.
+
 ---
 
 ## Work
