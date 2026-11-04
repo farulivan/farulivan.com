@@ -9,6 +9,9 @@
  */
 import type { InferGetStaticPropsType } from "astro"
 
+import { Image } from "astro:assets"
+
+import portrait from "@/assets/portrait.jpg"
 import CtaBox from "@/components/CtaBox.astro"
 import DataTable, {
   type DataCell,
@@ -17,7 +20,6 @@ import DataTable, {
 import ReadingColumns from "@/components/ReadingColumns.astro"
 import SectionHeader from "@/components/SectionHeader.astro"
 import TimelineRow from "@/components/TimelineRow.astro"
-import Placeholder from "@/components/ui/Placeholder.astro"
 import Section from "@/components/ui/Section.astro"
 import { siteConfig } from "@/config/site"
 import { getCapabilities, getExperience } from "@/content/queries"
@@ -89,12 +91,42 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
        */
     }
     <ReadingColumns>
-      <p
-        slot="aside"
-        class="text-display-s font-display text-ink m-0 text-balance max-md:mb-2"
-      >
-        {t("about.subtitle")}
-      </p>
+      <div slot="aside" class="flex flex-col gap-7 max-md:mb-2">
+        <p class="text-display-s font-display text-ink m-0 text-balance">
+          {t("about.subtitle")}
+        </p>
+
+        {
+          /*
+           * The face goes beside the claim rather than in a band of its own.
+           * The page used to hold a full-bleed slot for it, and the only
+           * photograph is a 720 square, which cannot fill a window without
+           * going soft. A 4:5 crop of that square is 576 pixels wide, so 360
+           * on screen is 1.6 pixels to every one drawn, inside the two-thirds
+           * rule the screenshots are held to.
+           *
+           * Monochrome because the original is warm wood and a navy shirt,
+           * and on a page whose one bright colour is lime, a second set of
+           * colours competes with it. Square, because it is content rather
+           * than a panel.
+           *
+           * Loaded eagerly. Its top edge is inside the first screen at most
+           * sizes, and a lazy image there only starts to load after layout,
+           * which is late for something already in view.
+           */
+        }
+        <Image
+          src={portrait}
+          alt={t("about.portraitAlt")}
+          width={360}
+          height={450}
+          widths={[360, 576]}
+          sizes="360px"
+          fit="cover"
+          loading="eager"
+          class="block h-auto w-full max-w-[360px] contrast-105 grayscale"
+        />
+      </div>
 
       <div class="flex flex-col gap-5">
         {
@@ -105,18 +137,6 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
       </div>
     </ReadingColumns>
   </Section>
-
-  {
-    /*
-     * TODO(asset): the portrait. A grey field at the shape the photograph will
-     * take, so dropping the file in later moves nothing on the page.
-     */
-  }
-  <Placeholder
-    ratio="16/9"
-    label={t("about.portraitLabel")}
-    class="my-9 max-h-[70svh]"
-  />
 
   <Section space="md">
     <SectionHeader

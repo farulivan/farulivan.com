@@ -57,6 +57,15 @@ scroll cue:  bottom-left at var(--page-margin), --t-micro, --ink-muted
 The hero is `100vh` on desktop, `min(72vh, 640px)` on mobile — short enough that
 section 2 is visible on first scroll.
 
+> **Changed during build: the scroll cue.** It sits at the bottom right, where it
+> was first built, at `--t-label` in `--ink-muted` (5.10:1) with the chevron. It
+> shipped in the footer's muted grey at 60%, about 1.6:1 on white, and was close
+> to invisible.
+>
+> It is hidden below 768. There the descriptor wraps to three lines or more and
+> runs into that corner, and a phone hero is scrolled by habit anyway. Once the
+> hero carries its own calls to action the cue goes everywhere.
+
 ---
 
 ## Work
@@ -118,6 +127,18 @@ finds it in the table; someone browsing gets the visual rows.
 
 The staircase timeline is the centrepiece. Each row: year, index, role, company,
 and two lines on what shipped.
+
+> **Changed during build: the portrait is not full bleed.** It sits in the left
+> column under the standfirst, beside the bio, and above the bio on a phone. It
+> is a 4:5 crop, never more than 360px wide, in monochrome (greyscale, contrast
+> 1.05), with square corners and no reveal.
+>
+> The only photograph is a 720 square, which cannot fill a 16:9 band across a
+> window without going soft. A 4:5 crop of it is 576 × 720, so at 360px it has
+> 1.6 pixels for every one drawn, inside the two-thirds rule the screenshots
+> are held to. Monochrome, because its warm wood and navy compete with the one
+> lime on the page. Square, because it is content rather than a panel. It has
+> no cell dissolve, the same as the screenshots, which have never had one.
 
 ---
 

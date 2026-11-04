@@ -24,14 +24,23 @@ type Props = {
   href?: string
   /** Required when the label is hidden, which it is on the narrowest screens. */
   label: string
+  /**
+   * Keeps the text on the narrowest screens instead of leaving the circle on
+   * its own. A circle alone works where the place says what it does, like the
+   * menu in the corner; a call to action in the middle of a page needs its
+   * words.
+   */
+  keepLabel?: boolean
   class?: string
-} & Omit<HTMLAttributes<"button">, "class">
+} & Omit<HTMLAttributes<"button">, "class"> &
+  Pick<HTMLAttributes<"a">, "hreflang">
 
 const {
   tone = "light",
   icon,
   href,
   label,
+  keepLabel = false,
   class: className,
   ...rest
 } = Astro.props
@@ -77,12 +86,16 @@ const circles = {
      * height matches the line box so the swap below lands exactly.
      *
      * The text is hidden from assistive tech — the label above already names
-     * the control — and it is the first thing to go when there is no room,
-     * which costs nothing because the name lives on the element itself.
+     * the control — and unless `keepLabel` is set it is the first thing to go
+     * when there is no room, which costs nothing because the name lives on
+     * the element itself.
      */
   }
   <span
-    class="block h-[1.2em] overflow-hidden ps-[calc(var(--spacing-7)-6px)] pe-6 max-[479px]:hidden"
+    class={cn(
+      "block h-[1.2em] overflow-hidden ps-[calc(var(--spacing-7)-6px)] pe-6",
+      !keepLabel && "max-[479px]:hidden"
+    )}
     aria-hidden="true"
   >
     {

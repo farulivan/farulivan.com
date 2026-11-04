@@ -50,8 +50,8 @@ const columns: DataColumn[] = [
   { label: t("work.col.year"), align: "end" },
 ]
 
-const rows: DataCell[][] = projects.map(({ entry }, index) => [
-  String(index + 1).padStart(2, "0"),
+const rows: DataCell[][] = projects.map(({ entry, number }) => [
+  String(number).padStart(2, "0"),
   {
     text: entry.data.title,
     href: localizePath(`/work/${projectSlug(entry)}`, lang),
@@ -101,10 +101,10 @@ const rows: DataCell[][] = projects.map(({ entry }, index) => [
           description={t("work.featuredDescription")}
         />
         <div class="mt-7">
-          {featured.map(({ entry }, index) => (
+          {featured.map(({ entry, number }, index) => (
             <ProjectRow
               href={localizePath(`/work/${projectSlug(entry)}`, lang)}
-              index={index + 1}
+              number={number}
               title={entry.data.title}
               role={entry.data.role}
               stack={entry.data.stack}

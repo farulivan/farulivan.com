@@ -51,7 +51,7 @@ export const en = {
     "I work end to end on web products: the interface people touch, the API contracts behind it, and the tests and pipelines that keep both honest. Three years of that as the only frontend engineer on a production platform.",
   "home.workLabel": "Selected work",
   "home.workDescription":
-    "Four projects, with what they were for and what changed once they shipped.",
+    "Three projects, with what they were for and what changed once they shipped.",
   "home.workCta": "See all work",
   "home.experienceLabel": "Experience",
   "home.experienceDescription": "The three most recent roles.",
@@ -77,10 +77,10 @@ export const en = {
     "These days I am deliberately growing beyond the frontend. I finished a backend path in Go and TypeScript, and I build and run my own production systems, including a WhatsApp bot my family uses every day. I also work with AI tools like Claude Code daily. Not as a shortcut, but as a real part of how I think through problems.",
   "about.bio.3":
     "My path here was not a straight line. I studied architecture before moving into software, which is probably why I still care about structure and the small details most people do not notice. These days that shows up in how I write code rather than in anything I draw.",
-  "about.portraitLabel": "Portrait photograph",
+  "about.portraitAlt": "A portrait of Farul Ivan.",
   "about.historyLabel": "History",
   "about.historyDescription":
-    "Fifteen years of it, from university to the last thing I shipped.",
+    "From architecture school in 2011 to the last thing I shipped.",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
     "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
@@ -226,7 +226,7 @@ export const id: Record<TranslationKey, string> = {
     "Saya mengerjakan produk web dari hulu ke hilir: antarmuka yang disentuh orang, kontrak API di belakangnya, serta pengujian dan pipeline yang menjaga keduanya tetap jujur. Tiga tahun sebagai satu-satunya frontend engineer di platform produksi.",
   "home.workLabel": "Karya pilihan",
   "home.workDescription":
-    "Empat proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
+    "Tiga proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
   "home.workCta": "Lihat semua karya",
   "home.experienceLabel": "Pengalaman",
   "home.experienceDescription": "Tiga peran terakhir.",
@@ -252,10 +252,10 @@ export const id: Record<TranslationKey, string> = {
     "Belakangan saya sengaja tumbuh melewati frontend. Saya menyelesaikan jalur backend dengan Go dan TypeScript, dan saya membangun serta menjalankan sistem produksi saya sendiri, termasuk bot WhatsApp yang dipakai keluarga saya setiap hari. Saya juga memakai alat AI seperti Claude Code setiap hari. Bukan sebagai jalan pintas, tapi sebagai bagian nyata dari cara saya memikirkan masalah.",
   "about.bio.3":
     "Jalan saya ke sini tidak lurus. Saya belajar arsitektur sebelum pindah ke perangkat lunak, yang mungkin alasannya saya masih peduli pada struktur dan detail kecil yang tak diperhatikan kebanyakan orang. Sekarang itu muncul di cara saya menulis kode, bukan di gambar apa pun.",
-  "about.portraitLabel": "Foto potret",
+  "about.portraitAlt": "Potret Farul Ivan.",
   "about.historyLabel": "Riwayat",
   "about.historyDescription":
-    "Lima belas tahun, dari bangku kuliah sampai hal terakhir yang saya rilis.",
+    "Dari kuliah arsitektur pada 2011 sampai hal terakhir yang saya rilis.",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
     "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",
