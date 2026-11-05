@@ -396,6 +396,10 @@ const stackGroups = capabilities.map(({ entry }) => ({
    * The availability line, the descriptor and the two calls to action follow
    * the lettering in, one after the other, so the hero assembles rather than
    * appearing all at once.
+   *
+   * The last visible step finishes about 3.5 seconds in. Lighthouse waits
+   * 4.5 seconds after load before it checks contrast (lighthouserc.json);
+   * make the entrance longer and that wait has to grow with it.
    */
   .hero-enter {
     animation: hero-enter 800ms var(--ease-reveal) both;
