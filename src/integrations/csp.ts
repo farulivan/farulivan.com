@@ -39,15 +39,21 @@ const EXECUTABLE_TYPES = new Set([
 ])
 
 /**
+ * A script element: its attributes, then its text. The text ends where the
+ * browser ends it, at `</script` followed by whitespace, a slash or `>`, so
+ * `</script >` and `</script foo>` close it too. Matching only `</script>`
+ * would run on past a script ended any other way and hash the wrong text.
+ */
+const SCRIPT_ELEMENT = /<script\b([^>]*)>([\s\S]*?)<\/script(?=[\s/>])[^>]*>/gi
+
+/**
  * One `'sha256-…'` source per inline script the browser would run, in page
  * order. The hash covers the text between the tags byte for byte, exactly as
  * the browser hashes it, so a single extra newline is a different hash.
  */
 export function inlineScriptHashes(html: string): string[] {
   const hashes: string[] = []
-  for (const [, attributes, body] of html.matchAll(
-    /<script\b([^>]*)>([\s\S]*?)<\/script>/gi
-  )) {
+  for (const [, attributes, body] of html.matchAll(SCRIPT_ELEMENT)) {
     if (/\bsrc\s*=/i.test(attributes)) continue
     const type =
       /\btype\s*=\s*["']?([^"'\s>]+)/i.exec(attributes)?.[1]?.toLowerCase() ??

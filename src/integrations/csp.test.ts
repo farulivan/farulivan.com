@@ -46,6 +46,25 @@ describe("inlineScriptHashes", () => {
     ).toEqual([])
   })
 
+  it.each([
+    ["a space", "</script >"],
+    ["a tab and a newline", "</script\t\n>"],
+    ["an attribute", "</script foo>"],
+    ["capitals", "</SCRIPT>"],
+  ])(
+    "ends the script where the browser does, at an end tag with %s",
+    (_, end) => {
+      const html = `<script>${SPEC_SCRIPT}${end}<p>after</p><script>b()</script>`
+      expect(inlineScriptHashes(html)[0]).toBe(SPEC_HASH)
+    }
+  )
+
+  it("does not end the script at a longer tag name", () => {
+    const html = `<script>a = "</scripts>"; ${SPEC_SCRIPT}</script>`
+    expect(inlineScriptHashes(html)).toHaveLength(1)
+    expect(inlineScriptHashes(html)[0]).not.toBe(SPEC_HASH)
+  })
+
   it("returns one hash per script, in page order", () => {
     const html = `<script>a()</script><p>text</p><script type="module">b()</script>`
     expect(inlineScriptHashes(html)).toHaveLength(2)
