@@ -26,11 +26,16 @@ export default defineConfig([
   ...astro.configs["flat/recommended"],
   ...astro.configs["flat/jsx-a11y-recommended"],
 
-  // Node context: config files, the build-time Sätteri plugins, and the
-  // setup script. The script is .js rather than .mjs so that this glob and
-  // the main TS/JS block both see it.
+  // Node context: config files, the build-time Sätteri plugins and Astro
+  // integrations, and the setup script. The script is .js rather than .mjs so
+  // that this glob and the main TS/JS block both see it.
   {
-    files: ["*.config.{js,mjs,ts}", "src/mdast/**/*.ts", "scripts/**/*.js"],
+    files: [
+      "*.config.{js,mjs,ts}",
+      "src/mdast/**/*.ts",
+      "src/integrations/**/*.ts",
+      "scripts/**/*.js",
+    ],
     languageOptions: { globals: globals.node },
   },
 ])
