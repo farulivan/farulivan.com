@@ -1,0 +1,4 @@
+# Files in public/ that Cloudflare must not publish. Same format as .gitignore.
+# The notes on how the icons were made are for whoever edits them, not for
+# anyone visiting /README.md.
+README.md

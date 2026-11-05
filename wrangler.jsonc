@@ -1,0 +1,33 @@
+// How Cloudflare serves the site. Cloudflare builds every push by itself: on
+// main it runs `pnpm verify` and then `pnpm exec wrangler deploy`, which reads
+// this file. The settings that live only in the dashboard, and why, are under
+// "Hosting" in docs/ARCHITECTURE.md.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Has to be the Worker's name in the Cloudflare dashboard, or the build is refused.
+  "name": "farulivan",
+  "compatibility_date": "2026-11-05",
+  // There is no server code: the site is the folder `pnpm build` writes, with
+  // its headers in public/_headers.
+  "assets": {
+    "directory": "./dist",
+    // Astro writes /work as work/index.html and links to it without a slash
+    // (`trailingSlash: "never"`). Cloudflare's default serves a folder's index
+    // at /work/ and answers every link here with a redirect to it. This serves
+    // /work and sends /work/ there instead. Change one, change the other.
+    "html_handling": "drop-trailing-slash",
+    // An address that matches no file gets dist/404.html, with a 404 status.
+    "not_found_handling": "404-page",
+  },
+  // The site's one address. Deploying creates its DNS record and certificate.
+  "routes": [{ "pattern": "farulivan.com", "custom_domain": true }],
+  // No second copy at farulivan.<account>.workers.dev...
+  "workers_dev": false,
+  // ...but a pull request still gets an address of its own there, to try a
+  // change before it is merged. Those addresses are public and not indexed.
+  "preview_urls": true,
+  // Required by `wrangler preview`, which Cloudflare runs for every branch
+  // other than main. Empty, because a preview needs nothing production
+  // doesn't: there are no bindings, variables or secrets to swap.
+  "previews": {},
+}
