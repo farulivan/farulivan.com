@@ -224,7 +224,7 @@ Workers & Pages → `farulivan` → Settings → Builds. Nothing in the reposito
 | Build command         | `pnpm verify`                                       |
 | Deploy command        | `pnpm exec wrangler deploy`                         |
 | Preview command       | `pnpm exec wrangler preview`                        |
-| Root directory        | _(blank)_                                           |
+| Path                  | `/` (the root directory)                            |
 | Build variable        | `LAUNCH` = `true`                                   |
 | Enable Preview Builds | on                                                  |
 
