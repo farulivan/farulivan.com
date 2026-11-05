@@ -28,6 +28,7 @@
     "farulivan",
     "fontsource",
     "frontmatter",
+    "GHSA",
     "grayscale",
     "GSAP",
     "Halimah",
@@ -97,6 +98,7 @@
     "public/*.svg",
     ".vscode"
   ],
+  "ignoreRegExpList": ["GHSA(-[0-9a-z]{4}){3}"],
   "dictionaryDefinitions": [
     {
       "name": "indonesian-extra",

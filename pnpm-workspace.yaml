@@ -17,3 +17,11 @@ allowBuilds:
 # 2024 and is fine.
 trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 43200 # minutes
+
+# Security fixes Dependabot cannot reach, because the package that needs each
+# one pins the vulnerable version exactly and has no release that moves off
+# it. Each selector matches only the vulnerable range, so it stops applying on
+# its own once the parent moves on; delete it then.
+overrides:
+  # @tailwindcss/typography 0.5.20 pins 6.0.10 (GHSA-rj75-hqrm-r3gf).
+  "postcss-selector-parser@~6.0.0": 6.1.5
