@@ -26,19 +26,11 @@ const t = useTranslations(DEFAULT_LOCALE)
 >
   <Section space="lg">
     <h1
-      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-auto"
+      class="text-display-l font-display text-ink descender-room m-0 wrap-break-word hyphens-auto"
     >
       {t("notFound.title")}
     </h1>
-    {
-      /*
-       * Further down than the line under the other page titles. "Page" has a
-       * descender, and at display size with the tight leading it hangs about a
-       * fifth of the type size below its line, close enough to touch the line
-       * under it at the usual gap.
-       */
-    }
-    <p class="text-read text-section-muted max-w-measure mt-7 text-pretty">
+    <p class="text-read text-section-muted max-w-measure mt-5 text-pretty">
       {t("notFound.description")}
     </p>
 
