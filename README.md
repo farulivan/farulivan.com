@@ -41,3 +41,12 @@ locally means a green run there.
   spacing and easing all come from there and nowhere else.
 
 More detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+## Licence
+
+All rights reserved; see [`LICENSE`](LICENSE). The source is public to read,
+not to reuse: the code, the design, the writing and the images are mine, and
+the case-study screenshots belong to the clients in them.
+
+The engineering underneath, without this design or content, is an MIT starter
+of its own: [astro-origin](https://github.com/farulivan/astro-origin).
