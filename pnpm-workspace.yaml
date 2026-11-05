@@ -1,9 +1,15 @@
 # pnpm 11 refuses to run a dependency's install scripts unless it is approved
-# here (strictDepBuilds). Both of these genuinely need theirs: esbuild fetches
-# its native binary, sharp its libvips bindings for image optimization.
+# here (strictDepBuilds). Two genuinely need theirs: esbuild fetches its native
+# binary, sharp its libvips bindings for image optimization.
+#
+# workerd, under wrangler, does not. Its binary arrives as an optional
+# dependency for the platform; the script only checks that it did, and
+# downloads one if not. Refusing it keeps an install from fetching anything
+# the lockfile does not name.
 allowBuilds:
   esbuild: true
   sharp: true
+  workerd: false
 
 # pnpm 11 already waits a day before installing a new release and refuses git
 # or tarball dependencies below the top level. This adds the third check: a

@@ -5,6 +5,7 @@
   "import": ["@cspell/dict-id-id/cspell-ext.json"],
   "dictionaries": ["id-id", "indonesian-extra"],
   "words": [
+    "assetsignore",
     "astro",
     "astrojs",
     "Autodiscover",
@@ -16,6 +17,7 @@
     "centrepiece",
     "chokidar",
     "ClickHouse",
+    "cloudflareinsights",
     "clsx",
     "codemod",
     "contentful",
@@ -55,6 +57,7 @@
     "noopener",
     "noreferrer",
     "Norven",
+    "nosniff",
     "nums",
     "oklch",
     "Ooredoo",
@@ -87,6 +90,7 @@
     "WCAG",
     "wght",
     "wordmark",
+    "workerd",
     "xdefault",
     "Zeed"
   ],

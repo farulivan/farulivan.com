@@ -42,6 +42,15 @@ locally means a green run there.
 
 More detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
+## Hosting
+
+Cloudflare serves the built files from a Worker with no code of its own, at
+`farulivan.com`. It builds every push by itself: a merge to `main` goes live
+once `pnpm verify` passes on that exact commit, and every pull request gets a
+preview address of its own. `wrangler.jsonc` and `public/_headers` say how the
+site is served. The settings that live only in Cloudflare's dashboard are under
+"Hosting" in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md#hosting).
+
 ## Licence
 
 All rights reserved; see [`LICENSE`](LICENSE). The source is public to read,

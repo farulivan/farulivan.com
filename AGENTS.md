@@ -15,7 +15,7 @@ pnpm build       # runs `astro check` first, then builds
 pnpm build:fast  # skips the type check, for quick local iteration
 ```
 
-`build` type-checks first on purpose: `astro build` transpiles without checking types, and Netlify runs `pnpm build`, so without it a type error could reach production.
+`build` type-checks first on purpose: `astro build` transpiles without checking types, so without it a type error could build cleanly. Cloudflare runs all of `pnpm verify` (with `LAUNCH=true`) before it deploys, so nothing CI would refuse can go live. See "Hosting" in [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md).
 
 When starting the dev server for a long-running task, use `astro dev --background`, then `astro dev stop` / `status` / `logs`.
 
@@ -146,6 +146,16 @@ whose card would clip an outset one.
   text out of the preload cost 0.137 CLS on post pages, as the fallback metrics
   gave way. Lexend is the only webfont here and it is preloaded; code blocks use
   the reader's own monospace, so there is nothing else to load.
+- **`trailingSlash` in `astro.config.ts` and `assets.html_handling` in
+  `wrangler.jsonc` must agree.** Astro writes `/work` as `work/index.html` and
+  links to it without a slash. Cloudflare's default serves a folder's index at
+  `/work/`, so every internal link, canonical URL and sitemap entry would answer
+  with a redirect first. `drop-trailing-slash` is what makes `/work` a 200.
+  `pnpm verify` cannot see this; only a request to `wrangler dev` or the live
+  site does, so change both together.
+- **Everything in `public/` is published,** dotfiles included. A file that is
+  there for the people editing it, like `public/README.md`, goes in
+  `public/.assetsignore` too.
 
 ## Behavior traps (all previously shipped as bugs)
 
@@ -164,6 +174,8 @@ whose card would clip an outset one.
 | Colours, type, spacing, motion | `src/styles/global.css`           |
 | What counts as valid content   | `src/content/schemas.ts`          |
 | How wide a page's content runs | `src/components/ui/Section.astro` |
+| How the site is served         | `wrangler.jsonc`                  |
+| Response headers and caching   | `public/_headers`                 |
 
 ## Commits and pull requests
 
@@ -173,7 +185,7 @@ lowercase type:
 ```
 feat: add the wordmark and its intro animation
 fix: stop the homepage title repeating the site name
-chore: pin the Node version for Netlify
+chore: pin the Node version Cloudflare builds with
 docs: record why lime is never a text colour
 refactor: pull the locale fallback into one helper
 ```

@@ -194,7 +194,7 @@ The lesson worth keeping: every one of these lived in the gap between "the code 
 - **A prop named `as` breaks Astro's implicit `Props` binding** (it is a TypeScript keyword), cascading into implicit-`any` errors in unrelated files. Astro's documented `Polymorphic<{ as: Tag }>` helper was tried and hits the same class of problem in 7.2.10: it type-checks in isolation, but breaks Props binding in consuming components. Polymorphic components use `tag`, and forward attributes explicitly.
 - **No angle-bracket tag names in `.astro` frontmatter comments.** A JSDoc block containing `<section>` can panic the `.astro` to TSX transform (`slice bounds out of range`); the file then compiles to nothing and every importer reports "is not a module". Prose descriptions only.
 - **Page props come from `InferGetStaticPropsType<typeof getStaticPaths>`,** never an `Astro.props as {...}` cast — a cast asserts rather than checks, and the inferred type here is exactly as narrow (`"en" | "id"`).
-- **`pnpm build` runs `astro check` first.** `astro build` transpiles without type checking, and the Vercel build command is `pnpm build`; `build:fast` skips it for local iteration.
+- **`pnpm build` runs `astro check` first.** `astro build` transpiles without type checking, so a type error would otherwise build cleanly; `build:fast` skips it for local iteration. Cloudflare's build runs all of `pnpm verify`, which includes it (see "Hosting").
 - **Comments explain why, never what.**
 
 ## Performance and scale
@@ -202,3 +202,51 @@ The lesson worth keeping: every one of these lived in the gap between "the code 
 At this size, rendering is free. The shape holds as content grows: pages are static files, so a hundred posts change build time and nothing else. The next steps at real scale would be moving reading-time computation into the loader (rather than calling `render()` per row for the list), and code-splitting if a second island ever appears.
 
 For a third locale: add it to `LOCALES`, add a dictionary object, and add content. No route, component, or page changes — which is the property the `[...lang]` structure was chosen to give.
+
+## Hosting
+
+The site is a Cloudflare Worker that serves only files: `farulivan` in the dashboard, answering at `farulivan.com`. There is no Worker script, so no request runs code, and Cloudflare neither charges for nor limits requests for static files. `wrangler.jsonc` says what is served and where, and `public/_headers` sets the response headers. Both carry their reasons as comments.
+
+### How a change goes live
+
+Cloudflare builds every push to the repository itself (Workers Builds).
+
+- **A merge to `main`** runs `pnpm verify`, then `wrangler deploy`. Running the whole gate again, rather than only `pnpm build`, is deliberate. The ruleset on `main` does not require a branch to be up to date before it merges, so two pull requests that each passed CI can merge into a `main` that does not. This way the commit that goes live is the commit that was checked. The `LAUNCH=true` build variable makes `check:arch` refuse a placeholder, so a grey box cannot reach production either.
+- **Any other branch** runs `pnpm verify`, then `wrangler preview`. That puts the branch at an address of its own on `workers.dev`, which Cloudflare links from the pull request. Those addresses are public and carry `X-Robots-Tag: noindex`.
+
+### Settings that live only in the dashboard
+
+Workers & Pages → `farulivan` → Settings → Builds. Nothing in the repository records these, so this table is the record:
+
+| Setting               | Value                                               |
+| --------------------- | --------------------------------------------------- |
+| Git repository        | `farulivan/farulivan.com`, production branch `main` |
+| Build command         | `pnpm verify`                                       |
+| Deploy command        | `pnpm exec wrangler deploy`                         |
+| Preview command       | `pnpm exec wrangler preview`                        |
+| Root directory        | _(blank)_                                           |
+| Build variable        | `LAUNCH` = `true`                                   |
+| Enable Preview Builds | on                                                  |
+
+Cloudflare's builder takes Node from `.nvmrc` and pnpm from `packageManager` in `package.json`, through Corepack. A new default on Cloudflare's side therefore cannot change the build without a commit saying so. If a build log ever shows a pnpm other than the pinned one, turn Cloudflare's own install off with the build variable `SKIP_DEPENDENCY_INSTALL` = `1`, and start the build command with `corepack pnpm install --frozen-lockfile &&`.
+
+### Serving the build the way Cloudflare does
+
+`pnpm preview` is Astro's server, which knows nothing of `_headers`, `.assetsignore` or the trailing-slash setting. To see the site as Cloudflare will serve it:
+
+```bash
+pnpm build && pnpm exec wrangler dev
+```
+
+### What the domain adds
+
+Two settings of the `farulivan.com` zone put a script on every page served from it, this site included. They are Cloudflare's: nothing in this repository turns them on or off. Lighthouse CI never sees either, because it audits the local build.
+
+- **Web Analytics** loads a beacon from `static.cloudflareinsights.com` and reports each page view to `/cdn-cgi/rum`. It sets no cookie.
+- **The bot check** (JavaScript Detections, always on with Bot Fight Mode) is an inline script that loads `/cdn-cgi/challenge-platform/` and keeps its result in a `cf_clearance` cookie.
+
+A Content-Security-Policy has to allow both. HSTS also comes from the zone, with preload, which is why `_headers` does not send it.
+
+### Rolling back
+
+Workers & Pages → `farulivan` → Deployments: pick an earlier version and roll back to it, or run `pnpm exec wrangler rollback`. Either puts the old files back at once, without a build. Revert the commit as well, or the next merge deploys it again.

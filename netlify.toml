@@ -1,9 +1,0 @@
-# The build CI checks, so a deploy and a green pull request mean the same thing.
-[build]
-  command = "pnpm build"
-  publish = "dist"
-
-[build.environment]
-  # package.json requires >=22.12.0. Pinned rather than floating, so a Netlify
-  # default bump cannot change the build without a commit saying so.
-  NODE_VERSION = "22.12.0"

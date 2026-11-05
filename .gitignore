@@ -23,6 +23,8 @@ Thumbs.db
 node_modules/
 dist/
 .astro/
+# What `wrangler dev` keeps between runs.
+.wrangler/
 *.log
 .env
 .env.*
