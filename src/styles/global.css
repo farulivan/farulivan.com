@@ -311,6 +311,25 @@
   transition-duration: var(--duration-slow);
 }
 
+/*
+ * Room under a display title for the letters that hang below its line.
+ *
+ * The display sizes are set at a line-height under 1, so a g, p or y hangs
+ * about a sixth of the type size out of the bottom of the title's box. A
+ * fixed gap under the box was fine on a phone and, at 150px, left the tail
+ * of the g in "Writing" 6px from the summary under it. Measured in em, the
+ * room grows with the title, and the ink gap stays near 30px at every width.
+ *
+ * On every display title that has text under it, descender or not, so the
+ * gap under a title does not depend on which letters are in it.
+ *
+ * Padding, not margin. A margin here collapses into the margin of the line
+ * under the title, the larger of the two wins, and the room never appears.
+ */
+@utility descender-room {
+  padding-bottom: 0.16em;
+}
+
 @layer base {
   html {
     font-family: var(--font-sans);
