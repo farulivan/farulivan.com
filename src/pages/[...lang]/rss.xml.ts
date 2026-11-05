@@ -22,6 +22,9 @@ export async function GET(context: APIContext) {
   const { lang } = context.props as { lang: Locale }
   const t = useTranslations(lang)
   const posts = await getPosts(lang)
+  // A feed reader shows the posts without the site's footer, so the notice
+  // travels with them here. Same string, and same year, as the footer.
+  const year = new Date().getFullYear()
 
   return rss({
     title: `${siteConfig.name} — ${t("writing.title")}`,
@@ -36,6 +39,8 @@ export async function GET(context: APIContext) {
       link: localizePath(`/writing/${postSlug(entry)}`, lang),
       categories: [...entry.data.tags],
     })),
-    customData: `<language>${LOCALE_TAGS[lang]}</language>`,
+    customData:
+      `<language>${LOCALE_TAGS[lang]}</language>` +
+      `<copyright>${t("footer.rights", { year })}</copyright>`,
   })
 }

@@ -1,0 +1,19 @@
+Copyright (c) 2026 Farul Ivan. All rights reserved.
+
+This repository is public so that it can be read. It is not open source, and
+no licence is granted to copy, modify, distribute or deploy any part of it:
+the code, the visual and interaction design, the writing, the images or the CV.
+
+GitHub's Terms of Service let anyone view this repository and fork it on
+GitHub. Nothing here grants more than that.
+
+Quoting a short passage of the writing, with a link back to the original, is
+welcome.
+
+The engineering underneath this site (the architecture rules, the typed
+content and the bilingual setup) is available under the MIT licence as a
+starter, without this design or content:
+https://github.com/farulivan/astro-origin
+
+The case-study screenshots show products that belong to the clients named in
+them, and remain theirs.
