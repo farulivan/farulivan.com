@@ -122,6 +122,10 @@ whose card would clip an outset one.
   audits every page the build produces, in both locales. One token color in
   one code block is enough to fail it: `github-light`'s comment is #6A737D on
   white, which is 4.4:1. Use the `-high-contrast` Shiki themes.
+  It also reads the page 4.5 seconds after load, because text caught
+  mid-fade fails the contrast check as if its colour were wrong. Lengthen
+  the homepage hero's entrance and `pauseAfterLoadMs` in `lighthouserc.json`
+  has to grow with it.
 - **A sticky element stretched to its row can never stick.** A grid or flex
   child is stretched to the height of its row unless told otherwise, and a
   block already as tall as the distance it could travel has nowhere to travel

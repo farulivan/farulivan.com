@@ -4,7 +4,10 @@
       "staticDistDir": "./dist",
       "numberOfRuns": 3,
       "maxAutodiscoverUrls": 0,
-      "staticDirFileDiscoveryDepth": 4
+      "staticDirFileDiscoveryDepth": 4,
+      "settings": {
+        "pauseAfterLoadMs": 4500
+      }
     },
     "assert": {
       "aggregationMethod": "median-run",

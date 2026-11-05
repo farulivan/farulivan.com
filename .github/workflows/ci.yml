@@ -85,9 +85,9 @@ jobs:
   # Not on pull requests while the site is still being built.
   #
   # It runs three times over every page in both languages, which takes about
-  # seven and a half minutes and runs after `verify` finishes — so it was
-  # turning a one-minute check into a nine-minute one, to score pages that are
-  # still placeholders. It runs on main, and on demand from the Actions tab.
+  # twenty minutes for the 25 pages there are now, and runs after `verify`
+  # finishes. On every pull request that would turn a one-minute check into a
+  # twenty-minute one. It runs on main, and on demand from the Actions tab.
   #
   # Put `pull_request` back once the real pages and content land: the design
   # asks for 95 on performance and 100 on accessibility, and that is a promise
@@ -96,7 +96,8 @@ jobs:
     needs: verify
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    # Seventy-five audits at about sixteen seconds each, with room to spare.
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -117,6 +118,13 @@ jobs:
       # absorbs Chrome's cold start on a shared runner — that alone put
       # 749ms of total blocking time on a page that ships no JavaScript,
       # and failed a budget every other page passed.
+      #
+      # Each audit waits 4.5 seconds after the load event (`pauseAfterLoadMs`
+      # in lighthouserc.json). The homepage hero fades in until about 3.5
+      # seconds, and without the wait the contrast check measured its grey
+      # text half-faded, at 4.17:1 instead of 5.10:1, and failed the homepage
+      # on runner timing alone. Performance is still measured from the normal
+      # animated load; only the snapshot the audits read is taken later.
       - name: Lighthouse budget
         run: pnpm dlx @lhci/cli@0.15.1 autorun
 
