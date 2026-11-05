@@ -18,9 +18,20 @@ import BaseLayout from "@/layouts/BaseLayout.astro"
 const t = useTranslations(DEFAULT_LOCALE)
 ---
 
+{
+  /*
+   * There is no Indonesian copy of this page, so nothing may point at one.
+   * The language switch goes to the Indonesian home page instead, where a
+   * reader who wanted the other language can carry on, and the head lists
+   * this page in English only. Both used to name /id/404, an address that
+   * itself answers with this page.
+   */
+}
 <BaseLayout
   lang={DEFAULT_LOCALE}
   path="/404"
+  switchPath="/"
+  availableLocales={[DEFAULT_LOCALE]}
   title={t("notFound.title")}
   description={t("notFound.description")}
 >
