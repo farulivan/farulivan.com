@@ -6,6 +6,7 @@ import { defineConfig, fontProviders } from "astro/config"
 import { visualizer } from "rollup-plugin-visualizer"
 
 import { LOCALE_TAGS } from "./src/content/schemas"
+import { cspHashes } from "./src/integrations/csp"
 import { externalLinksPlugin } from "./src/mdast/external-links"
 import { modifiedTimePlugin } from "./src/mdast/modified-time"
 import { readingTimePlugin } from "./src/mdast/reading-time"
@@ -35,6 +36,9 @@ export default defineConfig({
     sitemap({
       i18n: { defaultLocale: "en", locales: LOCALE_TAGS },
     }),
+    // After the pages are written: hashes their inline scripts into the
+    // Content-Security-Policy in dist/_headers.
+    cspHashes(),
   ],
 
   /**

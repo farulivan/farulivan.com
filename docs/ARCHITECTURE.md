@@ -224,7 +224,7 @@ Workers & Pages → `farulivan` → Settings → Builds. Nothing in the reposito
 | Build command         | `pnpm verify`                                       |
 | Deploy command        | `pnpm exec wrangler deploy`                         |
 | Preview command       | `pnpm exec wrangler preview`                        |
-| Root directory        | _(blank)_                                           |
+| Path                  | `/` (the root directory)                            |
 | Build variable        | `LAUNCH` = `true`                                   |
 | Enable Preview Builds | on                                                  |
 
@@ -243,9 +243,23 @@ pnpm build && pnpm exec wrangler dev
 Two settings of the `farulivan.com` zone put a script on every page served from it, this site included. They are Cloudflare's: nothing in this repository turns them on or off. Lighthouse CI never sees either, because it audits the local build.
 
 - **Web Analytics** loads a beacon from `static.cloudflareinsights.com` and reports each page view to `/cdn-cgi/rum`. It sets no cookie.
-- **The bot check** (JavaScript Detections, always on with Bot Fight Mode) is an inline script that loads `/cdn-cgi/challenge-platform/` and keeps its result in a `cf_clearance` cookie.
+- **The bot check** (JavaScript Detections, always on with Bot Fight Mode) is an inline script that loads `/cdn-cgi/challenge-platform/` and keeps its result in a `cf_clearance` cookie. It also strips the `ETag` from every page it is added to. A browser therefore cannot ask whether a page changed and get a 304 back, and downloads the page again on each visit. Files under `/_astro/` are untouched, and so are the CV and the icons, which keep their `ETag`.
 
-A Content-Security-Policy has to allow both. HSTS also comes from the zone, with preload, which is why `_headers` does not send it.
+HSTS also comes from the zone, with preload, which is why `_headers` does not send it.
+
+### Content-Security-Policy
+
+The policy lives in `public/_headers` as `Content-Security-Policy-Report-Only`. In that mode the browser logs what the policy would refuse in the DevTools console, and refuses nothing. It stays report-only until the console has been read on the live site. That is the only place the two scripts above appear; neither `workers.dev` previews nor `wrangler dev` get them.
+
+**Inline scripts are allowed by hash, never by `'unsafe-inline'`.** Astro inlines small scripts into the page, and a hash changes whenever its script does, so a hash is never written by hand. `public/_headers` holds a placeholder where they go, and `src/integrations/csp.ts` fills it in after every build with the hash of every inline script in `dist/`. The build fails if the placeholder has gone, or if the line grows past the 2,000 characters Cloudflare reads. Astro's own `security.csp` does not fit: it writes a meta tag, which can neither report-only nor set `frame-ancestors`, and it does not support Shiki.
+
+**Styles are allowed inline.** Shiki colours every code token with a `style` attribute, hundreds of them, and a hash cannot cover an attribute. A stylesheet can do far less than a script.
+
+**Expected in the console:** a refused inline script from the bot check on every page. It carries a different ray ID on every request, so no hash can allow it, and its hash in the message changes on every reload, which is how to tell it apart. Only a nonce made fresh for each request could allow it, and a site with no Worker code cannot make one. Refusing it matters only to firewall rules that read `cf.bot_management.js_detection.passed`, and the zone has none. Anything else in the console is a real finding.
+
+**To start enforcing,** rename the header to `Content-Security-Policy`. Before that, open every kind of page in both languages with the console open: the homepage, the work index, a case study, the writing index, a post with a code block, about, contact and the 404, plus `cv.pdf`. Once it enforces, the bot check's script is refused for real. That is harmless here; the alternative, `'unsafe-inline'`, would switch the policy off for scripts.
+
+**Anything new from another host** needs its origin in the matching directive: a script in `script-src`, a stylesheet in `style-src`, an image or font in `default-src` (or a directive of its own). Otherwise it is reported now and blocked once the policy enforces. A new inline script needs nothing; the next build hashes it.
 
 ### Rolling back
 

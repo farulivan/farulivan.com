@@ -156,6 +156,13 @@ whose card would clip an outset one.
 - **Everything in `public/` is published,** dotfiles included. A file that is
   there for the people editing it, like `public/README.md`, goes in
   `public/.assetsignore` too.
+- **Never write a `sha256-` hash into the Content-Security-Policy.** The build
+  hashes every inline script into `dist/_headers` in place of the placeholder
+  in `public/_headers` (`src/integrations/csp.ts`), so a new or edited inline
+  script needs nothing. What does need an edit is anything loaded from another
+  host: add its origin to the matching directive, or the policy refuses it.
+  `pnpm verify` cannot see that either; the browser console on the live site
+  does.
 
 ## Behavior traps (all previously shipped as bugs)
 
@@ -176,6 +183,7 @@ whose card would clip an outset one.
 | How wide a page's content runs | `src/components/ui/Section.astro` |
 | How the site is served         | `wrangler.jsonc`                  |
 | Response headers and caching   | `public/_headers`                 |
+| The Content-Security-Policy    | `public/_headers`                 |
 
 ## Commits and pull requests
 
