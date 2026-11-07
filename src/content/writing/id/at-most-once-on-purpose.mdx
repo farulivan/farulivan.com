@@ -1,0 +1,82 @@
+---
+lang: "id"
+translationKey: "at-most-once-on-purpose"
+title: "At-most-once, memang disengaja"
+description: "Kenapa bot pengingat keluarga lebih memilih kehilangan satu pesan daripada mengirimnya dua kali, dan bagaimana satu statement SQL menjaminnya."
+pubDate: 2026-08-12
+tags: ["architecture", "trade-offs"]
+draft: false
+---
+
+Setiap sistem yang mengirim sesuatu harus menjawab satu pertanyaan yang
+sebenarnya ingin ia hindari: kalau kamu tidak bisa yakin sebuah pesan sudah
+sampai, apakah kamu mengirimnya lagi?
+
+Jawab ya, dan kamu mendapat at-least-once delivery. Tidak ada yang hilang, tapi
+sebagian bisa sampai dua kali. Jawab tidak, dan kamu mendapat at-most-once.
+Tidak pernah ada duplikat, tapi sesekali ada yang hilang. Tidak ada pilihan
+ketiga yang benar-benar lebih baik. Exactly-once memang yang diinginkan semua
+orang, tapi dalam praktiknya itu berarti at-least-once ditambah deduplikasi, dan
+biayanya tidak sepadan untuk kebanyakan produk.
+
+## Produk yang menentukan, bukan arsitektur
+
+Bot pengingat saya mengirim jadwal salat dan pengingat kebiasaan ke WhatsApp
+keluarga saya. Memilih salah satunya hanya butuh sekitar semenit, begitu saya
+bertanya seperti apa rasanya masing-masing kegagalan.
+
+Pengingat yang terlewat adalah pengingat yang tidak kamu terima. Sedikit
+menyebalkan, dan jenis hal yang kamu sadari lalu lupakan.
+
+Pengingat yang terkirim dua kali berarti ponselmu bergetar dua kali untuk pesan
+yang sama. Kalau itu terjadi beberapa kali, bot-nya jadi sekadar noise, dan
+pengingat yang tidak dibaca siapa pun lebih buruk daripada tidak ada pengingat
+sama sekali. Ia sudah melatih orang untuk mengabaikannya.
+
+Jadi: at-most-once. Kehilangan satu pengingat masih bisa ditebus. Terlanjur
+diabaikan, tidak.
+
+Itu bukan kebenaran yang berlaku umum. Konfirmasi pembayaran memilih arah
+sebaliknya tanpa ragu. Kirim dua kali, minta maaf untuk email yang ganda, tapi
+jangan pernah membiarkan seseorang bertanya-tanya apakah uangnya sudah
+terkirim. Jawaban yang tepat ditentukan oleh apa yang kamu kirim, bukan oleh
+infrastrukturmu.
+
+## Satu statement
+
+Mekanismenya lebih kecil daripada keputusannya:
+
+```sql
+UPDATE reminders
+SET sent_at = now()
+WHERE id IN (
+  SELECT id FROM reminders
+  WHERE sent_at IS NULL AND due_at <= now()
+  FOR UPDATE SKIP LOCKED
+)
+RETURNING *;
+```
+
+Row ditandai terkirim oleh statement yang sama yang memilihnya. Ada dua
+akibatnya.
+
+Restart di tengah tick hanya memindai ulang row yang benar-benar belum
+terkirim, karena apa pun yang sudah di-claim punya timestamp. Dan dua tick yang
+tumpang tindih tidak bisa meng-claim row yang sama, karena `SKIP LOCKED` membuat
+tick kedua melewati row yang sedang dipegang tick pertama, alih-alih
+menunggunya.
+
+Tanpa queue, tanpa tabel lock, tanpa koordinator terdistribusi. Database-nya
+sudah tahu cara melakukan ini.
+
+## Di mana kehilangan itu terjadi
+
+Supaya tepat: row ditandai terkirim _sebelum_ WhatsApp mengonfirmasi
+pengirimannya. Kalau prosesnya mati di celah itu, pengingatnya hilang dan tidak
+ada yang akan mencobanya lagi.
+
+Itulah seluruh harga dari pilihan ini, dan ia tercatat sebagai satu baris di
+decision record, bukan kejutan yang ditemukan seseorang nanti. Menuliskannya
+adalah sebagian besar yang membuatnya jadi keputusan, bukan kecelakaan.
+Alternatifnya adalah saya di masa depan membaca kode ini, melihat celahnya,
+mengira itu bug, lalu "memperbaikinya" jadi pengiriman ganda.
