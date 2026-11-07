@@ -2,7 +2,7 @@
 lang: "en"
 translationKey: "norven"
 title: "Norven"
-summary: "A marketing site for a fictional architecture studio, built to production standards. Accessibility gates and performance budgets on every pull request."
+summary: "A site for an imagined architecture studio, built for this portfolio to production standards, with accessibility and performance gates on every pull request."
 year: 2026
 role: "Solo: design, build, deploy"
 duration: "May 2026 – ongoing"
@@ -32,10 +32,10 @@ sourceUrl: "https://github.com/farulivan/norven"
 
 ## The studio is fictional. The build is not.
 
-Norven is an architecture studio that does not exist. The point was never the
-firm. It was having a real site, with real content and real constraints, that I
-could hold to production standards without a client's deadline deciding what
-got cut first.
+Norven is an architecture studio that doesn't exist. I imagined it for this
+portfolio, because the point was never the firm. It was having a real site,
+with real content and real constraints, that I could hold to production
+standards without a client's deadline deciding what got cut first.
 
 ## What gets enforced
 
@@ -48,16 +48,17 @@ a bundle budget. On top of that, every pull request runs:
   practices each have a floor.
 - **CodeQL and dependency review.**
 
-The interesting thing about putting the accessibility check in the gate rather
-than the backlog is that it changes what you build. You cannot ship the
+What's interesting about putting the accessibility check in the gate rather
+than the backlog is that it changes what you build. You can't ship the
 component and fix the contrast later, so you pick the accessible version first
 and never pay the difference.
 
-## Motion behind one callback
+## All motion through one runtime
 
 The site is photography-led with scroll-driven motion. GSAP and ScrollTrigger
-underneath, but every effect goes through a single `scrollEffect` runtime
-rather than each component reaching for the library.
+are underneath, but no component reaches for the library itself. Every effect
+goes through one runtime, as a single `scrollEffect` callback that returns its
+own cleanup.
 
 One place to reason about what runs on scroll, one place to respect reduced
 motion, and a pure core that unit tests without a browser.
@@ -68,15 +69,15 @@ Static output to S3, behind a single Cloudflare edge, with an IP-allowlisted
 origin. Deploys run from GitHub Actions over OIDC, so there are no long-lived
 AWS keys anywhere. Not in the repo, not in the CI settings, nowhere to leak.
 
-Response headers, CSP and HSTS and Permissions-Policy, are committed as
-Cloudflare Transform Rules rather than configured by hand in a dashboard
-nobody can diff.
+The response headers (CSP, HSTS and Permissions-Policy) are committed as
+Cloudflare Transform Rules rather than set by hand in a dashboard nobody can
+diff.
 
 A $5/month AWS budget sits over it as a ceiling. Steady state is about two
 cents.
 
-## Why this one exists
+## Written down
 
-The decisions are written down as ADRs, alongside a deployment runbook with the
-cost analysis and a roadmap with explicit non-goals. If you are skimming the
-repo to work out how I build, five minutes should be enough.
+The decisions live in the repo as ADRs, alongside a deployment runbook with the
+cost analysis and a roadmap with explicit non-goals. If you're skimming it to
+work out how I build, five minutes should be enough.

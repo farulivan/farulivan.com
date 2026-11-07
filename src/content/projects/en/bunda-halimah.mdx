@@ -22,7 +22,7 @@ screenshots:
     phone: "../_images/bunda-halimah-phone.png"
     alt: "The hospital's patient portal, with a doctor search and an appointment panel."
 outcome:
-  summary: "Both frontends shipped, the contract closed, and the hospital has run them ever since. The handover held, which is the part of freelance work that usually does not."
+  summary: "Both frontends shipped, the contract closed, and the hospital has run them ever since. The handover held, and in freelance work that's the part that usually fails."
   figures:
     - { value: "2", caption: "Frontends delivered and handed over" }
     - { value: "5 months", caption: "Brief to handover" }
@@ -44,9 +44,9 @@ the line was everything the browser touches.
 Finding a doctor is the easy half. Booking is where the edge cases live, and
 the edge cases are the work:
 
-- Schedules group by doctor and by day, which is not the shape the interface
-  wants to show them in.
-- A patient who cannot make an appointment needs to move it or cancel it
+- The schedule data comes grouped by doctor and by day, which isn't the shape
+  the interface wants to show it in.
+- A patient who can't make an appointment needs to move it or cancel it
   without phoning, which means the reschedule path has to be as careful as the
   booking path.
 - When the doctor a patient wants has nothing free, the useful answer is the
@@ -62,9 +62,9 @@ the boundary rather than somewhere inside a handler.
 Sessions are HttpOnly cookies set by server actions, with route protection in
 `middleware.ts`. No token in `localStorage`.
 
-For a hospital that was not a preference. A token readable by any script on the
+For a hospital that wasn't a preference. A token readable by any script on the
 page is one cross-site scripting bug away from being someone else's; a cookie
-the browser will not hand to JavaScript is not. The cost is that auth-dependent
+the browser won't hand to JavaScript isn't. The cost is that auth-dependent
 work happens on the server, which, with React Server Components, is where it
 was going to happen anyway.
 
@@ -76,7 +76,7 @@ scheduled workflow so an article can be written on Tuesday and appear on
 Friday, and SEO fields on every piece.
 
 Every form in both apps is typed end to end with React Hook Form and Zod, so
-the shape the form collects and the shape the action accepts cannot drift apart
+the shape the form collects and the shape the action accepts can't drift apart
 without the compiler noticing.
 
 ## Building something to hand over
@@ -92,5 +92,5 @@ the codebase handles a failure the same way everywhere.
 ## Outcome
 
 Both frontends shipped, the contract closed, and the hospital has been running
-them ever since without me. That is the whole outcome: the handover held, which
-is the part of freelance work that usually does not.
+them ever since without me. That's the whole outcome: the handover held, and in
+freelance work that's the part that usually fails.

@@ -2,7 +2,7 @@
 lang: "en"
 translationKey: "wa-bot"
 title: "Personal WhatsApp Bot"
-summary: "A WhatsApp bot my family uses every day, and the production backend under it. Hexagonal TypeScript, PostgreSQL, and a scheduler that survives restarts."
+summary: "A WhatsApp bot my family and I use every day, and the production backend under it: hexagonal TypeScript, PostgreSQL and a scheduler that survives restarts."
 year: 2026
 role: "Solo: architecture, backend, operations"
 duration: "Jan 2026 – ongoing"
@@ -16,9 +16,8 @@ screenshots:
 outcome:
   summary: "Steady-state memory fell from 0.8 GB to under 100 MB, and the same change retired the one component behind every outage the project had had."
   figures:
+    - { value: "−85%", caption: "Steady-state memory" }
     - { value: "600+", caption: "Deterministic tests" }
-    - { value: "-85%", caption: "Steady-state memory" }
-    - { value: "<100 MB", caption: "Memory after the transport swap" }
 sourceUrl: "https://github.com/farulivan/personal-wa-bot"
 ---
 
@@ -29,27 +28,27 @@ times. Notes apps went messy fast. A dedicated tracker meant another install,
 another login, and one more thing to remember to open.
 
 My family already lives in WhatsApp all day, so I put the tracker where we
-already were. A few `#` commands in a chat that is always open, no new app and
+already were. A few `#` commands in a chat that's always open, no new app and
 no new habit.
 
 That choice set the bar for everything after it. If a reminder is going to be
-trusted, it has to actually arrive. That turned a small convenience into a
-backend that has to stay up.
+trusted, it has to arrive. That turned a small convenience into a backend that
+has to stay up.
 
-## The Chromium that did not need to be there
+## The Chromium that didn't need to be there
 
 The bot originally drove WhatsApp through a headless Chromium. It worked, and
 it idled at 0.75–0.85 GB around the clock for a service whose entire job is
 reading short text messages.
 
 It was also the source of every outage the project ever had. A browser is a
-large, stateful thing to keep alive for months, and when it died it did not
+large, stateful thing to keep alive for months, and when it died it didn't
 always die loudly.
 
 Replacing it with a plain WebSocket protocol client took steady-state memory
 under 100 MB, more than an 85% cut, and removed the component behind every one
-of those outages in the same change. It is the single best thing I have
-done to this codebase, and it was mostly deleting.
+of those outages in the same change. It's the single best thing I've done to
+this codebase, and it was mostly deleting.
 
 The longer version: [The Chromium I did not need](/writing/chromium-i-did-not-need)
 
@@ -61,16 +60,16 @@ overlapped.
 
 Claiming is one statement:
 
-`UPDATE reminders SET sent_at = now WHERE id IN (SELECT id … FOR UPDATE SKIP
+`UPDATE reminders SET sent_at = now() WHERE id IN (SELECT id … FOR UPDATE SKIP
 LOCKED) RETURNING *`
 
 The row is marked sent by the same query that selects it, so a restart re-scans
-only genuinely unsent rows, and two concurrent ticks cannot grab the same one.
+only genuinely unsent rows, and two concurrent ticks can't grab the same one.
 
-The honest part: I mark a reminder sent _before_ WhatsApp confirms delivery. A
-crash in that gap drops one reminder rather than risking a duplicate.
-At-most-once, on purpose. For a family reminder bot that is the trade I want,
-and it is written down as a decision record rather than left as a surprise.
+The catch: I mark a reminder sent _before_ WhatsApp confirms delivery. A crash
+in that gap drops one reminder rather than risking a duplicate. At-most-once,
+on purpose. For a family reminder bot that's the trade I want, and it's written
+down as a decision record rather than left as a surprise.
 
 The longer version: [At-most-once, on purpose](/writing/at-most-once-on-purpose)
 
@@ -85,23 +84,34 @@ anything throw. The bot simply began writing rows under a second identity for
 the same person, and the allowlist stopped recognising anyone. The kind of bug
 you find days later, wondering why the history looks empty.
 
-I had already written the warning in a comment. It did not work, because the
-comment is not there at the moment you make the mistake. So I gave the compiler
-the distinction I could not reliably hold in my head: `WaUserId` and
+I'd already written the warning in a comment. It didn't work, because the
+comment isn't there at the moment you make the mistake. So I gave the compiler
+the distinction I couldn't reliably hold in my head: `WaUserId` and
 `PhoneNumber` as branded types with no implicit conversion. Passing one where
 the other belongs is now a type error, and the lesson stopped depending on me
 remembering it.
 
 The longer version: [A bug I kept making, made uncompilable](/writing/a-bug-made-uncompilable)
 
-## Tests that do not depend on when you run them
+## One shape for every feature
+
+It's a modular monolith with a hexagonal core. Each feature, from workouts to
+prayer times, is a module with the same shape: a parser, a service, a
+presenter, a controller, and a repository behind an interface. The services
+only talk to interfaces, so none of them knows WhatsApp or Postgres exist.
+
+That's more files than a small bot strictly needs. What it buys is a feature I
+can add six months from now without relearning the codebase, and logic I can
+test with neither of them running.
+
+## Tests that don't depend on when you run them
 
 Over 600 tests, and the reason there are that many is that streaks and timezone
 boundaries are exactly the logic that breaks quietly. Time is injected as
 `now: () => Date`, so every one of them runs against a frozen clock instead of
 whatever `Date.now()` happens to return on the machine running CI.
 
-## Built to actually run
+## Built to stay up
 
 Migrations run on boot. `SIGTERM` drains the schedulers and closes the pool.
 `/ready` reports the state of the WhatsApp socket rather than merely that the
@@ -109,5 +119,5 @@ process is alive, so an external monitor catches an outage in minutes instead
 of whenever somebody notices the reminders stopped.
 
 Expected failures come back as a typed `Result<T>`; exceptions stay reserved
-for actual bugs. Decisions are recorded as ADRs and outages as postmortems,
+for real bugs. Decisions are recorded as ADRs and outages as postmortems,
 because a solo project forgets faster than a team does.
