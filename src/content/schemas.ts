@@ -112,7 +112,7 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
      * Pictures of the work, in the order they should be read.
      *
      * A list rather than one, because a project is not always one screen: the
-     * investment platform runs two brands off a single codebase, and showing
+     * Nabitu case study covers two sites, Nabitu and Zeed Sharia, and showing
      * only one of them makes the case study's own argument harder to believe.
      * The first is the one that stands for the project wherever there is only
      * room for a single image.
@@ -160,10 +160,10 @@ export const projectSchema = ({ image }: { image: ImageHelper }) =>
     }),
     /**
      * Where to see the work running. Usually one site, and then the button
-     * just says so. The investment platform is one codebase behind two brands
-     * on two domains, and a button to only one of them shows half the work,
-     * so this is a list. Once there is more than one, each needs a name: two
-     * buttons that both say "Visit the live site" cannot be told apart.
+     * just says so. The Nabitu case study covers two sites on two domains,
+     * and a button to only one of them shows half the work, so this is a
+     * list. Once there is more than one, each needs a name: two buttons that
+     * both say "Visit the live site" cannot be told apart.
      *
      * `z.url()` rather than `z.string().url()`, which Zod now deprecates.
      */

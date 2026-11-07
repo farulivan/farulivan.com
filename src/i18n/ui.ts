@@ -75,7 +75,7 @@ export const en = {
   "about.subtitle":
     "From architecture school to frontend engineering, and now into the backend.",
   "about.bio.1":
-    "For three years I was the only frontend engineer at Nabitu, a shariah investment startup, and its sister brand Zeed Sharia. I built its frontend from scratch in plain React, then rebuilt it in Next.js: over a hundred pages in all, on a platform that now serves more than 3,000 investors. Being the only one meant owning far more than the UI. I worked directly with backend, product and the CEO, and learned the Laravel backend well enough to find where a bug lived before taking it to the engineer who owned it.",
+    "For three years I was the only frontend engineer at Nabitu and Zeed Sharia, two shariah investment platforms. I built their frontends from scratch in plain React, then rebuilt them in Next.js: over a hundred pages in all, now used by more than 3,000 investors. Being the only one meant owning far more than the UI. I worked directly with backend, product and leadership, and learned the Laravel backend well enough to find where a bug lived before taking it to the engineer who owned it.",
   "about.bio.2":
     "These days I'm growing past the frontend. I finished Boot.dev's backend developer path in both Go and TypeScript, and I build and run my own production systems, including a WhatsApp bot my family uses every day. AI tools like Claude Code are part of how I work through a problem, not a way around it.",
   "about.bio.3":
