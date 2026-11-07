@@ -73,13 +73,13 @@ export const en = {
 
   // About
   "about.subtitle":
-    "Three years of sole ownership on a production platform, and a deliberate push into everything around it.",
+    "From architecture school to frontend engineering, and now into the backend.",
   "about.bio.1":
-    "For three years I was the sole frontend engineer at a fintech startup, Nabitu. I built the product from an early MVP to a full production rewrite: over a hundred pages, real users, real stakes. There was no one else on frontend, so I ended up owning far more than the UI, working directly with backend, product and the CEO to ship things that actually worked.",
+    "For three years I was the only frontend engineer at Nabitu, a shariah investment startup, and its sister brand Zeed Sharia. I was there from the first plain-React frontend to the Next.js rewrite: over a hundred pages in all, on a platform that now serves more than 3,000 investors. Being the only one meant owning far more than the UI. I worked directly with backend, product and the CEO, and learned the Laravel backend well enough to find where a bug lived before taking it to the engineer who owned it.",
   "about.bio.2":
-    "These days I am deliberately growing beyond the frontend. I finished a backend path in Go and TypeScript, and I build and run my own production systems, including a WhatsApp bot my family uses every day. I also work with AI tools like Claude Code daily. Not as a shortcut, but as a real part of how I think through problems.",
+    "These days I'm growing past the frontend. I finished Boot.dev's backend developer path in both Go and TypeScript, and I build and run my own production systems, including a WhatsApp bot my family uses every day. AI tools like Claude Code are part of how I work through a problem, not a way around it.",
   "about.bio.3":
-    "My path here was not a straight line. I studied architecture before moving into software, which is probably why I still care about structure and the small details most people do not notice. These days that shows up in how I write code rather than in anything I draw.",
+    "My route here wasn't a straight line. I studied architecture and spent five years in fire protection engineering, until COVID-19 hit that industry hard and freelance 3D visualisation couldn't become my main career. So I looked for a skill I could learn from home for very little, and a career I could mostly do from home. After trying data analysis and mobile development, I stayed with frontend: my design training still counted there, and it's what I enjoyed most. That training is probably why I still care about structure and the small details most people don't notice.",
   "about.portraitAlt": "A portrait of Farul Ivan.",
   "about.historyLabel": "History",
   "about.historyDescription":
@@ -87,15 +87,14 @@ export const en = {
   "about.beforeSoftware": "Before software",
   "about.capabilitiesLabel": "Capabilities",
   "about.capabilitiesDescription":
-    "Grouped by how deep it actually goes, because a flat list of tools says nothing about which of them I would want to be woken up about.",
+    "Grouped by how deep it goes, because a flat list of tools says nothing about which of them I'd want to be woken up about.",
   "about.col.domain": "Area",
   "about.col.items": "What that covers",
   "about.col.note": "How deep it goes",
   "about.present": "Present",
   "about.education": "Education",
   "about.nowLabel": "Now",
-  "about.nowDescription":
-    "What I am working on getting better at, at the moment.",
+  "about.nowDescription": "What I'm getting better at right now.",
   "about.now":
     "System design, retrieval-augmented generation, and the workflows for directing AI agents rather than being directed by them.",
 
