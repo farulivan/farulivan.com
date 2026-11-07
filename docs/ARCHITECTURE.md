@@ -247,19 +247,16 @@ Two settings of the `farulivan.com` zone put a script on every page served from 
 
 HSTS also comes from the zone, with preload, which is why `_headers` does not send it.
 
-### Content-Security-Policy
+### Why there is no Content-Security-Policy
 
-The policy lives in `public/_headers` as `Content-Security-Policy-Report-Only`. In that mode the browser logs what the policy would refuse in the DevTools console, and refuses nothing. It stays report-only until the console has been read on the live site. That is the only place the two scripts above appear; neither `workers.dev` previews nor `wrangler dev` get them.
+There was one, briefly. #43 shipped it report-only, and it came out again before it ever enforced, because measured against this site it protected almost nothing and added upkeep.
 
-**Inline scripts are allowed by hash, never by `'unsafe-inline'`.** Astro inlines small scripts into the page, and a hash changes whenever its script does, so a hash is never written by hand. `public/_headers` holds a placeholder where they go, and `src/integrations/csp.ts` fills it in after every build with the hash of every inline script in `dist/`. The build fails if the placeholder has gone, or if the line grows past the 2,000 characters Cloudflare reads. Astro's own `security.csp` does not fit: it writes a meta tag, which can neither report-only nor set `frame-ancestors`, and it does not support Shiki.
+- **There is nothing to inject into.** The site has no comments, forms, search or login, so no visitor input can carry a script onto a page. Nor is there a session or any visitor data for a script to steal.
+- **The ways a script could still arrive are ones a CSP misses here.** A compromised dependency would write its script into the build, and a policy that hashes the site's inline scripts at build time hashes whatever the build contains, so the bad script would be allowed along with the good ones. Cloudflare's scripts come from the same host that serves the policy. Browser extensions are outside it. Framing is already refused by `X-Frame-Options`.
+- **The trial found one thing, on every page: Cloudflare's bot check.** It found nothing in the site's own code. Enforcing would only have switched the bot check off, because its script carries a new ray ID on every request and no hash can allow it. A nonce made fresh for each request could, but that means running code on every page view.
+- **The upkeep would have landed on the blog.** Every embed from another host (a video, a gist, a comments widget) would need the policy edited first, and nothing in `pnpm verify` notices one missing. A broken embed on the live site would.
 
-**Styles are allowed inline.** Shiki colours every code token with a `style` attribute, hundreds of them, and a hash cannot cover an attribute. A stylesheet can do far less than a script.
-
-**Expected in the console:** a refused inline script from the bot check on every page. It carries a different ray ID on every request, so no hash can allow it, and its hash in the message changes on every reload, which is how to tell it apart. Only a nonce made fresh for each request could allow it, and a site with no Worker code cannot make one. Refusing it matters only to firewall rules that read `cf.bot_management.js_detection.passed`, and the zone has none. Anything else in the console is a real finding.
-
-**To start enforcing,** rename the header to `Content-Security-Policy`. Before that, open every kind of page in both languages with the console open: the homepage, the work index, a case study, the writing index, a post with a code block, about, contact and the 404, plus `cv.pdf`. Once it enforces, the bot check's script is refused for real. That is harmless here; the alternative, `'unsafe-inline'`, would switch the policy off for scripts.
-
-**Anything new from another host** needs its origin in the matching directive: a script in `script-src`, a stylesheet in `style-src`, an image or font in `default-src` (or a directive of its own). Otherwise it is reported now and blocked once the policy enforces. A new inline script needs nothing; the next build hashes it.
+**Revisit when the site gains** comments, forms, a login or anything else that handles visitor data; search or other pages built from input; or scripts and embeds from other hosts. A policy then has something to protect. The history of #43 has the way in: report-only first, with a build step that hashes every inline script into `_headers`. Astro's own `security.csp` will not do it: it writes a meta tag, which can neither report-only nor set `frame-ancestors`, and it does not support Shiki.
 
 ### Rolling back
 

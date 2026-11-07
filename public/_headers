@@ -18,17 +18,5 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
 
-# The Content-Security-Policy, report-only for now: the browser logs what it
-# would refuse in the DevTools console and refuses nothing. "Hosting" in
-# docs/ARCHITECTURE.md says what to expect there and how to start enforcing.
-#
-# - script-src: the site's inline scripts by hash, which the build writes in
-#   place of the placeholder (src/integrations/csp.ts); files from this
-#   origin, which includes Cloudflare's /cdn-cgi/ scripts; and the Web
-#   Analytics beacon.
-# - style-src allows inline styles. Shiki colours every code token with a
-#   style attribute, and a stylesheet can do far less harm than a script.
-# - default-src 'self' covers the rest: images, the font, the manifest, and
-#   the analytics and bot-check requests to /cdn-cgi/.
-/*
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' {{inline-script-hashes}} https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'
+# There is deliberately no Content-Security-Policy. "Hosting" in
+# docs/ARCHITECTURE.md says why, and what would change that.
