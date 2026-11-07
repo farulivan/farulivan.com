@@ -9,33 +9,34 @@ draft: false
 ---
 
 Every system that sends something has to answer a question it would rather
-avoid: when you cannot be certain a message arrived, do you send it again?
+avoid: when you can't be certain a message arrived, do you send it again?
 
 Answer yes and you have at-least-once delivery. Nothing is ever lost, and some
 things arrive twice. Answer no and you have at-most-once. Nothing ever
-duplicates, and occasionally something is lost. There is no third option that
-is simply better; the middle ground is exactly-once, and it costs more than
-most products are worth.
+duplicates, and occasionally something is lost. There's no third option that's
+simply better. Exactly-once is the one everyone wants, and in practice it means
+at-least-once plus deduplication, which costs more than most products are
+worth.
 
 ## The product decides, not the architecture
 
 My reminder bot sends prayer times and habit nudges to my family's WhatsApp.
-Picking a side took about a minute once I asked what each failure actually
-feels like.
+Picking a side took about a minute once I asked what each failure feels
+like.
 
-A missed reminder is a reminder you do not get. Mildly annoying, and the sort
+A missed reminder is a reminder you don't get. Mildly annoying, and the sort
 of thing you notice and move on from.
 
 A duplicated reminder is your phone buzzing twice with the same message. Do
 that a few times and the bot becomes noise, and a reminder nobody reads is
-worse than no reminder at all. It has trained people to ignore it.
+worse than no reminder at all. It's trained people to ignore it.
 
-So: at-most-once. Losing one is recoverable. Becoming ignorable is not.
+So: at-most-once. Losing one is recoverable. Becoming ignorable isn't.
 
-That is not a general truth. A payment confirmation goes the other way without
+That isn't a general truth. A payment confirmation goes the other way without
 hesitating. Send it twice, apologise for the duplicate email, never leave
 someone wondering whether their money moved. The right answer is a property of
-what you are sending, not of your infrastructure.
+what you're sending, not of your infrastructure.
 
 ## One statement
 
@@ -55,7 +56,7 @@ RETURNING *;
 The row is marked sent by the same statement that selects it. Two things follow.
 
 A restart mid-tick re-scans only rows that are genuinely unsent, because
-anything already claimed has a timestamp. And two ticks that overlap cannot
+anything already claimed has a timestamp. And two ticks that overlap can't
 claim the same row, because `SKIP LOCKED` sends the second one past anything
 the first is holding rather than making it wait.
 
@@ -68,8 +69,8 @@ Being precise about it: the row is marked sent _before_ WhatsApp confirms
 delivery. If the process dies in that gap, the reminder is gone and nothing
 will retry it.
 
-That is the whole cost of the choice, and it is one line in a decision record
+That's the whole cost of the choice, and it's one line in a decision record
 rather than a surprise somebody finds later. Writing it down is most of what
 makes it a decision instead of an accident. The alternative is a future me
-reading this code, seeing the gap, assuming it is a bug, and "fixing" it into
+reading this code, seeing the gap, assuming it's a bug, and "fixing" it into
 duplicates.

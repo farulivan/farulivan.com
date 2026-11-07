@@ -69,7 +69,7 @@ export const en = {
   "writing.col.date": "Date",
   "writing.col.title": "Title",
   "writing.col.topic": "Topic",
-  "writing.col.readTime": "Read",
+  "writing.col.readTime": "Length",
 
   // About
   "about.subtitle":
@@ -131,13 +131,12 @@ export const en = {
 
   // Contact
   "contact.statement":
-    "I am looking for a role where the front end is treated as engineering.",
+    "I'm looking for a role where the frontend is treated as engineering, not decoration.",
   "contact.directLabel": "Direct",
   "contact.directDescription":
-    "If that is what you are building, I would like to hear about it. Email reaches me fastest, and I reply to everything.",
+    "If that's what you're building, I'd like to hear about it. Email reaches me fastest, and I reply to everything.",
   "contact.elsewhereLabel": "Elsewhere",
-  "contact.elsewhereDescription":
-    "The same person, in the places you would expect.",
+  "contact.elsewhereDescription": "Code on GitHub, career on LinkedIn.",
   "contact.copyEmail": "Copy email",
   "contact.copied": "Copied",
   "contact.copyFailed": "Couldn't copy it",
@@ -159,7 +158,7 @@ export const en = {
   "footer.menu": "Menu",
   "footer.social": "Social",
   "footer.contact": "Contact",
-  "footer.rights": "© Farul Ivan {year} • All rights reserved.",
+  "footer.rights": "© {year} Farul Ivan\u00a0· All rights reserved.",
 
   // The CV download states its format and size, so nobody has to guess what
   // the link will do before clicking it.
@@ -170,7 +169,7 @@ export const en = {
   // Writing
   "writing.title": "Writing",
   "writing.subtitle":
-    "Notes on building for the web. What worked, and what did not.",
+    "Notes from building and running software, whenever a decision is worth writing down.",
   "writing.readingTime": "{minutes} min read",
   "writing.published": "Published {date}",
   "writing.updated": "Updated {date}",
@@ -178,7 +177,7 @@ export const en = {
   "writing.contents": "Contents",
   "writing.empty": "Nothing published yet.",
   "writing.untranslated":
-    "This post is not available in your language yet. Showing the English version.",
+    "This post isn't available in your language yet, so you're reading the English version.",
 
   // Pagination
   "pagination.label": "Writing pagination",
@@ -349,7 +348,7 @@ export const id: Record<TranslationKey, string> = {
   "footer.menu": "Menu",
   "footer.social": "Sosial",
   "footer.contact": "Kontak",
-  "footer.rights": "© Farul Ivan {year} • Seluruh hak cipta dilindungi.",
+  "footer.rights": "© {year} Farul Ivan\u00a0· Seluruh hak cipta dilindungi.",
 
   "cv.download": "Unduh CV saya",
   "cv.short": "CV saya",

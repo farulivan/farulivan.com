@@ -1,14 +1,14 @@
 ---
 lang: "en"
 translationKey: "chromium-i-did-not-need"
-title: "The Chromium I did not need"
+title: "The Chromium I didn't need"
 description: "How swapping a headless browser for a WebSocket client cut a bot's memory by 85% and removed its only recurring cause of downtime."
 pubDate: 2026-09-02
 tags: ["architecture", "performance"]
 draft: false
 ---
 
-The biggest performance win available to you is often not in your code. It is a
+The biggest performance win available to you often isn't in your code. It's a
 dependency you stopped noticing.
 
 ## What the graph looked like
@@ -18,23 +18,23 @@ read short text messages and occasionally write one. Steady state, it held
 between 0.75 and 0.85 GB of memory, all day, whether anyone had sent it
 anything or not.
 
-I had looked at that number many times without seeing it. It was the number the
+I'd looked at that number many times without seeing it. It was the number the
 service used. It had always been the number the service used.
 
 What made it visible was writing the sentence down: _a program that reads text
-messages is holding most of a gigabyte._ Said out loud, that is obviously
-absurd. Read off a dashboard, it is just a line.
+messages is holding most of a gigabyte._ Said out loud, that's obviously
+absurd. Read off a dashboard, it's just a line.
 
 ## Where it was going
 
 The bot talked to WhatsApp by driving a headless Chromium. A real browser,
-logged in, kept alive indefinitely. That is a legitimate way to automate
+logged in, kept alive indefinitely. That's a legitimate way to automate
 something that has no other interface, and for a long time it was the only way
 this one had.
 
 It was also the cause of every outage the project had ever had. Not most of
 them. Every one. A browser is a large, stateful thing to keep running for
-months at a stretch, and when it failed it did not always fail loudly. It would
+months at a stretch, and when it failed it didn't always fail loudly. It would
 sit there, process alive, doing nothing, until somebody noticed the reminders
 had stopped.
 
@@ -47,14 +47,14 @@ WhatsApp's protocol is reachable over a WebSocket. Speaking it directly meant
 no browser, no page, no rendering engine. A socket, a handful of message types,
 and the same functionality.
 
-Memory went under 100 MB. That is more than an 85% cut, and it arrived in a
-change whose diff was mostly red. The single largest improvement I have made to
+Memory went under 100 MB. That's more than an 85% cut, and it arrived in a
+change whose diff was mostly red. The single largest improvement I've made to
 that codebase was removing something from it.
 
 ## What I take from it
 
-I do not think the lesson is "never automate through a browser". Sometimes
-there is no other door.
+I don't think the lesson is "never automate through a browser". Sometimes
+there's no other door.
 
 The lesson is about where I look first. My instinct on a memory problem is to
 go inward: profile the code I wrote, find the retained object, tune the cache.
@@ -62,6 +62,6 @@ That instinct assumes the cost is mine. Often the largest single cost in a
 service is one dependency doing a job far bigger than the one you need from it,
 and no amount of tuning your own code touches it.
 
-Before optimising a component, it is worth asking whether the component should
+Before optimising a component, it's worth asking whether the component should
 be there. That question has a much better payoff than the one I usually ask,
-and it is the cheaper one to answer.
+and it's the cheaper one to answer.
