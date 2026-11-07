@@ -100,7 +100,7 @@ export const en = {
 
   // Work index and case studies
   "work.subtitle":
-    "Work for an employer, a client and myself, each with the problem it started from and how it turned out.",
+    "Work for an employer and a client, a bot for my family and me, and a site for an imagined studio, built only for this portfolio.",
   "work.allLabel": "All projects",
   "work.allDescription": "Every project, in the order I'd show them.",
   "work.featuredLabel": "Selected work",
