@@ -74,7 +74,7 @@
       "shadcn/ui",
       "MUI"
     ],
-    "note": "Keahlian utama. Di sini saya yang menetapkan konvensinya, bukan sekadar mengikutinya."
+    "note": "Keahlian utama. Di sini saya ikut menentukan arah dan standar, bukan sekadar mengikuti yang sudah ada."
   },
   {
     "id": "id-backend",
@@ -91,7 +91,7 @@
       "Laravel",
       "Desain REST API"
     ],
-    "note": "Sedang saya dalami. Dulu hanya memakai API, kini saya membangun dan menjalankan API sendiri. Laravel saya kenal lewat membaca dan debugging kodenya di Nabitu."
+    "note": "Sedang saya dalami. Dulu hanya menggunakan API, kini mulai membangun dan mengelolanya sendiri. Laravel saya kenal dari membaca dan men-debug codebase Nabitu."
   },
   {
     "id": "id-craft",
