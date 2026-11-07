@@ -3,9 +3,12 @@
 # Translators extend this file rather than cspell.json.
 angkanya
 animasinya
+bersertifikat
 deskripsinya
+detailnya
 dicermati
 didaftar
+dipindah
 ditelusuri
 fiturnya
 heksagonal
@@ -13,14 +16,17 @@ Inggrisnya
 kasusnya
 kodenya
 komitkan
+konvensinya
 mengelolanya
 migrasinya
 produknya
 sanalah
 situsnya
+stafnya
 tahapnya
 tersendat
 Tersertifikasi
 terukur
 timmu
 tombolnya
+totalnya

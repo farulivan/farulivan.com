@@ -74,7 +74,7 @@
       "shadcn/ui",
       "MUI"
     ],
-    "note": "Tempat saya tinggal. Tiga tahun sebagai satu-satunya orang yang memegang sisi depan platform produksi."
+    "note": "Keahlian utama. Di sini saya yang menetapkan konvensinya, bukan sekadar mengikutinya."
   },
   {
     "id": "id-backend",
@@ -91,14 +91,14 @@
       "Laravel",
       "Desain REST API"
     ],
-    "note": "Tumbuh, dengan sengaja. Dari memakai API, sekarang membangun dan menjalankan sendiri."
+    "note": "Sedang saya dalami. Dulu hanya memakai API, kini saya membangun dan menjalankan API sendiri. Laravel saya kenal lewat membaca dan debugging kodenya di Nabitu."
   },
   {
     "id": "id-craft",
     "lang": "id",
     "translationKey": "craft",
     "order": 3,
-    "domain": "Kualitas dan praktik",
+    "domain": "Kualitas dan cara kerja",
     "items": [
       "Jest",
       "Playwright",
@@ -110,15 +110,15 @@
       "Clean architecture",
       "ADR"
     ],
-    "note": "Saya peduli pada kode yang bisa diambil alih dan dipahami orang lain."
+    "note": "Mudah diteruskan. Saya peduli pada kode yang bisa diambil alih dan dipahami orang yang belum pernah melihatnya."
   },
   {
     "id": "id-ai",
     "lang": "id",
     "translationKey": "ai",
     "order": 4,
-    "domain": "Alur kerja AI-native",
+    "domain": "Workflow AI-native",
     "items": ["Claude Code", "Windsurf / Devin Desktop"],
-    "note": "Saya yang mengarahkan, bukan mengikuti. Semua saya tinjau dan saya yang bertanggung jawab atas yang dirilis."
+    "note": "Saya yang mengarahkan. Semua yang ditulisnya saya review, dan saya yang bertanggung jawab atas apa pun yang dirilis."
   }
 ]
