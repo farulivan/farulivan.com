@@ -4,7 +4,7 @@ translationKey: "nabitu"
 title: "Nabitu & Zeed Sharia"
 summary: "Saya membangun frontend Nabitu dan Zeed Sharia, dua platform investasi syariah, dari nol sebagai satu-satunya frontend engineer: lebih dari seratus halaman."
 year: 2026
-role: "Sole frontend engineer"
+role: "Satu-satunya frontend engineer"
 duration: "Feb 2023 – Jan 2026"
 stack:
   [
@@ -21,19 +21,81 @@ order: 1
 screenshots:
   - src: "../_images/nabitu.png"
     phone: "../_images/nabitu-phone.png"
-    alt: "Halaman depan Nabitu, dengan judul Join Nabitu, Riba-Free Investing."
+    alt: "Landing page Nabitu, dengan judul “Join Nabitu, Riba-Free Investing”."
     caption: "Nabitu"
   - src: "../_images/nabitu-zeed.png"
     phone: "../_images/nabitu-zeed-phone.png"
-    alt: "Halaman depan Zeed, dengan judul Halal Investment Platform Without Riba."
+    alt: "Landing page Zeed Sharia, dengan judul “Halal Investment Platform Without Riba”."
     caption: "Zeed Sharia"
 outcome:
-  summary: "Frontend React yang saya bangun dari nol kini dipakai lebih dari 3.000 investor, dan setelah rilis, tim support melaporkan pengalaman penggunaannya jauh lebih baik."
+  summary: "Frontend React yang saya bangun dari nol kini dipakai lebih dari 3.000 investor. Setelah menggantikan versi sebelumnya, tim support melaporkan pengalaman penggunaannya jauh lebih baik."
   figures:
-    - { value: "3,000+", caption: "Investors served" }
-    - { value: "100+", caption: "Pages I built" }
-    - { value: "~2×", caption: "Faster page performance" }
+    - { value: "3.000+", caption: "Investor yang dilayani" }
+    - { value: "100+", caption: "Halaman yang saya bangun" }
+    - { value: "~2×", caption: "Performa halaman lebih cepat" }
 liveSites:
   - { name: "Nabitu", url: "https://nabitu.id" }
   - { name: "Zeed Sharia", url: "https://zeedsharia.com" }
 ---
+
+## Awal mulanya
+
+Nabitu dan Zeed Sharia adalah platform investasi syariah: tempat berinvestasi
+tanpa riba. Waktu saya bergabung, desainnya sudah selesai di Figma dan
+pengerjaan backend-nya baru setengah jalan. Frontend-nya jadi tanggung jawab
+saya untuk dibangun dari nol, awalnya dengan React vanilla.
+
+Selama tiga tahun, saya jadi satu-satunya frontend engineer di sana, dan fakta
+itu memengaruhi segalanya. Tidak ada rekan untuk diajak memecahkan masalah yang
+sulit, dan setiap konvensi di frontend saya tetapkan sendiri, lalu harus saya
+jalani sendiri juga.
+
+## Membangun ulang tujuh puluh halaman
+
+Setelah frontend React-nya live, saya menghabiskan hampir dua tahun untuk
+membangunnya ulang dengan Next.js. Tujuh puluh halaman, terbagi dalam tiga
+bagian yang karakternya sama sekali berbeda:
+
+- **Landing page**, 12 halaman, publik dan terindeks mesin pencari. Di sini yang
+  penting hanya dua: cepat dimuat dan menyampaikan pesan yang tepat.
+- **Dashboard member**, 37 halaman, tempat orang melihat uang yang sudah mereka
+  investasikan. Lambat itu buruk; salah itu tidak bisa diterima.
+- **Panel admin**, 21 halaman, dipakai segelintir staf internal yang lebih butuh
+  informasi yang padat daripada tampilan yang cantik, dan tidak sabar dengan
+  alur kerja yang butuh satu klik lebih banyak dari seharusnya.
+
+Memperlakukan ketiganya sebagai satu aplikasi adalah kesalahan yang paling
+gampang dibuat. Ketiganya berbagi design system, API layer, dan type contract,
+dan selebihnya hampir tidak ada yang sama.
+
+## Lebih cepat, dengan membaca datanya dulu
+
+Rebuild ini kira-kira membuat performa halaman dua kali lebih cepat. Sedikit
+sekali yang datang dari micro-optimization di level komponen. Sebagian besar
+justru datang dari membaca perilaku API-nya: apa yang dikembalikan, kapan, dan
+seberapa sering UI meminta data yang sebenarnya sudah ia punya. Pola
+fetching-nya lalu diubah mengikuti itu, dan pekerjaan di komponen menyesuaikan
+datanya, bukan sebaliknya.
+
+## Bekerja lintas stack
+
+Backend-nya dibangun dengan Go dan Laravel, dan dipegang engineer lain. Bagian
+saya adalah menyusun kontrak API bersama mereka. Tim kami kecil dan saya
+penasaran, jadi saya mempelajari sisi Laravel-nya sampai cukup paham untuk
+membaca kodenya, mengikuti log-nya, dan melihat bagaimana bagian-bagiannya
+saling terhubung. Kalau ada yang rusak di antara frontend dan backend, saya bisa
+menunjukkan dengan tepat di mana masalahnya, bukan sekadar membuat tiket yang
+bilang halamannya error.
+
+Setelah itu saya bawa ke engineer yang memegang bagian itu, dan kami selesaikan
+bersama. Saya hanya mengubah kode backend sendiri kalau situasinya mendesak,
+dengan persetujuan engineer tersebut dan di bawah pengawasannya. Itu kemampuan
+lintas layer, bukan mengambil alih backend.
+
+## Hasil
+
+Frontend React yang saya bangun dari nol kini dipakai lebih dari 3.000 investor.
+Setelah menggantikan versi sebelumnya, tim support memberi masukan bahwa
+pengalaman dan kemudahan penggunaannya meningkat jauh. Dari orang-orang yang
+pertama kali mendengar setiap keluhan, itulah penilaian yang paling saya
+percaya.

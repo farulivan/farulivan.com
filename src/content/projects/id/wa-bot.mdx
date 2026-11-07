@@ -2,10 +2,10 @@
 lang: "id"
 translationKey: "wa-bot"
 title: "Personal WhatsApp Bot"
-summary: "Bot WhatsApp yang dipakai keluarga saya setiap hari, dan backend produksi di baliknya. TypeScript heksagonal, PostgreSQL, dan penjadwal yang tahan restart."
+summary: "Bot WhatsApp yang saya dan keluarga pakai setiap hari, dan backend production di baliknya: TypeScript hexagonal, PostgreSQL, dan scheduler yang tahan restart."
 year: 2026
-role: "Solo. Architecture, backend, operations"
-duration: "Jan 2026 – ongoing"
+role: "Solo: arsitektur, backend, operasional"
+duration: "Jan 2026 – sekarang"
 stack: ["TypeScript", "PostgreSQL", "Drizzle", "Docker", "GitHub Actions"]
 featured: true
 order: 2
@@ -14,10 +14,118 @@ screenshots:
     phone: "../_images/wa-bot-phone.png"
     alt: "Percakapan WhatsApp dengan bot, yang membalas dengan total bacaan dan streak."
 outcome:
-  summary: "Memori steady-state turun dari 0,8 GB ke bawah 100 MB, dan perubahan yang sama menghapus satu-satunya komponen penyebab semua outage proyek ini."
+  summary: "Pemakaian memori saat steady state turun dari 0,8 GB ke bawah 100 MB, dan perubahan yang sama menyingkirkan satu-satunya komponen penyebab semua outage sebelumnya."
   figures:
-    - { value: "600+", caption: "Deterministic tests" }
-    - { value: "-85%", caption: "Steady-state memory" }
-    - { value: "<100 MB", caption: "Memory after the transport swap" }
+    - { value: "−85%", caption: "Memori saat steady state" }
+    - { value: "600+", caption: "Test deterministik" }
 sourceUrl: "https://github.com/farulivan/personal-wa-bot"
 ---
+
+## Masalahnya
+
+Saya ingin mencatat hal-hal kecil sehari-hari: olahraga, halaman Alquran yang
+sudah dibaca, jadwal salat. Aplikasi catatan cepat jadi berantakan. Aplikasi
+tracker khusus berarti satu instalasi lagi, satu login lagi, dan satu hal lagi
+yang harus diingat untuk dibuka.
+
+Keluarga saya sudah seharian ada di WhatsApp, jadi tracker-nya saya taruh di
+tempat kami memang sudah berada. Beberapa perintah `#` di chat yang selalu
+terbuka, tanpa aplikasi baru dan tanpa kebiasaan baru.
+
+Pilihan itu menentukan standar untuk semua yang datang setelahnya. Kalau sebuah
+pengingat mau dipercaya, ia harus benar-benar sampai. Kemudahan kecil itu pun
+berubah jadi backend yang harus tetap hidup.
+
+## Chromium yang tidak perlu ada
+
+Awalnya bot ini mengendalikan WhatsApp lewat headless Chromium. Jalan, tapi
+memakan 0,75–0,85 GB memori sepanjang waktu, padahal tugasnya hanya membaca
+pesan teks pendek.
+
+Chromium itu juga sumber dari semua outage yang pernah dialami proyek ini.
+Browser adalah sesuatu yang besar dan stateful untuk dijaga tetap hidup selama
+berbulan-bulan, dan saat mati, ia tidak selalu ketahuan.
+
+Menggantinya dengan client protokol WebSocket biasa membuat memori steady state
+turun ke bawah 100 MB, pemangkasan lebih dari 85%, sekaligus menghapus komponen
+penyebab semua outage tadi dalam perubahan yang sama. Ini hal terbaik yang
+pernah saya lakukan untuk codebase ini, dan sebagian besarnya justru menghapus
+kode.
+
+Versi lengkapnya: [Chromium yang ternyata tidak saya butuhkan](/id/writing/chromium-i-did-not-need)
+
+## Scheduler yang tahan restart
+
+Scheduler berbasis polling bisa gagal dengan dua cara yang memalukan: melewatkan
+pengingat karena proses restart di tengah tick, atau mengirim pengingat yang
+sama dua kali karena dua tick berjalan tumpang tindih.
+
+Proses claim-nya cukup satu statement:
+
+`UPDATE reminders SET sent_at = now() WHERE id IN (SELECT id … FOR UPDATE SKIP
+LOCKED) RETURNING *`
+
+Row ditandai terkirim oleh query yang sama yang memilihnya, jadi restart hanya
+memindai ulang row yang benar-benar belum terkirim, dan dua tick yang berjalan
+bersamaan tidak bisa mengambil row yang sama.
+
+Tapi ada konsekuensinya: saya menandai pengingat sebagai terkirim _sebelum_
+WhatsApp mengonfirmasi pengirimannya. Kalau crash terjadi di celah itu, satu
+pengingat hilang, daripada berisiko terkirim dua kali. At-most-once, memang
+disengaja. Untuk bot pengingat keluarga, itu trade-off yang saya mau, dan sudah
+saya tulis sebagai decision record, bukan dibiarkan jadi kejutan.
+
+Versi lengkapnya: [At-most-once, memang disengaja](/id/writing/at-most-once-on-purpose)
+
+## Bug yang terus saya ulangi, sekarang ditolak compiler
+
+WhatsApp mengenali seseorang lewat salah satu dari dua nomor: nomor teleponnya,
+atau LID, yang sama sekali tidak berhubungan dengan nomor telepon. Keduanya
+berupa deretan angka, dan sekilas tidak ada yang membedakan keduanya.
+
+Dua kali saya menulis kode yang mengambil user ID dari nomor telepon. Dua-duanya
+tidak memunculkan error. Bot-nya diam-diam mulai mencatat data dengan identitas
+kedua untuk orang yang sama, dan allowlist berhenti mengenali siapa pun. Jenis
+bug yang baru ketahuan berhari-hari kemudian, saat kamu heran kenapa riwayatnya
+kosong.
+
+Peringatannya sebenarnya sudah saya tulis di komentar. Tidak mempan, karena
+komentar itu tidak ada di depan mata saat kesalahan dibuat. Jadi pembedaan yang
+tidak bisa saya pegang dengan andal di kepala, saya serahkan ke compiler:
+`WaUserId` dan `PhoneNumber` sebagai branded type tanpa konversi implisit.
+Memakai yang satu di tempat yang seharusnya untuk yang lain sekarang langsung
+jadi type error, dan pelajarannya tidak lagi bergantung pada ingatan saya.
+
+Versi lengkapnya: [Bug yang terus saya ulangi, sekarang ditolak compiler](/id/writing/a-bug-made-uncompilable)
+
+## Satu pola untuk setiap fitur
+
+Bot ini adalah modular monolith dengan inti hexagonal. Setiap fitur, dari
+olahraga sampai jadwal salat, adalah modul dengan bentuk yang sama: parser,
+service, presenter, controller, dan repository di balik sebuah interface.
+Service-nya hanya berkomunikasi lewat interface, jadi tidak ada satu pun yang
+tahu WhatsApp atau Postgres itu ada.
+
+Hasilnya memang lebih banyak file daripada yang sebenarnya dibutuhkan bot
+sekecil ini. Tapi gantinya, fitur baru bisa saya tambahkan enam bulan lagi tanpa
+harus mempelajari ulang codebase-nya, dan logikanya bisa di-test tanpa perlu
+menyalakan WhatsApp maupun Postgres.
+
+## Test yang tidak bergantung pada kapan dijalankan
+
+Lebih dari 600 test. Jumlahnya sebanyak itu karena streak dan batas zona waktu
+adalah jenis logika yang paling sering rusak diam-diam. Waktu di-inject sebagai
+`now: () => Date`, jadi setiap test berjalan dengan jam yang dibekukan, bukan
+bergantung pada apa pun yang dikembalikan `Date.now()` di mesin yang menjalankan
+CI.
+
+## Dibangun supaya tetap hidup
+
+Migration berjalan saat boot. `SIGTERM` menghentikan scheduler dengan rapi dan
+menutup pool. `/ready` melaporkan status socket WhatsApp, bukan sekadar
+menandakan prosesnya hidup, jadi monitor eksternal bisa menangkap outage dalam
+hitungan menit, bukan menunggu sampai ada yang sadar pengingatnya berhenti.
+
+Kegagalan yang memang sudah diperkirakan dikembalikan sebagai `Result<T>` yang
+bertipe; exception hanya untuk bug sungguhan. Keputusan dicatat sebagai ADR dan
+outage sebagai postmortem, karena proyek solo lebih cepat lupa daripada tim.

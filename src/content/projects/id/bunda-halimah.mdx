@@ -2,7 +2,7 @@
 lang: "id"
 translationKey: "bunda-halimah"
 title: "RS Hj. Bunda Halimah"
-summary: "Dua frontend untuk rumah sakit di Batam. Portal pasien dengan pencarian dokter dan pemesanan jadwal, serta CMS yang dipakai staf untuk mengelolanya."
+summary: "Dua frontend untuk sebuah rumah sakit di Batam: portal pasien untuk mencari dokter dan booking jadwal, serta CMS yang dipakai staf untuk mengelolanya."
 year: 2025
 role: "Frontend engineer, freelance"
 duration: "Nov 2024 – Mar 2025"
@@ -22,9 +22,76 @@ screenshots:
     phone: "../_images/bunda-halimah-phone.png"
     alt: "Portal pasien rumah sakit, dengan pencarian dokter dan panel janji temu."
 outcome:
-  summary: "Kedua frontend rilis, kontrak selesai, dan rumah sakit menjalankannya sejak saat itu. Serah terimanya bertahan, bagian dari kerja freelance yang biasanya tidak."
+  summary: "Kedua frontend rilis, kontrak selesai, dan rumah sakit terus memakainya sejak itu. Serah terimanya berjalan mulus, padahal di kerja freelance, justru bagian itulah yang paling sering gagal."
   figures:
-    - { value: "2", caption: "Frontends delivered and handed over" }
-    - { value: "5 months", caption: "Brief to handover" }
+    - { value: "2", caption: "Frontend dikerjakan dan diserahkan" }
+    - { value: "5 bulan", caption: "Dari brief sampai serah terima" }
 liveSites: [{ url: "https://rsbundahalimah.com" }]
 ---
+
+## Masalahnya
+
+RS Hj. Bunda Halimah adalah rumah sakit di Batam. Pasien yang ingin bertemu
+dokter tertentu harus menelepon dulu untuk tahu kapan dokter itu praktik, dan
+staf yang ingin memasang informasi apa pun harus minta tolong orang IT.
+
+Dua masalah, dua frontend: portal pasien, dan CMS untuk orang-orang yang
+mengelolanya. Saya membangun keduanya. API di baliknya dipegang orang lain.
+Batas tanggung jawab saya: semua yang berjalan di browser.
+
+## Alur booking
+
+Mencari dokter itu bagian yang gampang. Di booking-lah semua edge case berada,
+dan edge case itulah pekerjaannya:
+
+- Data jadwal datang sudah dikelompokkan per dokter dan per hari, padahal UI
+  butuh bentuk yang berbeda untuk menampilkannya.
+- Pasien yang tidak bisa datang perlu bisa memindahkan atau membatalkan janji
+  tanpa menelepon, artinya alur reschedule harus dibuat sama hati-hatinya
+  dengan alur booking.
+- Kalau dokter yang dicari tidak punya slot kosong, jawaban yang berguna adalah
+  tanggal berikutnya ia tersedia, bukan sekadar empty state.
+- Booking butuh login, jadi batas antara sekadar melihat dan benar-benar
+  memesan itu nyata, dan UI harus menunjukkannya dengan jelas.
+
+Semuanya terhubung lewat server action yang bertipe, jadi booking yang tidak
+valid langsung gagal di batasnya, bukan di suatu tempat di dalam handler.
+
+## Autentikasi di server
+
+Session disimpan sebagai cookie HttpOnly yang di-set oleh server action, dengan
+proteksi route di `middleware.ts`. Tidak ada token di `localStorage`.
+
+Untuk rumah sakit, itu bukan soal selera. Token yang bisa dibaca script apa pun
+di halaman hanya berjarak satu bug cross-site scripting dari jatuh ke tangan
+orang lain; cookie yang tidak akan diserahkan browser ke JavaScript tidak punya
+risiko itu. Harganya, semua pekerjaan yang bergantung pada auth terjadi di
+server, dan dengan React Server Components, memang di situlah tempatnya.
+
+## Aplikasi CMS
+
+Aplikasi yang satu lagi dipakai staf: profil dan jadwal dokter, serta penulisan
+artikel yang lengkap. Editor rich text dengan sanitasi HTML, alur draft /
+published / scheduled supaya artikel bisa ditulis hari Selasa dan tayang hari
+Jumat, dan field SEO di setiap konten.
+
+Setiap form di kedua aplikasi bertipe end to end dengan React Hook Form dan Zod,
+jadi bentuk data yang dikumpulkan form dan bentuk data yang diterima action
+tidak bisa berbeda tanpa ketahuan compiler.
+
+## Membangun untuk diserahkan
+
+Kontraknya punya tanggal selesai sejak awal, jadi saya membangun untuk orang
+yang akan meneruskannya, bukan untuk diri saya sendiri.
+
+Dalam praktiknya, itu berarti satu API layer, bukan fetch call yang tersebar di
+mana-mana, dan satu error handler yang menyeragamkan kegagalan API, kegagalan
+validasi, dan timeout ke dalam satu bentuk respons. Jadi developer yang belum
+pernah melihat codebase-nya tetap menangani kegagalan dengan cara yang sama di
+mana pun.
+
+## Hasil
+
+Kedua frontend rilis, kontrak selesai, dan rumah sakit terus menjalankannya
+sejak itu tanpa saya. Itulah hasil seutuhnya: serah terimanya berhasil, padahal
+di kerja freelance, justru bagian itulah yang paling sering gagal.
