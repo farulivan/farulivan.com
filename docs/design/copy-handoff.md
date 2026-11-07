@@ -52,7 +52,7 @@ the site, in English and Indonesian, and write the Indonesian that is missing.
 | Case studies: title, summary, facts, figures, screenshot alt text, the story         | `src/content/projects/en/*.mdx`, `src/content/projects/id/*.mdx` |
 | The career timeline                                                                  | `src/content/experience/en/*.md`, `src/content/experience/id/*.md` |
 | Capabilities: the about-page table and the home page's stack band                    | `src/content/capabilities.json`                          |
-| Posts                                                                                | `src/content/writing/en/*.mdx`, with no Indonesian folder yet |
+| Posts                                                                                | `src/content/writing/en/*.mdx`, `src/content/writing/id/*.mdx` |
 | Name, links, CV details                                                              | `src/config/site.ts`                                     |
 
 An Indonesian entry is linked to its English one by `translationKey`: the
@@ -168,6 +168,16 @@ does not mean slang.
   performance budget, end-to-end. Translating them reads like a textbook.
 - **Indonesian number formatting** in Indonesian copy: 3.000+ and 0,8 GB. The
   values are the English ones.
+- **The same word for the same thing, on every page:**
+  - "bahasa Indonesia" and "bahasa Inggris" in running text, with a lower-case
+    b. The language switch keeps "Bahasa Indonesia" as the language's name.
+  - "link", not "tautan".
+  - "React biasa" for plain React, not "React vanilla".
+  - "dirilis" for shipped ("Kedua frontend sudah dirilis"), not a bare "rilis".
+  - "harga" for what a decision costs, as the posts use it.
+  - "Hak cipta dilindungi undang-undang" for "All rights reserved".
+- **One "keduanya", one "untuk" per sentence.** A second one usually means
+  the sentence wants restructuring, not a synonym.
 - **The test for every line:** would an Indonesian engineer write it this
   way, or does it sound translated?
 

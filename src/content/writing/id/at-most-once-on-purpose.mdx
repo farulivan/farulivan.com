@@ -12,8 +12,9 @@ Setiap sistem yang mengirim sesuatu harus menjawab satu pertanyaan yang
 sebenarnya ingin ia hindari: kalau kamu tidak bisa yakin sebuah pesan sudah
 sampai, apakah kamu mengirimnya lagi?
 
-Jawab ya, dan kamu mendapat at-least-once delivery. Tidak ada yang hilang, tapi
-sebagian bisa sampai dua kali. Jawab tidak, dan kamu mendapat at-most-once.
+Kalau jawabannya ya, kamu mendapat at-least-once delivery. Tidak ada yang
+hilang, tapi sebagian bisa sampai dua kali. Kalau tidak, kamu mendapat
+at-most-once.
 Tidak pernah ada duplikat, tapi sesekali ada yang hilang. Tidak ada pilihan
 ketiga yang benar-benar lebih baik. Exactly-once memang yang diinginkan semua
 orang, tapi dalam praktiknya itu berarti at-least-once ditambah deduplikasi, dan
@@ -31,12 +32,12 @@ menyebalkan, dan jenis hal yang kamu sadari lalu lupakan.
 Pengingat yang terkirim dua kali berarti ponselmu bergetar dua kali untuk pesan
 yang sama. Kalau itu terjadi beberapa kali, bot-nya jadi sekadar noise, dan
 pengingat yang tidak dibaca siapa pun lebih buruk daripada tidak ada pengingat
-sama sekali. Ia sudah melatih orang untuk mengabaikannya.
+sama sekali. Bot itu sudah membiasakan orang untuk mengabaikannya.
 
 Jadi: at-most-once. Kehilangan satu pengingat masih bisa ditebus. Terlanjur
 diabaikan, tidak.
 
-Itu bukan kebenaran yang berlaku umum. Konfirmasi pembayaran memilih arah
+Ini tidak berlaku untuk semua hal. Konfirmasi pembayaran memilih arah
 sebaliknya tanpa ragu. Kirim dua kali, minta maaf untuk email yang ganda, tapi
 jangan pernah membiarkan seseorang bertanya-tanya apakah uangnya sudah
 terkirim. Jawaban yang tepat ditentukan oleh apa yang kamu kirim, bukan oleh
@@ -71,12 +72,12 @@ sudah tahu cara melakukan ini.
 
 ## Di mana kehilangan itu terjadi
 
-Supaya tepat: row ditandai terkirim _sebelum_ WhatsApp mengonfirmasi
+Lebih tepatnya: row ditandai terkirim _sebelum_ WhatsApp mengonfirmasi
 pengirimannya. Kalau prosesnya mati di celah itu, pengingatnya hilang dan tidak
 ada yang akan mencobanya lagi.
 
 Itulah seluruh harga dari pilihan ini, dan ia tercatat sebagai satu baris di
-decision record, bukan kejutan yang ditemukan seseorang nanti. Menuliskannya
-adalah sebagian besar yang membuatnya jadi keputusan, bukan kecelakaan.
-Alternatifnya adalah saya di masa depan membaca kode ini, melihat celahnya,
-mengira itu bug, lalu "memperbaikinya" jadi pengiriman ganda.
+decision record, bukan kejutan yang ditemukan seseorang nanti. Celah itu jadi
+sebuah keputusan, bukan kecelakaan, sebagian besar karena ia dituliskan. Kalau
+tidak, bisa jadi suatu hari saya sendiri membaca kode ini, melihat celahnya,
+mengira itu bug, lalu "memperbaikinya" sampai pengingatnya terkirim ganda.

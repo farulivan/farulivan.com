@@ -8,8 +8,8 @@ tags: ["typescript"]
 draft: false
 ---
 
-Saya membuat bug yang sama dua kali, berbulan-bulan jaraknya, dan dua kali pula
-kodenya jalan tanpa protes.
+Saya membuat bug yang sama dua kali, dengan jarak berbulan-bulan, dan dua kali
+pula kodenya jalan tanpa protes.
 
 ## Dua nomor yang kelihatan sama persis
 
@@ -36,13 +36,13 @@ kesalahan yang baru saja saya buat.
 Lalu saya membuat kesalahan yang sama lagi.
 
 Komentar itu gagal karena alasan yang sekarang saya anggap berlaku umum:
-**komentar tidak ada di depan mata saat kesalahan dibuat.** Ia tinggal di
-tempat tipe-tipenya dideklarasikan. Bug-nya terjadi di tempat lain, di sebuah
+**komentar tidak ada di depan mata saat kesalahan dibuat.** Komentar itu ada
+di tempat tipe-tipenya dideklarasikan. Bug-nya terjadi di tempat lain, di sebuah
 fungsi yang penulisnya sedang memikirkan hal yang sama sekali berbeda, dan tidak
 punya alasan untuk mampir membacanya. Dokumentasi yang bergantung pada ingatanmu
 untuk membukanya hanya berguna untuk masalah yang sudah kamu tahu.
 
-## Menyerahkan pembedanya ke compiler
+## Menyerahkan perbedaannya ke compiler
 
 Solusinya adalah berhenti menyimpan perbedaan itu di kepala, dan menyerahkannya
 ke type system:
@@ -74,11 +74,11 @@ export function toWaUserId(value: string): WaUserId {
 ```
 
 Itu satu-satunya `as` yang dibutuhkan setiap tipe, dan itu tidak masalah,
-karena letaknya di dalam fungsi yang tugasnya memang menjadi tempat pengecekan
-itu terjadi.
+karena letaknya di fungsi yang memang khusus dibuat untuk pengecekan itu.
 
 Satu fungsi seperti itu untuk setiap jenis identifier, dan semua kode
-sesudahnya aman tanpa perlu dipikirkan lagi. Ini sepadan kalau tertukarnya
-diam-diam dan akibatnya mahal: ID, jumlah uang, apa pun yang bentuknya sama
-tapi artinya berbeda. Tidak sepadan untuk nilai yang akan langsung meledak saat
-pertama kali dipakai. Bug yang berisik tidak butuh bantuan compiler.
+sesudahnya aman tanpa perlu dipikirkan lagi. Cara ini sepadan kalau nilai yang
+tertukar tidak memunculkan error dan akibatnya mahal: ID, jumlah uang, apa pun
+yang bentuknya sama tapi artinya berbeda. Tapi tidak sepadan untuk nilai yang
+langsung error begitu dipakai. Bug yang langsung ketahuan tidak butuh bantuan
+compiler.
