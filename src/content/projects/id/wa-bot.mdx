@@ -23,7 +23,7 @@ sourceUrl: "https://github.com/farulivan/personal-wa-bot"
 
 ## Masalahnya
 
-Saya ingin mencatat hal-hal kecil sehari-hari: olahraga, halaman Alquran yang
+Saya ingin memantau hal-hal kecil sehari-hari: olahraga, halaman Alquran yang
 sudah dibaca, jadwal salat. Aplikasi catatan cepat jadi berantakan. Aplikasi
 tracker khusus berarti satu instalasi lagi, satu login lagi, dan satu hal lagi
 yang harus diingat untuk dibuka.
@@ -43,8 +43,8 @@ memakan 0,75–0,85 GB memori sepanjang waktu, padahal tugasnya hanya membaca
 pesan teks pendek.
 
 Chromium itu juga sumber dari semua outage yang pernah dialami proyek ini.
-Browser adalah sesuatu yang besar dan stateful untuk dijaga tetap hidup selama
-berbulan-bulan, dan saat mati, ia tidak selalu ketahuan.
+Menjaga browser tetap hidup berbulan-bulan itu berat: ia besar dan stateful, dan
+saat mati, tidak selalu ketahuan.
 
 Menggantinya dengan client protokol WebSocket biasa membuat memori steady state
 turun ke bawah 100 MB, pemangkasan lebih dari 85%, sekaligus menghapus komponen
@@ -71,8 +71,8 @@ bersamaan tidak bisa mengambil row yang sama.
 
 Tapi ada konsekuensinya: saya menandai pengingat sebagai terkirim _sebelum_
 WhatsApp mengonfirmasi pengirimannya. Kalau crash terjadi di celah itu, satu
-pengingat hilang, daripada berisiko terkirim dua kali. At-most-once, memang
-disengaja. Untuk bot pengingat keluarga, itu trade-off yang saya mau, dan sudah
+pengingat hilang. Itu lebih baik daripada berisiko terkirim dua kali.
+At-most-once, memang disengaja. Untuk bot pengingat keluarga, itu trade-off yang saya mau, dan sudah
 saya tulis sebagai decision record, bukan dibiarkan jadi kejutan.
 
 Versi lengkapnya: [At-most-once, memang disengaja](/id/writing/at-most-once-on-purpose)
@@ -81,7 +81,7 @@ Versi lengkapnya: [At-most-once, memang disengaja](/id/writing/at-most-once-on-p
 
 WhatsApp mengenali seseorang lewat salah satu dari dua nomor: nomor teleponnya,
 atau LID, yang sama sekali tidak berhubungan dengan nomor telepon. Keduanya
-berupa deretan angka, dan sekilas tidak ada yang membedakan keduanya.
+berupa deretan angka, dan sekilas tidak bisa dibedakan.
 
 Dua kali saya menulis kode yang mengambil user ID dari nomor telepon. Dua-duanya
 tidak memunculkan error. Bot-nya diam-diam mulai mencatat data dengan identitas
@@ -90,8 +90,8 @@ bug yang baru ketahuan berhari-hari kemudian, saat kamu heran kenapa riwayatnya
 kosong.
 
 Peringatannya sebenarnya sudah saya tulis di komentar. Tidak mempan, karena
-komentar itu tidak ada di depan mata saat kesalahan dibuat. Jadi pembedaan yang
-tidak bisa saya pegang dengan andal di kepala, saya serahkan ke compiler:
+komentar itu tidak ada di depan mata saat kesalahan dibuat. Jadi perbedaan yang
+tidak bisa terus saya ingat, saya serahkan ke compiler:
 `WaUserId` dan `PhoneNumber` sebagai branded type tanpa konversi implisit.
 Memakai yang satu di tempat yang seharusnya untuk yang lain sekarang langsung
 jadi type error, dan pelajarannya tidak lagi bergantung pada ingatan saya.

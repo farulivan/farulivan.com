@@ -61,6 +61,7 @@ describe("translation dictionaries", () => {
       "work.col.index", // a column of numbers, not a word
       "contact.github", // a product name
       "contact.linkedin", // same
+      "contact.col.link", // "link" is what Indonesian readers say, and the copy uses it everywhere
     ])
 
     for (const key of keys) {
