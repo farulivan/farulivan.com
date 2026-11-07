@@ -96,7 +96,7 @@ export const en = {
   "about.nowLabel": "Now",
   "about.nowDescription": "What I'm getting better at right now.",
   "about.now":
-    "System design, retrieval-augmented generation, and the workflows for directing AI agents rather than being directed by them.",
+    "Going deeper on the frontend, which is still my main craft. Growing into the backend, and into what a platform needs beyond the code: security, deployment, maintenance, and DevOps on AWS and Cloudflare. Looking toward mobile development. And keeping up with AI, to work faster while staying secure and accountable.",
 
   // Work index and case studies
   "work.subtitle":
@@ -208,13 +208,15 @@ export type TranslationKey = keyof typeof en
  * misspell one, and this file fails to compile.
  */
 export const id: Record<TranslationKey, string> = {
-  "site.title": "Farul Ivan · Frontend engineer · dari awal sampai produksi",
-  "site.descriptor": "Frontend engineer\u00a0· dari awal sampai produksi",
+  // The job title and "end to end" stay in English: that's how Indonesian
+  // engineers say them.
+  "site.title": "Farul Ivan · Frontend engineer · end to end",
+  "site.descriptor": "Frontend engineer\u00a0· end\u00a0to\u00a0end",
   "site.description":
-    "Tiga tahun sebagai satu-satunya frontend engineer di platform fintech produksi, dan sedang menumbuhkan sisi backend dengan sengaja.",
+    "Tiga tahun sebagai satu-satunya frontend engineer di platform fintech yang sudah live, dan sekarang sedang mendalami backend.",
 
   "nav.home": "Beranda",
-  "nav.work": "Karya",
+  "nav.work": "Proyek",
   "nav.about": "Tentang",
   "nav.writing": "Tulisan",
   "nav.contact": "Kontak",
@@ -224,123 +226,121 @@ export const id: Record<TranslationKey, string> = {
   "nav.menuLabel": "Situs",
 
   "home.availability":
-    "Terbuka untuk peran frontend dan full-stack\u00a0· Remote atau di Indonesia\u00a0· UTC+7",
+    "Terbuka untuk posisi frontend dan full-stack\u00a0· Remote atau di\u00a0Indonesia\u00a0· UTC+7",
   "home.emailCta": "Kirim email",
-  "home.scrollCue": "Gulir ke bawah",
+  "home.scrollCue": "Scroll ke bawah",
 
-  "work.title": "Karya",
+  "work.title": "Proyek",
   "about.title": "Tentang",
   "contact.title": "Kontak",
 
   // Home sections. Each one is a teaser that leads somewhere real.
   "home.positioning":
-    "Saya memiliki apa yang saya bangun, dari keputusan arsitektur sampai produksi, dan saya tidak berhenti di frontend saat sebuah fitur butuh lebih.",
+    "Yang saya bangun, saya pegang penuh: dari keputusan arsitektur sampai production. Kalau fiturnya butuh lebih, saya tidak berhenti di frontend.",
   "home.stackLabel": "Yang saya kerjakan",
   "home.stackDescription":
-    "Saya mengerjakan produk web dari hulu ke hilir: antarmuka yang disentuh orang, kontrak API di belakangnya, serta pengujian dan pipeline yang menjaga keduanya tetap jujur. Tiga tahun sebagai satu-satunya frontend engineer di platform produksi.",
-  "home.workLabel": "Karya pilihan",
+    "Saya mengerjakan produk web end to end: UI yang dipakai orang, kontrak API di baliknya, sampai test dan pipeline yang menjaga keduanya tetap bisa dipercaya.",
+  "home.workLabel": "Proyek pilihan",
   "home.workDescription":
-    "Tiga proyek, dengan tujuannya dan apa yang berubah setelah rilis.",
-  "home.workCta": "Lihat semua karya",
+    "Tiga proyek: untuk apa dibuat, dan apa yang berubah setelah rilis.",
+  "home.workCta": "Lihat semua proyek",
   "home.experienceLabel": "Pengalaman",
-  "home.experienceDescription": "Tiga peran terakhir.",
-  "home.experienceCta": "Baca riwayat lengkapnya",
+  "home.experienceDescription": "Tiga yang terbaru.",
+  "home.experienceCta": "Lihat riwayat lengkapnya",
   "home.writingLabel": "Tulisan",
   "og.caseStudy": "Studi kasus",
   "home.writingDescription":
-    "Catatan tentang keputusan yang ternyata lebih sulit dari kelihatannya.",
+    "Keputusan teknis yang pernah saya ambil, dan trade-off di baliknya.",
   "home.writingCta": "Baca semuanya",
 
   "writing.allLabel": "Semua tulisan",
-  "writing.allDescription": "Semua yang sudah terbit, dari yang terbaru.",
+  "writing.allDescription": "Semua yang sudah terbit, mulai dari yang terbaru.",
   "writing.col.date": "Tanggal",
   "writing.col.title": "Judul",
   "writing.col.topic": "Topik",
-  "writing.col.readTime": "Baca",
+  "writing.col.readTime": "Durasi",
 
   // About
   "about.subtitle":
-    "Tiga tahun memegang sendiri sebuah platform produksi, dan dorongan sengaja ke semua yang ada di sekitarnya.",
+    "Dari kuliah arsitektur ke frontend engineering, dan sekarang merambah ke backend.",
   "about.bio.1":
-    "Selama tiga tahun saya satu-satunya frontend engineer di startup fintech, Nabitu. Saya membangun produknya dari MVP awal sampai penulisan ulang produksi penuh: lebih dari seratus halaman, pengguna nyata, taruhan nyata. Tak ada orang lain di frontend, jadi saya memegang jauh lebih banyak daripada UI, bekerja langsung dengan backend, produk, dan CEO untuk merilis hal yang benar-benar jalan.",
+    "Selama tiga tahun, saya menjadi satu-satunya frontend engineer di Nabitu dan Zeed Sharia, dua platform investasi syariah. Saya membangun frontend keduanya dari nol dengan React, lalu membangunnya ulang dengan Next.js: totalnya lebih dari seratus halaman, yang kini dipakai lebih dari 3.000 investor. Sebagai satu-satunya, saya memegang jauh lebih banyak dari sekadar UI. Saya bekerja langsung dengan tim backend, tim produk, dan manajemen, dan cukup memahami backend Laravel-nya untuk menemukan letak bug sebelum membawanya ke engineer yang memegang bagian itu.",
   "about.bio.2":
-    "Belakangan saya sengaja tumbuh melewati frontend. Saya menyelesaikan jalur backend dengan Go dan TypeScript, dan saya membangun serta menjalankan sistem produksi saya sendiri, termasuk bot WhatsApp yang dipakai keluarga saya setiap hari. Saya juga memakai alat AI seperti Claude Code setiap hari. Bukan sebagai jalan pintas, tapi sebagai bagian nyata dari cara saya memikirkan masalah.",
+    "Sekarang saya sedang melangkah lebih jauh dari frontend. Saya sudah menyelesaikan backend developer path di Boot.dev, untuk Go dan TypeScript sekaligus, dan saya membangun serta menjalankan sistem production saya sendiri, termasuk bot WhatsApp yang dipakai keluarga saya setiap hari. Tools AI seperti Claude Code jadi bagian dari cara saya memecahkan masalah, bukan jalan pintas untuk menghindarinya.",
   "about.bio.3":
-    "Jalan saya ke sini tidak lurus. Saya belajar arsitektur sebelum pindah ke perangkat lunak, yang mungkin alasannya saya masih peduli pada struktur dan detail kecil yang tak diperhatikan kebanyakan orang. Sekarang itu muncul di cara saya menulis kode, bukan di gambar apa pun.",
+    "Jalan saya ke sini tidak lurus. Saya kuliah arsitektur, lalu lima tahun bekerja di bidang proteksi kebakaran, sampai pandemi COVID-19 membuat industri itu terpuruk. Saya sempat mencoba freelance visualisasi 3D arsitektur, tapi itu tidak bisa jadi karier utama. Jadi saya mencari keahlian yang bisa dipelajari dari rumah dengan biaya minim, dan karier yang sebagian besar bisa dijalani dari rumah juga. Setelah mencoba data analysis dan mobile development, akhirnya saya memilih frontend: latar belakang desain saya masih terpakai di sana, dan itulah yang paling saya nikmati. Mungkin karena itu juga saya masih peduli pada struktur dan detail kecil yang sering luput dari perhatian orang.",
   "about.portraitAlt": "Potret Farul Ivan.",
   "about.historyLabel": "Riwayat",
   "about.historyDescription":
-    "Dari kuliah arsitektur pada 2011 sampai hal terakhir yang saya rilis.",
+    "Dari kuliah arsitektur tahun 2011 sampai proyek terakhir yang saya rilis.",
   "about.beforeSoftware": "Sebelum beralih ke software",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
-    "Dikelompokkan menurut seberapa dalam sebenarnya, karena daftar perkakas yang datar tak menjelaskan mana yang benar-benar saya kuasai.",
+    "Dikelompokkan menurut seberapa dalam saya menguasainya, karena daftar tools biasa tidak menunjukkan mana yang siap saya tangani kalau ada masalah jam dua pagi.",
   "about.col.domain": "Bidang",
   "about.col.items": "Cakupannya",
   "about.col.note": "Seberapa dalam",
   "about.present": "Sekarang",
   "about.education": "Pendidikan",
-  "about.nowLabel": "Sekarang",
-  "about.nowDescription":
-    "Yang sedang saya usahakan untuk lebih baik, saat ini.",
+  "about.nowLabel": "Saat ini",
+  "about.nowDescription": "Hal-hal yang sedang saya dalami.",
   "about.now":
-    "Desain sistem, retrieval-augmented generation, dan cara mengarahkan agen AI alih-alih diarahkan olehnya.",
+    "Terus memperdalam frontend, yang masih jadi keahlian utama saya. Memperluas ke backend, juga ke semua yang dibutuhkan sebuah platform di luar kode: keamanan, deployment, maintenance, sampai DevOps di AWS dan Cloudflare. Mulai melirik mobile development. Dan terus mengikuti perkembangan AI, supaya bisa bekerja lebih cepat dan efisien, dengan hasil yang tetap aman dan bisa dipertanggungjawabkan.",
 
   // Work index and case studies
   "work.subtitle":
-    "Proyek pilihan, dengan tujuan pengerjaannya dan apa yang berubah setelah rilis.",
+    "Proyek untuk perusahaan dan klien, bot untuk saya dan keluarga, serta situs untuk studio rekaan yang saya bangun khusus untuk portofolio ini.",
   "work.allLabel": "Semua proyek",
   "work.allDescription":
-    "Semua yang layak dicantumkan, dari yang terbaru. Telusuri kolom teknologi jika Anda mencari sesuatu yang spesifik.",
-  "work.featuredLabel": "Karya pilihan",
+    "Semua proyek, sesuai urutan yang ingin saya tunjukkan.",
+  "work.featuredLabel": "Proyek pilihan",
   "work.featuredDescription":
-    "Tiga proyek dengan penjelasan lebih rinci. Masing-masing punya studi kasusnya sendiri.",
+    "Tiga proyek yang akan saya ceritakan lebih dulu, lengkap dengan detailnya.",
   "work.col.index": "#",
   "work.col.project": "Proyek",
   "work.col.role": "Peran",
-  "work.col.stack": "Teknologi",
+  "work.col.stack": "Tech stack",
   "work.col.year": "Tahun",
-  "work.empty": "Belum ada proyek yang diterbitkan.",
+  "work.empty": "Belum ada proyek di sini.",
 
-  "project.backToIndex": "Kembali ke karya",
+  "project.backToIndex": "Kembali ke proyek",
   "project.readCaseStudy": "Baca studi kasusnya",
   "project.role": "Peran",
   "project.contents": "Daftar isi",
   "project.team": "Tim",
   "project.duration": "Durasi",
   "project.year": "Tahun",
-  "project.stack": "Teknologi",
+  "project.stack": "Tech stack",
   "project.outcomeLabel": "Hasil",
-  "project.live": "Kunjungi situsnya",
-  "project.visit": "Kunjungi {name}",
-  "project.source": "Baca kodenya",
+  "project.live": "Buka situsnya",
+  "project.visit": "Buka {name}",
+  "project.source": "Lihat kodenya",
   "project.nextLabel": "Proyek berikutnya",
-  "project.nextDescription": "Lanjut menelusuri karya lainnya.",
+  "project.nextDescription": "Satu lagi, dengan cerita yang sama lengkapnya.",
   "project.untranslated":
-    "Studi kasus ini belum diterjemahkan, jadi yang Anda baca adalah versi Inggrisnya.",
+    "Studi kasus ini belum tersedia dalam Bahasa Indonesia, jadi yang kamu baca adalah versi bahasa Inggrisnya.",
 
   // Contact
   "contact.statement":
-    "Saya mencari peran yang memperlakukan front end sebagai pekerjaan teknik.",
+    "Saya mencari posisi di tim yang memperlakukan frontend sebagai engineering, bukan sekadar hiasan.",
   "contact.directLabel": "Langsung",
   "contact.directDescription":
-    "Jika itu yang sedang Anda bangun, saya ingin mendengarnya. Email paling cepat sampai, dan semua saya balas.",
+    "Kalau itu yang sedang dibangun oleh timmu, saya akan senang mendengar lebih banyak tentangnya. Email adalah cara terbaik untuk menghubungi saya, dan saya selalu berusaha membalas setiap pesan yang masuk.",
   "contact.elsewhereLabel": "Di tempat lain",
-  "contact.elsewhereDescription":
-    "Orang yang sama, di tempat-tempat yang biasa.",
+  "contact.elsewhereDescription": "Kode di GitHub, riwayat karier di LinkedIn.",
   "contact.copyEmail": "Salin email",
   "contact.copied": "Sudah disalin",
   "contact.copyFailed": "Gagal menyalin",
-  "contact.practicalLabel": "Hal praktis",
-  "contact.col.roles": "Peran",
+  "contact.practicalLabel": "Info praktis",
+  "contact.col.roles": "Posisi",
   "contact.col.location": "Lokasi",
-  "contact.col.start": "Mulai paling cepat",
-  "contact.col.replies": "Balasan",
+  "contact.col.start": "Bisa mulai",
+  "contact.col.replies": "Waktu balas",
   "contact.roles": "Frontend dan full-stack",
-  "contact.location": "Remote atau di Indonesia, UTC+7",
+  "contact.location": "Remote atau di\u00a0Indonesia, UTC+7",
   "contact.start": "Segera",
   "contact.replies": "Dalam satu hari kerja",
-  "contact.col.channel": "Kanal",
+  "contact.col.channel": "Platform",
   "contact.col.link": "Tautan",
   "contact.github": "GitHub",
   "contact.linkedin": "LinkedIn",
@@ -356,7 +356,7 @@ export const id: Record<TranslationKey, string> = {
 
   "writing.title": "Tulisan",
   "writing.subtitle":
-    "Catatan membangun untuk web. Yang berhasil, dan yang tidak.",
+    "Catatan dari membangun dan menjalankan software, setiap kali ada keputusan yang layak ditulis.",
   "writing.readingTime": "{minutes} menit baca",
   "writing.published": "Terbit {date}",
   "writing.updated": "Diperbarui {date}",
@@ -364,7 +364,7 @@ export const id: Record<TranslationKey, string> = {
   "writing.contents": "Daftar isi",
   "writing.empty": "Belum ada tulisan.",
   "writing.untranslated":
-    "Tulisan ini belum tersedia dalam bahasa Anda. Menampilkan versi Inggris.",
+    "Tulisan ini belum tersedia dalam Bahasa Indonesia, jadi yang kamu baca adalah versi bahasa Inggrisnya.",
 
   "pagination.label": "Navigasi halaman tulisan",
   "pagination.previous": "Sebelumnya",
@@ -375,13 +375,13 @@ export const id: Record<TranslationKey, string> = {
   "lang.en": "English",
   "lang.id": "Bahasa Indonesia",
 
-  "a11y.skipToContent": "Lewati ke konten",
+  "a11y.skipToContent": "Langsung ke konten",
   "a11y.externalLink": "(terbuka di tab baru)",
 
   "notFound.title": "Halaman tidak ditemukan",
   "notFound.description":
-    "Halaman ini tidak ada. Mungkin sudah dipindahkan, atau tautannya keliru.",
-  "notFound.home": "Ke halaman utama",
+    "Halaman ini tidak ada. Mungkin sudah dipindah, atau link-nya salah.",
+  "notFound.home": "Ke beranda",
 }
 
 export const ui = { en, id } as const

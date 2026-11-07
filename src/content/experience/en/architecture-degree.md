@@ -6,7 +6,7 @@ start: "2011"
 end: "2016"
 role: "Bachelor of Architecture"
 company: "University of Indonesia"
-description: "Five years of architecture school, which is where the habits came from. Structure before decoration, and drawings that have to survive someone else reading them."
+description: "Five years of architecture school, where my habits took shape: “form follows function”, and a design has to get its idea across clearly."
 order: 7
 beforeSoftware: true
 ---

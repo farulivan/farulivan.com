@@ -51,6 +51,8 @@ describe("translation dictionaries", () => {
      * Each entry needs a reason:
      */
     const sameInBothLanguages = new Set<keyof typeof en>([
+      "site.title", // a name, a job title and "end to end", which Indonesian engineers say in English too
+      "site.descriptor", // same
       "cv.detail", // a file format and a size, both substituted in
       "nav.openMenu", // "Menu" is the Indonesian word too
       "footer.menu", // same
