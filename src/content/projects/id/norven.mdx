@@ -2,10 +2,10 @@
 lang: "id"
 translationKey: "norven"
 title: "Norven"
-summary: "Situs marketing untuk studio arsitektur fiktif, dibangun dengan standar produksi. Gerbang aksesibilitas dan anggaran performa di setiap pull request."
+summary: "Situs untuk studio arsitektur rekaan, dibuat untuk portofolio ini dengan standar production: cek aksesibilitas dan performa wajib lolos di tiap pull request."
 year: 2026
-role: "Solo. Design, build, deploy"
-duration: "May 2026 – ongoing"
+role: "Solo: desain, build, deploy"
+duration: "Mei 2026 – sekarang"
 stack:
   [
     "Astro",
@@ -20,12 +20,68 @@ order: 4
 screenshots:
   - src: "../_images/norven.png"
     phone: "../_images/norven-phone.png"
-    alt: "Halaman depan Norven: danau dan pegunungan di bawah tulisan Architecture of consequence."
+    alt: "Beranda Norven: danau dan pegunungan di bawah tulisan “Architecture of consequence”."
 outcome:
-  summary: "Setiap pull request diperiksa terhadap WCAG AA dan anggaran Lighthouse per halaman, dan deploy berjalan lewat OIDC tanpa kredensial berumur panjang di mana pun."
+  summary: "Setiap pull request wajib lolos WCAG AA dan budget Lighthouse per halaman, dan deploy berjalan lewat OIDC tanpa credential jangka panjang di mana pun."
   figures:
-    - { value: "AA", caption: "WCAG gate on every PR" }
-    - { value: "<$1", caption: "Monthly hosting" }
+    - { value: "AA", caption: "Gate WCAG di setiap PR" }
+    - { value: "<$1", caption: "Biaya hosting per bulan" }
 liveSites: [{ url: "https://norven.farulivan.com" }]
 sourceUrl: "https://github.com/farulivan/norven"
 ---
+
+## Studionya fiktif. Build-nya tidak.
+
+Norven adalah studio arsitektur yang tidak pernah ada. Saya menciptakannya
+khusus untuk portofolio ini, karena intinya memang bukan studio itu sendiri.
+Intinya adalah punya situs sungguhan, dengan konten dan batasan yang nyata, yang
+bisa saya jaga dengan standar production tanpa tenggat klien yang menentukan
+apa yang harus dikorbankan duluan.
+
+## Apa saja yang dijaga
+
+Satu perintah, `pnpm verify`, menjalankan format, lint, typecheck, unit test,
+build, dan bundle budget. Di atas itu, setiap pull request menjalankan:
+
+- **Test end-to-end Playwright dengan axe**, dengan gate WCAG AA. Bukan laporan
+  yang dibaca seseorang nanti, tapi gate yang membuat PR gagal.
+- **Budget Lighthouse CI, per halaman.** Performance, accessibility, SEO, dan
+  best practices masing-masing punya batas minimum.
+- **CodeQL dan dependency review.**
+
+Yang menarik dari menaruh cek aksesibilitas di gate, bukan di backlog, adalah
+cara itu mengubah apa yang kamu bangun. Kamu tidak bisa merilis komponennya dulu
+lalu memperbaiki kontrasnya belakangan, jadi kamu memilih versi yang aksesibel
+dari awal dan tidak pernah membayar selisihnya.
+
+## Semua motion lewat satu runtime
+
+Situs ini mengandalkan fotografi, dengan motion yang digerakkan scroll. GSAP dan
+ScrollTrigger ada di bawahnya, tapi tidak ada komponen yang memanggil library
+itu langsung. Setiap efek lewat satu runtime, sebagai satu callback
+`scrollEffect` yang mengembalikan cleanup-nya sendiri.
+
+Satu tempat untuk memahami apa yang berjalan saat scroll, satu tempat untuk
+mematuhi preferensi reduced motion, dan inti yang pure sehingga bisa di-unit-test
+tanpa browser.
+
+## Deploy tanpa credential
+
+Output statis ke S3, di belakang satu edge Cloudflare, dengan origin yang hanya
+menerima IP tertentu. Deploy berjalan dari GitHub Actions lewat OIDC, jadi tidak
+ada AWS key jangka panjang di mana pun. Tidak di repo, tidak di pengaturan CI,
+tidak ada yang bisa bocor.
+
+Response header (CSP, HSTS, dan Permissions-Policy) di-commit sebagai Cloudflare
+Transform Rules, bukan diatur manual di dashboard yang perubahannya tidak bisa
+di-diff.
+
+Budget AWS $5/bulan dipasang sebagai batas atas. Dalam kondisi normal, biayanya
+sekitar dua sen.
+
+## Semua tercatat
+
+Keputusan-keputusannya tercatat di repo sebagai ADR, bersama runbook deployment
+yang berisi analisis biaya, dan roadmap dengan non-goal yang eksplisit. Kalau
+kamu sedang menelusuri repo-nya untuk melihat cara saya membangun sesuatu, lima
+menit seharusnya cukup.
