@@ -1,0 +1,84 @@
+---
+lang: "id"
+translationKey: "a-bug-made-uncompilable"
+title: "Bug yang terus saya ulangi, sekarang ditolak compiler"
+description: "Dua deretan angka yang artinya berbeda, satu bug data yang terus terulang, dan branded type yang mengubahnya jadi error saat kompilasi."
+pubDate: 2026-07-22
+tags: ["typescript"]
+draft: false
+---
+
+Saya membuat bug yang sama dua kali, berbulan-bulan jaraknya, dan dua kali pula
+kodenya jalan tanpa protes.
+
+## Dua nomor yang kelihatan sama persis
+
+WhatsApp mengenali seseorang dengan salah satu dari dua cara: nomor teleponnya,
+atau LID, yaitu identifier terpisah yang sama sekali tidak berhubungan dengan
+nomor telepon. Keduanya berupa deretan angka, dan tidak ada apa pun di dalamnya
+yang memberi tahu mana yang mana.
+
+Di TypeScript, keduanya bertipe `string`, artinya compiler menganggap keduanya
+bisa saling menggantikan, karena sejauh yang ia tahu, memang begitu.
+
+Dua kali saya menulis kode yang mengambil ID seorang user dari nomor teleponnya.
+Tidak ada error yang muncul. Bot-nya diam-diam mulai mencatat data dengan
+identitas kedua untuk orang yang sama. Riwayat mereka jadi terlihat kosong,
+allowlist berhenti mengenali mereka, dan saya baru tahu berhari-hari kemudian,
+saat heran kenapa angkanya terlihat aneh.
+
+## Komentar yang tidak mempan
+
+Setelah kejadian pertama, saya menulis komentar. Komentar yang bagus. Isinya
+menyebut kedua identifier, menjelaskan bedanya, dan memperingatkan persis
+kesalahan yang baru saja saya buat.
+
+Lalu saya membuat kesalahan yang sama lagi.
+
+Komentar itu gagal karena alasan yang sekarang saya anggap berlaku umum:
+**komentar tidak ada di depan mata saat kesalahan dibuat.** Ia tinggal di
+tempat tipe-tipenya dideklarasikan. Bug-nya terjadi di tempat lain, di sebuah
+fungsi yang penulisnya sedang memikirkan hal yang sama sekali berbeda, dan tidak
+punya alasan untuk mampir membacanya. Dokumentasi yang bergantung pada ingatanmu
+untuk membukanya hanya berguna untuk masalah yang sudah kamu tahu.
+
+## Menyerahkan pembedanya ke compiler
+
+Solusinya adalah berhenti menyimpan perbedaan itu di kepala, dan menyerahkannya
+ke type system:
+
+```ts
+type Brand<T, B> = T & { readonly __brand: B }
+
+export type WaUserId = Brand<string, "WaUserId">
+export type PhoneNumber = Brand<string, "PhoneNumber">
+```
+
+Saat runtime keduanya tetap string; brand-nya hanya ada saat kompilasi dan
+hilang sepenuhnya dari output. Tapi keduanya tidak lagi bisa saling di-assign,
+jadi baris yang terus saya tulis itu sekarang langsung jadi type error saat saya
+menulisnya, di editor, sebelum kodenya sempat dijalankan.
+
+## Harganya
+
+Branded type tidak gratis, dan harganya dibayar di batas-batas sistem. Setiap
+nilai yang datang dari luar, entah row database atau payload webhook, adalah
+`string` tanpa brand. Jadi harus ada satu tempat yang sengaja disiapkan untuk
+mengecek dan mengonversinya:
+
+```ts
+export function toWaUserId(value: string): WaUserId {
+  if (!/^\d+$/.test(value)) throw new Error(`not a WhatsApp user id: ${value}`)
+  return value as WaUserId
+}
+```
+
+Itu satu-satunya `as` yang dibutuhkan setiap tipe, dan itu tidak masalah,
+karena letaknya di dalam fungsi yang tugasnya memang menjadi tempat pengecekan
+itu terjadi.
+
+Satu fungsi seperti itu untuk setiap jenis identifier, dan semua kode
+sesudahnya aman tanpa perlu dipikirkan lagi. Ini sepadan kalau tertukarnya
+diam-diam dan akibatnya mahal: ID, jumlah uang, apa pun yang bentuknya sama
+tapi artinya berbeda. Tidak sepadan untuk nilai yang akan langsung meledak saat
+pertama kali dipakai. Bug yang berisik tidak butuh bantuan compiler.

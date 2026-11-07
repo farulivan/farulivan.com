@@ -1,0 +1,70 @@
+---
+lang: "id"
+translationKey: "chromium-i-did-not-need"
+title: "Chromium yang ternyata tidak saya butuhkan"
+description: "Bagaimana mengganti headless browser dengan client WebSocket memangkas memori bot sebesar 85% dan menghapus satu-satunya penyebab downtime-nya."
+pubDate: 2026-09-02
+tags: ["architecture", "performance"]
+draft: false
+---
+
+Peningkatan performa terbesar yang bisa kamu dapatkan sering kali tidak ada di
+kodemu. Ia ada di dependency yang sudah lama luput dari perhatianmu.
+
+## Seperti apa grafiknya
+
+Salah satu service kecil saya mengirim pengingat lewat WhatsApp. Tugasnya hanya
+membaca pesan teks pendek dan sesekali menulis satu. Dalam kondisi steady state,
+ia memakan 0,75 sampai 0,85 GB memori, sepanjang hari, entah ada yang mengirim
+pesan ke sana atau tidak.
+
+Saya sudah berkali-kali melihat angka itu tanpa benar-benar memperhatikannya.
+Itu memang angka yang dipakai service-nya. Sejak dulu angkanya memang segitu.
+
+Yang membuatnya terlihat adalah saat saya menuliskannya dalam satu kalimat:
+_program yang membaca pesan teks memakan hampir satu gigabyte._ Diucapkan
+keras-keras, itu jelas absurd. Dibaca dari dashboard, itu cuma sebuah garis.
+
+## Ke mana memorinya pergi
+
+Bot ini berkomunikasi dengan WhatsApp dengan mengendalikan headless Chromium.
+Browser sungguhan, dalam keadaan login, dan dibiarkan hidup tanpa batas waktu.
+Itu cara yang sah untuk mengotomatisasi sesuatu yang tidak menyediakan interface
+lain, dan untuk waktu yang lama, memang hanya itu cara yang tersedia.
+
+Chromium itu juga penyebab semua outage yang pernah dialami proyek ini. Bukan
+sebagian besar. Semuanya. Browser adalah sesuatu yang besar dan stateful untuk
+dijalankan berbulan-bulan tanpa henti, dan saat gagal, ia tidak selalu gagal
+dengan jelas. Prosesnya tetap hidup, diam di sana tanpa melakukan apa-apa,
+sampai ada yang sadar pengingatnya sudah berhenti.
+
+Jadi browser itu membuat saya membayar delapan ratus megabyte dan seluruh
+downtime saya, untuk sesuatu yang sebenarnya bisa saya dapatkan dengan cara
+lain.
+
+## Solusinya adalah menghapus
+
+Protokol WhatsApp bisa diakses lewat WebSocket. Berbicara langsung dengan
+protokol itu berarti tanpa browser, tanpa halaman, tanpa rendering engine.
+Cukup satu socket, segelintir tipe pesan, dan fungsionalitas yang sama.
+
+Memori turun ke bawah 100 MB. Itu pemangkasan lebih dari 85%, dan datang dari
+satu perubahan yang diff-nya sebagian besar merah. Peningkatan terbesar yang
+pernah saya buat untuk codebase itu justru datang dari menghapus sesuatu.
+
+## Yang saya ambil dari sini
+
+Saya tidak menganggap pelajarannya adalah "jangan pernah mengotomatisasi lewat
+browser". Kadang memang tidak ada pintu lain.
+
+Pelajarannya ada pada ke mana saya melihat duluan. Insting saya saat menghadapi
+masalah memori adalah melihat ke dalam: melakukan profiling pada kode yang saya
+tulis, mencari object yang tertahan, mengoptimalkan cache. Insting itu
+menganggap biayanya ada di kode saya. Padahal sering kali, biaya tunggal
+terbesar di sebuah service adalah satu dependency yang mengerjakan tugas jauh
+lebih besar dari yang kamu butuhkan, dan seberapa keras pun kamu mengoptimalkan
+kodemu sendiri, biaya itu tidak akan tersentuh.
+
+Sebelum mengoptimalkan sebuah komponen, ada baiknya bertanya dulu apakah
+komponen itu memang perlu ada. Pertanyaan itu hasilnya jauh lebih besar daripada
+pertanyaan yang biasa saya tanyakan, dan justru lebih murah untuk dijawab.
