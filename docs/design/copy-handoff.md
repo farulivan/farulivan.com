@@ -171,18 +171,19 @@ does not mean slang.
 - **The test for every line:** would an Indonesian engineer write it this
   way, or does it sound translated?
 
-## What is missing in Indonesian
+## Indonesian coverage
 
-- **The case-study stories.** All four Indonesian case studies have their
-  title, summary, facts, figures and alt text, but no story: the page goes
-  from the screenshots straight to the outcome. Each English story is the
-  source.
-- **The figure captions,** and one value. Every caption in
-  `src/content/projects/id/` is still English ("Investors the platform
-  serves", "Deterministic tests"), and the hospital's "5 months" is too.
-- **The posts.** There are three, all in English. The Indonesian site shows
-  each one in English under a note saying so (`writing.untranslated`).
+Nothing is missing any more. Since the copy review in November 2026, every
+interface string, case study and post exists in both languages, and the
+Indonesian was written from the English's meaning rather than translated
+from it.
 
-Everything else exists in both languages: every interface string, the
-timeline, the capabilities and the case-study frontmatter. Their Indonesian
-is part of the review, not of the missing list.
+A new case study or post is written in English first. Its Indonesian file
+goes in `src/content/projects/id/` or `src/content/writing/id/` under the
+same file name, with the English entry's `translationKey` and
+`lang: "id"`. Until that file exists, the Indonesian site shows the English
+under a note saying so (`project.untranslated`, `writing.untranslated`).
+
+The Indonesian spell check will flag real affixed words the base dictionary
+lacks (datanya, pengingat, kodemu). Those go in `cspell-id.txt`; a word that
+isn't real gets rewritten instead.
