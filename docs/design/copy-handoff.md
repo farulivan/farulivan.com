@@ -1,6 +1,6 @@
 # Copy handoff
 
-<!-- cspell:ignore Tersalin -->
+<!-- cspell:ignore Tersalin udah -->
 
 The November 2026 design review is built and merged. What is left is the
 words: a review of every line on the site, in both languages, and the
@@ -8,7 +8,8 @@ Indonesian that was never written.
 
 This page is the brief for that work. It holds the prompt I start the copy
 session with, where every piece of copy lives, the limits the design puts on
-it, and the list of what is missing in Indonesian.
+it, the voice each language is written in, and the list of what is missing in
+Indonesian.
 
 ## The prompt
 
@@ -117,6 +118,58 @@ These are not checked, but the layout depends on them:
 - **The Indonesian spell check uses a dictionary.** A word outside it fails the
   build: "Tersalin" did, and "Sudah disalin" passes. A real word the
   dictionary lacks goes into `cspell.json`; a made-up one gets rewritten.
+
+## Voice
+
+I settled these at the start of the copy review. They hold for every line
+written after it, in the interface, the case studies and the posts alike.
+
+### English
+
+- **Contractions, everywhere.** I'm, don't, didn't. The site is me talking
+  about my work, and the expanded forms made it read stiffer than I talk.
+- **"frontend", one word,** as a noun and as an adjective. Not "front end",
+  not "front-end".
+- **British spelling.** The spell check runs en-GB.
+- **Say each fact once, where it does the most work.** "Three years as the
+  only frontend engineer" is the strongest thing I can say, and it lost its
+  weight by appearing on every page, sometimes twice in a sentence.
+
+### Indonesian
+
+Bahasa Indonesia that is too baku reads strangely on a personal portfolio.
+The register is casual but professional: the way an Indonesian engineer
+writes on LinkedIn or on a good tech blog. Casual does not mean terse, and it
+does not mean slang.
+
+- **"saya" for me, "kamu" or "-mu" for the reader.** Never "Anda".
+- **Warm, complete sentences.** This is the line the rest is held against:
+
+  > Kalau itu yang sedang dibangun oleh timmu, saya akan senang mendengar
+  > lebih banyak tentangnya. Email adalah cara terbaik untuk menghubungi saya,
+  > dan saya selalu berusaha membalas setiap pesan yang masuk.
+
+- **Rewrite from the meaning, not from the English sentence.** Restructure
+  freely: split a long sentence, put the topic first, turn a noun phrase back
+  into the verb it hides. Choose the word the context needs, not the
+  dictionary's first match. "I own what I build" is not "saya memiliki",
+  which means to possess, and "where I live" is not "tempat saya tinggal",
+  which is an address.
+- **A flat English claim can soften where Indonesian would.** "I reply to
+  everything" becomes "saya selalu berusaha membalas setiap pesan". The facts
+  underneath stay the same.
+- **No bureaucratic Indonesian:** "merupakan", "adapun", "dalam rangka",
+  "yang mana", "guna", "tersebut" at every turn, "sebuah" in front of every
+  noun.
+- **No slang particles or chat spellings:** "sih", "dong", "kok", "banget",
+  "udah", "gue". A recruiter has to be able to forward the page.
+- **English for what engineers here say in English:** frontend, backend,
+  deploy, pull request, codebase, scheduler, test, review, outage,
+  performance budget, end-to-end. Translating them reads like a textbook.
+- **Indonesian number formatting** in Indonesian copy: 3.000+ and 0,8 GB. The
+  values are the English ones.
+- **The test for every line:** would an Indonesian engineer write it this
+  way, or does it sound translated?
 
 ## What is missing in Indonesian
 
