@@ -100,14 +100,12 @@ export const en = {
 
   // Work index and case studies
   "work.subtitle":
-    "Selected projects, with what the work was for and what changed once it shipped.",
+    "Work for an employer, a client and myself, each with the problem it started from and how it turned out.",
   "work.allLabel": "All projects",
-  "work.allDescription":
-    "Everything worth listing, newest work first. Scan the stack column if you are looking for something in particular.",
+  "work.allDescription": "Every project, in the order I'd show them.",
   "work.featuredLabel": "Selected work",
-  "work.featuredDescription":
-    "Three projects in more detail. Each one has a case study behind it.",
-  "work.col.index": "NN",
+  "work.featuredDescription": "The three I'd start with, in more detail.",
+  "work.col.index": "#",
   "work.col.project": "Project",
   "work.col.role": "Role",
   "work.col.stack": "Stack",
@@ -127,9 +125,9 @@ export const en = {
   "project.visit": "Visit {name}",
   "project.source": "Read the source",
   "project.nextLabel": "Next project",
-  "project.nextDescription": "Keep going through the work.",
+  "project.nextDescription": "One more, in the same detail.",
   "project.untranslated":
-    "This case study has not been translated yet, so you are reading the English version.",
+    "This case study hasn't been translated yet, so you're reading the English version.",
 
   // Contact
   "contact.statement":
@@ -298,7 +296,7 @@ export const id: Record<TranslationKey, string> = {
   "work.featuredLabel": "Karya pilihan",
   "work.featuredDescription":
     "Tiga proyek dengan penjelasan lebih rinci. Masing-masing punya studi kasusnya sendiri.",
-  "work.col.index": "NN",
+  "work.col.index": "#",
   "work.col.project": "Proyek",
   "work.col.role": "Peran",
   "work.col.stack": "Teknologi",
