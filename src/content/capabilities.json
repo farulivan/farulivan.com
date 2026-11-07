@@ -13,7 +13,7 @@
       "shadcn/ui",
       "MUI"
     ],
-    "note": "Where I live. Three years of it as the only person holding the front end of a production platform."
+    "note": "Where I live. I've set the conventions here, not just followed them."
   },
   {
     "id": "en-backend",
@@ -30,7 +30,7 @@
       "Laravel",
       "REST API design"
     ],
-    "note": "Growing, deliberately. I have moved from consuming APIs to building and running my own."
+    "note": "Where I'm growing. I've moved from consuming APIs to building and running my own."
   },
   {
     "id": "en-craft",
@@ -49,7 +49,7 @@
       "Clean architecture",
       "ADR"
     ],
-    "note": "I care about code someone else can pick up and understand."
+    "note": "For the next person. I care about code someone who's never seen it can pick up and understand."
   },
   {
     "id": "en-ai",
@@ -58,7 +58,7 @@
     "order": 4,
     "domain": "AI-native workflow",
     "items": ["Claude Code", "Windsurf / Devin Desktop"],
-    "note": "I direct it, I do not follow it. I review everything and stay responsible for what ships."
+    "note": "I direct it. I review everything it writes, and I'm responsible for what ships."
   },
   {
     "id": "id-frontend",

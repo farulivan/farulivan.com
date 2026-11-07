@@ -22,7 +22,7 @@ export const en = {
   "site.title": "Farul Ivan · Frontend engineer · end to end",
   "site.descriptor": "Frontend engineer\u00a0· end\u00a0to\u00a0end",
   "site.description":
-    "Three years as the sole frontend engineer on a production fintech platform, and deliberately growing into the backend.",
+    "Three years as the sole frontend engineer on a production fintech platform, now growing into the backend.",
 
   // Navigation
   "nav.home": "Home",
@@ -51,18 +51,17 @@ export const en = {
     "I own what I build, from architecture decisions to production, and I don't stop at the frontend when a feature needs more.",
   "home.stackLabel": "What I do",
   "home.stackDescription":
-    "I work end to end on web products: the interface people touch, the API contracts behind it, and the tests and pipelines that keep both honest. Three years of that as the only frontend engineer on a production platform.",
+    "I work end to end on web products: the interface people touch, the API contracts behind it, and the tests and pipelines that keep both honest.",
   "home.workLabel": "Selected work",
   "home.workDescription":
     "Three projects, with what they were for and what changed once they shipped.",
   "home.workCta": "See all work",
   "home.experienceLabel": "Experience",
-  "home.experienceDescription": "The three most recent roles.",
+  "home.experienceDescription": "The three most recent.",
   "home.experienceCta": "Read the full history",
   "home.writingLabel": "Writing",
   "og.caseStudy": "Case study",
-  "home.writingDescription":
-    "Notes on decisions that were harder than they looked.",
+  "home.writingDescription": "Decisions I've made, and what each one cost.",
   "home.writingCta": "Read everything",
 
   "writing.allLabel": "All posts",
