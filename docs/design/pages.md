@@ -203,8 +203,8 @@ finds it in the table; someone browsing gets the visual rows.
 > The links sit under the summary the way the CV and email pills sit under
 > the name on the home page: one step down, one dark pill and the rest light,
 > stacked full width on a phone. A project can have more than one live site
-> (`liveSites` in the schema, which replaced `liveUrl`). The investment
-> platform has two, Nabitu and Zeed Sharia, and once there is more than one
+> (`liveSites` in the schema, which replaced `liveUrl`). The Nabitu case
+> study has two, Nabitu and Zeed Sharia, and once there is more than one
 > each button carries its site's name.
 >
 > The outcome is no longer a band of its own. It is the story's last
