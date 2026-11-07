@@ -96,7 +96,7 @@ export const en = {
   "about.nowLabel": "Now",
   "about.nowDescription": "What I'm getting better at right now.",
   "about.now":
-    "System design, retrieval-augmented generation, and the workflows for directing AI agents rather than being directed by them.",
+    "Going deeper on the frontend, which is still my main craft. Growing into the backend, and into what a platform needs beyond the code: security, deployment, maintenance, and DevOps on AWS and Cloudflare. Looking toward mobile development. And keeping up with AI, to work faster while staying secure and accountable.",
 
   // Work index and case studies
   "work.subtitle":
@@ -285,7 +285,7 @@ export const id: Record<TranslationKey, string> = {
   "about.nowLabel": "Saat ini",
   "about.nowDescription": "Hal-hal yang sedang saya dalami.",
   "about.now":
-    "System design, retrieval-augmented generation (RAG), dan workflow untuk mengarahkan AI agent, bukan malah diarahkan olehnya.",
+    "Terus memperdalam frontend, yang masih jadi keahlian utama saya. Memperluas ke backend, juga ke semua yang dibutuhkan sebuah platform di luar kode: keamanan, deployment, maintenance, sampai DevOps di AWS dan Cloudflare. Mulai melirik mobile development. Dan terus mengikuti perkembangan AI, supaya bisa bekerja lebih cepat dan efisien, dengan hasil yang tetap aman dan bisa dipertanggungjawabkan.",
 
   // Work index and case studies
   "work.subtitle":
