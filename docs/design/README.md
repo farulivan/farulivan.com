@@ -24,6 +24,7 @@ Read in this order.
 | **[pages.md](pages.md)** | Section order and layout per page, plus the content I still owe. |
 | **[handover.md](handover.md)** | Build order, Astro structure, screenshot recipe, definition of done, watch list. |
 | **[review-2026-11.md](review-2026-11.md)** | Design review of the built site, November 2026: what to change next, in priority order, and which specs it overrides. Read before starting new UI work. |
+| **[copy-handoff.md](copy-handoff.md)** | The brief for the copy review: the prompt that starts it, where the copy lives, the limits the design sets on it, and the Indonesian still missing. Read before changing any copy. |
 
 ---
 
