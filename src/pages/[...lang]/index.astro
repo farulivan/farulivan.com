@@ -308,10 +308,11 @@ const stackGroups = capabilities.map(({ entry }) => ({
     />
     <div class="mt-7">
       {
-        featured.map(({ entry, number }, index) => (
+        featured.map(({ entry }, index) => (
           <ProjectRow
             href={localizePath(`/work/${projectSlug(entry)}`, lang)}
-            number={number}
+            slug={projectSlug(entry)}
+            step={index}
             title={entry.data.title}
             role={entry.data.role}
             stack={entry.data.stack}

@@ -67,7 +67,7 @@ export const GET: APIRoute<Props> = async ({ props }) => {
     // is what reads at the size a card shows it.
     const shot = data.screenshots[0]
     png = await projectCard({
-      kicker: `${t("og.caseStudy")} · ${String(props.project.number).padStart(2, "0")}`,
+      kicker: t("og.caseStudy"),
       title: data.title,
       figure: data.outcome.figures[0],
       image: shot

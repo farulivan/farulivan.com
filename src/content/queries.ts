@@ -103,14 +103,15 @@ export async function getPostListItems(lang: Locale): Promise<PostListItem[]> {
 export type ProjectEntry = CollectionEntry<"projects">
 
 /**
- * A project and its number: its place in the full list, counted from one.
+ * A project in the reader's language.
  *
- * The number belongs to the project, not to whichever list is printing it. The
- * work table, the selected rows and the next-project link all show it, and a
- * project listed as 04 in the table cannot be 03 in the rows under it. Counting
- * each list on its own did exactly that once the selection became a subset.
+ * There is no project number. One was printed on every row and in the work
+ * table, counted across the full list so a project kept one number wherever it
+ * appeared. That made the selected rows read 01, 02, 04, and the gap looked
+ * like a ranking with something missing. A picture's view-transition name
+ * comes from the slug instead.
  */
-export type LocalizedProject = Localized<ProjectEntry> & { number: number }
+export type LocalizedProject = Localized<ProjectEntry>
 
 /**
  * URL slug, shared across locales so the language picker stays on the page —
@@ -128,9 +129,9 @@ export function projectSlug(entry: ProjectEntry): string {
  */
 export async function getProjects(lang: Locale): Promise<LocalizedProject[]> {
   const all = await getCollection("projects")
-  return localize(all, lang)
-    .sort((a, b) => a.entry.data.order - b.entry.data.order)
-    .map((project, index) => ({ ...project, number: index + 1 }))
+  return localize(all, lang).sort(
+    (a, b) => a.entry.data.order - b.entry.data.order
+  )
 }
 
 /** The three or so that get a full row rather than a table line. */

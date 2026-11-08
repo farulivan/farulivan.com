@@ -106,7 +106,6 @@ export const en = {
   "work.allDescription": "Every project, in the order I'd show them.",
   "work.featuredLabel": "Selected work",
   "work.featuredDescription": "The three I'd start with, in more detail.",
-  "work.col.index": "#",
   "work.col.project": "Project",
   "work.col.role": "Role",
   "work.col.stack": "Stack",
@@ -297,7 +296,6 @@ export const id: Record<TranslationKey, string> = {
   "work.featuredLabel": "Proyek pilihan",
   "work.featuredDescription":
     "Tiga proyek yang akan saya tunjukkan lebih dulu, dengan cerita yang lebih lengkap.",
-  "work.col.index": "#",
   "work.col.project": "Proyek",
   "work.col.role": "Peran",
   "work.col.stack": "Tech stack",

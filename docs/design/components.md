@@ -253,6 +253,18 @@ scales 1.02. Focus-visible: ring around the whole row, not the image.
 > page: Norven was 04 in the table and 03 in the rows under it. The
 > next-project row had the opposite fault and printed 01 on every case study.
 
+> **Changed after launch: no number at all.** Numbering each project by its
+> place in the full list kept the numbers consistent, but the selected rows
+> then read 01, 02, 04, and people took the gap for a ranking with something
+> missing. The row now opens on the title. The work table drops its NN column
+> and the case-study share card drops the number from its kicker. The order the
+> author sets is unchanged.
+>
+> The number also named the screenshot for the page transition, so the picture
+> in a row could grow into the plate on its case study. The slug names it now.
+> It is just as stable and unique on a page, and it doesn't move when the order
+> changes.
+
 ---
 
 ## C6 · Hairline data table
@@ -281,6 +293,11 @@ horizontally scroll a table of links.
 
 **A11y.** Real `<table>` with `<th scope="col">`. If rows are links, the link
 wraps the title cell, not the row.
+
+> **Changed after launch: the work table has no NN column.** It starts on the
+> title, for the reason given under the project row. That column was the only
+> one hidden when the table stacks, so the table no longer has an option to
+> hide a column.
 
 ---
 

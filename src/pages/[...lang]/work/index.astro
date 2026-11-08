@@ -43,15 +43,13 @@ const featured = await getFeaturedProjects(lang)
 /* Annotated rather than cast: `as` in a page's frontmatter costs the page its
    Props binding. See the trap in AGENTS.md. */
 const columns: DataColumn[] = [
-  { label: t("work.col.index"), omitOnStack: true },
   { label: t("work.col.project"), title: true },
   { label: t("work.col.role") },
   { label: t("work.col.stack") },
   { label: t("work.col.year"), align: "end" },
 ]
 
-const rows: DataCell[][] = projects.map(({ entry, number }) => [
-  String(number).padStart(2, "0"),
+const rows: DataCell[][] = projects.map(({ entry }) => [
   {
     text: entry.data.title,
     href: localizePath(`/work/${projectSlug(entry)}`, lang),
@@ -101,10 +99,11 @@ const rows: DataCell[][] = projects.map(({ entry, number }) => [
           description={t("work.featuredDescription")}
         />
         <div class="mt-7">
-          {featured.map(({ entry, number }, index) => (
+          {featured.map(({ entry }, index) => (
             <ProjectRow
               href={localizePath(`/work/${projectSlug(entry)}`, lang)}
-              number={number}
+              slug={projectSlug(entry)}
+              step={index}
               title={entry.data.title}
               role={entry.data.role}
               stack={entry.data.stack}
