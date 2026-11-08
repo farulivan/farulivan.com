@@ -52,7 +52,7 @@ export const siteConfig = {
   cv: {
     href: "/cv.pdf",
     format: "PDF",
-    size: "108 KB",
+    size: "111 KB",
     /*
      * What the file is called once it is on somebody's machine. Without this
      * it lands in their downloads folder as `cv.pdf`, next to everybody
