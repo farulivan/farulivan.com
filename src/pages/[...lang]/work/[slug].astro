@@ -289,7 +289,7 @@ const stripColumns = [
                   class="border-section-rule block h-auto w-full border"
                   style={
                     index === 0
-                      ? `view-transition-name: project-shot-${project.number}`
+                      ? `view-transition-name: project-shot-${slug}`
                       : undefined
                   }
                 />
@@ -361,7 +361,7 @@ const stripColumns = [
         <div class="mt-7">
           <ProjectRow
             href={localizePath(`/work/${projectSlug(next.entry)}`, lang)}
-            number={next.number}
+            slug={projectSlug(next.entry)}
             title={next.entry.data.title}
             role={next.entry.data.role}
             stack={next.entry.data.stack}

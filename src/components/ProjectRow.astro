@@ -21,8 +21,13 @@ import { cn } from "@/lib/utils"
 
 interface Props {
   href: string
-  /** The project's place in the full work list, which is what the table prints. */
-  number: number
+  /**
+   * Names the picture for the page transition, so the screenshot in this row
+   * grows into the plate at the top of its case study.
+   */
+  slug: string
+  /** The row's place in its list, which staggers its entrance. */
+  step?: number | undefined
   title: string
   role: string
   stack: readonly string[]
@@ -41,7 +46,8 @@ interface Props {
 
 const {
   href,
-  number,
+  slug,
+  step = 0,
   title,
   role,
   stack,
@@ -52,9 +58,6 @@ const {
   flip,
   class: className,
 } = Astro.props
-
-/** "01", not "1" — a counter that keeps its width down the page. */
-const counter = String(number).padStart(2, "0")
 
 /*
  * Five of the stack rather than all of it: the full list is on the case study,
@@ -72,7 +75,7 @@ const lead = figures.slice(0, 2)
 <a
   {href}
   data-reveal
-  style={`--reveal-step: ${number % 6}`}
+  style={`--reveal-step: ${step % 6}`}
   class={cn("group border-section-rule block border-b no-underline", className)}
 >
   <div class="gap-gutter grid items-center py-7 lg:grid-cols-2">
@@ -103,7 +106,7 @@ const lead = figures.slice(0, 2)
         screenshot ? (
           <div
             class="border-section-rule h-full w-full overflow-hidden border"
-            style={`view-transition-name: project-shot-${number}`}
+            style={`view-transition-name: project-shot-${slug}`}
           >
             <Capture
               src={screenshot.src}
@@ -138,14 +141,13 @@ const lead = figures.slice(0, 2)
     <div class="lg:px-gutter flex flex-col gap-3">
       {
         /*
-         * The counter and nothing else. A year beside it invited the row to be
-         * read as a date first, which is the least interesting thing about a
-         * project; the work index lists it as a sortable column and the case
-         * study gives the dates in full.
+         * The title leads, with nothing above it. A counter sat there once and
+         * a year before that. The year made the row read as a date first, and
+         * the counter, numbered across the full list, made the selected rows
+         * read 01, 02, 04. The work table lists the year, and the case study
+         * gives the dates in full.
          */
       }
-      <p class="text-micro text-section-muted m-0 uppercase">{counter}</p>
-
       <h3
         class="text-h-l font-display m-0 wrap-break-word hyphens-auto decoration-1 underline-offset-4 group-hover:underline"
       >

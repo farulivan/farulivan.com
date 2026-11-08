@@ -58,7 +58,6 @@ describe("translation dictionaries", () => {
       "footer.menu", // same
       "lang.en", // languages are named in their own language, not the reader's
       "lang.id", // same
-      "work.col.index", // a column of numbers, not a word
       "contact.github", // a product name
       "contact.linkedin", // same
       "contact.col.link", // "link" is what Indonesian readers say, and the copy uses it everywhere

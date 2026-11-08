@@ -23,11 +23,6 @@ export interface DataColumn {
    */
   title?: boolean
   align?: "start" | "end"
-  /**
-   * Dropped when the table stacks. For a column that is a counter rather than
-   * information — "01" under the heading "NN" helps nobody on a phone.
-   */
-  omitOnStack?: boolean
 }
 
 export type DataCell = string | number | { text: string; href: string }
@@ -112,9 +107,7 @@ const href = (cell: DataCell) =>
                   // name above it, and the padding moves to the row. The
                   // column gutter goes with the columns.
                   "max-md:block max-md:py-1 max-md:pe-0 max-md:text-left",
-                  column?.omitOnStack && "max-md:hidden",
                   column?.label &&
-                    !column.omitOnStack &&
                     "max-md:before:text-micro max-md:before:text-section-muted max-md:before:block max-md:before:uppercase max-md:before:content-[attr(data-label)]"
                 )}
               >

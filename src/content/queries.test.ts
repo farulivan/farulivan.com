@@ -179,40 +179,35 @@ describe("getPostListItems", () => {
   })
 })
 
-describe("project numbers", () => {
-  // Written out of order on purpose: the number follows `order`, not the
-  // order the files happen to be read in.
+describe("project order", () => {
+  // Written out of order on purpose: the list follows `order`, not the order
+  // the files happen to be read in.
   const projects = () => [
     post({ translationKey: "c", order: 3, featured: false }),
     post({ translationKey: "a", order: 1, featured: true }),
     post({ translationKey: "d", order: 4, featured: true }),
     post({ translationKey: "b", order: 2, featured: true }),
   ]
+  const keys = (list: { entry: { data: { translationKey: string } } }[]) =>
+    list.map((p) => p.entry.data.translationKey)
 
-  it("numbers every project by its place in the full list", async () => {
+  it("lists every project in the order the author set", async () => {
     entries = projects()
-    const numbered = await getProjects("en")
-    expect(
-      numbered.map((p) => [p.entry.data.translationKey, p.number])
-    ).toEqual([
-      ["a", 1],
-      ["b", 2],
-      ["c", 3],
-      ["d", 4],
-    ])
+    expect(keys(await getProjects("en"))).toEqual(["a", "b", "c", "d"])
   })
 
-  it("keeps a project's number when the selection leaves another out", async () => {
-    // The work page prints the table and the selected rows one above the
-    // other, so the fourth project has to be 04 in both.
+  it("keeps that order when the selection leaves one out", async () => {
     entries = projects()
-    const featured = await getFeaturedProjects("en")
-    expect(featured.map((p) => p.number)).toEqual([1, 2, 4])
+    expect(keys(await getFeaturedProjects("en"))).toEqual(["a", "b", "d"])
   })
 
-  it("carries the number onto the next project, wrapping at the end", async () => {
+  it("leads to the next project, wrapping at the end", async () => {
     entries = projects()
-    expect((await getNextProject("en", "b"))?.number).toBe(3)
-    expect((await getNextProject("en", "d"))?.number).toBe(1)
+    expect((await getNextProject("en", "b"))?.entry.data.translationKey).toBe(
+      "c"
+    )
+    expect((await getNextProject("en", "d"))?.entry.data.translationKey).toBe(
+      "a"
+    )
   })
 })
