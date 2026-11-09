@@ -159,6 +159,29 @@ naming:       {project-slug}.png → src/content/projects/_images/
 > upscaled. Its plate stops at 689px, two thirds of its width, which is as large
 > as its pixels allow.
 
+> **Roomflow needs a sign-in and a quiet demo.** Captured on 2026-11-09 from
+> the live demo with Playwright driving the installed Chrome at a device pixel
+> ratio of 2. Headless `--screenshot` can't sign in, so it won't do here.
+> Before loading the app, set `roomflow.demo-settings` in `localStorage` to
+> `{"network":"normal","failRequests":false,"autoOrders":false}`. Otherwise a
+> simulated order can land as a toast mid-capture. Then use "Use demo
+> account" and "Sign in". The demo reseeds relative to the current time, so
+> every capture shows the same stories with different clock times.
+>
+> - **The dashboard** (Harborline) is taken at 1440 × 870, not 900, which
+>   gives 2880 × 1740. At 900 the frame cut the next section's heading in
+>   half. At 870 it ends under the last "Needs attention" row and keeps the
+>   whole sidebar.
+> - **The order drawer** is 1440 × 870 as well, so the two plates and their
+>   captions line up side by side. It's opened on the order that is both
+>   overdue and has a failed payment (filter `?sla=overdue&payment=Failed`;
+>   it was HL-1311). Open it by clicking its row, not by loading its URL.
+>   A drawer opened on page load focuses its close button with a visible
+>   focus ring.
+> - **The phone crops** are 1200 × 750 around the "Needs attention" list, and
+>   882 × 756 of the drawer from its order number down to "Mark payment
+>   collected". The drawer crop sits inside the drawer's rounded corner.
+
 For anything NDA-covered, do not blur or redact — use the **C5b no-image
 variant**. A blurred screenshot looks like a mistake; a type block looks
 deliberate.
