@@ -1,0 +1,37 @@
+---
+lang: "en"
+translationKey: "roomflow"
+title: "Roomflow"
+summary: "A guest-service dashboard for hotel staff: every room-service, housekeeping, laundry, extra-bed and spa request in one place, with the late ones flagged."
+year: 2026
+role: "Solo: design, build, deploy"
+stack:
+  [
+    "React 19",
+    "TypeScript (strict)",
+    "TanStack Query",
+    "React Router",
+    "Tailwind CSS",
+    "shadcn/ui",
+    "MSW",
+    "Bun",
+  ]
+featured: true
+order: 2
+screenshots:
+  - src: "../_images/roomflow.png"
+    phone: "../_images/roomflow-phone.png"
+    alt: "The Roomflow dashboard for Harborline Hotel, with a Needs attention list of overdue orders, an extra-bed approval and two failed payments."
+    caption: "Dashboard"
+  - src: "../_images/roomflow-order.png"
+    phone: "../_images/roomflow-order-phone.png"
+    alt: "An order's details drawer: a room-service order 8 minutes past its 10-minute target, with a declined card still to collect."
+    caption: "Order drawer"
+outcome:
+  summary: "It runs live with its mock API inside the page, so anyone can sign in, slow the network or make the API fail, and see how every view holds up."
+  figures:
+    - { value: "4", caption: "States on every data view" }
+    - { value: "1", caption: "Set of rules for the UI and the API" }
+liveSites: [{ url: "https://roomflow.farulivan.com" }]
+sourceUrl: "https://github.com/farulivan/roomflow"
+---

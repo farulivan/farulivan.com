@@ -55,7 +55,7 @@ export const en = {
     "I work end to end on web products: the interface people touch, the API contracts behind it, and the tests and pipelines that keep both honest.",
   "home.workLabel": "Selected work",
   "home.workDescription":
-    "Three projects, with what they were for and what changed once they shipped.",
+    "Four projects, with what they were for and what changed once they shipped.",
   "home.workCta": "See all work",
   "home.experienceLabel": "Experience",
   "home.experienceDescription": "The three most recent.",
@@ -101,11 +101,11 @@ export const en = {
 
   // Work index and case studies
   "work.subtitle":
-    "Work for an employer and a client, a bot for my family and me, and a site for an imagined studio, built only for this portfolio.",
+    "Work for an employer and a client, a take-home from a hiring process, a bot for my family and me, and a site for an imagined studio, built only for this portfolio.",
   "work.allLabel": "All projects",
   "work.allDescription": "Every project, in the order I'd show them.",
   "work.featuredLabel": "Selected work",
-  "work.featuredDescription": "The three I'd start with, in more detail.",
+  "work.featuredDescription": "The four I'd start with, in more detail.",
   "work.col.project": "Project",
   "work.col.role": "Role",
   "work.col.stack": "Stack",
@@ -242,7 +242,7 @@ export const id: Record<TranslationKey, string> = {
     "Saya mengerjakan produk web end to end: UI yang langsung dipakai pengguna, kontrak API di baliknya, sampai test dan pipeline yang menjaga keduanya tetap bisa diandalkan.",
   "home.workLabel": "Proyek pilihan",
   "home.workDescription":
-    "Tiga proyek, lengkap dengan tujuannya dan apa yang berubah setelah dirilis.",
+    "Empat proyek, lengkap dengan tujuannya dan apa yang berubah setelah dirilis.",
   "home.workCta": "Lihat semua proyek",
   "home.experienceLabel": "Pengalaman",
   "home.experienceDescription": "Tiga yang terbaru.",
@@ -289,13 +289,13 @@ export const id: Record<TranslationKey, string> = {
 
   // Work index and case studies
   "work.subtitle":
-    "Proyek untuk perusahaan dan klien, bot untuk saya dan keluarga, serta situs studio rekaan yang saya bangun khusus untuk portofolio ini.",
+    "Proyek untuk perusahaan dan klien, tugas take-home dari proses rekrutmen, bot untuk saya dan keluarga, serta situs studio rekaan yang saya bangun khusus untuk portofolio ini.",
   "work.allLabel": "Semua proyek",
   "work.allDescription":
     "Semua proyek, sesuai urutan yang ingin saya tunjukkan.",
   "work.featuredLabel": "Proyek pilihan",
   "work.featuredDescription":
-    "Tiga proyek yang akan saya tunjukkan lebih dulu, dengan cerita yang lebih lengkap.",
+    "Empat proyek yang akan saya tunjukkan lebih dulu, dengan cerita yang lebih lengkap.",
   "work.col.project": "Proyek",
   "work.col.role": "Peran",
   "work.col.stack": "Tech stack",

@@ -1,0 +1,37 @@
+---
+lang: "id"
+translationKey: "roomflow"
+title: "Roomflow"
+summary: "Dashboard untuk staf hotel: semua permintaan tamu, dari room service sampai spa, ada di satu tempat, dan yang terlambat langsung ditandai."
+year: 2026
+role: "Solo: desain, build, deploy"
+stack:
+  [
+    "React 19",
+    "TypeScript (strict)",
+    "TanStack Query",
+    "React Router",
+    "Tailwind CSS",
+    "shadcn/ui",
+    "MSW",
+    "Bun",
+  ]
+featured: true
+order: 2
+screenshots:
+  - src: "../_images/roomflow.png"
+    phone: "../_images/roomflow-phone.png"
+    alt: "Dashboard Roomflow untuk Harborline Hotel, dengan daftar “Needs attention” berisi pesanan yang terlambat, satu extra bed yang menunggu persetujuan, dan dua pembayaran yang gagal."
+    caption: "Dashboard"
+  - src: "../_images/roomflow-order.png"
+    phone: "../_images/roomflow-order-phone.png"
+    alt: "Detail pesanan room service yang sudah 8 menit melewati target 10 menit, dengan kartu yang ditolak dan pembayaran yang belum ditagih."
+    caption: "Detail pesanan"
+outcome:
+  summary: "Demo ini live dengan mock API yang berjalan di dalam halaman, jadi siapa pun bisa masuk, memperlambat jaringan, atau membuat API gagal, lalu melihat bagaimana setiap tampilan tetap bertahan."
+  figures:
+    - { value: "4", caption: "State di setiap tampilan data" }
+    - { value: "1", caption: "Aturan yang sama untuk UI dan API" }
+liveSites: [{ url: "https://roomflow.farulivan.com" }]
+sourceUrl: "https://github.com/farulivan/roomflow"
+---
