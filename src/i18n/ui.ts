@@ -250,7 +250,7 @@ export const id: Record<TranslationKey, string> = {
   "home.writingLabel": "Tulisan",
   "og.caseStudy": "Studi kasus",
   "home.writingDescription":
-    "Keputusan teknis yang pernah saya ambil, dan harga yang harus dibayar untuk masing-masing.",
+    "Keputusan teknis yang pernah saya ambil, dan trade-off di balik masing-masing.",
   "home.writingCta": "Baca semua tulisan",
 
   "writing.allLabel": "Semua tulisan",
@@ -272,7 +272,7 @@ export const id: Record<TranslationKey, string> = {
   "about.portraitAlt": "Potret Farul Ivan.",
   "about.historyLabel": "Riwayat",
   "about.historyDescription":
-    "Dari kuliah arsitektur tahun 2011 sampai proyek terakhir yang saya rilis.",
+    "Dari kuliah arsitektur tahun 2011 sampai proyek terbaru yang saya rilis.",
   "about.beforeSoftware": "Sebelum beralih ke software",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":
