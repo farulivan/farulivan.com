@@ -1,6 +1,7 @@
 # Handover — farulivan.com
 
-> Build order, project structure, and what is blocked on what.
+> How the font was built, how the screenshots are captured, what "done" means
+> for a component and a page, and what is most likely to go wrong.
 > Read [foundations.md](foundations.md) first, then this.
 
 **Stack: Astro.** Static output, near-zero client JS by default, content
@@ -8,62 +9,9 @@ collections for projects and writing. This site is type and motion with almost
 nothing interactive — Astro ships no framework runtime for that, which matters
 when the hero animation is the first paint.
 
-**Note:** a stale `.astro/` cache from an unrelated project was removed from this
-repo during design. Starting clean.
-
 ---
 
-## 1. Project structure
-
-```
-src/
-  assets/
-    fonts/lexend-var.woff2          ← subset + converted from raw-assets/
-    wordmark/
-      mark.svg                      ← 10 paths, ids g-0…g-9, built once
-  components/
-    Nav.astro            Pill.astro         MenuCard.astro
-    SectionHeader.astro  ProjectRow.astro   DataTable.astro
-    CtaBox.astro         TimelineRow.astro  StackBand.astro
-    Footer.astro         Wordmark.astro
-  content/
-    projects/*.md        writing/*.md       experience/*.md
-  layouts/
-    Base.astro           Article.astro
-  pages/
-    index.astro          work/index.astro   work/[slug].astro
-    about.astro          writing/index.astro writing/[slug].astro
-    contact.astro
-  styles/
-    tokens.css           ← paste from foundations.md §7
-    base.css             type.css
-scripts/
-  build-wordmark.mjs     ← generates mark.svg + per-path --len
-```
-
-### Content collection schemas
-
-```ts
-// projects
-{ title, slug, year, role, teamSize?, duration?, stack: string[],
-  featured: boolean, order: number,
-  screenshot?: image(),          // optional — C5b variant when absent
-  problem, built, outcome,       // outcome required; see pages.md
-  liveUrl?, sourceUrl? }
-
-// writing
-{ title, slug, date, topic, readTime, draft: boolean }
-
-// experience
-{ year, role, company, description, order }
-```
-
-`screenshot` is **optional by design** — screenshots are still being captured,
-and the C5b no-image variant must render correctly in the meantime.
-
----
-
-## 2. Font pipeline
+## 1. Font pipeline
 
 Source: `raw-assets/fonts/Lexend/Lexend-VariableFont_wght.ttf` (OFL, variable,
 `wght` 100–900, **no italic**).
@@ -89,9 +37,7 @@ Preload it in `<head>`. One file covers every weight.
 
 ---
 
-## 3. Screenshot capture recipe
-
-Projects are live but unshot. Capture before the Work page can ship as designed.
+## 2. Screenshot capture recipe
 
 ```
 viewport:     1440 × 900, dpr 2  → 2880 × 1800 source
@@ -188,49 +134,7 @@ deliberate.
 
 ---
 
-## 4. Build order
-
-Sequenced so nothing is blocked behind unfinished content.
-
-### Phase 1 — foundations *(no content needed)*
-1. Astro scaffold, `tokens.css` pasted from foundations §7
-2. Font pipeline + preload
-3. `base.css`, `type.css`, the `--t-read` prose styles
-4. `Base.astro` with skip link, `sr-only` h1 pattern, reduced-motion block
-
-### Phase 2 — the wordmark *(unblocks hero and footer)*
-5. **The wordmark SVG already exists** — `raw-assets/wordmark/farul-ivan-300.svg`,
-   generated from the real font with the scripts beside it. Copy it in; do not
-   redraw it.
-6. `Wordmark.astro` with three variants, ghost + wipe-masked draw layer
-7. M1 wipe reveal + reduced-motion + session flag
-8. ~~Verify the crop~~ — **resolved during design.** `width: 81.36%; right: -1.36%`,
-   one value at every breakpoint. Rendered and measured at 375 / 768 / 1200: left
-   edge 20.00%, cut at 95.47%, every time. See
-   [wordmark.md §4](wordmark.md).
-
-### Phase 3 — chrome
-9. `Nav.astro` + `Pill.astro` (all five states)
-10. `MenuCard.astro` — identical across breakpoints, focus trap, Escape
-11. `Footer.astro`
-
-### Phase 4 — content components
-12. `SectionHeader`, `DataTable`, `CtaBox`
-13. `ProjectRow` — **both variants**, C5b first so the list works without images
-14. `TimelineRow`, `StackBand`
-
-### Phase 5 — pages
-15. Home, Work index, About, Contact
-16. `work/[slug]`, `writing/[slug]`, Writing index
-
-### Phase 6 — motion + polish
-17. M2 cell dissolve, M3 scroll reveals
-18. Full reduced-motion pass
-19. Accessibility audit against foundations §8
-
----
-
-## 5. Definition of done
+## 3. Definition of done
 
 Per component:
 
@@ -250,7 +154,7 @@ Per page:
 
 ---
 
-## 6. Watch list
+## 4. Watch list
 
 Things most likely to go wrong:
 
@@ -266,22 +170,3 @@ Things most likely to go wrong:
 | **The mobile menu becoming a different component.** | Same fill, radius, padding, type size, weight, tracking and tilt. Only width and anchor change. |
 | **The footer wordmark animating.** | It is static. One draw per visit. |
 | **Smooth-scroll libraries.** Tempting, and never worth it. | Native scrolling. See motion.md M6. |
-
----
-
-## 7. Open items
-
-**Blocked on content I still owe** — the full list is in
-[pages.md](pages.md#content-farul-needs-to-supply). The critical path is the
-positioning sentence, three featured projects with outcomes, and the CV.
-
-**Resolved during design, no longer open:** the crop geometry and the draw
-technique were both prototyped against the real font. See the Phase 2 notes.
-
-**Deliberately deferred:**
-
-- Dark mode. The system has `--surface-invert` and `--ink-invert` so it is
-  reachable, but a full dark palette needs the lime scale re-checked against dark
-  grounds — lime-400 and 500 both pass as text on `#0A0A0A` (11.48 and 9.60), so
-  the foundation exists when we want it.
-- Analytics, OG image generation, RSS for Writing.
