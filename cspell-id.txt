@@ -2,9 +2,12 @@
 # (-nya, di-, ter-) that appear in translated UI copy and content.
 # Translators extend this file rather than cspell.json.
 aksesibel
+aksinya
 alternatifnya
 angkanya
 animasinya
+aplikasinya
+berasumsi
 berisiko
 bersertifikat
 celahnya
@@ -14,12 +17,19 @@ desainnya
 deskripsinya
 detailnya
 deterministik
+dialognya
+dicek
 dicermati
 didaftar
+difilter
+diketik
+diklik
 dipindah
+dirusak
 disengaja
 ditelusuri
 duluan
+filternya
 fiturnya
 grafiknya
 halamannya
@@ -29,6 +39,7 @@ infrastrukturmu
 Inggrisnya
 intinya
 jaraknya
+kartunya
 kasusnya
 kodemu
 kodenya
@@ -42,6 +53,7 @@ letaknya
 logikanya
 mekanismenya
 memorinya
+menagihnya
 mengelolanya
 mengotomatisasi
 migrasinya
