@@ -38,6 +38,10 @@ A long index. Every section is a teaser that leads somewhere.
 Lime appears exactly once, and black exactly once, both at the end where the page
 is asking for something. Colour is a signal here, not decoration.
 
+> **Changed after launch: four selected projects.** Roomflow joined in
+> November 2026 as the second featured project, so Selected work shows four
+> rows rather than the three in the table above.
+
 **Changed during build.** A separate contact band sat between the lime one and
 the footer, on its own black field. The footer became a black field after these
 specs were written and already carries the email and the CV, so that band put two
@@ -145,6 +149,10 @@ columns: NN · PROJECT · ROLE · STACK · YEAR
 
 Table first, then featured rows — an employer scanning for a specific technology
 finds it in the table; someone browsing gets the visual rows.
+
+> **Changed after launch: four featured rows, and no NN column.** The featured
+> rows are the same four as on the home page. The table starts on the project,
+> for the reason given under the project row in [components.md](components.md).
 
 ### `/work/[slug]` — case study
 
