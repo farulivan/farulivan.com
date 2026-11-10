@@ -102,9 +102,9 @@ dalam dialog itu sendiri, dan tetap menyimpan alasan yang sudah diketik, jadi
 tidak ada yang perlu menulisnya ulang.
 
 Optimistic update pada dasarnya berasumsi server akan setuju, jadi saya hanya
-memakainya untuk aksi yang rollback-nya murah. Kedua behavior ini punya test:
-rollback hanya memulihkan pesanan yang gagal, dan aksi yang butuh konfirmasi
-tidak menyentuh cache sampai server merespons.
+memakainya untuk aksi yang dampaknya kecil kalau ternyata harus di-rollback.
+Kedua behavior ini punya test: rollback hanya memulihkan pesanan yang gagal, dan
+aksi yang butuh konfirmasi tidak menyentuh cache sampai server merespons.
 
 ## Kartu ditolak, pesanan tetap diantar
 
