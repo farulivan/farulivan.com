@@ -2,47 +2,9 @@
 
 <!-- cspell:ignore Tersalin udah -->
 
-The November 2026 design review is built and merged. What is left is the
-words: a review of every line on the site, in both languages, and the
-Indonesian that was never written.
-
-This page is the brief for that work. It holds the prompt I start the copy
-session with, where every piece of copy lives, the limits the design puts on
-it, the voice each language is written in, and the list of what is missing in
-Indonesian.
-
-## The prompt
-
-```text
-Act as a senior copywriter for this repository: my portfolio, which I use to
-find frontend and full-stack roles. Review and improve every piece of copy on
-the site, in English and Indonesian, and write the Indonesian that is missing.
-
-- Read AGENTS.md, then docs/design/copy-handoff.md. The second holds the
-  design limits the copy has to fit, where every string lives, and the list
-  of missing Indonesian.
-- Start with an audit, not edits. Go through the site page by page (home,
-  work and each case study, about, writing and each post, contact, the 404,
-  and the link-preview cards) and list what you would change and why,
-  grouped by page. Stop there and let me choose what to do.
-- The voice is mine, in the first person. Never invent a fact, a number, a
-  client, a date or a result. When a line needs a fact I have not given, ask
-  me. The figures (3,000+ investors, 100+ pages, 600+ tests and the rest) are
-  mine to change, not yours.
-- One concern per PR, branched from main: for example the English copy of
-  one page, or the Indonesian story of one case study. Stop after each PR so
-  I can review it before you start the next.
-- English first, then Indonesian. The Indonesian should read as if an
-  Indonesian engineer wrote it, not as a word-for-word translation. Terms
-  engineers here say in English (frontend, deploy, pull request, codebase)
-  stay in English.
-- Commits, PR titles and PR bodies are in my voice too, in the first person.
-- Run `pnpm verify` on every PR. It checks the length limits and the spelling
-  in both languages. Then ask me for a visual review of the pages the PR
-  touches. Do not run Lighthouse locally; CI runs it after merge.
-- Stay in copy. Layout, type, colour and code are out of scope. If a better
-  line needs a design change, say so and leave the change to me.
-```
+Where every piece of copy lives, the limits the design puts on it, and the
+voice each language is written in. Read it before changing any copy, in
+either language.
 
 ## Where the copy lives
 

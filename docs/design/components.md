@@ -211,9 +211,8 @@ separator:   1px --rule between rows, full bleed
 
 ### C5b · No-image variant
 
-Required — some work is NDA-private, and screenshots are being captured (see
-[handover.md](handover.md)), so the list must stay coherent while images are
-missing.
+Required — some work is NDA-private, so the list must stay coherent when a
+project has no images.
 
 The image cell is replaced by a **type block on `--surface`** at the same aspect
 ratio: project name at `--t-display-s`, stack list at `--t-label` beneath. Same

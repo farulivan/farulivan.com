@@ -327,20 +327,3 @@ Three breakpoints. Below `768px` everything is one column.
 
 The `--page-margin` and the full-bleed treatments are preserved at every
 breakpoint. That is what keeps the poster feeling on a phone.
-
----
-
-## Content I need to supply
-
-Blocking the build. Tracked in [handover.md](handover.md).
-
-- [ ] Positioning sentence (Home §2) and the nav descriptor line
-- [ ] 3 featured projects — name, role, team size, duration, stack, problem, what was built, **outcome**
-- [ ] Full project list for the Work table
-- [ ] Bio, 3–4 paragraphs
-- [ ] Experience: year, role, company, 2 lines each
-- [ ] Capabilities, grouped by domain
-- [ ] CV as PDF
-- [ ] Portrait photograph
-- [ ] Project screenshots — **capture recipe in handover.md**
-- [ ] At least 2 posts before Writing ships publicly

@@ -18,13 +18,12 @@ Read in this order.
 | Doc | What it settles |
 |---|---|
 | **[foundations.md](foundations.md)** | Tokens — colour, type, space, grid, radius, motion primitives — as paste-ready CSS. Includes the accessibility floor. |
-| **[wordmark.md](wordmark.md)** | How `farul.ivan` is generated from Lexend, the crop rule, the three variants. Unblocks the hero and footer. |
+| **[wordmark.md](wordmark.md)** | How `farul.ivan` is generated from Lexend, the crop rule, the three variants. |
 | **[motion.md](motion.md)** | The five animations with real durations, stagger and easing, each with a reduced-motion path. |
 | **[components.md](components.md)** | C1–C10: anatomy, all five states, responsive, a11y. |
-| **[pages.md](pages.md)** | Section order and layout per page, plus the content I still owe. |
-| **[handover.md](handover.md)** | Build order, Astro structure, screenshot recipe, definition of done, watch list. |
-| **[review-2026-11.md](review-2026-11.md)** | Design review of the built site, November 2026: what to change next, in priority order, and which specs it overrides. Read before starting new UI work. |
-| **[copy-handoff.md](copy-handoff.md)** | The brief for the copy review: the prompt that starts it, where the copy lives, the limits the design sets on it, and the Indonesian still missing. Read before changing any copy. |
+| **[pages.md](pages.md)** | Section order and layout per page. |
+| **[handover.md](handover.md)** | Font pipeline, screenshot recipe, definition of done, watch list. |
+| **[copy-handoff.md](copy-handoff.md)** | Where the copy lives, the limits the design sets on it, and the voice in each language. Read before changing any copy. |
 
 ---
 
@@ -41,6 +40,23 @@ Read in this order.
 stroke-draw needs a monoline letterform. Lexend is verified monoline at `wght`
 100–300 and loses it above 600. That forces the wordmark light, and the rest of
 the system follows it down. Full reasoning in [foundations.md](foundations.md).
+
+---
+
+## Do not change
+
+These are what the site gets right. Read this before starting new UI work.
+
+- The token system in `src/styles/global.css`, the lime rule, and the
+  Lighthouse accessibility budget at exactly 1.00.
+- The opening screen that writes the signature: once per visit, never blocks,
+  cannot strand the page.
+- The footer's full-bleed static wordmark on black. The best poster moment on
+  the site.
+- The tilted menu card, the hairline tables, and lime used once per page.
+- Case-study and post prose at 17px / 1.6 in a measured column, and the honest,
+  specific voice.
+- The radius rule: controls fully round, panels 16px, structure square.
 
 ---
 
@@ -64,6 +80,3 @@ Not gaps — decisions taken to leave for later.
   against dark grounds. Lime-400 and 500 both pass as text on `#0A0A0A` (11.48
   and 9.60), so the foundation exists when we want it.
 - Analytics, RSS for Writing.
-
-OG images left this list in the November 2026 review. Each page now gets a
-1200×630 card drawn at build time; see `src/lib/og.ts`.
