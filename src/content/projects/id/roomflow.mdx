@@ -89,9 +89,9 @@ jadi API tidak pernah memberi petunjuk soal data hotel lain.
 
 ## Optimistic, kecuali yang tidak bisa di-undo
 
-Begitu Acknowledge, Start, atau Complete diklik, perubahannya langsung terlihat
-di layar. Staf melakukannya sepanjang hari dan aksinya mudah di-retry, jadi
-menunggu respons server di setiap klik hanya memperlambat pekerjaan tanpa
+Begitu Acknowledge, Approve, Start, atau Complete diklik, perubahannya langsung
+terlihat di layar. Staf melakukannya sepanjang hari dan aksinya mudah di-retry,
+jadi menunggu respons server di setiap klik hanya memperlambat pekerjaan tanpa
 alasan. Kalau server menolak, hanya pesanan itu yang di-rollback. Perubahan di
 pesanan lain yang dibuat di sela-sela itu tetap aman, dan sebuah toast memberi
 tahu perubahan mana yang dikembalikan.
