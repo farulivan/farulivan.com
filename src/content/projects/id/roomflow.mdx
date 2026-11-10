@@ -2,7 +2,7 @@
 lang: "id"
 translationKey: "roomflow"
 title: "Roomflow"
-summary: "Dashboard permintaan tamu untuk staf hotel, dan keputusan state di baliknya: apa yang langsung berubah, apa yang menunggu server, dan apa yang aman saat gagal."
+summary: "Dashboard permintaan tamu untuk staf hotel, dan keputusan state di baliknya: apa yang langsung berubah, apa yang menunggu server, dan apa yang utuh saat error."
 year: 2026
 role: "Solo: desain, build, deploy"
 stack:
@@ -48,8 +48,8 @@ itulah sebabnya dashboard hotel ini tidak punya hotel sungguhan di baliknya.
 Harborline Hotel, Cedarfall Lodge, dan Saltmarsh House hanya rekaan, begitu
 juga semua tamunya.
 
-Hotel switcher membatasi semua tampilan ke satu properti. Hotel yang dipilih
-juga tercatat di URL, sehingga link yang dibagikan selalu membuka hotel yang
+Dengan hotel switcher, semua tampilan hanya menampilkan data satu hotel. Hotel
+yang dipilih juga tercatat di URL, sehingga link yang dibagikan selalu membuka hotel yang
 tepat.
 
 Untuk mencobanya, masuk saja lewat "Use demo account". API-nya berupa mock
@@ -78,8 +78,8 @@ Untuk enam status, library state machine tidak diperlukan. Typed record sudah
 cukup.
 
 Mock server juga memakai fungsi domain yang sama untuk memfilter pesanan dan
-menghitung metrik dashboard, jadi UI dan API tidak mungkin berbeda pendapat
-soal pesanan mana yang cocok dengan sebuah filter, atau apa saja yang dihitung
+menghitung metrik dashboard, jadi hasil UI dan API selalu sama, baik soal
+pesanan mana yang cocok dengan sebuah filter maupun apa saja yang dihitung
 sebagai pendapatan.
 
 Data tiap hotel juga dipisahkan, baik di UI maupun di API. Hotel selalu jadi
@@ -114,12 +114,12 @@ berbeda. Pengecekan tagihan sudah dilakukan saat pesanan dicatat, dan kartu
 yang ditolak jadi urusan front desk. Membuat tamu menunggu sampai makanannya
 dingin demi tagihan $40 justru lebih buruk.
 
-Jadi pembayaran yang gagal tidak pernah menahan layanan. Yang dipastikan
-aplikasinya adalah tidak ada staf yang mengambil pesanan itu tanpa tahu
-masalahnya. Saat pesanan dengan kartu yang ditolak di-acknowledge atau
+Jadi pembayaran yang gagal tidak pernah menahan layanan. Sebagai gantinya,
+aplikasinya memastikan staf yang mengambil pesanan itu tahu ada masalah
+pembayaran. Saat pesanan dengan kartu yang ditolak di-acknowledge atau
 di-approve, aplikasinya meminta konfirmasi sekali, dan setiap langkah
 setelahnya tetap cukup satu klik. Drawer pesanan menjelaskan apa yang perlu
-dilakukan dengan bahasa staf sendiri: tagih saat pesanan diantar, atau front
+dilakukan dengan bahasa yang biasa dipakai staf: tagih saat pesanan diantar, atau front
 desk yang akan menagihnya sebelum checkout.
 
 "Mark payment collected", yang ada di menu setiap baris dan di drawer pesanan,
@@ -155,8 +155,8 @@ satu per satu, bukan setiap ketikan.
 
 ## Dibangun untuk sengaja dirusak
 
-Dashboard apa pun terlihat baik-baik saja di koneksi yang cepat dengan API yang
-sehat. Lewat demo controls di header, kedua kondisi itu bisa dihilangkan:
+Dashboard apa pun terlihat baik-baik saja di koneksi yang cepat dan API yang
+lancar. Lewat demo controls di header, kedua kondisi itu bisa dihilangkan:
 jaringan yang lambat, sekitar 2 detik per request; API yang gagal di setiap
 request; dan tombol untuk mengirim pesanan baru kapan saja.
 
@@ -174,8 +174,8 @@ Datanya tetap tampil, disertai keterangan kapan terakhir diperbarui dan tombol
 untuk mencoba lagi.
 
 Mock-nya memakai MSW, yang berjalan di network boundary lewat service worker,
-jadi aplikasinya melakukan `fetch` sungguhan, persis seperti saat terhubung ke
-backend asli. Menggantinya dengan backend sungguhan cukup empat langkah, tanpa
+jadi aplikasinya melakukan `fetch` yang nyata, persis seperti saat terhubung ke
+backend asli. Untuk beralih ke backend sungguhan, cukup empat langkah, tanpa
 mengubah query hook, komponen, maupun domain-nya.
 
 Ada beberapa hal yang sengaja tidak saya pakai. Tidak ada library global state,
