@@ -1,0 +1,89 @@
+---
+lang: "en"
+translationKey: "which-clicks-get-to-be-optimistic"
+title: "Which clicks get to be optimistic"
+description: "Why some buttons on a hotel dashboard change before the server answers and others wait, and why a failure rolls back one order, not the cache."
+pubDate: 2026-11-10
+tags: ["frontend", "trade-offs"]
+draft: false
+---
+
+Every button that changes something on a server has to pick one of two
+behaviors. Show the result now and hope the server agrees, or wait for the
+server and show a spinner in the meantime.
+
+The first is an optimistic update, and it's a guess. Most of the time the
+guess is right and the interface feels instant. Sometimes it's wrong, and then
+the screen has to take back something it already showed. Whether a button
+should guess comes down to one question: what does a wrong guess cost the
+person who clicked?
+
+## Cheap to be wrong about
+
+Roomflow is a dashboard where hotel staff work through guest requests. An
+order moves from New to Acknowledged, then to In Progress, then to Completed,
+with a button for each step. Staff press those buttons all day.
+
+If one of them fails, the order goes back to its old status, a toast says
+"The change was reverted", and the person clicks again. That's the whole cost.
+Making every click wait for a round trip, on the other hand, costs a spinner
+on every step of every order, for the whole shift.
+
+So Acknowledge, Approve, Start and Complete are optimistic. A wrong guess is
+rare, visible and fixed with a second click.
+
+## Expensive to be wrong about
+
+Cancel and Reject are different. They end an order, they can't be undone, and
+each carries a reason the person typed.
+
+Imagine one optimistically. The row shows Cancelled, the person moves on, maybe
+tells the guest, and a second later the order comes back. A wrong guess here
+costs a guest who was told one thing while the system says another.
+
+These two wait. The dialog that asked for the reason stays open with a spinner
+until the server answers. If it fails, the error appears inside the dialog and
+the typed reason is still there. The person was already looking at a dialog,
+so waiting a moment longer costs almost nothing.
+
+## The line moves with the order
+
+The split isn't fixed per button. Acknowledging an order whose card was
+declined asks first, so the person knows the front desk still has to collect.
+Once an action asks, it waits too.
+
+Both behaviors come from one flag. Each action in the domain carries a
+`confirm` field, and the mutation reads it:
+
+```ts
+onMutate: async ({ order, action }) => {
+  if (action.confirm) return
+  await queryClient.cancelQueries({ queryKey: ordersKeys.all(order.hotelId) })
+  writeOrder(queryClient, { ...order, status: action.to })
+},
+```
+
+If an action asks for confirmation, it doesn't guess. Whether it asks depends
+on the order, so the same Acknowledge button is optimistic on one row and not
+on the next.
+
+## Roll back one order, not the cache
+
+The usual recipe for an optimistic update takes a snapshot of the cached list
+before the change and puts the snapshot back if the request fails.
+
+On a busy dashboard, that snapshot is out of date by the time it's needed.
+While the first request was in flight, the same person may have started a
+second order. Restoring the old list would undo that change as well, and the
+only thing that failed was the first one.
+
+So a failure writes back only the order that failed, in its state from before
+the click. Every other change survives. Once the request settles, the hotel's
+lists refetch, so the screen ends up matching the server either way.
+
+Three tests hold this in place. An optimistic action shows at once and rolls
+back only its own order. A confirmed action leaves the cache alone until the
+server answers. And a failed confirmed action has nothing to undo.
+
+An optimistic update is a promise the server hasn't made yet. I make it where
+breaking it costs a second click, and not where it costs a guest.
