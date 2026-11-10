@@ -7,6 +7,7 @@ alternatifnya
 angkanya
 animasinya
 aplikasinya
+barisnya
 berasumsi
 berisiko
 bersertifikat
@@ -45,6 +46,7 @@ kodemu
 kodenya
 komitkan
 komponennya
+kondisinya
 konsekuensinya
 kontraknya
 kontrasnya
@@ -55,13 +57,16 @@ mekanismenya
 memorinya
 menagihnya
 mengelolanya
+mengklik
 mengotomatisasi
 migrasinya
 pengingat
 pengingatnya
 ponselmu
 produknya
+ruginya
 sanalah
+sedetik
 selisihnya
 semenit
 setelahnya
@@ -73,6 +78,7 @@ studionya
 tahapnya
 teleponnya
 terindeks
+terkonfirmasi
 tersendat
 Tersertifikasi
 terukur

@@ -1,0 +1,98 @@
+---
+lang: "id"
+translationKey: "which-clicks-get-to-be-optimistic"
+title: "Tombol mana yang boleh optimistic"
+description: "Kenapa sebagian tombol di dashboard hotel langsung berubah sebelum server merespons sementara yang lain menunggu, dan kenapa rollback-nya cukup satu pesanan."
+pubDate: 2026-11-10
+tags: ["frontend", "trade-offs"]
+draft: false
+---
+
+Setiap tombol yang mengubah data di server harus memilih satu dari dua cara.
+Langsung menampilkan hasilnya dan berharap server setuju, atau menunggu server
+dan menampilkan spinner selama itu.
+
+Cara pertama disebut optimistic update, dan pada dasarnya itu tebakan.
+Sebagian besar waktu tebakannya benar, dan UI terasa instan. Sesekali
+tebakannya salah, dan layar harus menarik kembali sesuatu yang sudah telanjur
+ditampilkan. Jadi, boleh tidaknya sebuah tombol menebak bergantung pada satu
+pertanyaan: kalau tebakannya salah, apa akibatnya bagi orang yang mengklik?
+
+## Kalau salah, dampaknya kecil
+
+Roomflow adalah dashboard tempat staf hotel menangani permintaan tamu. Pesanan
+bergerak dari New ke Acknowledged, lalu ke In Progress, lalu ke Completed,
+dengan satu tombol untuk setiap langkah. Staf menekan tombol-tombol itu
+sepanjang hari.
+
+Kalau salah satunya gagal, pesanan kembali ke status sebelumnya, toast
+menampilkan "The change was reverted", dan stafnya tinggal klik sekali lagi.
+Hanya itu dampaknya. Sebaliknya, kalau setiap klik harus menunggu respons
+server, ada spinner di setiap langkah, di setiap pesanan, sepanjang shift.
+
+Karena itu Acknowledge, Approve, Start, dan Complete dibuat optimistic. Tebakan
+yang salah jarang terjadi, langsung terlihat, dan cukup diperbaiki dengan satu
+klik lagi.
+
+## Kalau salah, dampaknya besar
+
+Cancel dan Reject berbeda. Keduanya mengakhiri pesanan, tidak bisa di-undo,
+dan masing-masing membawa alasan yang sudah diketik.
+
+Bayangkan kalau salah satunya dibuat optimistic. Barisnya langsung menampilkan
+Cancelled, stafnya lanjut ke pekerjaan lain, mungkin sudah sempat memberi tahu
+tamunya, lalu sedetik kemudian pesanan itu muncul lagi. Di sini, tebakan yang
+salah berarti tamu sudah diberi tahu satu hal, sementara sistem mencatat hal
+lain.
+
+Jadi keduanya menunggu. Dialog yang meminta alasan tetap terbuka dengan spinner
+sampai server merespons. Kalau gagal, error-nya muncul di dalam dialog itu, dan
+alasan yang sudah diketik masih ada. Staf memang sedang melihat dialog, jadi
+menunggu sedikit lebih lama hampir tidak ada ruginya.
+
+## Batasnya ikut berubah sesuai pesanan
+
+Pembagian ini tidak tetap per tombol. Acknowledge pada pesanan yang kartunya
+ditolak akan meminta konfirmasi dulu, supaya staf tahu front desk masih harus
+menagihnya. Begitu sebuah aksi meminta konfirmasi, aksi itu juga ikut menunggu
+server.
+
+Kedua behavior ini berasal dari satu flag. Setiap aksi di domain punya field
+`confirm`, dan mutation-nya membaca field itu:
+
+```ts
+onMutate: async ({ order, action }) => {
+  if (action.confirm) return
+  await queryClient.cancelQueries({ queryKey: ordersKeys.all(order.hotelId) })
+  writeOrder(queryClient, { ...order, status: action.to })
+},
+```
+
+Aksi yang meminta konfirmasi tidak menebak. Apakah sebuah aksi meminta
+konfirmasi bergantung pada pesanannya, jadi tombol Acknowledge yang sama bisa
+optimistic di satu baris dan tidak di baris berikutnya.
+
+## Rollback satu pesanan, bukan seluruh cache
+
+Cara yang biasa dipakai untuk optimistic update adalah menyimpan snapshot list
+di cache sebelum perubahan, lalu mengembalikan snapshot itu kalau request-nya
+gagal.
+
+Di dashboard yang sibuk, snapshot itu sudah tidak akurat lagi saat dibutuhkan.
+Selama request pertama masih berjalan, staf yang sama mungkin sudah mengubah
+pesanan kedua. Mengembalikan list yang lama akan ikut membatalkan perubahan
+itu, padahal yang gagal hanya request pertama.
+
+Karena itu, saat ada yang gagal, yang dikembalikan hanya pesanan itu, ke
+kondisinya sebelum diklik. Perubahan lainnya tetap aman. Setelah request-nya
+selesai, list hotel itu di-refetch, jadi apa pun hasilnya, layar akhirnya sama
+dengan data di server.
+
+Ada tiga test yang menjaga behavior ini. Aksi optimistic langsung tampil dan
+hanya me-rollback pesanannya sendiri. Aksi yang butuh konfirmasi tidak
+menyentuh cache sampai server merespons. Dan aksi terkonfirmasi yang gagal
+tidak meninggalkan apa pun untuk dibatalkan.
+
+Optimistic update itu seperti berjanji atas nama server, padahal server-nya
+belum setuju. Saya hanya berani melakukannya kalau, saat janjinya meleset,
+akibatnya cuma satu klik tambahan, bukan tamu yang dirugikan.
