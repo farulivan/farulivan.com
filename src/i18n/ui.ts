@@ -250,7 +250,7 @@ export const id: Record<TranslationKey, string> = {
   "home.writingLabel": "Tulisan",
   "og.caseStudy": "Studi kasus",
   "home.writingDescription":
-    "Keputusan teknis yang pernah saya ambil, dan harga yang harus dibayar untuk masing-masing.",
+    "Keputusan teknis yang pernah saya ambil, dan trade-off di balik masing-masing.",
   "home.writingCta": "Baca semua tulisan",
 
   "writing.allLabel": "Semua tulisan",

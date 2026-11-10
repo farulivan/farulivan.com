@@ -59,9 +59,9 @@ hilang sepenuhnya dari output. Tapi keduanya tidak lagi bisa saling di-assign,
 jadi baris yang terus saya tulis itu sekarang langsung jadi type error saat saya
 menulisnya, di editor, sebelum kodenya sempat dijalankan.
 
-## Harganya
+## Trade-off-nya
 
-Branded type tidak gratis, dan harganya dibayar di batas-batas sistem. Setiap
+Branded type juga punya trade-off, dan letaknya di batas-batas sistem. Setiap
 nilai yang datang dari luar, entah row database atau payload webhook, adalah
 `string` tanpa brand. Jadi harus ada satu tempat yang sengaja disiapkan untuk
 mengecek dan mengonversinya:
@@ -76,9 +76,9 @@ export function toWaUserId(value: string): WaUserId {
 Itu satu-satunya `as` yang dibutuhkan setiap tipe, dan itu tidak masalah,
 karena letaknya di fungsi yang memang khusus dibuat untuk pengecekan itu.
 
-Satu fungsi seperti itu untuk setiap jenis identifier, dan semua kode
-sesudahnya aman tanpa perlu dipikirkan lagi. Cara ini sepadan kalau nilai yang
-tertukar tidak memunculkan error dan akibatnya mahal: ID, jumlah uang, apa pun
-yang bentuknya sama tapi artinya berbeda. Tapi tidak sepadan untuk nilai yang
+Satu fungsi seperti itu untuk setiap jenis identifier, dan semua kode sesudahnya
+aman tanpa perlu dipikirkan lagi. Cara ini sepadan kalau nilai yang tertukar
+tidak memunculkan error dan akibatnya serius: ID, jumlah uang, apa pun yang
+bentuknya sama tapi artinya berbeda. Tapi tidak sepadan untuk nilai yang
 langsung error begitu dipakai. Bug yang langsung ketahuan tidak butuh bantuan
 compiler.
