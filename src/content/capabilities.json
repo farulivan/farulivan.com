@@ -8,6 +8,8 @@
     "items": [
       "React",
       "Next.js (App Router)",
+      "React Router",
+      "TanStack Query",
       "TypeScript",
       "Tailwind CSS",
       "shadcn/ui",
@@ -69,6 +71,8 @@
     "items": [
       "React",
       "Next.js (App Router)",
+      "React Router",
+      "TanStack Query",
       "TypeScript",
       "Tailwind CSS",
       "shadcn/ui",
