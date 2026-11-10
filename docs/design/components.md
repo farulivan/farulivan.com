@@ -366,6 +366,12 @@ stagger is the pattern.
 > `--t-label` heading, "Before software". Experience entries carry a
 > `beforeSoftware` flag for it.
 
+> **Changed after launch: a current role runs to this year.** Its span used
+> to end on a bare dash, "2026–", which read as cut off at display size. It now
+> ends on the year the site was built: "2026" for a role that started this
+> year, "2023–26" for one that started earlier. The months line still says
+> "Present".
+
 > **Changed after launch: no index.** The small 01, 02, 03 after each span
 > read as a ranking or a footnote, not as a place in a list, and the dates
 > already give the order. The row now shows the span and its months only. The

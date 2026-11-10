@@ -113,12 +113,22 @@ const monthName = (value: string, lang: Locale) => {
   return dateFormatter(lang, { month: "short" }, "month").format(date)
 }
 
-/** "2023–26", or "2021" for a single point. The scannable half. */
-export function formatYears({ start, end, ongoing }: Period): string {
+/**
+ * "2023–26", or "2021" for a single point. The scannable half.
+ *
+ * A role that is still going runs to the current year: one that started this
+ * year is just "2026", and one from 2023 is "2023–26". It used to stop on a
+ * bare dash, "2026–", which at display size looked like something had been cut
+ * off. The months line underneath is what says "Present". The year is the one
+ * the site was built in, so it moves on with the first deploy of a new year.
+ */
+export function formatYears(
+  { start, end, ongoing }: Period,
+  now: Date = new Date()
+): string {
   const from = start.slice(0, 4)
-  if (ongoing) return `${from}–`
-  if (!end) return from
-  const to = end.slice(0, 4)
+  const to = ongoing ? String(now.getFullYear()) : end?.slice(0, 4)
+  if (!to) return from
   // An en dash and the last two digits: "2023–26" reads as one span where
   // "2023–2026" reads as two numbers that happen to be next to each other.
   return from === to ? from : `${from}–${to.slice(2)}`

@@ -7,6 +7,6 @@ end: "2016"
 role: "Sarjana Arsitektur"
 company: "Universitas Indonesia"
 description: "Lima tahun kuliah arsitektur yang membentuk kebiasaan saya: “form follows function”, dan desain harus menyampaikan idenya dengan jelas."
-order: 7
+order: 8
 beforeSoftware: true
 ---

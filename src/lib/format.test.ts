@@ -86,8 +86,12 @@ describe("formatYears", () => {
     expect(formatYears({ start: "2021" })).toBe("2021")
   })
 
-  it("leaves a current role open-ended", () => {
-    expect(formatYears({ start: "2023-02", ongoing: true })).toBe("2023–")
+  it("runs a current role to this year, never to a bare dash", () => {
+    const now = new Date(2026, 10, 10, 12)
+    expect(formatYears({ start: "2026-01", ongoing: true }, now)).toBe("2026")
+    expect(formatYears({ start: "2023-02", ongoing: true }, now)).toBe(
+      "2023–26"
+    )
   })
 })
 
