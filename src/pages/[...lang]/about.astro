@@ -45,7 +45,7 @@ const capabilities = await getCapabilities(lang)
 /*
  * The career in two chapters: the software work, then what came before it,
  * under a small heading of its own. Each row keeps its place in the whole
- * list, so the staircase and the counters run on across the turn.
+ * list, so the staircase runs on across the turn.
  */
 const roles = experience.map((item, step) => ({ ...item, step }))
 const turn = roles.findIndex(({ entry }) => entry.data.beforeSoftware)

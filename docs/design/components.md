@@ -366,6 +366,14 @@ stagger is the pattern.
 > `--t-label` heading, "Before software". Experience entries carry a
 > `beforeSoftware` flag for it.
 
+> **Changed after launch: no index.** The small 01, 02, 03 after each span
+> read as a ranking or a footnote, not as a place in a list, and the dates
+> already give the order. The row now shows the span and its months only. The
+> step still counts from the top, so the staircase is unchanged. The contents
+> list on case studies and posts lost its numbers at the same time, and the
+> project rows had already lost theirs, so nothing on the site is numbered
+> for decoration.
+
 ---
 
 ## C9 · Tech stack band

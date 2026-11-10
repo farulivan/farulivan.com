@@ -33,12 +33,13 @@ const sections = headings.filter((heading) => heading.depth === 2)
       </h2>
 
       {/*
-       * Numbered, because the sections of a piece are a sequence and not a
-       * menu — they are meant to be read in order, and the numbers say so
-       * without anybody having to.
+       * An ordered list, because the sections of a piece are a sequence and
+       * not a menu, and a screen reader says so. Nothing is printed beside
+       * each entry: a 01, 02, 03 there read as a ranking, the same mistake
+       * the project rows and the timeline made. The list's order is enough.
        */}
       <ol class="mt-5 flex list-none flex-col gap-1 p-0">
-        {sections.map((section, index) => (
+        {sections.map((section) => (
           <li class="m-0">
             {/*
              * Tall enough to be a target on a phone even though the line of
@@ -47,11 +48,8 @@ const sections = headings.filter((heading) => heading.depth === 2)
              */}
             <a
               href={`#${section.slug}`}
-              class="text-read text-ink min-h-tap group/section flex items-center gap-3 py-1 no-underline"
+              class="text-read text-ink min-h-tap group/section flex items-center py-1 no-underline"
             >
-              <span class="text-micro text-section-muted flex-none">
-                {String(index + 1).padStart(2, "0")}
-              </span>
               <span class="group-hover/section:underline group-hover/section:underline-offset-4">
                 {section.text}
               </span>

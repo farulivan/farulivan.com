@@ -103,34 +103,23 @@ const indent =
 >
   <div class="md:gap-gutter grid gap-4 py-7 md:grid-cols-12">
     <div class="md:col-span-6" style={`padding-inline-start: ${indent}`}>
-      <p class="m-0 flex items-baseline gap-2">
-        {
-          /*
-           * A step below the page title. A span is nearly twice as wide as the
-           * single year this used to show, and at the largest size it ran out
-           * of column somewhere around a laptop screen and broke in half.
-           *
-           * It does not break now at any width the site is checked at, but a
-           * date split over two lines is wrong in a way no size guarantees, so
-           * the span is told never to wrap.
-           */
-        }
-        <span class="text-display-m font-display whitespace-nowrap">
-          {years}
-        </span>
-        {
-          /*
-           * The counter is decoration: the dates already say the order, and a
-           * screen reader announcing "zero one" before each one would be
-           * reading out the furniture.
-           */
-        }
-        <span
-          class="text-micro text-section-muted uppercase"
-          aria-hidden="true"
-        >
-          {String(step + 1).padStart(2, "0")}
-        </span>
+      {
+        /*
+         * A step below the page title. A span is nearly twice as wide as the
+         * single year this used to show, and at the largest size it ran out
+         * of column somewhere around a laptop screen and broke in half.
+         *
+         * It does not break now at any width the site is checked at, but a
+         * date split over two lines is wrong in a way no size guarantees, so
+         * the span is told never to wrap.
+         *
+         * Nothing sits beside it. A small counter did once, 01 for the latest
+         * role, and it read as a ranking or a footnote. The dates already
+         * give the order.
+         */
+      }
+      <p class="text-display-m font-display m-0 whitespace-nowrap">
+        {years}
       </p>
       {
         detail && (
