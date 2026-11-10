@@ -231,6 +231,9 @@ finds it in the table; someone browsing gets the visual rows.
 The staircase timeline is the centrepiece. Each row: year, index, role, company,
 and two lines on what shipped.
 
+> **Changed after launch: no index.** See the timeline row in
+> [components.md](components.md).
+
 > **Changed during build: the portrait is not full bleed.** It sits in the left
 > column under the standfirst, beside the bio, and above the bio on a phone. It
 > is a 4:5 crop, never more than 360px wide, in monochrome (greyscale, contrast
@@ -277,6 +280,11 @@ noise.
 > one column at the measure under its title. The meta line gives the published
 > date first and "Updated" second, and the topics are `--t-micro` uppercase
 > tags.
+
+> **Changed after launch: the contents are not numbered.** Each entry is the
+> heading alone. A 01, 02, 03 beside them read as a ranking, as it did on the
+> project rows and the timeline. The list is still an ordered list, so a
+> screen reader hears the sequence. The same goes for a case study's contents.
 
 ---
 
