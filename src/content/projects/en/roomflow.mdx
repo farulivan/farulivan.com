@@ -80,11 +80,11 @@ holds.
 
 ## Optimistic, except where it can't be
 
-Acknowledge, Start and Complete change on screen the moment they're clicked.
-Staff do them all day and they're easy to retry, so making each one wait for a
-round trip would slow the job down for nothing. If the server refuses, only
-that order goes back: a change made to another order in the meantime survives,
-and a toast says what was reverted.
+Acknowledge, Approve, Start and Complete change on screen the moment they're
+clicked. Staff do them all day and they're easy to retry, so making each one
+wait for a round trip would slow the job down for nothing. If the server
+refuses, only that order goes back: a change made to another order in the
+meantime survives, and a toast says what was reverted.
 
 Cancel and Reject can't be undone, so they don't pretend. The dialog waits for
 the server, shows a failure inside itself, and keeps the reason that was
