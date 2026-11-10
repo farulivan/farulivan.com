@@ -128,6 +128,28 @@ does not mean slang.
 - **English for what engineers here say in English:** frontend, backend,
   deploy, pull request, codebase, scheduler, test, review, outage,
   performance budget, end-to-end. Translating them reads like a textbook.
+- **A mixed sentence beats a stiff one.** When an action or idea comes out
+  awkward in Indonesian, keep the English word inside the Indonesian
+  sentence, the way engineers here talk: di-rollback, di-retry, behavior,
+  follow-up, request, approval, default. "Saya hanya memakainya untuk aksi
+  yang dampaknya kecil kalau ternyata harus di-rollback" reads naturally;
+  a fully Indonesian version of it doesn't.
+- **No money words for a trade-off.** English says a choice "costs" something,
+  that a fix is "cheap" or a mistake "expensive", and that you "pay" for a
+  decision. In Indonesian, harga, membayar, murah, mahal and selisih read as
+  translation. Name the thing itself: trade-off, konsekuensi, "dampaknya
+  kecil", "akibatnya serius", "lebih mudah dijawab".
+- **Rephrase English's generic "you".** "It changes what you build. You can't
+  ship…" becomes three "kamu" in two sentences if translated. Say it
+  impersonally instead ("Komponen tidak bisa dirilis dulu…"). Keep "kamu" for
+  the reader being addressed, as in the contact line.
+- **Things don't act like people.** English lets data "arrive", a limit "be
+  real", a token sit "one bug away" and a payment confirmation "choose".
+  Indonesian says what actually happens: "data dari API", "ada batas yang
+  jelas", "cukup satu bug untuk…", "untuk konfirmasi pembayaran, pilihannya…".
+- **Name the thing once the reader knows it.** If the paragraph before
+  introduced `localStorage` or an HttpOnly cookie, say "token di
+  `localStorage`", not "token yang bisa dibaca script apa pun".
 - **Indonesian number formatting** in Indonesian copy: 3.000+ and 0,8 GB. The
   values are the English ones.
 - **The same word for the same thing, on every page:**
@@ -136,12 +158,39 @@ does not mean slang.
   - "link", not "tautan".
   - "React biasa" for plain React, not "React vanilla".
   - "dirilis" for shipped ("Kedua frontend sudah dirilis"), not a bare "rilis".
-  - "harga" for what a decision costs, as the posts use it.
+  - "trade-off" for what a decision costs, never "harga".
+  - "terbaru" for the latest thing, not "terakhir", which can read as the
+    last one ever.
   - "Hak cipta dilindungi undang-undang" for "All rights reserved".
 - **One "keduanya", one "untuk" per sentence.** A second one usually means
   the sentence wants restructuring, not a synonym.
 - **The test for every line:** would an Indonesian engineer write it this
   way, or does it sound translated?
+
+#### Before and after
+
+Real lines from the site, as they were and as they read now. They show the
+rules above better than the rules do.
+
+| Before                                                                                     | After                                                                                                      |
+| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| saya hanya berani membuat janji itu kalau harga mengingkarinya murah                       | saya hanya memakainya untuk aksi yang dampaknya kecil kalau ternyata harus di-rollback                     |
+| Keputusan teknis yang pernah saya ambil, dan harga yang harus dibayar untuk masing-masing. | Keputusan teknis yang pernah saya ambil, dan trade-off di balik masing-masing.                             |
+| Branded type tidak gratis, dan harganya dibayar di batas-batas sistem.                     | Branded type juga punya trade-off, dan letaknya di batas-batas sistem.                                     |
+| …dan tidak pernah membayar selisihnya.                                                     | …dan tidak ada utang yang harus dilunasi nanti.                                                            |
+| Cancel dan Reject tidak bisa di-undo, jadi keduanya tidak berpura-pura.                    | Cancel dan Reject tidak bisa di-undo, jadi keduanya tidak dibuat seolah-olah langsung berhasil.            |
+| UI dan API tidak mungkin berbeda pendapat soal…                                            | hasil UI dan API selalu sama, baik soal… maupun…                                                           |
+| Demo controls di header mencabut keduanya                                                  | Lewat demo controls di header, kedua kondisi itu bisa dihilangkan                                          |
+| dua cara yang memalukan                                                                    | dua cara yang sama-sama mengganggu                                                                         |
+| Token… hanya berjarak satu bug cross-site scripting dari jatuh ke tangan orang lain        | Token di `localStorage` bisa dibaca oleh script apa pun di halaman, jadi satu bug cross-site scripting saja sudah cukup untuk mencurinya |
+| …dengan React Server Components, memang di sanalah tempatnya.                              | Untungnya, dengan React Server Components, itu memang sudah jadi cara kerja default-nya.                   |
+| ## Dibangun untuk sengaja dirusak                                                          | ## Bisa diuji dalam kondisi terburuk                                                                       |
+| …dan staf baru tahu saat ada tombol yang gagal (reads as "new staff")                      | …dan yang pertama kali merasakannya adalah staf, lewat tombol yang gagal                                   |
+| Kamu tidak bisa merilis komponennya dulu… jadi kamu memilih…                               | Komponen tidak bisa dirilis dulu lalu kontrasnya diperbaiki belakangan, jadi versi yang aksesibel dipilih… |
+
+Interface labels quoted in a story (Acknowledge, Cancel, "Needs attention")
+stay in English in the Indonesian copy, because that is what the screenshots
+and the live app show.
 
 ## Indonesian coverage
 
