@@ -272,7 +272,7 @@ export const id: Record<TranslationKey, string> = {
   "about.portraitAlt": "Potret Farul Ivan.",
   "about.historyLabel": "Riwayat",
   "about.historyDescription":
-    "Dari kuliah arsitektur tahun 2011 sampai proyek terakhir yang saya rilis.",
+    "Dari kuliah arsitektur tahun 2011 sampai proyek terbaru yang saya rilis.",
   "about.beforeSoftware": "Sebelum beralih ke software",
   "about.capabilitiesLabel": "Kemampuan",
   "about.capabilitiesDescription":

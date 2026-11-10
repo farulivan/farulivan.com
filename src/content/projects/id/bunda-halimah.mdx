@@ -44,15 +44,15 @@ Batas tanggung jawab saya: semua yang berjalan di browser.
 Mencari dokter adalah bagian yang mudah. Edge case-nya ada di booking, dan di
 situlah pekerjaan yang sebenarnya:
 
-- Data jadwal datang sudah dikelompokkan per dokter dan per hari, padahal UI
+- Data jadwal dari API sudah dikelompokkan per dokter dan per hari, padahal UI
   butuh bentuk yang berbeda untuk menampilkannya.
 - Pasien yang tidak bisa datang perlu bisa memindahkan atau membatalkan janji
   tanpa menelepon, artinya alur reschedule harus dibuat sama hati-hatinya
   dengan alur booking.
 - Kalau dokter yang dicari tidak punya slot kosong, jawaban yang berguna adalah
   tanggal terdekat dokter itu praktik, bukan sekadar empty state.
-- Booking butuh login, jadi batas antara sekadar melihat dan benar-benar
-  memesan itu nyata, dan UI harus menunjukkannya dengan jelas.
+- Booking butuh login, jadi ada batas yang jelas antara sekadar melihat dan
+  benar-benar memesan, dan UI harus menunjukkan batas itu.
 
 Semuanya terhubung lewat server action yang bertipe, jadi booking yang tidak
 valid langsung ditolak di boundary, bukan di tengah-tengah handler.
@@ -62,8 +62,8 @@ valid langsung ditolak di boundary, bukan di tengah-tengah handler.
 Session disimpan sebagai cookie HttpOnly yang di-set oleh server action, dengan
 proteksi route di `middleware.ts`. Tidak ada token di `localStorage`.
 
-Untuk rumah sakit, itu bukan soal selera. Token yang bisa dibaca script apa pun
-di halaman hanya berjarak satu bug cross-site scripting dari jatuh ke tangan
+Untuk rumah sakit, itu bukan soal selera. Cukup satu bug cross-site scripting
+untuk membuat token yang bisa dibaca script apa pun di halaman jatuh ke tangan
 orang lain; cookie yang tidak akan diserahkan browser ke JavaScript tidak punya
 risiko itu. Konsekuensinya, semua yang bergantung pada auth harus berjalan di
 server. Dengan React Server Components, memang di situlah tempatnya.

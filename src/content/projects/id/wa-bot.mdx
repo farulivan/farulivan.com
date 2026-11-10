@@ -56,9 +56,9 @@ Versi lengkapnya: [Chromium yang ternyata tidak saya butuhkan](/id/writing/chrom
 
 ## Scheduler yang tahan restart
 
-Scheduler berbasis polling bisa gagal dengan dua cara yang memalukan: melewatkan
-pengingat karena proses restart di tengah tick, atau mengirim pengingat yang
-sama dua kali karena dua tick berjalan tumpang tindih.
+Scheduler berbasis polling bisa gagal dengan dua cara yang sama-sama mengganggu:
+melewatkan pengingat karena proses restart di tengah tick, atau mengirim
+pengingat yang sama dua kali karena dua tick berjalan tumpang tindih.
 
 Proses claim-nya cukup satu statement:
 
