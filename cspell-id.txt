@@ -7,6 +7,7 @@ alternatifnya
 angkanya
 animasinya
 aplikasinya
+berasumsi
 berisiko
 bersertifikat
 celahnya
@@ -27,14 +28,12 @@ dipindah
 dirusak
 disengaja
 ditelusuri
-diulang
 duluan
 filternya
 fiturnya
 grafiknya
 halamannya
 heksagonal
-hotelnya
 idenya
 infrastrukturmu
 Inggrisnya
@@ -46,7 +45,6 @@ kodemu
 kodenya
 komitkan
 komponennya
-konfirmasinya
 konsekuensinya
 kontraknya
 kontrasnya
@@ -58,7 +56,6 @@ memorinya
 menagihnya
 mengelolanya
 mengotomatisasi
-menitnya
 migrasinya
 pengingat
 pengingatnya

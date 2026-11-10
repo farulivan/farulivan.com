@@ -2,7 +2,7 @@
 lang: "id"
 translationKey: "roomflow"
 title: "Roomflow"
-summary: "Dashboard permintaan tamu untuk staf hotel, dan keputusan soal state-nya: kapan UI langsung berubah, kapan menunggu server, dan apa yang bertahan saat gagal."
+summary: "Dashboard permintaan tamu untuk staf hotel, dan keputusan state di baliknya: apa yang langsung berubah, apa yang menunggu server, dan apa yang aman saat gagal."
 year: 2026
 role: "Solo: desain, build, deploy"
 stack:
@@ -21,14 +21,14 @@ order: 2
 screenshots:
   - src: "../_images/roomflow.png"
     phone: "../_images/roomflow-phone.png"
-    alt: "Dashboard Roomflow untuk Harborline Hotel, hotel rekaan, dengan daftar “Needs attention” berisi tiga pesanan yang terlambat, satu extra bed yang menunggu persetujuan, dan dua pembayaran yang gagal."
+    alt: "Dashboard Roomflow untuk Harborline Hotel, hotel rekaan, dengan daftar “Needs attention” berisi tiga pesanan yang terlambat, satu permintaan extra bed yang menunggu approval, dan dua pembayaran yang gagal."
     caption: "Dashboard"
   - src: "../_images/roomflow-order.png"
     phone: "../_images/roomflow-order-phone.png"
-    alt: "Detail pesanan room service yang sudah 8 menit melewati target 10 menitnya, dengan kartu yang ditolak dan pembayaran yang masih harus ditagih."
-    caption: "Detail pesanan"
+    alt: "Drawer pesanan room service yang sudah lewat 8 menit dari target 10 menit, dengan kartu yang ditolak dan pembayaran yang masih harus ditagih."
+    caption: "Order drawer"
 outcome:
-  summary: "Aplikasinya sudah live dan kodenya terbuka, jadi setiap keputusan di halaman ini bisa dicoba langsung di aplikasinya, lalu dibaca di kodenya."
+  summary: "Aplikasinya sudah live dan kodenya terbuka untuk umum, jadi setiap keputusan di halaman ini bisa dicoba langsung, lalu dicek sendiri di kodenya."
   figures:
     - { value: "1", caption: "Sumber aturan untuk UI dan API" }
     - { value: "4", caption: "State di setiap tampilan data" }
@@ -40,20 +40,21 @@ sourceUrl: "https://github.com/farulivan/roomflow"
 
 Roomflow adalah tempat staf hotel menangani permintaan tamu: room service,
 housekeeping, laundry, extra bed, sampai spa, di tiga hotel sekaligus. Pesanan
-yang terlambat langsung ditandai, supaya ketahuan sebelum tamunya menelepon
-untuk menanyakannya.
+yang terlambat langsung ditandai, supaya staf tahu lebih dulu sebelum tamunya
+sempat menelepon.
 
-Proyek ini berawal sebagai tugas take-home dalam proses rekrutmen. Itulah sebabnya
-ada dashboard hotel tanpa hotel sungguhan di belakangnya. Harborline Hotel,
-Cedarfall Lodge, dan Saltmarsh House hanyalah rekaan, begitu juga setiap tamu
-di dalamnya.
+Proyek ini berawal dari tugas take-home dalam sebuah proses rekrutmen, dan
+itulah sebabnya dashboard hotel ini tidak punya hotel sungguhan di baliknya.
+Harborline Hotel, Cedarfall Lodge, dan Saltmarsh House hanya rekaan, begitu
+juga semua tamunya.
 
-Pemilih hotel membatasi semua tampilan ke satu properti. Hotelnya juga jadi
-bagian dari URL, jadi link yang dibagikan selalu membuka hotel yang benar.
+Hotel switcher membatasi semua tampilan ke satu properti. Hotel yang dipilih
+juga tercatat di URL, sehingga link yang dibagikan selalu membuka hotel yang
+tepat.
 
-Untuk mencobanya, masuk saja lewat "Use demo account". API-nya berupa mock yang
-berjalan di dalam halaman, jadi tidak ada yang sampai ke server, dan datanya
-kembali seperti semula setiap kali halaman di-reload.
+Untuk mencobanya, masuk saja lewat "Use demo account". API-nya berupa mock
+yang berjalan di dalam halaman, jadi tidak ada data yang dikirim ke server, dan
+semuanya kembali seperti semula setiap kali halaman di-reload.
 
 Saya membangunnya dengan Claude Code: saya yang mengarahkan, semua yang
 ditulisnya saya review, dan saya yang bertanggung jawab atas apa pun yang
@@ -62,80 +63,82 @@ dirilis.
 ## Aturan yang sama di UI dan API
 
 Pesanan punya enam kemungkinan status, dan UI maupun API sama-sama perlu tahu
-perpindahan status mana yang sah. Kalau masing-masing menyimpan salinan
-aturannya sendiri, lama-lama keduanya akan berbeda, dan staf baru tahu saat ada
-tombol yang gagal.
+perpindahan status mana yang valid. Kalau masing-masing menyimpan salinan
+aturannya sendiri, lama-lama keduanya tidak lagi sejalan, dan yang pertama kali
+merasakannya adalah staf, lewat tombol yang gagal.
 
-Karena itu aturannya cukup ada di satu tempat. `src/domain` berisi TypeScript
-biasa yang tidak meng-import apa pun, termasuk React. Satu transition map
-bertipe di `src/domain/order-status.ts` menentukan perubahan status mana yang
-sah. UI hanya menampilkan aksi yang diizinkan map itu, dan mock API menjawab
-422 untuk perubahan lainnya. Sebuah test menjaga daftar aksi dan map-nya tetap
-sejalan, jadi keduanya tidak bisa berbeda tanpa test itu gagal.
+Karena itu, aturannya saya simpan di satu tempat saja. `src/domain` berisi
+TypeScript biasa yang tidak meng-import apa pun, bahkan React. Satu typed
+transition map di `src/domain/order-status.ts` menentukan perubahan status mana
+yang valid. UI hanya menampilkan aksi yang diizinkan map itu, dan mock API
+membalas 422 untuk perubahan di luar itu. Ada test yang memastikan daftar aksi
+dan map-nya tetap sejalan, jadi begitu keduanya mulai berbeda, test itu gagal.
 
-Enam status tidak butuh library state machine. Record bertipe sudah cukup.
+Untuk enam status, library state machine tidak diperlukan. Typed record sudah
+cukup.
 
-Mock server memakai fungsi domain yang sama untuk memfilter pesanan dan
-menghitung metrik dashboard. Jadi UI dan API juga tidak bisa berbeda pendapat
-soal pesanan mana yang cocok dengan sebuah filter, atau apa yang dihitung
+Mock server juga memakai fungsi domain yang sama untuk memfilter pesanan dan
+menghitung metrik dashboard, jadi UI dan API tidak mungkin berbeda pendapat
+soal pesanan mana yang cocok dengan sebuah filter, atau apa saja yang dihitung
 sebagai pendapatan.
 
-Hotel-hotelnya juga dipisahkan, di UI maupun di API. Hotel selalu ada di setiap path
-API dan setiap query key. Permintaan untuk pesanan milik hotel lain
-dijawab dengan 404 yang sama seperti pesanan yang memang tidak ada, jadi API
-tidak pernah membocorkan apa yang dimiliki hotel lain.
+Data tiap hotel juga dipisahkan, baik di UI maupun di API. Hotel selalu jadi
+bagian dari setiap path API dan setiap query key. Request untuk pesanan milik
+hotel lain dibalas dengan 404 yang sama seperti pesanan yang memang tidak ada,
+jadi API tidak pernah memberi petunjuk soal data hotel lain.
 
 ## Optimistic, kecuali yang tidak bisa di-undo
 
-Acknowledge, Start, dan Complete langsung berubah di layar begitu diklik. Staf
-melakukannya sepanjang hari dan aksinya mudah diulang, jadi kalau setiap klik
-harus menunggu respons server, pekerjaannya hanya jadi lebih lambat tanpa
-alasan. Kalau server menolak, hanya pesanan itu yang di-rollback. Perubahan
-yang sempat dibuat pada pesanan lain tetap aman, dan sebuah toast memberi tahu
-perubahan mana yang dikembalikan.
+Begitu Acknowledge, Start, atau Complete diklik, perubahannya langsung terlihat
+di layar. Staf melakukannya sepanjang hari dan aksinya mudah di-retry, jadi
+menunggu respons server di setiap klik hanya memperlambat pekerjaan tanpa
+alasan. Kalau server menolak, hanya pesanan itu yang di-rollback. Perubahan di
+pesanan lain yang dibuat di sela-sela itu tetap aman, dan sebuah toast memberi
+tahu perubahan mana yang dikembalikan.
 
-Cancel dan Reject tidak bisa di-undo, jadi keduanya tidak berpura-pura.
-Dialognya menunggu jawaban server, menampilkan kegagalan di dalam dialog itu
-sendiri, dan menyimpan alasan yang sudah diketik, jadi tidak ada yang perlu
-menulisnya dua kali.
+Cancel dan Reject tidak bisa di-undo, jadi keduanya tidak dibuat seolah-olah
+langsung berhasil. Dialognya menunggu respons server, menampilkan error di
+dalam dialog itu sendiri, dan tetap menyimpan alasan yang sudah diketik, jadi
+tidak ada yang perlu menulisnya ulang.
 
-Optimistic update itu janji bahwa server akan setuju, dan saya hanya berani
-membuat janji itu kalau harga mengingkarinya murah. Kedua perilaku ini punya
-test: rollback hanya memulihkan pesanan yang gagal, dan aksi yang butuh
-konfirmasi tidak menyentuh cache sampai server menjawab.
+Optimistic update pada dasarnya berasumsi server akan setuju, jadi saya hanya
+memakainya untuk aksi yang rollback-nya murah. Kedua behavior ini punya test:
+rollback hanya memulihkan pesanan yang gagal, dan aksi yang butuh konfirmasi
+tidak menyentuh cache sampai server merespons.
 
 ## Kartu ditolak, pesanan tetap diantar
 
 Di hotel, mengantar pesanan dan menerima pembayarannya adalah dua pekerjaan
-yang terpisah, dan sering dikerjakan orang yang berbeda di waktu yang berbeda.
-Pengecekan tagihan sudah terjadi saat pesanan dibuat, dan kartu yang ditolak
-jadi urusan front desk. Membiarkan tamu menunggu sampai makanannya dingin demi
-tagihan $40 justru hasil yang lebih buruk.
+yang terpisah, dan sering dikerjakan oleh orang yang berbeda di waktu yang
+berbeda. Pengecekan tagihan sudah dilakukan saat pesanan dicatat, dan kartu
+yang ditolak jadi urusan front desk. Membuat tamu menunggu sampai makanannya
+dingin demi tagihan $40 justru lebih buruk.
 
-Jadi pembayaran yang gagal tidak pernah menghalangi layanan. Sebagai gantinya,
-aplikasinya memastikan tidak ada yang menerima pesanan itu tanpa tahu. Saat
-pesanan dengan kartu yang ditolak di-acknowledge atau di-approve, aplikasinya
-bertanya sekali, dan langkah-langkah setelahnya tetap cukup satu klik. Drawer
-pesanannya menjelaskan langkahnya dengan bahasa staf: tagih saat pesanan
-diantar, atau front desk yang akan menagihnya sebelum checkout.
+Jadi pembayaran yang gagal tidak pernah menahan layanan. Yang dipastikan
+aplikasinya adalah tidak ada staf yang mengambil pesanan itu tanpa tahu
+masalahnya. Saat pesanan dengan kartu yang ditolak di-acknowledge atau
+di-approve, aplikasinya meminta konfirmasi sekali, dan setiap langkah
+setelahnya tetap cukup satu klik. Drawer pesanan menjelaskan apa yang perlu
+dilakukan dengan bahasa staf sendiri: tagih saat pesanan diantar, atau front
+desk yang akan menagihnya sebelum checkout.
 
 "Mark payment collected", yang ada di menu setiap baris dan di drawer pesanan,
-mengakhiri tindak lanjutnya kapan pun uangnya masuk: sebelum pesanan diterima,
-saat diantar, atau setelah selesai. Sampai saat itu, pesanannya tetap ada di
-"Needs attention", sudah selesai atau belum, karena tagihannya masih belum
-dibayar. Pesanan yang dibatalkan tidak punya tagihan, dan pesanan complimentary
+menutup follow-up ini kapan pun uangnya masuk: sebelum pesanan diambil, saat
+diantar, atau setelah selesai. Sebelum itu, pesanannya tetap ada di "Needs
+attention", entah sudah selesai atau belum, karena tagihannya belum dibayar.
+Pesanan yang dibatalkan tidak lagi punya tagihan, dan pesanan complimentary
 memang tidak pernah punya.
 
-Aturan yang paling cepat terpikir adalah menahan pesanan sampai kartunya
-berhasil ditagih. Untuk hotel, aturan itu salah. Aturan yang dipakai sekarang
-hanya satu fungsi di `src/domain/payment.ts`, dan konfirmasinya, API-nya,
-serta daftar "Needs attention" semuanya memakai fungsi itu.
+Aturan yang paling gampang terpikir adalah menahan pesanan sampai kartunya
+berhasil ditagih. Untuk hotel, aturan itu justru keliru. Aturan yang dipakai
+sekarang cukup satu fungsi di `src/domain/payment.ts`, dan dialog konfirmasi,
+API, serta daftar "Needs attention" semuanya merujuk ke fungsi itu.
 
 ## Yang sedang dikerjakan tidak terganggu
 
 Pesanan baru bisa masuk kapan saja, termasuk saat seseorang sedang mengerjakan
 hal lain. Setiap pesanan baru muncul sebagai toast dengan tombol View, dan
-tidak pernah merebut fokus. Daftarnya di-refresh di background, dan apa pun
+tidak pernah mengambil fokus. Daftarnya di-refresh di background, dan apa pun
 yang sedang dikerjakan tetap aman:
 
 - Drawer pesanan terikat ke ID pesanan di URL, bukan ke baris tabel, jadi baris
@@ -144,40 +147,40 @@ yang sedang dikerjakan tetap aman:
   ke halaman 2 tidak membuat dialognya tertutup.
 - Kotak pencarian tidak pernah menimpa teks yang masih diketik.
 
-Sisa state tampilannya ada di URL: pencarian, filter, urutan, dan halaman,
-jadi tampilan yang sudah difilter bisa dibagikan atau di-bookmark. Mengetik di
-kotak pencarian mengganti entri history yang sekarang, sedangkan mengubah
-filter menambah entri baru. Hasilnya, tombol Back mundur per filter, bukan per
-ketikan.
+State tampilan lainnya disimpan di URL, yaitu pencarian, filter, urutan, dan
+halaman, jadi tampilan yang sudah difilter bisa dibagikan atau di-bookmark.
+Mengetik di kotak pencarian mengganti history entry yang sekarang, sedangkan
+mengubah filter menambah entry baru. Hasilnya, tombol Back membatalkan filter
+satu per satu, bukan setiap ketikan.
 
 ## Dibangun untuk sengaja dirusak
 
 Dashboard apa pun terlihat baik-baik saja di koneksi yang cepat dengan API yang
-sehat. Demo controls di header mencabut keduanya: jaringan lambat sekitar 2
-detik per request, API yang gagal di setiap request, dan tombol yang mengirim
-pesanan baru kapan saja.
+sehat. Lewat demo controls di header, kedua kondisi itu bisa dihilangkan:
+jaringan yang lambat, sekitar 2 detik per request; API yang gagal di setiap
+request; dan tombol untuk mengirim pesanan baru kapan saja.
 
 Setiap tampilan data punya empat state:
 
-- **Loading:** skeleton dalam layout akhirnya, jadi tidak ada yang melompat
-  saat data masuk.
+- **Loading:** skeleton yang sudah mengikuti layout akhirnya, jadi tidak ada
+  yang bergeser saat data masuk.
 - **Empty:** "belum ada pesanan" dibedakan dari "tidak ada yang cocok dengan
   filter", dan yang kedua disertai cara untuk menghapus filternya.
 - **Error:** pesan error dan tombol retry.
 - **Success.**
 
-Refresh di background yang gagal tidak membuang data yang sudah ada di layar.
-Datanya tetap ditampilkan, dengan pemberitahuan sejak kapan data itu terakhir
-diperbarui dan tombol untuk mencoba lagi.
+Background refresh yang gagal tidak membuang data yang sudah ada di layar.
+Datanya tetap tampil, disertai keterangan kapan terakhir diperbarui dan tombol
+untuk mencoba lagi.
 
-Mock-nya adalah MSW yang berada di network boundary, di dalam service worker,
-jadi aplikasinya melakukan `fetch` sungguhan, persis seperti saat berhadapan
-dengan backend asli. Menggantinya dengan yang asli cukup empat langkah, dan
-query hook, komponen, serta domain-nya tidak berubah.
+Mock-nya memakai MSW, yang berjalan di network boundary lewat service worker,
+jadi aplikasinya melakukan `fetch` sungguhan, persis seperti saat terhubung ke
+backend asli. Menggantinya dengan backend sungguhan cukup empat langkah, tanpa
+mengubah query hook, komponen, maupun domain-nya.
 
-Beberapa hal sengaja saya tinggalkan. Tidak ada library global state, karena
-query cache dan URL sudah menyimpan semua state yang ada. Tidak ada
-virtualisasi baris, karena satu halaman hanya berisi 10 baris. Dua hal yang
-masih dibutuhkan sebelum production: autentikasi sungguhan dengan role per
-hotel yang dicek di server (saat ini siapa pun yang sudah login bisa memberi
-approval), dan push channel sebagai pengganti polling setiap 30 detik.
+Ada beberapa hal yang sengaja tidak saya pakai. Tidak ada library global state,
+karena query cache dan URL sudah menyimpan semua state yang ada. Tidak ada
+virtualisasi baris, karena satu halaman hanya berisi 10 baris. Sebelum masuk
+production, masih ada dua hal yang dibutuhkan: autentikasi sungguhan dengan
+role per hotel yang dicek di server (saat ini siapa pun yang sudah login bisa
+memberi approval), dan push channel sebagai pengganti polling setiap 30 detik.
