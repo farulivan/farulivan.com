@@ -2,7 +2,7 @@
 lang: "en"
 translationKey: "roomflow"
 title: "Roomflow"
-summary: "A guest-service dashboard for hotel staff: every room-service, housekeeping, laundry, extra-bed and spa request in one place, with the late ones flagged."
+summary: "A guest-request dashboard for hotel staff, and the decisions about state under it: what changes at once, what waits for the server and what survives a failure."
 year: 2026
 role: "Solo: design, build, deploy"
 stack:
@@ -21,17 +21,149 @@ order: 2
 screenshots:
   - src: "../_images/roomflow.png"
     phone: "../_images/roomflow-phone.png"
-    alt: "The Roomflow dashboard for Harborline Hotel, with a Needs attention list of overdue orders, an extra-bed approval and two failed payments."
+    alt: "The Roomflow dashboard for the fictional Harborline Hotel, with a Needs attention list of three overdue orders, an extra-bed approval and two failed payments."
     caption: "Dashboard"
   - src: "../_images/roomflow-order.png"
     phone: "../_images/roomflow-order-phone.png"
-    alt: "An order's details drawer: a room-service order 8 minutes past its 10-minute target, with a declined card still to collect."
+    alt: "The order drawer for a room-service order 8 minutes past its 10-minute target, with a declined card still to collect."
     caption: "Order drawer"
 outcome:
-  summary: "It runs live with its mock API inside the page, so anyone can sign in, slow the network or make the API fail, and see how every view holds up."
+  summary: "The app is live and the code is public, so every decision on this page can be tried in one and read in the other."
   figures:
+    - { value: "1", caption: "Rulebook for the UI and the API" }
     - { value: "4", caption: "States on every data view" }
-    - { value: "1", caption: "Set of rules for the UI and the API" }
 liveSites: [{ url: "https://roomflow.farulivan.com" }]
 sourceUrl: "https://github.com/farulivan/roomflow"
 ---
+
+## Three hotels, one console
+
+Roomflow is where hotel staff handle guest requests: room service,
+housekeeping, laundry, extra beds and the spa, across three hotels, with the
+late ones flagged before the guest calls down. It started as a take-home
+assignment in a hiring process, which is why there's a hotel dashboard with no
+hotel behind it. Harborline Hotel, Cedarfall Lodge and Saltmarsh House are made
+up, and so is every guest in them.
+
+A hotel switcher scopes everything to one property. The hotel is part of the
+URL, so a shared link always opens the right one.
+
+To try it, sign in with "Use demo account". The API is a mock that runs inside
+the page, so nothing reaches a server, and a reload resets the data.
+
+I built it with Claude Code: I direct it, I review everything it writes, and
+I'm responsible for what ships.
+
+## One set of rules on both sides of the wire
+
+An order moves through six statuses, and both the interface and the API need
+to know which moves are legal. If each kept its own copy of that rule, they'd
+drift apart, and staff would find out through a button that fails.
+
+So the rule lives in one place. `src/domain` is plain TypeScript that imports
+nothing, not even React. One typed transition map in
+`src/domain/order-status.ts` decides which status changes are legal. The
+interface renders only the actions the map allows, and the mock API answers
+422 to anything else. A test keeps the list of actions and the map in
+agreement, so the two can't drift without it failing.
+
+Six statuses don't need a state-machine library. A typed record does the job.
+
+The mock server reuses the same domain functions to filter orders and compute
+the dashboard's metrics, so the two sides can't disagree about what a filter
+matches or what counts as revenue either.
+
+The hotels are kept apart on both sides too. The hotel is in every API path
+and every query key, and asking for another hotel's order returns the same 404
+as an order that doesn't exist, so the API never confirms what another hotel
+holds.
+
+## Optimistic, except where it can't be
+
+Acknowledge, Start and Complete change on screen the moment they're clicked.
+Staff do them all day and they're easy to retry, so making each one wait for a
+round trip would slow the job down for nothing. If the server refuses, only
+that order goes back: a change made to another order in the meantime survives,
+and a toast says what was reverted.
+
+Cancel and Reject can't be undone, so they don't pretend. The dialog waits for
+the server, shows a failure inside itself, and keeps the reason that was
+typed, so nobody has to write it twice.
+
+An optimistic update is a promise that the server will agree, and I only make
+that promise where breaking it is cheap. Both halves have tests: a rollback
+restores only the order that failed, and a confirmed action doesn't touch the
+cache until the server answers.
+
+## A declined card never holds up a tray
+
+In a hotel, serving an order and getting paid for it are separate jobs, often
+done by different people at different moments. The billing check happens when
+the order is taken, and a declined card is the front desk's to sort out. A
+guest waiting on a cold tray to protect a $40 charge is the worse outcome.
+
+So a failed payment never blocks service. What it does instead is make sure
+nobody takes the order on without knowing. Acknowledging or approving an order
+with a declined card asks once, and every step after that stays one click. The
+drawer says what to do in the staff's own terms: "The card was declined.
+Collect it at delivery, or the front desk will before checkout."
+
+"Mark payment collected", in the row menu and in the order drawer, ends the
+follow-up whenever the money comes in: before the order is taken on, at
+delivery, or after it's completed. Until then the order stays in "Needs
+attention", completed or not, because it still owes money. A cancelled order
+owes nothing, and a complimentary one never did.
+
+Blocking the order until the card clears is the obvious rule. For a hotel, it's
+the wrong one. The rule that's there is one function in
+`src/domain/payment.ts`, and the confirmation, the API and the "Needs
+attention" list all ask it.
+
+## Nothing in progress gets interrupted
+
+New orders arrive while someone is in the middle of something else. Each one
+appears as a toast with a View button, and it never takes focus. The list
+refreshes in the background, and whatever was in progress survives the
+refresh:
+
+- The order drawer is tied to the order ID in the URL, not to a row, so a row
+  that moves doesn't take the drawer with it.
+- The cancel dialog keeps its own copy of the order, so a row moving to page 2
+  doesn't close it.
+- The search box never overwrites what's still being typed.
+
+The URL holds the rest of the view: the search, filters, sort and page, so a
+filtered view can be shared or bookmarked. Typing in the search box replaces
+the current history entry and a filter change adds one, so Back undoes
+filters, not keystrokes.
+
+## Built to be broken on purpose
+
+Any dashboard looks fine on a fast connection with a healthy API. The demo
+controls in the header take both away: a slow network at about 2 seconds a
+request, an API that fails every request, and a button that sends a new order
+on demand.
+
+Every data view has four states:
+
+- **Loading:** skeletons in the final layout, so nothing jumps when the data
+  lands.
+- **Empty:** "no orders yet" is told apart from "nothing matches these
+  filters", which comes with a way to clear them.
+- **Error:** a message and a retry.
+- **Success.**
+
+A failed background refresh doesn't throw away what's already on screen. The
+data stays, with a notice saying how old it is and a button to retry.
+
+The mock is MSW, sitting at the network boundary in a service worker, so the
+app makes real `fetch` calls exactly as it would against a real backend.
+Swapping it for one takes four steps, and the query hooks, components and
+domain don't change.
+
+Some things I left out on purpose. There's no global state library, because
+the query cache and the URL already hold all the state there is. There's no
+row virtualisation, because a page is 10 rows. Two things it still needs
+before production: real authentication, with per-hotel roles checked on the
+server (today anyone signed in can approve), and a push channel in place of
+the 30-second polling.
