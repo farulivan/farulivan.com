@@ -20,6 +20,20 @@ export default defineConfig({
   trailingSlash: "never",
 
   /**
+   * The stylesheet goes into every page instead of a file of its own. It was
+   * the only request that blocked the first paint, and PageSpeed put that at
+   * about 110 ms on mobile. The cost is about 12.5 KiB, compressed, carried by
+   * every page and never cached apart from it. The zone's bot check strips
+   * page ETags, so each page is downloaded whole on every visit anyway (see
+   * "What the domain adds" in docs/ARCHITECTURE.md). Worth revisiting if the
+   * stylesheet grows much past that, or if visitors start reading many pages
+   * a visit.
+   */
+  build: {
+    inlineStylesheets: "always",
+  },
+
+  /**
    * The default locale is unprefixed (`/blog`), others are prefixed
    * (`/id/blog`). Pages use a single `[...lang]` rest parameter and emit
    * `lang: undefined` for English, so each route is written exactly once.
