@@ -398,10 +398,10 @@ const stackGroups = capabilities.map(({ entry }) => ({
    * the lettering in, one after the other, so the hero assembles rather than
    * appearing all at once.
    *
-   * The last step finishes about 1.7 seconds in, or 2.2 on a desktop, where
-   * the scroll cue comes last. Both limits are real. Mobile Lighthouse wants
-   * the page to look finished within about 1.5 seconds, or Speed Index
-   * costs the score its 100 (see the opening screen in Intro.astro). And
+   * The last step finishes about 1.5 seconds in, or 1.9 on a desktop, where
+   * the scroll cue comes last. Both limits are real. Lighthouse wants the
+   * page to look finished within about 1.5 seconds, or Speed Index costs the
+   * score its 100 (see the opening screen in Intro.astro). And
    * Lighthouse waits 4.5 seconds after load before it checks contrast
    * (lighthouserc.json), so an entrance longer than that needs the wait to
    * grow with it.
