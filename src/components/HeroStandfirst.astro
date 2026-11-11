@@ -3,9 +3,16 @@
  * The line under the hero lettering, which alternates between the markup that
  * produces it and the line itself.
  *
- * It types the source out, holds it, then dissolves into the rendered result,
- * holds that, and starts again. The joke only lands because the last thing
- * typed is the sentence itself, so the swap reads as the code running.
+ * It opens on the sentence, then types the source out, holds it, dissolves
+ * back into the rendered result, and starts again. The joke only lands because
+ * the last thing typed is the sentence itself, so the swap reads as the code
+ * running.
+ *
+ * Opening on the sentence matters for two reasons. The first thing a reader
+ * sees here is what it says. And the hero settles on its finished state
+ * rather than on half-typed code. Speed Index compares every frame of the
+ * load against the last one, so a line still typing when Lighthouse stops
+ * looking makes the whole hero count as unfinished.
  *
  * **This loops, and the motion spec says nothing on this site should.** It is
  * kept on purpose: it is the one thing in the hero with a sense of humour, and
@@ -251,21 +258,46 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
       }
     }
 
-    const loop = async () => {
-      while (running) {
-        root.dataset.sfState = "typing"
-        await type()
-        if (!running) break
+    /*
+     * How long until this line's own entrance has finished. Read off the
+     * animations running on it, so the hero's timings live only in its CSS.
+     * Zero once it has arrived.
+     */
+    const entranceLeft = () =>
+      Math.max(
+        0,
+        ...root.getAnimations().map((animation) => {
+          const end = Number(animation.effect?.getComputedTiming().endTime)
+          const now = Number(animation.currentTime ?? 0)
+          return Number.isFinite(end) ? end - now : 0
+        })
+      )
 
-        root.dataset.sfState = "holding-code"
-        await wait(HOLD_MS)
+    const loop = async () => {
+      /*
+       * Empty, the way it is just before typing starts, so the box stays the
+       * sentence's height until code is typed into it. Left full, the code
+       * would make the box as tall as the code at once, and on a phone, where
+       * it wraps, that would push the calls to action down before the hero
+       * has finished arriving.
+       */
+      clear()
+
+      while (running) {
+        /* The first hold only starts once the line has arrived. */
+        root.dataset.sfState = "showing-text"
+        await wait(entranceLeft() + HOLD_MS)
         if (!running) break
 
         root.dataset.sfState = "swapping"
         await wait(FADE_MS)
         if (!running) break
 
-        root.dataset.sfState = "showing-text"
+        root.dataset.sfState = "typing"
+        await type()
+        if (!running) break
+
+        root.dataset.sfState = "holding-code"
         await wait(HOLD_MS)
         if (!running) break
 
