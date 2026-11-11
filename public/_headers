@@ -2,9 +2,9 @@
 # serves it; Astro copies it into dist/ as it is.
 # https://developers.cloudflare.com/workers/static-assets/headers/
 
-# Everything under /_astro/ is named after its contents (the stylesheet, the
-# scripts, every image and the font), so a name never means two things: keep
-# it for a year. Everything else keeps Cloudflare's default, which asks again
+# Everything under /_astro/ is named after its contents (the scripts, every
+# image and the font; the stylesheet is inlined into each page), so a name
+# never means two things: keep it for a year. Everything else keeps Cloudflare's default, which asks again
 # on every visit, because a page, the CV and the icons keep their address
 # when they change.
 /_astro/*
