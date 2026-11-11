@@ -425,22 +425,66 @@ const stackGroups = capabilities.map(({ entry }) => ({
    * and fades, every two and a half seconds. A ring for the edge and a blur
    * for the light, both fading to nothing. Under less motion there is no
    * pulse, and the badge is simply there.
+   *
+   * Two still layers that only fade, not one shadow that moves. Animating
+   * `box-shadow` repaints the badge on every frame for as long as the page is
+   * open; opacity is left to the compositor and repaints nothing. The near
+   * layer goes out as the far one comes up, which reads as the light moving
+   * outwards. Scaling a single layer would move it too, but by a different
+   * distance on each side, because the pill's width and height change with
+   * the language and the screen.
    */
   .availability-glow {
-    animation: availability-glow 2.5s var(--ease-reveal) infinite;
+    position: relative;
   }
 
-  @keyframes availability-glow {
+  .availability-glow::before,
+  .availability-glow::after {
+    content: "";
+    position: absolute;
+    /* The border's outer edge, where a shadow on the badge itself starts. */
+    inset: -1px;
+    border-radius: inherit;
+    opacity: 0;
+    animation-duration: 2.5s;
+    animation-timing-function: var(--ease-reveal);
+    animation-iteration-count: infinite;
+  }
+
+  .availability-glow::before {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--color-accent) 50%, transparent),
+      0 0 10px 1px color-mix(in srgb, var(--color-accent) 40%, transparent);
+    animation-name: availability-glow-near;
+  }
+
+  .availability-glow::after {
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--color-accent) 25%, transparent),
+      0 0 18px 5px color-mix(in srgb, var(--color-accent) 22%, transparent);
+    animation-name: availability-glow-far;
+  }
+
+  @keyframes availability-glow-near {
     from {
-      box-shadow:
-        0 0 0 0 color-mix(in srgb, var(--color-accent) 55%, transparent),
-        0 0 8px 0 color-mix(in srgb, var(--color-accent) 45%, transparent);
+      opacity: 1;
+    }
+    30%,
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes availability-glow-far {
+    from {
+      opacity: 0;
+    }
+    12% {
+      opacity: 1;
     }
     70%,
     to {
-      box-shadow:
-        0 0 0 10px color-mix(in srgb, var(--color-accent) 0%, transparent),
-        0 0 24px 8px color-mix(in srgb, var(--color-accent) 0%, transparent);
+      opacity: 0;
     }
   }
 
@@ -449,7 +493,8 @@ const stackGroups = capabilities.map(({ entry }) => ({
       animation: none;
     }
 
-    .availability-glow {
+    .availability-glow::before,
+    .availability-glow::after {
       animation: none;
     }
   }
