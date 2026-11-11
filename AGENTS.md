@@ -126,6 +126,13 @@ whose card would clip an outset one.
   mid-fade fails the contrast check as if its colour were wrong. Lengthen
   the homepage hero's entrance and `pauseAfterLoadMs` in `lighthouserc.json`
   has to grow with it.
+- **The homepage's opening is paid for in Speed Index.** Mobile Lighthouse
+  scores Speed Index at about 1.4 times what the filmstrip shows, and the
+  opening screen holds the page white while the signature writes. At 2.8
+  seconds, with the hero arriving until 3.5, it held the homepage at 97 on
+  PageSpeed while every load metric scored full marks. A score of 100 needs
+  the page to look finished within about 1.5 seconds. Check any change to the
+  timings in `Intro.astro`, the lettering's rise or `.hero-enter` against that.
 - **A sticky element stretched to its row can never stick.** A grid or flex
   child is stretched to the height of its row unless told otherwise, and a
   block already as tall as the distance it could travel has nowhere to travel
