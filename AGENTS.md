@@ -131,8 +131,10 @@ whose card would clip an outset one.
   opening screen holds the page white while the signature writes. At 2.8
   seconds, with the hero arriving until 3.5, it held the homepage at 97 on
   PageSpeed while every load metric scored full marks. A score of 100 needs
-  the page to look finished within about 1.5 seconds. Check any change to the
-  timings in `Intro.astro`, the lettering's rise or `.hero-enter` against that.
+  the page to look finished within about 1.5 seconds. Desktop is stricter
+  still: at 1.3 seconds its Speed Index was 1.1 and the score 99, where 100
+  needs about 0.95. Check any change to the timings in `Intro.astro`, the
+  lettering's rise or `.hero-enter` against both.
 - **A sticky element stretched to its row can never stick.** A grid or flex
   child is stretched to the height of its row unless told otherwise, and a
   block already as tall as the distance it could travel has nowhere to travel

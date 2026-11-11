@@ -123,7 +123,7 @@ jobs:
       # in lighthouserc.json). Without a wait the contrast check measured the
       # homepage hero's grey text half-faded, at 4.17:1 instead of 5.10:1, and
       # failed the homepage on runner timing alone. The hero fades in until
-      # about 2.2 seconds now (it was 3.5 when this wait was set), so the wait
+      # about 1.9 seconds now (it was 3.5 when this wait was set), so the wait
       # has room to spare. Performance is still measured from the normal
       # animated load; only the snapshot the audits read is taken later.
       - name: Lighthouse budget

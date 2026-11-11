@@ -45,12 +45,16 @@ import signature from "@/assets/logo/signature.svg?raw"
    *
    * The timing, in one place:
    *
-   *   writing   60ms wait, then one sweep of 640ms              → 700ms
-   *   hold      150ms                                           → 850ms
-   *   slide     450ms                                           → 1300ms
+   *   writing   one sweep of 640ms, from the first frame        → 640ms
+   *   slide     450ms, starting as the sweep ends               → 1090ms
    *
-   * The hero lettering starts rising at 850ms, so the reveal and the arrival
+   * The hero lettering starts rising at 640ms, so the reveal and the arrival
    * overlap instead of queueing.
+   *
+   * No pause either side of the sweep. Every millisecond the screen stays
+   * white costs Speed Index, so the stroke starts on the first frame and the
+   * screen begins to lift the moment it is written. The slide's slow start
+   * is the beat that lets the finished signature register.
    *
    * One sweep rather than a letter at a time. The lettering could be cut into
    * ten pieces because it is ten separate letters; a signature is one
@@ -65,8 +69,11 @@ import signature from "@/assets/logo/signature.svg?raw"
    * seconds, with the hero arriving until 3.5, this screen alone held the
    * homepage at 97 on mobile PageSpeed while every load metric scored full
    * marks. Scoring 100 needs the page to look finished within about 1.5
-   * seconds. Everything that makes it safe — it never waits on anything, it
-   * cannot be stranded, it never takes the pointer — holds at any length.
+   * seconds on mobile. Desktop scores Speed Index on a stricter scale: with
+   * this screen gone at 1.3 seconds it scored 1.1 seconds there, and 99,
+   * where 100 needs about 0.95. Everything that makes it safe — it never
+   * waits on anything, it cannot be stranded, it never takes the pointer —
+   * holds at any length.
    */
   .intro {
     display: none;
@@ -87,7 +94,7 @@ import signature from "@/assets/logo/signature.svg?raw"
     background-color: var(--color-paper);
     /* Never intercepts a click, even mid-fade. */
     pointer-events: none;
-    animation: intro-lift 1300ms linear forwards;
+    animation: intro-lift 1090ms linear forwards;
   }
 
   /*
@@ -155,7 +162,6 @@ import signature from "@/assets/logo/signature.svg?raw"
     animation-duration: 640ms;
     animation-timing-function: var(--ease-draw);
     animation-fill-mode: forwards;
-    animation-delay: 60ms;
   }
 
   /*
@@ -175,8 +181,8 @@ import signature from "@/assets/logo/signature.svg?raw"
   }
 
   /*
-   * Holds, then slides up out of the way. Ending hidden is what makes this
-   * self-dismissing.
+   * Stays put while the signature is written, then slides up out of the
+   * way. Ending hidden is what makes this self-dismissing.
    *
    * It slides rather than fades. Fading crossfades two different compositions
    * — the centred word on this screen and the large cropped one in the hero —
@@ -190,8 +196,8 @@ import signature from "@/assets/logo/signature.svg?raw"
       visibility: visible;
       animation-timing-function: linear;
     }
-    /* 850ms of 1300: the end of the hold. */
-    65.4% {
+    /* 640ms of 1090: the sweep has finished. */
+    58.7% {
       transform: translateY(0);
       animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
     }
@@ -203,6 +209,6 @@ import signature from "@/assets/logo/signature.svg?raw"
 
   /* The hero lettering waits for the reveal, but only when there is one. */
   :root[data-intro] .intro-follows {
-    --hero-enter-delay: 850ms;
+    --hero-enter-delay: 640ms;
   }
 </style>
