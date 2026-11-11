@@ -120,10 +120,11 @@ jobs:
       # and failed a budget every other page passed.
       #
       # Each audit waits 4.5 seconds after the load event (`pauseAfterLoadMs`
-      # in lighthouserc.json). The homepage hero fades in until about 3.5
-      # seconds, and without the wait the contrast check measured its grey
-      # text half-faded, at 4.17:1 instead of 5.10:1, and failed the homepage
-      # on runner timing alone. Performance is still measured from the normal
+      # in lighthouserc.json). Without a wait the contrast check measured the
+      # homepage hero's grey text half-faded, at 4.17:1 instead of 5.10:1, and
+      # failed the homepage on runner timing alone. The hero fades in until
+      # about 2.2 seconds now (it was 3.5 when this wait was set), so the wait
+      # has room to spare. Performance is still measured from the normal
       # animated load; only the snapshot the audits read is taken later.
       - name: Lighthouse budget
         run: pnpm dlx @lhci/cli@0.15.1 autorun

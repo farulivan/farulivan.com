@@ -60,18 +60,25 @@ already seen it this visit, and anyone without JavaScript — the markup stays
 inert until a script in the document head opts into it.
 
 ```
-writing   180ms wait, then 700ms per letter, 80ms apart   → 1600ms
-hold      450ms                                           → 2050ms
-slide up  750ms                                           → 2800ms
+writing   60ms wait, then one sweep of 640ms              → 700ms
+hold      150ms                                           → 850ms
+slide up  450ms                                           → 1300ms
 ```
 
-The hero lettering starts rising at 2050ms, so the reveal and the arrival
-overlap instead of queueing.
+The hero lettering starts rising at 850ms, so the reveal and the arrival
+overlap instead of queueing. The lettering takes 600ms to rise, and the rest
+of the hero follows it in 80ms apart over 500ms each. The last step lands at
+about 1.7s, or 2.2s on a desktop, where the scroll cue comes last.
 
-Deliberately unhurried. It is the one moment on the site that exists to be
-watched rather than read, and at half this length it was over before the eye
-had followed the word across. Everything that makes it safe holds at any
-length, so the length is free to be a taste decision.
+**Speed Index sets the length, not taste.** It used to be unhurried: 2.8s on
+screen, with the hero still arriving until 3.5s. That one choice was the only
+thing holding the homepage at 97 on mobile PageSpeed, with every load metric
+already at full marks. Speed Index measures how soon the page looks finished,
+and mobile Lighthouse scores it at about 1.4× what the filmstrip shows, so a
+screen that holds the page white for two seconds reads as a page that took
+nearly five to load. Scoring 100 needs the page to look finished within about
+1.5s. Any change to these numbers, or to the hero's entrance, has to be
+checked against that.
 
 > **It slides rather than fades.** Fading crossfades two different
 > compositions — the centred word on the screen and the large cropped one in

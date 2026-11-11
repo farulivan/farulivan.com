@@ -45,13 +45,12 @@ import signature from "@/assets/logo/signature.svg?raw"
    *
    * The timing, in one place:
    *
-   *   writing   180ms wait, then one sweep of 1420ms            → 1600ms
-   *   hold      450ms                                           → 2050ms
-   *   slide     750ms                                           → 2800ms
+   *   writing   60ms wait, then one sweep of 640ms              → 700ms
+   *   hold      150ms                                           → 850ms
+   *   slide     450ms                                           → 1300ms
    *
-   * The hero lettering starts rising at 2050ms, so the reveal and the arrival
-   * overlap instead of queueing. The sweep is timed to finish exactly where
-   * the letters used to, so the hand-off is unchanged.
+   * The hero lettering starts rising at 850ms, so the reveal and the arrival
+   * overlap instead of queueing.
    *
    * One sweep rather than a letter at a time. The lettering could be cut into
    * ten pieces because it is ten separate letters; a signature is one
@@ -59,11 +58,16 @@ import signature from "@/assets/logo/signature.svg?raw"
    * rather than a hand moving. Left to right in one pass is also simply what
    * writing looks like.
    *
-   * Deliberately unhurried. It is the one moment on the site that exists to be
-   * watched rather than read, and at the earlier speed it was over before the
-   * eye had followed the word across. Everything that makes it safe — it never
-   * waits on anything, it cannot be stranded, it never takes the pointer —
-   * holds at any length, so the length is free to be a taste decision.
+   * The length is set by Speed Index, not by taste. It used to run for 2.8
+   * seconds, with the hero still arriving until 3.5, and that one choice was
+   * the only thing keeping the homepage under 100 on mobile. Speed Index
+   * measures how soon the page looks finished, and mobile Lighthouse scores
+   * it at about 1.4 times what the filmstrip shows, so a screen that holds
+   * the page white for two seconds reads as a page that took nearly five to
+   * load. Scoring 100 needs the page to look finished within about 1.5
+   * seconds. The sweep still reads as a hand moving, just a quicker one.
+   * Everything that makes it safe — it never waits on anything, it cannot be
+   * stranded, it never takes the pointer — holds at any length.
    */
   .intro {
     display: none;
@@ -84,7 +88,7 @@ import signature from "@/assets/logo/signature.svg?raw"
     background-color: var(--color-paper);
     /* Never intercepts a click, even mid-fade. */
     pointer-events: none;
-    animation: intro-lift 2800ms linear forwards;
+    animation: intro-lift 1300ms linear forwards;
   }
 
   /*
@@ -149,10 +153,10 @@ import signature from "@/assets/logo/signature.svg?raw"
   :root[data-intro] .intro__ink {
     clip-path: inset(0 100% 0 0);
     animation-name: mark-write;
-    animation-duration: 1420ms;
+    animation-duration: 640ms;
     animation-timing-function: var(--ease-draw);
     animation-fill-mode: forwards;
-    animation-delay: 180ms;
+    animation-delay: 60ms;
   }
 
   /*
@@ -187,7 +191,8 @@ import signature from "@/assets/logo/signature.svg?raw"
       visibility: visible;
       animation-timing-function: linear;
     }
-    73.2% {
+    /* 850ms of 1300: the end of the hold. */
+    65.4% {
       transform: translateY(0);
       animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
     }
@@ -199,6 +204,6 @@ import signature from "@/assets/logo/signature.svg?raw"
 
   /* The hero lettering waits for the reveal, but only when there is one. */
   :root[data-intro] .intro-follows {
-    --hero-enter-delay: 2050ms;
+    --hero-enter-delay: 850ms;
   }
 </style>
