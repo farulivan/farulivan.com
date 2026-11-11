@@ -58,16 +58,15 @@ import signature from "@/assets/logo/signature.svg?raw"
    * rather than a hand moving. Left to right in one pass is also simply what
    * writing looks like.
    *
-   * The length is set by Speed Index, not by taste. It used to run for 2.8
-   * seconds, with the hero still arriving until 3.5, and that one choice was
-   * the only thing keeping the homepage under 100 on mobile. Speed Index
-   * measures how soon the page looks finished, and mobile Lighthouse scores
-   * it at about 1.4 times what the filmstrip shows, so a screen that holds
-   * the page white for two seconds reads as a page that took nearly five to
-   * load. Scoring 100 needs the page to look finished within about 1.5
-   * seconds. The sweep still reads as a hand moving, just a quicker one.
-   * Everything that makes it safe — it never waits on anything, it cannot be
-   * stranded, it never takes the pointer — holds at any length.
+   * The length is set by Speed Index, not by taste. Speed Index measures how
+   * soon the page looks finished, and mobile Lighthouse scores it at about
+   * 1.4 times what the filmstrip shows, so a screen that holds the page white
+   * for two seconds reads as a page that took nearly five to load. At 2.8
+   * seconds, with the hero arriving until 3.5, this screen alone held the
+   * homepage at 97 on mobile PageSpeed while every load metric scored full
+   * marks. Scoring 100 needs the page to look finished within about 1.5
+   * seconds. Everything that makes it safe — it never waits on anything, it
+   * cannot be stranded, it never takes the pointer — holds at any length.
    */
   .intro {
     display: none;
