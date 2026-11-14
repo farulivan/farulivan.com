@@ -296,7 +296,7 @@ Settings → Advanced Security, and Settings → Actions → General.
 
 Malware alerts have no API, so the toggle under Advanced Security is the only place to see that one. `gh api repos/farulivan/farulivan.com` and the `actions/permissions` endpoints under it show the rest.
 
-**Pinned actions are enforced, not only asked for.** The comments in `ci.yml` ask for a commit SHA on every action, and this setting fails any workflow that names an action by tag instead. Dependabot updates the SHA and its version comment together, so it costs nothing to keep. GitHub's documentation does not say whether it applies to the workflows GitHub generates itself, CodeQL's default setup and Dependabot's updates. If either stops starting over an unpinned action, this is the setting to look at.
+**Pinned actions are enforced, not only asked for.** The comments in `ci.yml` ask for a commit SHA on every action, and this setting fails any workflow that names an action by tag instead. Dependabot updates the SHA and its version comment together, so it costs nothing to keep. GitHub's documentation does not say whether it applies to the workflows GitHub generates itself. CodeQL's default setup runs under it: #82 and #83 were analysed after it was switched on. Dependabot's updates had not run under it yet. If one stops starting over an unpinned action, this is the setting to look at.
 
 ### Left out on purpose
 
