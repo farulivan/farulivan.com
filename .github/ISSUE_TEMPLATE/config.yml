@@ -1,1 +1,5 @@
 blank_issues_enabled: true
+contact_links:
+  - name: Report a security issue
+    url: https://github.com/farulivan/farulivan.com/security/advisories/new
+    about: Privately, not as an issue. Only I can see it until a fix ships.
