@@ -22,6 +22,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # The ruleset on main requires `verify (22)` and `verify (24)` by name.
+  # Renaming this job or changing its Node versions blocks every merge until
+  # the ruleset's check names change to match. docs/ARCHITECTURE.md has the
+  # rest of the settings that live only on GitHub.
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -82,16 +86,17 @@ jobs:
       - name: Check every class has a rule
         run: pnpm check:classes
 
-  # Not on pull requests while the site is still being built.
+  # Not on pull requests. It runs three times over every page in both
+  # languages, which takes over twenty minutes, and only starts once `verify`
+  # finishes, so on every pull request it would turn a one-minute check into
+  # one that takes over twenty. Most pull requests here change copy and
+  # content, which rarely move the scores.
   #
-  # It runs three times over every page in both languages, which takes about
-  # twenty minutes for the 25 pages there are now, and runs after `verify`
-  # finishes. On every pull request that would turn a one-minute check into a
-  # twenty-minute one. It runs on main, and on demand from the Actions tab.
-  #
-  # Put `pull_request` back once the real pages and content land: the design
-  # asks for 95 on performance and 100 on accessibility, and that is a promise
-  # worth blocking a merge over — just not yet.
+  # It runs on main after every merge, and on any branch from Actions → CI →
+  # Run workflow. Run it there before merging anything that touches loading,
+  # motion or colour: the design asks for 95 on performance and 100 on
+  # accessibility. If a regression ever reaches main through a pull request
+  # that skipped it, put `pull_request` back.
   lighthouse:
     needs: verify
     if: github.event_name != 'pull_request'
