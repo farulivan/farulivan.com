@@ -1,26 +1,24 @@
-name: Bug report
-description: Something in the template does not work
+name: Something on the site is broken
+description: A page that looks wrong, a link that goes nowhere, a typo
 labels: [bug]
 body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: The address of the page, copied from the browser.
+      placeholder: https://farulivan.com/work
+    validations:
+      required: true
   - type: textarea
     id: what-happened
     attributes:
       label: What happened
-      description: And what you expected instead.
-    validations:
-      required: true
-  - type: textarea
-    id: repro
-    attributes:
-      label: How to reproduce
-      description: The smallest set of steps that shows it. A link to a repository is ideal.
+      description: And what you expected instead. A screenshot helps.
     validations:
       required: true
   - type: input
-    id: versions
+    id: browser
     attributes:
-      label: Versions
-      description: Output of `node -v`, `pnpm -v`, and the `astro` version from package.json.
-      placeholder: node v22.12.0, pnpm 11.25.0, astro 7.2.10
-    validations:
-      required: true
+      label: Browser and device
+      placeholder: Safari on an iPhone, Chrome on Windows
