@@ -261,3 +261,51 @@ There was one, briefly. #43 shipped it report-only, and it came out again before
 ### Rolling back
 
 Workers & Pages → `farulivan` → Deployments: pick an earlier version and roll back to it, or run `pnpm exec wrangler rollback`. Either puts the old files back at once, without a build. Revert the commit as well, or the next merge deploys it again.
+
+## The repository on GitHub
+
+Like the Cloudflare settings above, these live only in GitHub's settings. Nothing in the repository holds them and no pull request shows a change to them, so this section is the record.
+
+### The ruleset on `main`
+
+Settings → Rules → Rulesets → "Protect main".
+
+- Every change reaches `main` through a pull request. The admin bypass is set to pull requests only, so that holds for the owner too.
+- `verify (22)` and `verify (24)` must pass. No approval is required: there is one maintainer, and a required approval would only be bypassed.
+- No force-push and no deletion.
+- A branch does not have to be up to date with `main` to merge. Cloudflare runs `pnpm verify` again on the merged commit instead; see "How a change goes live".
+
+**The required checks are matched by name.** The names come from the `verify` job and its Node matrix in `.github/workflows/ci.yml`. Rename the job or change the matrix, and the ruleset waits for checks that never report, which blocks every merge. Change the ruleset's check names alongside it.
+
+### Security and Actions settings
+
+Settings → Advanced Security, and Settings → Actions → General.
+
+| Setting                               | Value                                                                                  |
+| ------------------------------------- | -------------------------------------------------------------------------------------- |
+| Dependabot alerts                     | on                                                                                     |
+| Dependabot security updates           | on, grouped as `.github/dependabot.yml` says                                           |
+| Dependabot malware alerts             | on                                                                                     |
+| Secret scanning, with push protection | on                                                                                     |
+| Code scanning                         | CodeQL default setup: JavaScript/TypeScript and Actions, every pull request and weekly |
+| Private vulnerability reporting       | on, as `.github/SECURITY.md` describes                                                 |
+| Allowed actions                       | all, pinned to a full-length commit SHA                                                |
+| Default workflow permissions          | read                                                                                   |
+| Fork pull request workflows           | approval needed for every outside contributor                                          |
+| Automatically delete head branches    | on                                                                                     |
+
+Malware alerts have no API, so the toggle under Advanced Security is the only place to see that one. `gh api repos/farulivan/farulivan.com` and the `actions/permissions` endpoints under it show the rest.
+
+**Pinned actions are enforced, not only asked for.** The comments in `ci.yml` ask for a commit SHA on every action, and this setting fails any workflow that names an action by tag instead. Dependabot updates the SHA and its version comment together, so it costs nothing to keep. GitHub's documentation does not say whether it applies to the workflows GitHub generates itself, CodeQL's default setup and Dependabot's updates. If either stops starting over an unpinned action, this is the setting to look at.
+
+### Left out on purpose
+
+Each was weighed against this repository, the way the Content-Security-Policy was, and each says what would change that.
+
+- **A code-scanning rule in the ruleset.** CodeQL's check on a pull request already fails when the change adds an alert, and with one maintainer a red check stops the merge on its own. The rule's cost is the case where CodeQL reports nothing: on the day it was added, CodeQL had not yet posted results on pull requests, and the rule blocked every one until it came out. Dependabot's pull requests still get a neutral CodeQL check with nothing analysed (#80). Revisit when someone else merges pull requests.
+- **Dependency review on pull requests.** Most dependency changes are Dependabot's. For the rest, the checks that stop a malicious package run at install, before a review job could report: pnpm waits a day before installing a new release, refuses one published with weaker provenance than the release before it, and runs no install script it has not been allowed to (`pnpm-workspace.yaml`). A dependency with a known advisory raises a Dependabot alert once it reaches `main`. Revisit if adding dependencies by hand becomes routine.
+- **CODEOWNERS and required reviews.** One maintainer. Revisit when there are two.
+- **Required signed commits.** Every push comes from one account, and the merge commits GitHub writes are signed already. It would put a signing key on every machine and tool that commits, to prove an authorship nobody else can claim. Revisit when someone else can push.
+- **OpenSSF Scorecard.** It scores a project for the people deciding whether to depend on it, and nobody installs this repository.
+- **More scanners for the workflow,** such as a dedicated Actions linter or a hardened runner. CodeQL already analyses `.github/workflows/` as the Actions language, the token is read-only, and CI uses no secrets. Revisit when a workflow needs a secret or write access.
+- **Commit-message linting and pre-commit hooks.** "Commits and pull requests" in `AGENTS.md` leaves the format to review, and `pnpm verify` is the same gate locally as in CI.
