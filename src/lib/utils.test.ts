@@ -39,6 +39,7 @@ describe("cn", () => {
 
   it("recognises the renamed scales as scales", () => {
     expect(cn("p-5", "p-page-margin")).toBe("p-page-margin")
+    expect(cn("px-page-margin", "px-poster-margin")).toBe("px-poster-margin")
     expect(cn("rounded-panel", "rounded-control")).toBe("rounded-control")
     expect(cn("font-body", "font-label")).toBe("font-label")
     expect(cn("font-emph", "font-heading")).toBe("font-heading")

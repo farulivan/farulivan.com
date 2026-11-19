@@ -437,15 +437,21 @@ Appears on every page.
 ```
 
 ```
-padding:  var(--s-9) var(--page-margin) var(--page-margin)
+padding:  var(--s-9) 0 var(--page-margin)
+inset:    var(--page-margin) on the columns and rights, the nav's edge
 field:    --surface-invert, with --ink-invert text
 columns:  menu on the left margin, social and contact hard right
 labels:   var(--t-micro), uppercase, --ink-invert-muted
 menu:     var(--t-h-l), no label above it
 links:    var(--t-ui), --ink-invert, row pitch 28px
-wordmark: mark-footer, full content width, bottom-flush, STATIC
+wordmark: mark-footer, inset var(--poster-margin), STATIC
 rights:   below the wordmark, --t-micro, --ink-invert-muted
 ```
+
+> **The wordmark is the one thing in the footer outside the page margin.** The
+> links, the CV and the copyright line stop at `--page-margin` like the rest of
+> the site. The lettering sits at `--poster-margin`, 12–20px from each edge, so
+> it closes the page as a poster rather than as a big word in a box.
 
 > **Changed after the specification was written.** This originally kept every
 > column in the right half, with the left one empty apart from a small mark on
@@ -470,5 +476,5 @@ it with format and size — `CV — PDF, 240KB`.
 > thing. It is now the same pill the hero's CV uses, light on the black field,
 > with a paper focus ring and its format and size under it.
 
-**Responsive.** Below `768px`, columns stack full-width; the wordmark stays
-full-bleed and bottom-flush.
+**Responsive.** Below `768px`, columns stack full-width; the wordmark keeps
+its poster margin.

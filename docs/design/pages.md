@@ -79,8 +79,9 @@ section 2 is visible on first scroll.
 > shipped in the footer's muted grey at 60%, about 1.6:1 on white, and was close
 > to invisible.
 >
-> It is hidden below 768. There the descriptor wraps to three lines or more and
-> runs into that corner, and a phone hero is scrolled by habit anyway.
+> It is hidden below 768. There the descriptor wraps and the calls to action
+> stack full width, so the hero's lower half is already full, and a phone hero
+> is scrolled by habit anyway.
 
 > **Changed during build: the hero says who, what, availability and where the
 > CV is.** From the top, all on the 20% axis:
@@ -93,7 +94,9 @@ section 2 is visible on first scroll.
 >                A third of the way down on a desktop.
 > wordmark:      81.36% wide, left edge at 20%, as before
 > descriptor:    the line under the lettering, still typing its own markup
->                and swapping to the sentence
+>                and swapping to the sentence. Capitals at --t-h-l from 768,
+>                --t-h-m below it, so on a phone it stays a caption to the
+>                name rather than three rows that outweigh it
 > calls to act:  dark pill "Download my CV" with "PDF, 108 KB" under it,
 >                light pill "Email me". Side by side from 768, stacked
 >                and full width below it.
@@ -341,5 +344,7 @@ Three breakpoints. Below `768px` everything is one column.
 | C6 table | stacked blocks | table | table |
 | C8 timeline step | 24px | 48px | 72px |
 
-The `--page-margin` and the full-bleed treatments are preserved at every
-breakpoint. That is what keeps the poster feeling on a phone.
+The `--page-margin` grows with the window, from 24px on a phone to 64px, and
+is always wider than the gutter. The poster feeling comes from the full-bleed
+fields, the hero's crop and the footer lettering at `--poster-margin`, and
+all three are kept at every breakpoint.

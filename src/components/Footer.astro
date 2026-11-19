@@ -53,10 +53,15 @@ const social = [
    * section, because it runs edge to edge and a section caps its content. It
    * therefore has to name the field colour itself as well, so a control inside
    * it knows what to reverse into when it fills.
+   *
+   * The side margins are on the rows rather than on the footer, because the
+   * rows do not share one. The links and the copyright line keep the page
+   * margin, the same edge as the nav and every section above them. The
+   * lettering alone runs nearer the edge.
    */
 }
 <footer
-  class="bg-surface-invert text-ink-invert px-page-margin pb-page-margin pt-8 [--color-section-field:var(--color-surface-invert)] md:pt-9"
+  class="bg-surface-invert text-ink-invert pb-page-margin pt-8 [--color-section-field:var(--color-surface-invert)] md:pt-9"
 >
   {
     /*
@@ -70,7 +75,7 @@ const social = [
      */
   }
   <div
-    class="grid grid-cols-[1fr_1fr] gap-x-5 gap-y-7 px-4 md:grid-cols-[1fr_auto_auto] md:gap-7 md:px-8"
+    class="px-page-margin grid grid-cols-[1fr_1fr] gap-x-5 gap-y-7 md:grid-cols-[1fr_auto_auto] md:gap-7"
   >
     {
       /*
@@ -226,12 +231,17 @@ const social = [
      */
   }
   {
-    /* Margin to margin, sitting on the page's bottom edge without touching it. */
+    /*
+     * Nearer the edge than anything else in the footer: the poster margin,
+     * not the page margin. Inside the page margin it would be a big word in
+     * a box; this close to the edge it is the poster that ends the page, the
+     * same move the hero makes when it crops the word.
+     */
   }
-  <Wordmark variant="footer" class="mt-8" />
+  <Wordmark variant="footer" class="px-poster-margin mt-8" />
 
   {/* Under the lettering, so the last thing on the page is the name. */}
-  <p class="text-ink-invert-muted text-micro mt-4 uppercase">
+  <p class="text-ink-invert-muted text-micro px-page-margin mt-4 uppercase">
     {t("footer.rights", { year })}
   </p>
 </footer>
