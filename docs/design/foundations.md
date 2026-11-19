@@ -187,15 +187,23 @@ always gets positive tracking; display never does.
 ```
 
 ```css
---page-margin: clamp(12px, 1vw, 20px);   /* ≈14px at 1440 */
---gutter:      clamp(16px, 1.5vw, 24px);
---cols:        12;
---measure:     68ch;   /* max line length for --t-read */
+--page-margin:   clamp(24px, 4vw, 64px);   /* 24 at 375, 31 at 768, 58 at 1440 */
+--poster-margin: clamp(12px, 1vw, 20px);   /* the footer lettering only */
+--gutter:        clamp(16px, 1.5vw, 24px);
+--cols:          12;
+--measure:       68ch;   /* max line length for --t-read */
 ```
 
-> **The page margin is small on purpose.** It is what lets the wordmark and media
-> run edge to edge and keeps the poster feeling. It is used identically by the
-> nav, the footer and the full-bleed wordmark — one value, three places.
+> **The page margin is always wider than the gutter.** The nav, every section
+> and the footer's text stop at it, so the page has one edge. It used to be
+> `clamp(12px, 1vw, 20px)`, 12px on any window up to 1200, narrower than the
+> space between columns, and the pages read as cramped rather than framed.
+>
+> **The poster feeling lives in two places, not in a thin margin.** The hero
+> crops its lettering off the right edge, sized in percentages of the window so
+> no margin moves it. The footer sets its lettering at `--poster-margin`, the
+> old 12–20px, as the last thing on the page. Nothing else comes nearer the edge
+> than `--page-margin`.
 
 ---
 
@@ -277,7 +285,8 @@ state immediately. This is a build requirement, not a nicety.
   /* space + grid */
   --s-1:4px;  --s-2:8px;  --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px;
   --s-7:48px; --s-8:64px; --s-9:96px; --s-10:128px; --s-11:192px; --s-12:256px;
-  --page-margin:clamp(12px,1vw,20px); --gutter:clamp(16px,1.5vw,24px);
+  --page-margin:clamp(24px,4vw,64px); --poster-margin:clamp(12px,1vw,20px);
+  --gutter:clamp(16px,1.5vw,24px);
   --cols:12; --measure:68ch;
 
   /* shape */

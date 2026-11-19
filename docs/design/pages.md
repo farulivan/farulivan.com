@@ -341,5 +341,7 @@ Three breakpoints. Below `768px` everything is one column.
 | C6 table | stacked blocks | table | table |
 | C8 timeline step | 24px | 48px | 72px |
 
-The `--page-margin` and the full-bleed treatments are preserved at every
-breakpoint. That is what keeps the poster feeling on a phone.
+The `--page-margin` grows with the window, from 24px on a phone to 64px, and
+is always wider than the gutter. The poster feeling comes from the full-bleed
+fields, the hero's crop and the footer lettering at `--poster-margin`, and
+all three are kept at every breakpoint.
