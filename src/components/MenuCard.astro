@@ -93,7 +93,16 @@ const links = siteConfig.menu.map((item) => ({
       // links stay fully inside: decoration can be cropped, a target cannot,
       // so the padding on that side is the usual one plus however far the card
       // hangs over. Both read the same step, so they cannot come apart.
-      "md:top-0 md:-right-5 md:w-[480px] md:pe-[calc(var(--spacing-5)*2)]",
+      //
+      // Hanging from the top puts the first link level with the controls,
+      // which float over the card a page margin in from the edge while the
+      // card is pinned to the window. At a fixed 480px the controls slid
+      // further over the links as the margin grew, and on a laptop the close
+      // control sat on the end of "Beranda". The card is 480px plus the page
+      // margin, so its links move in with the controls and the gap between
+      // the two is the same at every width: about 22px for "Beranda", the
+      // longest first word, measured at 1440.
+      "md:top-0 md:-right-5 md:w-[calc(480px+var(--spacing-page-margin))] md:max-w-none md:pe-[calc(var(--spacing-5)*2)]",
       // It arrives from off the right edge and leaves the same way, rather
       // than fading in place — the card comes and goes, so it should come from
       // somewhere. 130% because it is tilted and already hangs past the edge,

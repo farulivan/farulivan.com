@@ -229,11 +229,27 @@
   --spacing-11: 192px;
   --spacing-12: 256px;
 
-  /* The page margin is small on purpose: it is what lets the wordmark and
-     media run edge to edge and keeps the poster feeling. One value used
-     identically by the nav, the footer and the full-bleed wordmark. */
-  --spacing-page-margin: clamp(12px, 1vw, 20px);
+  /*
+   * The page margin: the nav, every section, the footer's text and the
+   * hero's lines all stop here, so the page has one edge.
+   *
+   * It is always wider than the gutter. At 12px it was the narrower of the
+   * two, and a page whose edge is tighter than the space between its own
+   * columns reads as cramped rather than framed: the type looked like it was
+   * about to fall off the window. 24px on a phone, about 4% of the window
+   * from there, and 64px from 1600 up, where sections are close to their cap.
+   */
+  --spacing-page-margin: clamp(24px, 4vw, 64px);
   --spacing-gutter: clamp(16px, 1.5vw, 24px);
+
+  /*
+   * How near the edge a poster is allowed to come. Two things break the page
+   * margin, both the lettering: the hero crops it off the right edge, sized
+   * in percentages of the window, and the footer sets it this far from both
+   * edges as the last thing on the page. Everything else keeps the margin,
+   * which is what lets these two read as posters rather than as overflow.
+   */
+  --spacing-poster-margin: clamp(12px, 1vw, 20px);
 
   /* Longest comfortable line for prose. */
   --container-measure: 68ch;

@@ -38,7 +38,7 @@ const twMerge = extendTailwindMerge({
         "micro",
       ],
       /** Named steps. The numbered ones are read as numbers already. */
-      spacing: ["page-margin", "gutter", "tap", "control"],
+      spacing: ["page-margin", "poster-margin", "gutter", "tap", "control"],
       container: ["measure"],
       radius: ["control", "panel"],
       "font-weight": ["mark", "display", "body", "label", "heading", "emph"],
