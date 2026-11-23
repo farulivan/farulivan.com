@@ -128,8 +128,8 @@ breakpoints.** Only width and anchor. Do not scale the type down on mobile.
 > reached, and at that width it read as a sheet over the page rather than a
 > card laid on it. Below `768px` it is now `280px + var(--page-margin)` wide,
 > hangs past the right edge like the desktop card, and sets its links at
-> `--t-h-l` in 56px rows with `var(--s-5) var(--s-3)` padding: 426px tall, so
-> it fits a 568px screen. Fill, radius, weight, tracking and tilt are unchanged.
+> `--t-h-l`, 26px on a phone, in 56px rows with `var(--s-5) var(--s-3)`
+> padding. It fits a 568px screen. Fill, radius, weight, tracking and tilt are unchanged.
 > Where even that does not fit, a phone held sideways or a short window, the
 > card scrolls inside itself rather than losing its last rows.
 

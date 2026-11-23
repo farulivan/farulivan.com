@@ -140,7 +140,8 @@
      A ramp where every step has a stated job stops being one the moment an
      unnamed tenth size is one keystroke away.
 
-     Nine steps, each with a job. Display sizes are fluid, text sizes fixed.
+     Nine steps, each with a job. Display sizes are fluid, text sizes fixed,
+     except --text-h-l (see below).
      Tracking tightens as size grows and loosens as it shrinks; uppercase
      always gets positive tracking, display never does. */
   --text-*: initial;
@@ -157,7 +158,12 @@
   --text-display-s--line-height: 0.95;
   --text-display-s--letter-spacing: -0.03em;
 
-  --text-h-l: 32px;
+  /* The one text size that is fluid: 26px on a phone, 31.5 at 768, 32 from
+     800. At a fixed 32 it met --text-display-s at its 32px floor, so on a
+     phone the prose h2s, project titles, row figures, footer links and the
+     statements were all one size, and the ramp lost a step where a phone
+     needs it most. */
+  --text-h-l: clamp(26px, calc(20px + 1.5vw), 32px);
   --text-h-l--line-height: 1.1;
   --text-h-l--letter-spacing: -0.02em;
 

@@ -142,14 +142,15 @@ static cuts in `raw-assets/fonts/Lexend/static/` are a fallback only.
 
 ### The ramp
 
-Nine steps, each with a job. Display sizes are fluid; text sizes are fixed.
+Nine steps, each with a job. Display sizes are fluid; text sizes are fixed,
+except `--t-h-l`.
 
 | Token | Size | LH | Tracking | Role |
 |---|---|---|---|---|
 | `--t-display-l` | `clamp(64px, 10.4vw, 150px)` | 0.88 | −0.045em | page titles, timeline years |
 | `--t-display-m` | `clamp(48px, 6.7vw, 96px)` | 0.90 | −0.040em | section statements |
 | `--t-display-s` | `clamp(32px, 3.9vw, 56px)` | 0.95 | −0.030em | large standfirsts |
-| `--t-h-l` | `32px` | 1.10 | −0.020em | page sub-headings |
+| `--t-h-l` | `clamp(26px, calc(20px + 1.5vw), 32px)` | 1.10 | −0.020em | page sub-headings |
 | `--t-h-m` | `21px` | 1.20 | −0.010em | project titles, table rows |
 | `--t-read` | `17px` | **1.60** | 0 | **prose only** — Writing, case studies |
 | `--t-ui` | `14px` | 1.40 | 0 | nav, footer links, table cells |
@@ -169,6 +170,14 @@ Nine steps, each with a job. Display sizes are fluid; text sizes are fixed.
 > small print. `--t-ui` stays for table cells, navigation, footer links and
 > metadata, which keeps the About page's capability notes at 14px, since they
 > are table cells. `--t-read` stays for long prose.
+
+> **Changed during build: `--t-h-l` is fluid.** It runs from 26px on a phone
+> to 31.5 at 768 and 32 from 800. At a fixed 32 it met `--t-display-s` at its
+> 32px floor, so on a phone the prose h2s, project titles, row figures, footer
+> links, the menu card's links and the statements were all one size. Three of
+> Nabitu's five h2s wrapped to two lines at weight 500. It is the one text size
+> that is fluid; a phone-only size for prose h2s was turned down because it
+> would add an unnamed size to a ramp that has none.
 
 > **Changed during build: long display runs, and no automatic hyphens.** A
 > display size set over three lines or more takes line-height 1.05, not its
