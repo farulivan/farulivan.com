@@ -89,7 +89,7 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
 >
   <Section space="lg">
     <h1
-      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-auto"
+      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-manual"
     >
       {t("about.title")}
     </h1>
@@ -106,7 +106,13 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
     }
     <ReadingColumns>
       <div slot="aside" class="flex flex-col gap-7 max-md:mb-2">
-        <p class="text-display-s font-display text-ink m-0 text-balance">
+        {
+          /* 1.05 rather than the display step's 0.95: over four lines on a
+             phone the ascenders nearly met the descenders above them. */
+        }
+        <p
+          class="text-display-s font-display text-ink m-0 leading-[1.05] text-balance"
+        >
           {t("about.subtitle")}
         </p>
 
@@ -210,7 +216,14 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
       label={t("about.nowLabel")}
       description={t("about.nowDescription")}
     />
-    <p class="text-h-m font-display max-w-measure mt-7 text-pretty">
+    {
+      /* 1.4 rather than the heading step's 1.2. It runs to ten lines on a
+         phone, and a light weight over that many lines needs more air than a
+         heading does. */
+    }
+    <p
+      class="text-h-m font-display max-w-measure mt-7 leading-[1.4] text-pretty"
+    >
       {t("about.now")}
     </p>
   </Section>

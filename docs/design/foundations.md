@@ -170,6 +170,15 @@ Nine steps, each with a job. Display sizes are fluid; text sizes are fixed.
 > metadata, which keeps the About page's capability notes at 14px, since they
 > are table cells. `--t-read` stays for long prose.
 
+> **Changed during build: long display runs, and no automatic hyphens.** A
+> display size set over three lines or more takes line-height 1.05, not its
+> token's 0.90–0.95: at the tighter value the ascenders nearly meet the
+> descenders above. About's "Now" paragraph, ten lines of `--t-h-m` on a
+> phone, takes 1.4. Display text never hyphenates automatically. At 360 the
+> contact statement split "engineering" after its first two letters, and a
+> hyphen in 48px type looks like a fault rather than a line break. `overflow-wrap: break-word` stays on every
+> display element as the guard against one word wider than the screen.
+
 **Rule:** tracking tightens as size grows and loosens as it shrinks. Uppercase
 always gets positive tracking; display never does.
 
