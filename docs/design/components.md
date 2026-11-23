@@ -424,6 +424,13 @@ row) without borrowing the fret grid.
 > capitals that ran on after the word on some rows and wrapped under it on
 > others. The word wraps on a phone instead of being cut to "CRAFT AND PRA".
 
+> **Changed during build: a step smaller on a phone, and on the margin when
+> still.** Below `768px` the domains are `--t-display-s`, 32px. At 48px the four
+> capital headings, two of them on two lines, took 1.3 screens and read louder
+> than the name in the hero. The rows reserve padding for their drift only
+> where the drift runs. Under reduced motion, or without scroll-driven
+> animation, they start on the page margin like every other section.
+
 **Reduced motion.** Rows sit at their mid position, static.
 
 **A11y.** The stack is a real `<ul>`. The parallax is presentational; the list is
