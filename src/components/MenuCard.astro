@@ -6,11 +6,18 @@
  * card are one thing — the control's state *is* the card's state, and keeping
  * them together means there is no way for the two to disagree.
  *
- * **It is the same card on a phone.** Same fill, radius, padding, link size,
- * weight, tracking and tilt; only the width and where it hangs from change.
- * Most sites swap in an entirely different mobile menu and lose their
- * identity at exactly the moment it matters most. This one does not, and that
- * is the point of it rather than an implementation detail.
+ * **It is the same card on a phone.** Same fill, radius, weight, tracking and
+ * tilt, hanging off the same top-right corner. Most sites swap in an entirely
+ * different mobile menu and lose their identity at exactly the moment it
+ * matters most. This one does not, and that is the point of it rather than an
+ * implementation detail.
+ *
+ * It is smaller there, though. The card used to keep its desktop link size and
+ * 88px rows and run the full width of the phone, which made it about 650px
+ * tall: on a 667px screen the CV row hung off the bottom where nothing could
+ * reach it, and at the full width it read as a sheet over the page rather
+ * than a card laid on it. Below 768 it is now 280px plus the page margin, with
+ * 56px rows, about two thirds the height.
  */
 import Icon from "@/components/ui/Icon.astro"
 import Pill from "@/components/ui/Pill.astro"
@@ -79,20 +86,28 @@ const links = siteConfig.menu.map((item) => ({
 
   <div
     class:list={[
-      "rounded-panel bg-surface fixed top-[88px] right-0 z-1 w-full max-w-[480px]",
+      "rounded-panel bg-surface fixed top-[88px] -right-5 z-1 w-[calc(280px+var(--spacing-page-margin))]",
       // The card paints its own ground, the way the footer does, so the CV
       // control at the foot of it knows what colour to reverse into when it
       // fills.
       "[--color-section-field:var(--color-surface)]",
       // Static tilt, never animated. A degree and a half is the whole reason
       // this reads as placed by hand rather than as a system dropdown.
-      "rotate-[1.4deg] px-5 py-7",
+      "rotate-[1.4deg] px-3 py-5 pe-[calc(var(--spacing-3)+var(--spacing-5))] md:px-5 md:py-7",
       // Clears the bar on a narrow screen: 16px of padding, a 56px control and
-      // 16px again. From 768 up it hangs from the very top, and its corner may
-      // bleed past the right edge — which echoes the crop on the hero. The
-      // links stay fully inside: decoration can be cropped, a target cannot,
-      // so the padding on that side is the usual one plus however far the card
-      // hangs over. Both read the same step, so they cannot come apart.
+      // 16px again. From 768 up it hangs from the very top. At every width its
+      // corner bleeds past the right edge, which echoes the crop on the hero.
+      // The links stay fully inside: decoration can be cropped, a target
+      // cannot, so the padding on that side is the usual one plus however far
+      // the card hangs over. Both read the same step, so they cannot come
+      // apart. On a phone that ends each link's arrow on the page margin,
+      // under the edge of the control that opened the card.
+      //
+      // Never taller than the window. On a phone held sideways, or a short
+      // laptop window, the card scrolls inside itself rather than losing its
+      // last rows off the bottom of the screen, where they could not be
+      // reached.
+      "max-h-[calc(100dvh-88px)] overflow-y-auto overscroll-contain md:max-h-dvh",
       //
       // Hanging from the top puts the first link level with the controls,
       // which float over the card a page margin in from the edge while the
@@ -102,7 +117,7 @@ const links = siteConfig.menu.map((item) => ({
       // margin, so its links move in with the controls and the gap between
       // the two is the same at every width: about 22px for "Beranda", the
       // longest first word, measured at 1440.
-      "md:top-0 md:-right-5 md:w-[calc(480px+var(--spacing-page-margin))] md:max-w-none md:pe-[calc(var(--spacing-5)*2)]",
+      "md:top-0 md:w-[calc(480px+var(--spacing-page-margin))] md:pe-[calc(var(--spacing-5)*2)]",
       // It arrives from off the right edge and leaves the same way, rather
       // than fading in place — the card comes and goes, so it should come from
       // somewhere. 130% because it is tilted and already hangs past the edge,
@@ -140,9 +155,10 @@ const links = siteConfig.menu.map((item) => ({
     <nav aria-label={t("nav.menuLabel")}>
       {
         /*
-         * Size, weight, tracking, fill, radius and tilt are identical at every
-         * width. Only the card's width and its anchor change. Do not scale
-         * this down on a phone.
+         * Weight, tracking, fill, radius and tilt are identical at every
+         * width. On a phone the links drop to the heading step and their rows
+         * to 56px, which is still more than a finger needs, so five pages and
+         * the CV fit under the bar on the shortest phone in use.
          */
       }
       <ul class="m-0 flex list-none flex-col p-0">
@@ -157,7 +173,7 @@ const links = siteConfig.menu.map((item) => ({
                */
               <li>
                 <span
-                  class="rounded-panel text-display-s font-display text-ink-muted flex min-h-[88px] cursor-default items-center justify-between px-5 py-4 leading-none tracking-[-0.055em] no-underline"
+                  class="rounded-panel text-h-l md:text-display-s font-display text-ink-muted min-h-control flex cursor-default items-center justify-between px-3 py-2 leading-none tracking-[-0.055em] no-underline md:min-h-[88px] md:px-5 md:py-4"
                   aria-current="page"
                 >
                   {link.label}
@@ -166,7 +182,7 @@ const links = siteConfig.menu.map((item) => ({
             ) : (
               <li>
                 <a
-                  class="rounded-panel text-display-s font-display group/link text-ink duration-fast ease-state hover:bg-paper flex min-h-[88px] cursor-pointer items-center justify-between px-5 py-4 leading-none tracking-[-0.055em] no-underline transition-colors focus-visible:-outline-offset-2 active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100"
+                  class="rounded-panel text-h-l md:text-display-s font-display group/link text-ink duration-fast ease-state hover:bg-paper min-h-control flex cursor-pointer items-center justify-between px-3 py-2 leading-none tracking-[-0.055em] no-underline transition-colors focus-visible:-outline-offset-2 active:scale-[0.99] motion-reduce:transition-none motion-reduce:active:scale-100 md:min-h-[88px] md:px-5 md:py-4"
                   href={link.href}
                 >
                   <span>{link.label}</span>
@@ -199,9 +215,9 @@ const links = siteConfig.menu.map((item) => ({
            * control offering this file uses.
            */
         }
-        <li class="border-section-rule mt-4 border-t pt-4">
+        <li class="border-section-rule mt-3 border-t pt-3 md:mt-4 md:pt-4">
           <a
-            class="rounded-panel group/cv text-ink duration-fast ease-state min-h-tap after:duration-slow after:ease-state relative isolate flex cursor-pointer items-center justify-between gap-3 overflow-clip px-5 py-4 no-underline transition-colors after:absolute after:inset-0 after:-z-10 after:origin-bottom after:scale-y-0 after:bg-current after:transition-transform hover:after:scale-y-100 focus-visible:-outline-offset-2 active:scale-[0.99] motion-reduce:transition-none motion-reduce:after:transition-none motion-reduce:active:scale-100"
+            class="rounded-panel group/cv text-ink duration-fast ease-state min-h-tap after:duration-slow after:ease-state relative isolate flex cursor-pointer items-center justify-between gap-3 overflow-clip px-3 py-3 no-underline transition-colors after:absolute after:inset-0 after:-z-10 after:origin-bottom after:scale-y-0 after:bg-current after:transition-transform hover:after:scale-y-100 focus-visible:-outline-offset-2 active:scale-[0.99] motion-reduce:transition-none motion-reduce:after:transition-none motion-reduce:active:scale-100 md:px-5 md:py-4"
             href={siteConfig.cv.href}
             download={siteConfig.cv.filename}
           >
@@ -210,11 +226,11 @@ const links = siteConfig.menu.map((item) => ({
             >
               {
                 /*
-                 * Shorter on a narrow card, not smaller. The full sentence
-                 * needs 251px and a 320px card can offer 189, and the rule
-                 * above is that nothing in here shrinks on a phone. The arrow,
-                 * the format and the size are all still there saying what the
-                 * row does, so the word "download" is the part that can go.
+                 * Shorter on the phone's card. At the heading step the full
+                 * sentence needs about 230px, and beside the arrow the card
+                 * leaves it about 200. The arrow, the format and the size are
+                 * all still there saying what the row does, so the word
+                 * "download" is the part that can go.
                  *
                  * Two spans rather than one swapped string: the hidden one is
                  * display:none, which takes it out of the accessibility tree
@@ -222,8 +238,8 @@ const links = siteConfig.menu.map((item) => ({
                  */
               }
               <span class="text-h-l font-display leading-none">
-                <span class="sm:hidden">{t("cv.short")}</span>
-                <span class="max-sm:hidden">{t("cv.download")}</span>
+                <span class="md:hidden">{t("cv.short")}</span>
+                <span class="max-md:hidden">{t("cv.download")}</span>
               </span>
               <span
                 class="text-micro text-section-muted group-hover/cv:text-section-field duration-slow ease-state uppercase transition-colors motion-reduce:transition-none"
