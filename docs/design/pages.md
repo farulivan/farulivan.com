@@ -256,8 +256,9 @@ and two lines on what shipped.
 
 > **Changed during build: the portrait is not full bleed.** It sits in the left
 > column under the standfirst, beside the bio, and above the bio on a phone. It
-> is a 4:5 crop, never more than 360px wide, in monochrome (greyscale, contrast
-> 1.05), with square corners and no reveal.
+> is a 4:5 crop, never more than 360px wide (240 on a phone), in monochrome
+> (greyscale, contrast 1.05), with square corners and no reveal. Across a
+> phone's full width it was half a screen and pushed the bio onto the second.
 >
 > The only photograph is a 720 square, which cannot fill a 16:9 band across a
 > window without going soft. A 4:5 crop of it is 576 × 720, so at 360px it has

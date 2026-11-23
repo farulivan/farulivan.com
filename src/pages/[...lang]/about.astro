@@ -125,6 +125,10 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
            * on screen is 1.6 pixels to every one drawn, inside the two-thirds
            * rule the screenshots are held to.
            *
+           * 240 wide on a phone. Across the full width it was 342 × 427, half
+           * a screen, and the bio under it started on the second one. The face
+           * does not need the width to be seen.
+           *
            * Monochrome because the original is warm wood and a navy shirt,
            * and on a page whose one bright colour is lime, a second set of
            * colours competes with it. Square, because it is content rather
@@ -141,10 +145,10 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
           width={360}
           height={450}
           widths={[360, 576]}
-          sizes="360px"
+          sizes="(min-width: 768px) 360px, 240px"
           fit="cover"
           loading="eager"
-          class="block h-auto w-full max-w-[360px] contrast-105 grayscale"
+          class="block h-auto w-full max-w-[240px] contrast-105 grayscale md:max-w-[360px]"
         />
       </div>
 
