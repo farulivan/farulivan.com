@@ -43,6 +43,13 @@ mark **never** drops — the hero crop depends on it ([wordmark.md §3](wordmark
 > thing and did another. It reads "EN · ID" in the same 44px pill, the current
 > one in `--ink` and the other muted, which turns ink on hover.
 
+> **Changed during build: a hairline round the language pill.** Over the grey
+> Selected work band the grey pill had no edge and "EN · ID" floated on its
+> own; the bar returns on every upward flick, so on a phone it showed often.
+> It now wears a 1px `--rule` outline at every width, the availability badge's,
+> and its padding gives up that pixel so its size does not change. A paper
+> fill was the alternative, and it would have lost the pill's grey.
+
 > **Changed during build: the controls hide while you read.** "Always visible"
 > put the language and menu pills on top of headings and prose on every long
 > page, and on a phone nearly all the time. Past the point where the mark
