@@ -244,7 +244,9 @@ const stackGroups = capabilities.map(({ entry }) => ({
      * directly, so the space either side is generous: it is what stops it
      * reading as a paragraph between two others. It used to have the most on
      * the site, 192px each side, and with the next section's the first
-     * project sat nearly three screens down.
+     * project sat nearly three screens down. On a phone it takes 64, the
+     * same as every other section there: at 128 the gap after it was a
+     * quarter of the screen with nothing in it.
      *
      * It starts on the hero's 20% line rather than centred. It was the only
      * centred block on the site, and sharing the line ties it to the name
@@ -267,7 +269,7 @@ const stackGroups = capabilities.map(({ entry }) => ({
      * the sentence is simply there.
      */
   }
-  <section class="bg-paper text-ink py-10">
+  <section class="bg-paper text-ink py-8 md:py-10">
     <p
       class="text-display-s font-display text-ink pe-page-margin m-0 ms-[20%] max-w-[40ch] leading-[1.05] text-balance"
       data-statement
