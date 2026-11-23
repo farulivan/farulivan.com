@@ -8,13 +8,28 @@
  *
  * **It becomes stacked blocks below 768px rather than scrolling sideways.** A
  * table of links that scrolls horizontally is a table whose links you cannot
- * reach on a phone. Each cell keeps its column name and prints it above the
- * value instead.
+ * reach on a phone. By default each cell keeps its column name and prints it
+ * above the value instead. That is right where the name is what gives a value
+ * its meaning: "Immediately" needs "Earliest start" over it.
+ *
+ * **A list goes compact instead.** Once any column says where it goes on a
+ * phone, the names go: nobody needs telling that a date is a date, and a name
+ * over every value turned a list of posts into a stack of forms, 205px a
+ * post. A compact row leads with its title, runs the short values together on
+ * one muted line, and gives a longer value a line of its own. It is the same
+ * table, rearranged with flex order below 768, so from 768 up nothing changes
+ * and assistive tech still reads a table.
  */
 import { cn } from "@/lib/utils"
 
+/** Where a value goes in a compact row below 768. */
+export type PhoneSlot = "title" | "meta" | "line" | "body"
+
 export interface DataColumn {
-  /** Printed in the header, and above the value once the table stacks. */
+  /**
+   * Printed in the header, and above the value once the table stacks, unless
+   * the table is compact.
+   */
   label: string
   /**
    * The one column set at heading size, which also carries the row's link.
@@ -23,6 +38,21 @@ export interface DataColumn {
    */
   title?: boolean
   align?: "start" | "end"
+  /**
+   * Where the value goes in a compact row. Setting it on any column makes the
+   * table compact; a column without one is then a `line`.
+   *
+   * - `title`: first, on a line of its own.
+   * - `meta`: joins one muted line of short values, set apart by dots.
+   * - `line`: a muted line of its own, for a longer value.
+   * - `body`: a line of its own in ink, for a value worth reading in full.
+   */
+  phone?: PhoneSlot
+  /**
+   * Its place among the cells of the same kind, where the columns' own order
+   * is wrong for a phone. Defaults to the column's position.
+   */
+  phoneOrder?: number
 }
 
 export type DataCell = string | number | { text: string; href: string }
@@ -41,14 +71,45 @@ const text = (cell: DataCell) =>
   typeof cell === "object" ? cell.text : String(cell)
 const href = (cell: DataCell) =>
   typeof cell === "object" ? cell.href : undefined
+
+const compact = columns.some((column) => column.phone !== undefined)
+const slot = (index: number): PhoneSlot => columns[index]?.phone ?? "line"
+
+/*
+ * The order the cells take in a compact row: the title, the meta line, then
+ * the lines of their own, each group in `phoneOrder`. It is applied as flex
+ * `order`, which a table cell ignores, so it does nothing from 768 up.
+ */
+const rank: Record<PhoneSlot, number> = { title: 0, meta: 1, line: 2, body: 2 }
+const sequence = columns
+  .map((column, index) => ({
+    index,
+    rank: rank[slot(index)],
+    within: column.phoneOrder ?? index,
+  }))
+  .sort((a, b) => a.rank - b.rank || a.within - b.within)
+  .map(({ index }) => index)
+const order = (index: number) => sequence.indexOf(index)
+
+/*
+ * The meta cell that opens the line takes no dot in front of it. Worked out
+ * per row, because a value can be empty, and an empty one is dropped from the
+ * line rather than leaving two dots side by side.
+ */
+const leadingMeta = (row: DataCell[]) =>
+  sequence.find((index) => {
+    const cell = row[index]
+    return slot(index) === "meta" && cell !== undefined && text(cell) !== ""
+  })
 ---
 
 {
   /*
    * `max-md:block` on every part turns the table into blocks: the header is
    * dropped, each row becomes a bordered group, and each cell prints its
-   * column name above itself. The elements keep their table roles for
-   * assistive tech, which is why this is a real table and not a grid of divs.
+   * column name above itself, or in a compact table takes its place in a
+   * wrapping row instead. The elements keep their table roles for assistive
+   * tech, which is why this is a real table and not a grid of divs.
    */
 }
 <table
@@ -85,50 +146,84 @@ const href = (cell: DataCell) =>
 
   <tbody class="max-md:block">
     {
-      rows.map((row) => (
-        <tr class="border-section-rule border-b max-md:block max-md:py-2">
-          {row.map((cell, index) => {
-            const column = columns[index]
-            const link = href(cell)
-            const label = text(cell)
+      rows.map((row) => {
+        const lead = leadingMeta(row)
 
-            return (
-              <td
-                data-label={column?.label}
-                class={cn(
-                  // Middle rather than top. A row is as tall as its longest
-                  // cell, and with everything pinned to the top a one-line
-                  // cell beside a three-line one reads as two different rows.
-                  "text-ui py-5 align-middle",
-                  "pe-gutter last:pe-0",
-                  column?.align === "end" && "text-right",
-                  column?.title && "text-h-m",
-                  // Stacked, every cell is a full-width line with its column
-                  // name above it, and the padding moves to the row. The
-                  // column gutter goes with the columns.
-                  "max-md:block max-md:py-1 max-md:pe-0 max-md:text-left",
-                  column?.label &&
-                    "max-md:before:text-micro max-md:before:text-section-muted max-md:before:block max-md:before:uppercase max-md:before:content-[attr(data-label)]"
-                )}
-              >
-                {/* The link fills its cell rather than hugging its text, so
-                     the whole row-height area is the target — which is what
-                     this table's own note about row links asks for. */}
-                {link ? (
-                  <a
-                    href={link}
-                    class="hover:decoration-section-rule-strong duration-fast ease-state min-h-tap -my-5 flex items-center py-5 underline decoration-transparent underline-offset-4 transition-[text-decoration-color] motion-reduce:transition-none max-md:my-0 max-md:py-0"
-                  >
-                    {label}
-                  </a>
-                ) : (
-                  label
-                )}
-              </td>
-            )
-          })}
-        </tr>
-      ))
+        return (
+          <tr
+            class={cn(
+              "border-section-rule border-b max-md:py-2",
+              compact
+                ? "max-md:flex max-md:flex-wrap max-md:items-baseline"
+                : "max-md:block"
+            )}
+          >
+            {row.map((cell, index) => {
+              const column = columns[index]
+              const link = href(cell)
+              const label = text(cell)
+              const place = slot(index)
+
+              return (
+                <td
+                  data-label={compact ? undefined : column?.label}
+                  style={compact ? `order: ${order(index)}` : undefined}
+                  class={cn(
+                    // Middle rather than top. A row is as tall as its longest
+                    // cell, and with everything pinned to the top a one-line
+                    // cell beside a three-line one reads as two different rows.
+                    "text-ui py-5 align-middle",
+                    "pe-gutter last:pe-0",
+                    column?.align === "end" && "text-right",
+                    column?.title && "text-h-m",
+                    // Stacked, every cell is a full-width line and the padding
+                    // moves to the row. The column gutter goes with the
+                    // columns.
+                    "max-md:block max-md:pe-0 max-md:text-left",
+                    compact
+                      ? [
+                          "max-md:py-0",
+                          place !== "title" && "max-md:pt-1",
+                          place !== "meta" && "max-md:basis-full",
+                          place === "meta" &&
+                            "max-md:text-label max-md:text-section-muted",
+                          place === "line" && "max-md:text-section-muted",
+                          label === "" && "max-md:hidden",
+                        ]
+                      : [
+                          "max-md:py-1",
+                          column?.label &&
+                            "max-md:before:text-micro max-md:before:text-section-muted max-md:before:block max-md:before:uppercase max-md:before:content-[attr(data-label)]",
+                        ]
+                  )}
+                >
+                  {/* The dot between two values on the meta line. Markup
+                       rather than generated content, so it can be hidden from
+                       screen readers, which would otherwise read it out. */}
+                  {compact && place === "meta" && index !== lead && (
+                    <span aria-hidden="true" class="mx-2 md:hidden">
+                      ·
+                    </span>
+                  )}
+                  {/* The link fills its cell rather than hugging its text, so
+                       the whole row-height area is the target — which is what
+                       this table's own note about row links asks for. */}
+                  {link ? (
+                    <a
+                      href={link}
+                      class="hover:decoration-section-rule-strong duration-fast ease-state min-h-tap -my-5 flex items-center py-5 underline decoration-transparent underline-offset-4 transition-[text-decoration-color] motion-reduce:transition-none max-md:my-0 max-md:py-0"
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    label
+                  )}
+                </td>
+              )
+            })}
+          </tr>
+        )
+      })
     }
   </tbody>
 </table>
