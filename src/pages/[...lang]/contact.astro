@@ -90,10 +90,15 @@ const rows: DataCell[][] = [
        * The statement is the heading here in every sense but the markup. It is
        * set at display size and says what the page is for, so a second visible
        * "Contact" above it would be a label on something already labelled.
+       *
+       * A step smaller on a phone, and across the full width there. At 48px
+       * and 14 characters a line it ran to six lines and pushed the address,
+       * the one thing anyone comes here for, under the fold. At 32 it runs
+       * long enough to need the statement's 1.05 rather than 0.95.
        */
     }
     <p
-      class="text-display-m font-display text-ink m-0 max-w-[14ch] text-balance wrap-break-word hyphens-auto"
+      class="text-display-s md:text-display-m font-display text-ink m-0 text-balance wrap-break-word hyphens-auto max-md:leading-[1.05] md:max-w-[14ch]"
     >
       {t("contact.statement")}
     </p>
