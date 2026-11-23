@@ -156,6 +156,20 @@ the `n` standing.
 > the descriptor and two calls to action share the hero with it, and pinned at
 > a share of the hero's height the lettering could not make room for them.
 
+> **Changed during build: on a phone the left edge is the page margin.** Below
+> `768px` the hero starts on the page margin rather than the 20% axis, which
+> on a phone was 78px of empty column nothing else used. The cut is held, not
+> the edge: what shows runs from the margin to the right edge, so
+>
+> ```css
+> width:       calc((100% - var(--page-margin)) / 0.9833);
+> margin-left: var(--page-margin);
+> ```
+>
+> The same 1.67% of the lettering is cut, through the final `n`, as at every
+> other width. At 390 the lettering is 372px wide and 70px tall, from 317 and
+> 60 on the axis.
+
 ---
 
 ## 5. Structure for the animation

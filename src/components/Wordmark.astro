@@ -100,7 +100,7 @@ const svg = mark.replaceAll("wordmark-wipe", `wordmark-wipe-${variant}`)
   /*
    * The crop.
    *
-   * One width at every breakpoint, and a percentage rather than a pixel
+   * One fraction at every width, and a percentage rather than a pixel
    * overflow, so the same fraction of the same letter is always missing —
    * which is what makes it read as composed rather than truncated.
    *
@@ -134,6 +134,24 @@ const svg = mark.replaceAll("wordmark-wipe", `wordmark-wipe-${variant}`)
     flex: none;
     width: 81.36%;
     margin-left: 20%;
+  }
+
+  /*
+   * On a phone the hero starts on the page margin rather than the 20% axis,
+   * so the lettering does too, with the same cut. What shows runs from the
+   * margin to the right edge, and the lettering is that divided by the share
+   * of it left standing, 0.80 / 81.36% = 0.9833. At 390 it is 372px wide and
+   * 70px tall, where on the axis it was 317 and 60: two screens later the
+   * stack band's capitals were about as loud as the name.
+   *
+   * The same breakpoint Tailwind's `md` uses, written out because this is a
+   * scoped style rather than a class.
+   */
+  @media (width < 48rem) {
+    .mark--hero {
+      width: calc((100% - var(--spacing-page-margin)) / 0.9833);
+      margin-left: var(--spacing-page-margin);
+    }
   }
 
   /*

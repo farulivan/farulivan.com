@@ -386,6 +386,16 @@ detail:  right column — role, company, 2-line description at --t-ui
 survives but does not push content off screen. Do not remove it entirely; the
 stagger is the pattern.
 
+> **Changed during build: a leader line on a phone.** Below `768px` each year
+> sits directly over left-aligned text, so the step read as a year that missed
+> its edge: on About the years moved from 24px to 144px while every role and
+> description stayed at 24. A 1px `--section-rule-strong` hairline now runs
+> from the page margin to 8px short of each stepped year, with a 9px tick at
+> the margin, the way a drawing dimensions an offset. The step itself is
+> unchanged and still the pattern; the line only draws it. The first row has
+> no line, and from 768 up there is none. Flat years on a phone were the
+> alternative, turned down because the stagger is the pattern.
+
 > **Changed during build: only the years step.** The whole row used to
 > indent, so on About's seven rows the detail column narrowed row by row and
 > the last slid under the menu control. The years now step and the detail

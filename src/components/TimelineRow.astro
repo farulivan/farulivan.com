@@ -102,7 +102,34 @@ const indent =
   )}
 >
   <div class="md:gap-gutter grid gap-4 py-7 md:grid-cols-12">
-    <div class="md:col-span-6" style={`padding-inline-start: ${indent}`}>
+    <div
+      class="relative md:col-span-6"
+      style={`padding-inline-start: ${indent}`}
+    >
+      {
+        /*
+         * On a phone each year sits directly over left-aligned text, so a
+         * year stepped in from the margin reads as one that missed its edge
+         * rather than as a step. A hairline from the margin to 8px short of
+         * the year, with a tick at the margin, draws the offset the way a
+         * drawing dimensions one: the step stays, and the line ties it back
+         * to the edge everything else shares. The first row has no offset, so
+         * no line. On a desktop the step reads against the empty space beside
+         * it and needs no line.
+         *
+         * It carries the year's own size so that its `top` in em lands on the
+         * middle of the digits, measured at 0.47em down the year's line.
+         */
+      }
+      {
+        step > 0 && steps > 1 && (
+          <span
+            aria-hidden="true"
+            class="text-display-m bg-section-rule-strong before:bg-section-rule-strong absolute inset-s-0 top-[0.47em] h-px before:absolute before:inset-s-0 before:-top-1 before:h-[9px] before:w-px before:content-[''] md:hidden"
+            style={`width: calc(${indent} - 8px)`}
+          />
+        )
+      }
       {
         /*
          * A step below the page title. A span is nearly twice as wide as the
