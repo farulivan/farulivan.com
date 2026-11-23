@@ -122,6 +122,17 @@ breakpoints.** Only width and anchor. Do not scale the type down on mobile.
 > The 1.4° tilt is what stops the card reading as a system dropdown — it looks
 > placed by hand. More would look like a bug; less would do nothing.
 
+> **Changed during build: a smaller card on a phone.** At the desktop's link
+> size and 88px rows, and the full width of the phone, the card was about 650px
+> tall. On a 667px screen the CV row hung off the bottom where it could not be
+> reached, and at that width it read as a sheet over the page rather than a
+> card laid on it. Below `768px` it is now `280px + var(--page-margin)` wide,
+> hangs past the right edge like the desktop card, and sets its links at
+> `--t-h-l` in 56px rows with `var(--s-5) var(--s-3)` padding: 426px tall, so
+> it fits a 568px screen. Fill, radius, weight, tracking and tilt are unchanged.
+> Where even that does not fit, a phone held sideways or a short window, the
+> card scrolls inside itself rather than losing its last rows.
+
 **Overflow.** The card's corner may bleed past the right edge by roughly 60px —
 this echoes the hero crop and makes the two read as one system. **Links
 must stay fully inside.** Crop decoration, never interaction.
