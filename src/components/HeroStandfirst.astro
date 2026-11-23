@@ -67,7 +67,10 @@ const ink = {
  *
  * It is a selection rather than all of them. `hero-enter` is on the box too,
  * and is left out to make room for the sentence's two sizes, which say more
- * about the line than an entrance does.
+ * about the line than an entrance does. `tracking-[0.08em]` is on the
+ * sentence too, and is left out to make room for its two margins, which say
+ * where the line starts on a phone and on a desktop. Dropping it costs the
+ * same 18 characters the margins add, so the size below did not change.
  *
  * The `style` attribute the box also carries is left out. It holds an
  * animation offset rather than a class, so it adds 28 characters of build
@@ -80,7 +83,7 @@ const snippet: { text: string; kind: keyof typeof ink }[] = [
   { text: "class", kind: "attr" },
   { text: "=", kind: "mark" },
   {
-    text: '"text-h-m md:text-h-l font-display uppercase tracking-[0.08em] ms-[20%] mt-5"',
+    text: '"text-h-m md:text-h-l font-display uppercase ms-page-margin md:ms-[20%] mt-5"',
     kind: "string",
   },
   { text: ">", kind: "mark" },

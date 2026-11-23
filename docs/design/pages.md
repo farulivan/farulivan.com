@@ -140,6 +140,18 @@ section 2 is visible on first scroll.
 > way. The label is "Download my CV", the same words the CV has everywhere
 > else on the site.
 
+> **Changed during build: on a phone the hero is on the page margin.** The 20%
+> axis holds from 768 up. On a 390 phone it was 78px of empty column that
+> nothing after the statement used, since every section from "What I do" on
+> starts at the margin, and it squeezed everything in the hero into 288px.
+> Below 768 the badge, the lettering, the descriptor, the pills and the
+> statement all start on the page margin. The lettering keeps its cut (see
+> wordmark.md) and grows from 60px tall to 70. The badge sets its words in
+> sentence case at `--t-ui`: two lines in English and three in Indonesian, from
+> three and four in capitals, with "full-stack" joined by a non-breaking hyphen.
+> Keeping the axis and fixing only the badge was the alternative; it left the
+> name at 60px and the hero on an edge of its own.
+
 ---
 
 ## Work
@@ -353,7 +365,7 @@ Three breakpoints. Below `768px` everything is one column.
 | | `<768px` | `768–1024px` | `>1024px` |
 |---|---|---|---|
 | grid | 4 col | 8 col | 12 col |
-| wordmark | `81.36%` | `81.36%` | `81.36%` |
+| wordmark | `(100% − margin) / 0.9833` | `81.36%` | `81.36%` |
 | nav | mark + pill | + descriptor | all 4 zones |
 | C5 project row | stacked | stacked | 2 col |
 | C6 table | stacked blocks | table | table |

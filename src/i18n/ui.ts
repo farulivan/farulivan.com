@@ -38,7 +38,7 @@ export const en = {
 
   // Home. The hero says who, what, that I am looking, and how to reach me.
   "home.availability":
-    "Open to frontend and full-stack roles\u00a0· Remote or Indonesia\u00a0· UTC+7",
+    "Open to frontend and full\u2011stack roles\u00a0· Remote or Indonesia\u00a0· UTC+7",
   "home.emailCta": "Email me",
   "home.scrollCue": "Scroll down",
 
@@ -226,7 +226,7 @@ export const id: Record<TranslationKey, string> = {
   "nav.menuLabel": "Situs",
 
   "home.availability":
-    "Terbuka untuk posisi frontend dan full-stack\u00a0· Remote atau di\u00a0Indonesia\u00a0· UTC+7",
+    "Terbuka untuk posisi frontend dan full\u2011stack\u00a0· Remote atau di\u00a0Indonesia\u00a0· UTC+7",
   "home.emailCta": "Kirim email",
   "home.scrollCue": "Scroll ke bawah",
 
