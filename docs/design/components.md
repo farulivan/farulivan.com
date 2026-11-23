@@ -489,3 +489,11 @@ it with format and size — `CV — PDF, 240KB`.
 
 **Responsive.** Below `768px`, columns stack full-width; the wordmark keeps
 its poster margin.
+
+> **Changed during build: it stacks, Contact first.** The columns had not
+> stacked: Social and Contact shared a row, and the CV pill's label wrapped
+> inside its one-line window and showed only "Download". Below `768px` the
+> three now stack, the CV pill runs the full width with its whole label, and
+> GitHub and LinkedIn share one line. Contact comes before Social at every
+> width, desktop included, because it holds the address and the CV. The swap
+> is in the markup rather than in CSS, so keyboard order and screen order agree.

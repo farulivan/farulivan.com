@@ -69,13 +69,19 @@ const social = [
      * to the far edge. Weighted left and light right, rather than a row of
      * three even columns — the most ordinary footer shape there is.
      *
-     * On a phone the menu takes a row of its own and the other two share the
-     * next one. Stacking all three put a single short list on each of three
-     * rows, which is a lot of scrolling past almost nothing.
+     * On a phone all three stack. Side by side, the two small lists split
+     * the width, and the CV pill's label wrapped inside a window one line tall
+     * and showed only "Download". It was the one CV control on the site that
+     * did not say CV.
+     *
+     * Contact comes before Social at every width. It holds the address and
+     * the CV, the two things this footer is for, and putting it first in the
+     * markup keeps the order a keyboard moves through the same as the order
+     * on screen, which reordering with CSS would not.
      */
   }
   <div
-    class="px-page-margin grid grid-cols-[1fr_1fr] gap-x-5 gap-y-7 md:grid-cols-[1fr_auto_auto] md:gap-7"
+    class="px-page-margin grid grid-cols-1 gap-y-7 md:grid-cols-[1fr_auto_auto] md:gap-7"
   >
     {
       /*
@@ -135,36 +141,11 @@ const social = [
        * 12.4px above its first row while the rows sat 14.4px apart. Adding the
        * difference back makes the two gaps read the same, which is the point.
        *
-       * The contact list below repeats both, so a change has to be made twice.
+       * The social list below repeats both, so a change has to be made twice.
        * That is on purpose: the numbers are readable where they are used, and
        * a two-line group is not worth a component.
        */
     }
-    <section class="[--row-gap:calc(28px-1.4*var(--text-ui))]">
-      <h2
-        class="text-ink-invert-muted text-micro font-label m-0 mb-[calc(var(--row-gap)+(0.4*var(--text-ui)/2)-(0.2*var(--text-micro)/2))] uppercase"
-      >
-        {t("footer.social")}
-      </h2>
-      <ul class="m-0 flex list-none flex-col gap-(--row-gap) p-0">
-        {
-          social.map((item) => (
-            <li>
-              <a
-                class="text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper min-h-tap inline-flex items-center no-underline underline-offset-2 transition-[text-underline-offset] hover:underline hover:underline-offset-4 motion-reduce:transition-none"
-                href={item.href}
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                {item.label}
-                <span class="sr-only"> {t("a11y.externalLink")}</span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-
     <section class="[--row-gap:calc(28px-1.4*var(--text-ui))]">
       <h2
         class="text-ink-invert-muted text-micro font-label m-0 mb-[calc(var(--row-gap)+(0.4*var(--text-ui)/2)-(0.2*var(--text-micro)/2))] uppercase"
@@ -199,7 +180,7 @@ const social = [
             download={siteConfig.cv.filename}
             label={t("cv.download")}
             keepLabel
-            class="focus-visible:outline-paper"
+            class="focus-visible:outline-paper max-md:w-full max-md:justify-between"
           >
             {/* Points down, because this is a download. */}
             <Icon slot="circle" name="arrowRight" class="size-4 rotate-90" />
@@ -219,6 +200,33 @@ const social = [
             }
           </span>
         </li>
+      </ul>
+    </section>
+
+    <section class="[--row-gap:calc(28px-1.4*var(--text-ui))]">
+      <h2
+        class="text-ink-invert-muted text-micro font-label m-0 mb-[calc(var(--row-gap)+(0.4*var(--text-ui)/2)-(0.2*var(--text-micro)/2))] uppercase"
+      >
+        {t("footer.social")}
+      </h2>
+      <ul
+        class="m-0 flex list-none flex-col gap-(--row-gap) p-0 max-md:flex-row max-md:gap-x-6"
+      >
+        {
+          social.map((item) => (
+            <li>
+              <a
+                class="text-ink-invert text-ui duration-fast ease-state focus-visible:outline-paper min-h-tap inline-flex items-center no-underline underline-offset-2 transition-[text-underline-offset] hover:underline hover:underline-offset-4 motion-reduce:transition-none"
+                href={item.href}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {item.label}
+                <span class="sr-only"> {t("a11y.externalLink")}</span>
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </section>
   </div>
