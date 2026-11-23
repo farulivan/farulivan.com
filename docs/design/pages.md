@@ -204,10 +204,16 @@ finds it in the table; someone browsing gets the visual rows.
 > header:   title, summary, then the live and source links as pills, then
 >           the facts table
 > results:  every outcome figure at --t-display-s over a --t-label caption,
->           one row of up to four columns, two to a row on a phone
+>           one row of up to four columns; on a phone a list, each value in
+>           a 128px column with its caption beside it
 > ...       lead image, the story, whose last section is the outcome
 > next:     the next project's row, on --surface
 > ```
+>
+> On a phone the results were two to a row, which left the third of three
+> alone under the other two. As a list there is no orphan at any count. The
+> hairlines run between results only: the facts table's bottom rule is
+> already above the first.
 >
 > The figures sat after about 2,500px of prose at 32px, and four of them
 > wrapped three and one. The links were a half-width empty box at the very
