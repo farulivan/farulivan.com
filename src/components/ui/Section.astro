@@ -70,9 +70,27 @@ const fields = {
     "bg-surface-invert text-ink-invert [--color-section-muted:var(--color-ink-invert-muted)] [--color-section-rule:color-mix(in_srgb,var(--color-ink-invert)_30%,transparent)] [--color-section-rule-strong:var(--color-ink-invert)] [--color-section-field:var(--color-surface-invert)] [--color-section-stage:color-mix(in_srgb,var(--color-ink-invert)_8%,var(--color-surface-invert))]",
 }[field]
 
-/* `xl` exists for the one section that is a single sentence and needs the
-   room to read as a statement rather than as a paragraph between two others. */
-const spacing = { sm: "py-8", md: "py-9", lg: "py-10", xl: "py-11" }[space]
+/*
+ * `xl` exists for the one section that is a single sentence and needs the
+ * room to read as a statement rather than as a paragraph between two others.
+ *
+ * Below 768 the padding drops a step, because space that frames a section on
+ * a laptop empties a phone. Two `md` sections meet across 192px, almost a
+ * quarter of an 844px screen; at 64 each they meet across 128, still enough
+ * to part two fields of colour.
+ *
+ * `lg` is every page's header. On a phone it takes 32 on top, which with
+ * the room `main` leaves for the bar starts the title 160px down, one clear
+ * step under the 92px bar. It takes 64 underneath, so the header and what
+ * follows are 128 apart like any other two sections. At 128 a side,
+ * Contact's address and Writing's first post both started under the fold.
+ */
+const spacing = {
+  sm: "py-8",
+  md: "py-8 md:py-9",
+  lg: "pt-6 pb-8 md:py-10",
+  xl: "py-11",
+}[space]
 ---
 
 <Container {tag} class={cn(fields, spacing, className)} {...rest}>
