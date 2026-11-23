@@ -64,8 +64,12 @@ const { groups, label, class: className } = Astro.props
            * The word wraps on a phone rather than running off the edge. Held
            * to one line, it was cut to "CRAFT AND PRA", which is a crop that
            * loses the word rather than one that frames it.
+           *
+           * A step smaller on a phone. At 48px four capital headings, two of
+           * them on two lines, took 1.3 screens and read louder than the name
+           * in the hero.
            */}
-          <p class="text-display-m font-display m-0 uppercase">
+          <p class="text-display-s md:text-display-m font-display m-0 uppercase">
             {group.domain}
           </p>
           <p class="m-0 mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-1">
@@ -101,9 +105,15 @@ const { groups, label, class: className } = Astro.props
    * One number, used twice: the keyframe travels this far and the row reserves
    * exactly that much padding for it. Declared here rather than in the markup
    * so the two cannot come apart, which is the way this was broken.
+   *
+   * Zero unless the drift actually runs, and set to its distance inside the
+   * same guard as the animation below. Where the rows hold still, under less
+   * motion or without scroll-driven animation, the padding is room for a
+   * movement that never comes, and it set their text 7px inside the page
+   * margin that every other section starts on.
    */
   [data-band-row] {
-    --band-drift: 2%;
+    --band-drift: 0px;
   }
 
   @keyframes band-drift {
@@ -125,6 +135,7 @@ const { groups, label, class: className } = Astro.props
        * which is how this drift shipped without ever running.
        */
       [data-band-row] {
+        --band-drift: 2%;
         animation-name: band-drift;
         animation-timing-function: linear;
         animation-fill-mode: both;

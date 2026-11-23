@@ -285,7 +285,7 @@ const stackGroups = capabilities.map(({ entry }) => ({
         statement.map((word, index) => (
           <Fragment>
             <span class="inline-block" style={`--word-step: ${index}`}>
-              <span class="inline-block wrap-break-word hyphens-auto">
+              <span class="inline-block wrap-break-word hyphens-manual">
                 {word}
               </span>
             </span>{" "}

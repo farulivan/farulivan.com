@@ -42,6 +42,11 @@ const other = LOCALES.find((locale) => locale !== lang) ?? lang
    * letters alone would be legible on some pages and not on others. The fill
    * gives it the same contrast everywhere.
    *
+   * And a hairline round the fill, the same outline the availability badge
+   * wears. Over the grey Selected work band the grey pill had no edge, and
+   * "EN · ID" floated on its own. The padding gives up the hairline's pixel
+   * on each side, so the pill is the size it was.
+   *
    * As tall as the smallest a target is allowed to be, and as wide as the
    * two codes need.
    *
@@ -55,7 +60,7 @@ const other = LOCALES.find((locale) => locale !== lang) ?? lang
   hreflang={LOCALE_TAGS[other]}
   aria-label={t("lang.switch", { language: t(`lang.${other}`) })}
   class={cn(
-    "group inline-flex h-tap cursor-pointer items-center gap-2 rounded-control px-4",
+    "group inline-flex h-tap cursor-pointer items-center gap-2 rounded-control border border-rule px-[calc(var(--spacing-4)-1px)]",
     "bg-surface text-ink text-label font-label uppercase no-underline",
     "transition-colors duration-fast ease-state active:scale-[0.98]",
     "hover:bg-[color-mix(in_srgb,var(--color-ink)_12%,var(--color-surface))]",

@@ -204,10 +204,16 @@ finds it in the table; someone browsing gets the visual rows.
 > header:   title, summary, then the live and source links as pills, then
 >           the facts table
 > results:  every outcome figure at --t-display-s over a --t-label caption,
->           one row of up to four columns, two to a row on a phone
+>           one row of up to four columns; on a phone a list, each value in
+>           a 128px column with its caption beside it
 > ...       lead image, the story, whose last section is the outcome
 > next:     the next project's row, on --surface
 > ```
+>
+> On a phone the results were two to a row, which left the third of three
+> alone under the other two. As a list there is no orphan at any count. The
+> hairlines run between results only: the facts table's bottom rule is
+> already above the first.
 >
 > The figures sat after about 2,500px of prose at 32px, and four of them
 > wrapped three and one. The links were a half-width empty box at the very
@@ -250,8 +256,9 @@ and two lines on what shipped.
 
 > **Changed during build: the portrait is not full bleed.** It sits in the left
 > column under the standfirst, beside the bio, and above the bio on a phone. It
-> is a 4:5 crop, never more than 360px wide, in monochrome (greyscale, contrast
-> 1.05), with square corners and no reveal.
+> is a 4:5 crop, never more than 360px wide (240 on a phone), in monochrome
+> (greyscale, contrast 1.05), with square corners and no reveal. Across a
+> phone's full width it was half a screen and pushed the bio onto the second.
 >
 > The only photograph is a 720 square, which cannot fill a 16:9 band across a
 > window without going soft. A 4:5 crop of it is 576 × 720, so at 360px it has

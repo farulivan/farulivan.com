@@ -89,7 +89,7 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
 >
   <Section space="lg">
     <h1
-      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-auto"
+      class="text-display-l font-display text-ink m-0 wrap-break-word hyphens-manual"
     >
       {t("about.title")}
     </h1>
@@ -106,7 +106,13 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
     }
     <ReadingColumns>
       <div slot="aside" class="flex flex-col gap-7 max-md:mb-2">
-        <p class="text-display-s font-display text-ink m-0 text-balance">
+        {
+          /* 1.05 rather than the display step's 0.95: over four lines on a
+             phone the ascenders nearly met the descenders above them. */
+        }
+        <p
+          class="text-display-s font-display text-ink m-0 leading-[1.05] text-balance"
+        >
           {t("about.subtitle")}
         </p>
 
@@ -118,6 +124,10 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
            * going soft. A 4:5 crop of that square is 576 pixels wide, so 360
            * on screen is 1.6 pixels to every one drawn, inside the two-thirds
            * rule the screenshots are held to.
+           *
+           * 240 wide on a phone. Across the full width it was 342 × 427, half
+           * a screen, and the bio under it started on the second one. The face
+           * does not need the width to be seen.
            *
            * Monochrome because the original is warm wood and a navy shirt,
            * and on a page whose one bright colour is lime, a second set of
@@ -135,10 +145,10 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
           width={360}
           height={450}
           widths={[360, 576]}
-          sizes="360px"
+          sizes="(min-width: 768px) 360px, 240px"
           fit="cover"
           loading="eager"
-          class="block h-auto w-full max-w-[360px] contrast-105 grayscale"
+          class="block h-auto w-full max-w-[240px] contrast-105 grayscale md:max-w-[360px]"
         />
       </div>
 
@@ -210,7 +220,14 @@ const rows: DataCell[][] = capabilities.map(({ entry }) => [
       label={t("about.nowLabel")}
       description={t("about.nowDescription")}
     />
-    <p class="text-h-m font-display max-w-measure mt-7 text-pretty">
+    {
+      /* 1.4 rather than the heading step's 1.2. It runs to ten lines on a
+         phone, and a light weight over that many lines needs more air than a
+         heading does. */
+    }
+    <p
+      class="text-h-m font-display max-w-measure mt-7 leading-[1.4] text-pretty"
+    >
       {t("about.now")}
     </p>
   </Section>

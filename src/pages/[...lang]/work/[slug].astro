@@ -152,7 +152,7 @@ const stripColumns = [
     </a>
 
     <h1
-      class="text-display-l font-display text-ink descender-room mt-5 wrap-break-word hyphens-auto"
+      class="text-display-l font-display text-ink descender-room mt-5 wrap-break-word hyphens-manual"
     >
       {data.title}
     </h1>
@@ -203,25 +203,33 @@ const stripColumns = [
       /*
        * The results, under the facts and before the story. Every figure at
        * the size the original spec asked for, one row of them on a wide
-       * screen and two to a row on a phone. No rule of its own: the table's
-       * bottom rule already separates the two, and a second one a step below
-       * it read as two lines that had drifted apart.
+       * screen and a list on a phone: each value in a column of its own with
+       * its caption beside it, and a hairline between one result and the
+       * next. Two to a row left the third of three alone on a line of its
+       * own, where the strongest claim on the page read as an afterthought.
+       *
+       * No rule above the first result or under the last: the table's bottom
+       * rule already separates the two, and a second one a step below it
+       * read as two lines that had drifted apart.
+       *
+       * The value's column is a minimum rather than a width, so a long value
+       * such as "5 months" pushes its caption over instead of running into it.
        */
     }
     {
       figures.length > 0 && (
         <dl
           class:list={[
-            "gap-x-gutter m-0 mt-8 grid grid-cols-2 gap-y-7",
+            "gap-x-gutter m-0 mt-8 grid grid-cols-1 md:gap-y-7",
             stripColumns,
           ]}
         >
           {figures.map((figure) => (
-            <div class="flex flex-col gap-2">
-              <dt class="text-display-s font-display text-ink leading-none">
+            <div class="border-section-rule flex flex-col gap-2 max-md:flex-row max-md:items-baseline max-md:gap-4 max-md:py-3 max-md:not-first:border-t">
+              <dt class="text-display-s font-display text-ink leading-none max-md:min-w-10 max-md:flex-none">
                 {figure.value}
               </dt>
-              <dd class="text-label text-section-muted m-0 uppercase">
+              <dd class="text-label text-section-muted m-0 min-w-0 uppercase">
                 {figure.caption}
               </dd>
             </div>

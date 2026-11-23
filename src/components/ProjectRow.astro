@@ -127,7 +127,7 @@ const lead = figures.slice(0, 2)
            * picture would.
            */
           <div class="flex h-full w-full flex-col justify-end gap-3">
-            <span class="text-display-s font-display leading-none tracking-[-0.03em] wrap-break-word hyphens-auto">
+            <span class="text-display-s font-display leading-none tracking-[-0.03em] wrap-break-word hyphens-manual">
               {title}
             </span>
             <span class="text-label text-section-muted uppercase">
@@ -149,7 +149,7 @@ const lead = figures.slice(0, 2)
          */
       }
       <h3
-        class="text-h-l font-display m-0 wrap-break-word hyphens-auto decoration-1 underline-offset-4 group-hover:underline"
+        class="text-h-l font-display m-0 wrap-break-word hyphens-manual decoration-1 underline-offset-4 group-hover:underline"
       >
         {title}
       </h3>
@@ -159,11 +159,16 @@ const lead = figures.slice(0, 2)
          * Role and stack on separate lines. Run together in one uppercase line
          * they wrapped to two and read as one block of tools; apart, the role
          * reads as who I was on it and the stack as a quiet footnote.
+         *
+         * The label step, 13px, for the stack and for the figures' captions
+         * below. At 11px, the size kept for indices and timestamps, a hirer
+         * read them as fine print, and the case study already set the same
+         * captions at 13.
          */
       }
       <div class="flex flex-col gap-1">
         <p class="text-ui text-ink m-0">{role}</p>
-        <p class="text-micro text-section-muted m-0 uppercase">{tools}</p>
+        <p class="text-label text-section-muted m-0 uppercase">{tools}</p>
       </div>
 
       <p class="text-body m-0 text-pretty">{summary}</p>
@@ -187,7 +192,7 @@ const lead = figures.slice(0, 2)
                 <dt class="text-h-l font-display text-ink order-1">
                   {figure.value}
                 </dt>
-                <dd class="text-micro text-section-muted order-2 m-0 uppercase">
+                <dd class="text-label text-section-muted order-2 m-0 uppercase">
                   {figure.caption}
                 </dd>
               </div>

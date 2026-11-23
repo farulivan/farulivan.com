@@ -43,6 +43,13 @@ mark **never** drops — the hero crop depends on it ([wordmark.md §3](wordmark
 > thing and did another. It reads "EN · ID" in the same 44px pill, the current
 > one in `--ink` and the other muted, which turns ink on hover.
 
+> **Changed during build: a hairline round the language pill.** Over the grey
+> Selected work band the grey pill had no edge and "EN · ID" floated on its
+> own; the bar returns on every upward flick, so on a phone it showed often.
+> It now wears a 1px `--rule` outline at every width, the availability badge's,
+> and its padding gives up that pixel so its size does not change. A paper
+> fill was the alternative, and it would have lost the pill's grey.
+
 > **Changed during build: the controls hide while you read.** "Always visible"
 > put the language and menu pills on top of headings and prose on every long
 > page, and on a phone nearly all the time. Past the point where the mark
@@ -128,8 +135,8 @@ breakpoints.** Only width and anchor. Do not scale the type down on mobile.
 > reached, and at that width it read as a sheet over the page rather than a
 > card laid on it. Below `768px` it is now `280px + var(--page-margin)` wide,
 > hangs past the right edge like the desktop card, and sets its links at
-> `--t-h-l` in 56px rows with `var(--s-5) var(--s-3)` padding: 426px tall, so
-> it fits a 568px screen. Fill, radius, weight, tracking and tilt are unchanged.
+> `--t-h-l`, 26px on a phone, in 56px rows with `var(--s-5) var(--s-3)`
+> padding. It fits a 568px screen. Fill, radius, weight, tracking and tilt are unchanged.
 > Where even that does not fit, a phone held sideways or a short window, the
 > card scrolls inside itself rather than losing its last rows.
 
@@ -205,17 +212,18 @@ separator:   1px --rule between rows, full bleed
 >
 > ```
 > role:        var(--text-ui), --ink, on its own line
-> stack:       var(--t-micro), uppercase, muted, five items at most
+> stack:       var(--t-label), uppercase, muted, five items at most
 > summary:     var(--text-body)
 > figures:     the first two outcome figures, value at var(--t-h-l) weight
->              300 over a var(--t-micro) muted caption. Two equal columns
+>              300 over a var(--t-label) muted caption. Two equal columns
 >              on a phone, a row from 640.
 > affordance:  var(--t-label) "Read the case study", with an arrow that moves
 >              4px towards it on hover and focus
 > ```
 >
 > Role and stack shared one uppercase line that wrapped to two and read as one
-> block of tools. The outcome figures were only ever at the bottom of the case
+> block of tools. The stack and the captions are at `--t-label`, 13px: at `--t-micro` a hirer
+> read them as fine print, and the case study set the same captions at 13. The outcome figures were only ever at the bottom of the case
 > study, so nobody skimming the list saw a number. The content now puts each
 > project's strongest figures first, since the row shows two. The whole row is
 > still the one link; the affordance only says so.
@@ -423,6 +431,13 @@ row) without borrowing the fret grid.
 > capitals that ran on after the word on some rows and wrapped under it on
 > others. The word wraps on a phone instead of being cut to "CRAFT AND PRA".
 
+> **Changed during build: a step smaller on a phone, and on the margin when
+> still.** Below `768px` the domains are `--t-display-s`, 32px. At 48px the four
+> capital headings, two of them on two lines, took 1.3 screens and read louder
+> than the name in the hero. The rows reserve padding for their drift only
+> where the drift runs. Under reduced motion, or without scroll-driven
+> animation, they start on the page margin like every other section.
+
 **Reduced motion.** Rows sit at their mid position, static.
 
 **A11y.** The stack is a real `<ul>`. The parallax is presentational; the list is
@@ -489,3 +504,11 @@ it with format and size — `CV — PDF, 240KB`.
 
 **Responsive.** Below `768px`, columns stack full-width; the wordmark keeps
 its poster margin.
+
+> **Changed during build: it stacks, Contact first.** The columns had not
+> stacked: Social and Contact shared a row, and the CV pill's label wrapped
+> inside its one-line window and showed only "Download". Below `768px` the
+> three now stack, the CV pill runs the full width with its whole label, and
+> GitHub and LinkedIn share one line. Contact comes before Social at every
+> width, desktop included, because it holds the address and the CV. The swap
+> is in the markup rather than in CSS, so keyboard order and screen order agree.
