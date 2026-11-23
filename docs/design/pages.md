@@ -61,6 +61,9 @@ menu, the email, the download.
 > would have met the target. I kept the stack first because the band is the
 > more interesting thing to meet second, so the target was dropped rather than
 > missed.
+>
+> On a phone the statement pads 64px a side, like every other section there
+> (see Responsive). At 128 the gap after it was a quarter of the screen.
 
 ### Hero detail
 
@@ -325,6 +328,11 @@ asks for something without repeating the field below it.
 > written to. The address stays the Gmail one; a domain address was
 > considered and declined.
 
+> **Changed during build: the statement on a phone.** Below `768px` it is set
+> at `--t-display-s`, 32px at line-height 1.05, across the full width. At 48px
+> and 14 characters a line it ran to six lines and pushed the address under the
+> fold, on a page whose one job is the address.
+
 **No contact form.** An email link is more likely to be used, needs no backend,
 no spam handling and no privacy policy. If a form is added later it needs a
 written justification.
@@ -343,6 +351,16 @@ Three breakpoints. Below `768px` everything is one column.
 | C5 project row | stacked | stacked | 2 col |
 | C6 table | stacked blocks | table | table |
 | C8 timeline step | 24px | 48px | 72px |
+| section padding | 64px | 96px | 96px |
+| page header | 32 top, 64 under | 128 / 128 | 128 / 128 |
+
+> **Changed during build: a phone's rhythm.** Below `768px` sections pad 64px
+> a side rather than 96, so two of them meet across 128px rather than 192, and
+> the home statement drops from 128 to 64 to match. On an 844px screen 192 was
+> almost a quarter of the screen, six times over on Home. Page headers take 32
+> on top and 64 under, so a title starts 160px down instead of 256. Before
+> that, Contact's address and Writing's first post both started under the fold.
+> From 768 up nothing moves.
 
 The `--page-margin` grows with the window, from 24px on a phone to 64px, and
 is always wider than the gutter. The poster feeling comes from the full-bleed
