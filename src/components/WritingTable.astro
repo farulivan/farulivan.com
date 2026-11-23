@@ -24,11 +24,15 @@ interface Props {
 const { lang, posts, class: className } = Astro.props
 const t = useTranslations(lang)
 
+/*
+ * On a phone the title leads and the rest share one muted line under it:
+ * "November 10, 2026 · frontend · 3 min read".
+ */
 const columns: DataColumn[] = [
-  { label: t("writing.col.date") },
-  { label: t("writing.col.title"), title: true },
-  { label: t("writing.col.topic") },
-  { label: t("writing.col.readTime"), align: "end" },
+  { label: t("writing.col.date"), phone: "meta" },
+  { label: t("writing.col.title"), title: true, phone: "title" },
+  { label: t("writing.col.topic"), phone: "meta" },
+  { label: t("writing.col.readTime"), align: "end", phone: "meta" },
 ]
 
 const rows: DataCell[][] = posts.map((post) => [

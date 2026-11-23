@@ -41,12 +41,16 @@ const projects = await getProjects(lang)
 const featured = await getFeaturedProjects(lang)
 
 /* Annotated rather than cast: `as` in a page's frontmatter costs the page its
-   Props binding. See the trap in AGENTS.md. */
+   Props binding. See the trap in AGENTS.md.
+
+   On a phone: the project, then the year and role on one muted line, then
+   the stack on a muted line of its own. The year leads because it is the
+   shorter value and the one the eye sorts the list by. */
 const columns: DataColumn[] = [
-  { label: t("work.col.project"), title: true },
-  { label: t("work.col.role") },
-  { label: t("work.col.stack") },
-  { label: t("work.col.year"), align: "end" },
+  { label: t("work.col.project"), title: true, phone: "title" },
+  { label: t("work.col.role"), phone: "meta", phoneOrder: 1 },
+  { label: t("work.col.stack"), phone: "line" },
+  { label: t("work.col.year"), align: "end", phone: "meta", phoneOrder: 0 },
 ]
 
 const rows: DataCell[][] = projects.map(({ entry }) => [

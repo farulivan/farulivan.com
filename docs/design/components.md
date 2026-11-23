@@ -309,6 +309,20 @@ bleed:   full width to var(--page-margin)
 with its column labels inline as `--t-micro` above each value. Never
 horizontally scroll a table of links.
 
+> **Changed during build: lists go compact on a phone.** The labelled blocks
+> stay only where a label carries meaning, as on Contact, where "Earliest
+> start" is what makes "Immediately" mean something. A list of posts, the work
+> table and the capabilities drop the labels: DATE, TITLE, TOPIC and LENGTH
+> over every post made each one 205px. A compact row leads with the title at
+> `--t-h-m`, then runs the short values together on one muted `--t-label`
+> line, "November 10, 2026 · frontend · 3 min read", and gives a longer value
+> a line of its own: Work's stack muted, the capabilities' depth note in ink,
+> because that note is what an interviewer tests. A column opts in with a
+> `phone` hint (`title`, `meta`, `line`, `body`). It is one table in the DOM,
+> rearranged with flex order below `768px`, so nothing changes from 768 up.
+> Keeping the labels with tighter spacing was the alternative; it saved only
+> about a third of the height.
+
 **A11y.** Real `<table>` with `<th scope="col">`. If rows are links, the link
 wraps the title cell, not the row.
 

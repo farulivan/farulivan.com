@@ -68,10 +68,15 @@ const bio = [t("about.bio.1"), t("about.bio.2"), t("about.bio.3")]
  * touched; the third column is the one that says how deep it goes, which is
  * the only part of a skills table an interviewer actually tests.
  */
+/*
+ * On a phone the area is the heading, the tools a muted line under it, and
+ * the depth note last, in ink: it is the column an interviewer tests, so it
+ * is not set as a footnote.
+ */
 const columns: DataColumn[] = [
-  { label: t("about.col.domain"), title: true },
-  { label: t("about.col.items") },
-  { label: t("about.col.note") },
+  { label: t("about.col.domain"), title: true, phone: "title" },
+  { label: t("about.col.items"), phone: "line" },
+  { label: t("about.col.note"), phone: "body" },
 ]
 
 const rows: DataCell[][] = capabilities.map(({ entry }) => [
